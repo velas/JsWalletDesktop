@@ -1,0 +1,47 @@
+export mainnet =
+    decimals: 18
+    tx-fee: \0.0014
+    tx-fee-options: 
+        auto: \0.0014
+        cheap: \0.00014
+    message-prefix: 'Ethereum'
+    mask: \0x0000000000000000000000000000000000000000
+    api:
+        provider: \eth
+        web3Provider : \https://mainnet.infura.io/UoCkF4efTrbEGU8Qpcs0
+        #web3Provider: \https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
+        url : \https://etherscan.io
+        apiUrl : \https://api.etherscan.io/api
+export ethnamed =
+    decimals: 18
+    tx-fee: \0.0014
+    tx-fee-options:
+        auto: \0.0014
+        cheap: \0.00014
+    message-prefix: 'Ethereum'
+    mask: \0x0000000000000000000000000000000000000000
+    api:
+        provider: \eth
+        web3Provider : \http://web3.space:9000
+        url : \http://web3.space:8000
+        apiUrl : \http://web3.space:8000/api
+export ropsten =
+    decimals: 18
+    tx-fee: \0.0014
+    tx-fee-options: 
+        auto: \0.0014
+        cheap: \0.00014
+    message-prefix: 'Ethereum'
+    mask: \0x0000000000000000000000000000000000000000
+    api:
+        provider: \eth
+        web3Provider : \https://ropsten.infura.io/UoCkF4efTrbEGU8Qpcs0
+        url : \https://ropsten.etherscan.io
+        apiUrl : \https://api-ropsten.etherscan.io/api
+export color = \#5838B8
+export testnet = ropsten
+export type = \coin    
+export enabled = yes
+export token = \eth
+export image = "data:image/png;base64,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"
+export usd-info = "url(https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC,DASH,XEM,USDT,ETC&tsyms=USD).ETH.USD"

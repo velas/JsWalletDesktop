@@ -1,0 +1,2 @@
+rm *.zip
+zip -r desktop-1.11-beta.zip . -x "node_modules/*" -x ".git/*" -x "dist/*"

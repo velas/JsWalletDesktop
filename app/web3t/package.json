@@ -1,0 +1,48 @@
+{
+  "author": {
+    "name": "Andrey Stehno <a.stegno@gmail.com>"
+  },
+  "bugs": {
+    "url": "https://github.com/web3space/web3t/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "big-integer": "^1.6.45",
+    "bip39": "^2.5.0",
+    "bitcoinjs-lib": "3.3.2",
+    "bs58": "4.0.1",
+    "cross-fetch": "3.0.4",
+    "ethereumjs-tx": "1.3.7",
+    "ethereumjs-util": "5.2.0",
+    "ethereumjs-wallet": "0.6.3",
+    "moment": "2.22.2",
+    "prelude-ls": "1.1.2",
+    "qs": "6.5.2",
+    "web3": "0.20.1"
+  },
+  "deprecated": false,
+  "description": "Unified Open Source Coin Registry (Same interface for all possible coins, tokens)",
+  "homepage": "https://github.com/ethnamed/web3t#readme",
+  "keywords": [
+    "crypto",
+    "standard",
+    "ethnamed"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "web3t",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethnamed/web3t.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-setup": "npm i browserify browserify-livescript -g",
+    "mobile1": "browserify --s module -d -t browserify-livescript index.ls > ./web3t.js",
+    "mobile2": "browserify --s module -d -t browserify-livescript ./mobile/index.ls > ./mobile/web3t.js"
+  },
+  "version": "0.6.5",
+  "devDependencies": {
+    "browserify-livescript": "^0.2.4"
+  }
+}
