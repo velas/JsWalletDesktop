@@ -5,6 +5,8 @@ require! {
     \./langs/en.ls
     \./langs/ru.ls
     \./langs/ua.ls
+    \./langs/kr.ls
+    \./langs/cn.ls
     \./get-device.ls
 }
 saved-seed = saved!
@@ -32,7 +34,7 @@ store =
     root: null
     theme: \velas
     lang: \en
-    langs: { en, ru, ua }
+    langs: { en, ru, ua, kr, cn }
     registry: []
     terms: "Loading..."
     preference:
@@ -56,17 +58,22 @@ store =
         all: []
         applied: []
     current:
+        verify-seed: ""
+        verify-seed-error: no
         device: get-device!
         list: 0
         prompt-answer: ""
         prompt: no
         send-menu-open: no
+        langs-open: no
+        langs-open-start: no
         add-coin: no
         wallet-index: 0
         account-index: 1
         manage-account: no
         filter-plugins: ""
         confirmation: null
+        alert: null
         demo: location.href.index-of('web3.space/wallet') > -1 
         network: \mainnet
         pin: ""
@@ -96,4 +103,5 @@ store =
         filter-open: no
     rates: {}
     coins: []
+    version: "v0.2"
 module.exports = store

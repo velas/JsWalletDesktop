@@ -6,7 +6,7 @@ require! {
     \../web3.ls
     \../get-lang.ls
 }
-# .terms1320611139
+# .terms601981902
 #     text-align: center
 #     .terms-body
 #         >.header
@@ -31,9 +31,11 @@ require! {
 #                 font-size: 12px
 #         textarea
 #             padding: 10px
+#             overflow: auto
 #             width: 100%
 #             box-sizing: border-box
-#             height: 250px
+#             height: 350px
+#             width: 300px
 #             border: 0
 #             border-radius: 5px
 #             outline: none
@@ -52,7 +54,7 @@ terms = ({ store, web3t })->
     accept = ->
         navigate store, web3t, \:init
         <- web3t.refresh
-    react.create-element 'div', { className: 'terms terms1320611139' }, children = 
+    react.create-element 'div', { className: 'terms terms601981902' }, children = 
         react.create-element 'div', { className: 'terms-body' }, children = 
             react.create-element 'div', { className: 'header' }, ' Terms of Use'
             react.create-element 'textarea', { value: "#{store.terms}", style: style }
@@ -60,7 +62,7 @@ terms = ({ store, web3t })->
                 react.create-element 'div', {}, ' ' + lang.terms ? 'Please accept terms of use'
                 react.create-element 'button', { on-click: accept, style: button-primary1-style }, ' ' + lang.accept ? 'Accept'
 terms.init = ({ store }, cb)->
-    err, res <- get \https://raw.githubusercontent.com/web3space/wallet/master/TERMS.md .end
+    err, res <- get \https://raw.githubusercontent.com/velas/JsWallet/master/TERMS.md .end
     return cb err if err?
     store.terms = res.text
     cb null

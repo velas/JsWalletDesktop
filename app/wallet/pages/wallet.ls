@@ -12,7 +12,7 @@ require! {
     \../get-primary-info.ls
 }
 #
-# .wallet1380897047
+# .wallet-133027376
 #     $cards-height: 324px
 #     $pad: 20px
 #     $radius: 15px 
@@ -35,7 +35,7 @@ require! {
 #     &.over
 #         background: #CCC
 #     &.big
-#         height: 135px
+#         height: 120px
 #     &.active
 #         >.wallet-middle
 #             display: inline-block
@@ -91,6 +91,8 @@ require! {
 #         >.top-middle
 #             width: 20%
 #             text-align: center
+#             @media screen and (max-width: 800px)
+#                 width: 30%
 #             >.balance
 #                 &:last-child
 #                     font-weight: bold
@@ -101,6 +103,8 @@ require! {
 #         >.top-right
 #             width: 45%
 #             text-align: right
+#             @media screen and (max-width: 800px)
+#                 width: 35%
 #             >button
 #                 outline: none
 #                 margin-bottom: 5px
@@ -120,6 +124,9 @@ require! {
 #                 font-weight: bold
 #                 background: transparent
 #                 transition: all .5s
+#                 text-overflow: ellipsis
+#                 overflow: hidden
+#                 width: 40%
 #                 @media screen and (max-width: 800px)
 #                     width: 40px
 #                 &:hover
@@ -138,7 +145,7 @@ require! {
 #         >.uninstall
 #             text-align: left
 #             font-size: 10px
-#             padding-top: 10px
+#             padding-top: 5px
 #         >img
 #             position: absolute
 #             right: 3%
@@ -167,7 +174,7 @@ require! {
 #             @media screen and (max-width: 390px)
 #                 padding-right: 35px
 module.exports = (store, web3t, wallets, wallet)-->
-    { button-style, uninstall, wallet, active, big, balance, pending, send, receive, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
+    { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
     style = get-primary-info store
     label-uninstall =
@@ -191,17 +198,18 @@ module.exports = (store, web3t, wallets, wallet)-->
         background: style.app.addressBg
     filter-icon=
         filter: style.app.filterIcon
-    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet1380897047" }, children = 
+    name = wallet.coin.name ? wallet.coin.token
+    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-133027376" }, children = 
         react.create-element 'div', { className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: 'img' }, children = 
                     react.create-element 'img', { src: "#{wallet.coin.image}" }
                 react.create-element 'div', { className: 'info' }, children = 
-                    react.create-element 'div', { className: 'name' }, ' ' + lang.price ? "Price"
-                    react.create-element 'div', { className: 'price' }, ' $' +  money(usd-rate)
+                    react.create-element 'div', { className: 'name' }, ' $' +  money(usd-rate)
+                    react.create-element 'div', { className: 'price' }, ' $' + balanceUsd
             react.create-element 'div', { style: wallet-style, className: 'top-middle' }, children = 
                 if +wallet.pending-sent is 0
-                    react.create-element 'div', { className: 'balance title' }, ' ' + lang.balance ? 'Balance'
+                    react.create-element 'div', { className: 'balance title' }, ' ' + name
                 react.create-element 'div', { className: 'balance' }, children = 
                     react.create-element 'div', {}, ' ' +  balance 
                     if +wallet.pending-sent >0
@@ -209,18 +217,12 @@ module.exports = (store, web3t, wallets, wallet)-->
                             react.create-element 'span', {}, ' -' + pending
             react.create-element 'div', { className: 'top-right' }, children = 
                 react.create-element 'button', { on-click: send(wallet), style: button-primary3-style }, children = 
-                    if store.current.device is \mobile
-                        icon "ArrowSmallUp", 25
-                    if store.current.device is \desktop
-                        react.create-element 'span', {}, ' ' + lang.send
+                    icon "ArrowSmallUp", 25
                 react.create-element 'button', { on-click: receive(wallet), style: button-primary1-style }, children = 
-                    if store.current.device is \mobile
-                        icon "ArrowSmallDown", 25
-                    if store.current.device is \desktop
-                        react.create-element 'span', {}, ' ' + lang.receive
+                    icon "ArrowSmallDown", 25
         react.create-element 'div', { className: 'wallet-middle' }, children = 
             react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}", style: address-input }, ' ' + get-address-title wallet
             react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 
                 copy store
-            if wallet.coin.token isnt \btc
+            if wallet.coin.token not in <[ btc vlx ]>
                 react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall

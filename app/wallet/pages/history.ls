@@ -7,7 +7,7 @@ require! {
     \./icon.ls
     \./loading.ls
 }
-# .history-1820377128
+# .history-827327365
 #     width: 100%
 #     position: relative
 #     padding-bottom: 20px
@@ -47,7 +47,7 @@ require! {
 #                 margin-top: 8px
 #                 cursor: pointer
 #         .filter
-#             width: 118px
+#             width: 128px
 #             background: #321260
 #             position: absolute
 #             top: 39px
@@ -60,11 +60,16 @@ require! {
 #                 border-radius: 50px
 #                 margin: 2px
 #                 border: 2px solid hsla(0, 0%, 79%, 0.15)
-#                 opacity: .7
+#                 opacity: .85
+#                 border-width: 3px
 #                 &.active
 #                     opacity: 1
 #                 img
-#                     height: 30px
+#                     height: 33px
+#                 &.OUT
+#                     color: #ef4444
+#                 &.IN
+#                     color: #3cd5a4
 #         .separator
 #             min-width: 2px
 #             display: inline-block
@@ -80,6 +85,7 @@ require! {
 #             &.active
 #                 border-color: #9d40eb
 #                 background: rgba(59, 213, 175, 0.25)
+#                 border-width: 3px
 #             line-height: 12px
 #             height: 40px
 #             width: 40px
@@ -128,7 +134,7 @@ require! {
 #                 vertical-align: top
 #                 box-sizing: border-box
 #                 text-align: left
-#                 height: 60px
+#                 height: 59px
 #                 white-space: nowrap
 #                 overflow: scroll
 #                 &.network
@@ -155,7 +161,7 @@ require! {
 #                 font-size: 11px
 #             &.OUT
 #                 .direction
-#                     color: #ef44b1
+#                     color: #ef4444
 #                 .txhash a
 #                     color: #c79b9b
 #             &.IN
@@ -216,8 +222,8 @@ module.exports = ({ store, web3t })->
         border-right: "1px solid #{style.app.border}"
         border-left: "1px solid #{style.app.border}"
     filter-style=
-        color: style.app.text
         background: style.app.header
+        font-weight: "600"
     menu-style=
         color: style.app.text
     border-b =
@@ -229,7 +235,7 @@ module.exports = ({ store, web3t })->
         filter: style.app.nothingIcon
     expand-collapse = ->
         store.history.filter-open = not store.history.filter-open
-    react.create-element 'div', { className: 'normalheader history history-1820377128' }, children = 
+    react.create-element 'div', { className: 'normalheader history history-827327365' }, children = 
         react.create-element 'div', { style: header-style, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style }, children = 
@@ -240,8 +246,14 @@ module.exports = ({ store, web3t })->
             if store.history.filter-open
                 react.create-element 'div', { style: filter-body, className: 'filter' }, children = 
                     react.create-element 'div', { style: border-b, className: 'top' }, children = 
-                        react.create-element 'button', { style: filter-style, on-click: switch-type-in, className: "#{is-active('IN')}" }, ' IN'
-                        react.create-element 'button', { style: filter-style, on-click: switch-type-out, className: "#{is-active('OUT')}" }, ' OUT'
+                        react.create-element 'button', { style: filter-style, on-click: switch-type-in, className: "#{is-active('IN')} IN" }, children = 
+                            """↓"""
+                            react.create-element 'br', {}
+                            """IN"""
+                        react.create-element 'button', { style: filter-style, on-click: switch-type-out, className: "#{is-active('OUT')} OUT" }, children = 
+                            """↑"""
+                            react.create-element 'br', {}
+                            """OUT"""
                     react.create-element 'div', { className: 'bottom' }, children = 
                         for coin in coins
                             react.create-element 'button', { key: "#{coin.token}", style: filter-style, on-click: switch-filter(coin.token), className: "#{is-active(coin.token)}" }, children = 

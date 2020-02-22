@@ -6,7 +6,7 @@ require! {
     \./icon.ls
     \../get-lang.ls
 }
-# .content-1765258087
+# .content-209746772
 #     position: relative
 #     @import scheme
 #     $border-radius: 5px
@@ -20,10 +20,8 @@ require! {
 #         width: 94%
 #         box-sizing: border-box
 #         border-radius: $border-radius
-#         position: absolute
 #         left: 11px
 #     .more-buttons
-#         position: absolute
 #         top: 30px
 #         right: 0
 #         width: 150px
@@ -47,8 +45,8 @@ require! {
 #                 display: inline-block
 #                 vertical-align: middle
 #     >.content-body
-#         top: 15px
-#         height: 520px
+#         margin-top: 15px
+#         height: 531px
 #         @import scheme
 #         color: gray
 #         a
@@ -189,10 +187,10 @@ require! {
 #             outline: none
 #             border: 0
 #             border-radius: 4px
-#             font-size: 10px
-#             line-height: 17px
+#             font-size: 12px
+#             line-height: 16px
 #             text-align: center
-#             padding: 0 5px
+#             padding: 2px 5px
 #             cursor: pointer
 #         .not-enough
 #             color: red
@@ -210,8 +208,9 @@ require! {
 #             display: flex
 #             margin-top: 5px
 #             >*
-#                 padding: 0 5px
-#                 font-size: 10px
+#                 padding: 2px 5px
+#                 font-size: 12px
+#                 line-height: 8px
 #                 border-radius: 4px
 #                 cursor: pointer
 #                 text-align: center
@@ -233,7 +232,7 @@ require! {
 #         .button-container
 #             text-align: center
 #             .buttons
-#                 margin-top: 10px
+#                 margin-top: 40px
 #                 text-align: center
 #                 border-radius: 5px
 #                 width: 100%
@@ -275,7 +274,7 @@ form-group = (title, style, content)->
         react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
         content!
 send = ({ store, web3t })->
-    { token, fee-token, network, send, wallet, pending, primary-button-style, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, topup, history, cancel, send-anyway, choose-auto, choose-cheap, chosen-auto, chosen-cheap, get-address-link, get-address-title, default-button-style, round5edit, round5, send-options, send-title, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
+    { token, name, fee-token, network, send, wallet, pending, primary-button-style, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, topup, history, cancel, send-anyway, choose-auto, choose-cheap, chosen-auto, chosen-cheap, get-address-link, get-address-title, default-button-style, round5edit, round5, send-options, send-title, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
     round-money = (val)->
         +val |> (-> it * 100) |> Math.round |> (-> it / 100)
     style = get-primary-info store
@@ -303,36 +302,39 @@ send = ({ store, web3t })->
     expand-collapse = ->
         store.current.send-menu-open = not store.current.send-menu-open
     lang = get-lang store
-    wallet-title = "#{token + network} #{lang.wallet ? 'wallet'}"
+    wallet-title = "#{name + network} #{lang.wallet ? 'wallet'}"
     open-invoice = ->
         invoice store, wallet
-    react.create-element 'div', { className: 'content content-1765258087' }, children = 
+    react.create-element 'div', { className: 'content content-209746772' }, children = 
         react.create-element 'div', { style: more-text, className: 'content-body' }, children = 
             react.create-element 'div', { className: 'header' }, children = 
                 react.create-element 'span', { className: 'head left' }, children = 
                     react.create-element 'img', { src: "#{send.coin.image}" }
                 react.create-element 'span', { style: more-text, className: 'head center' }, ' ' + wallet-title
-                react.create-element 'span', { on-click: expand-collapse, style: icon-style, className: 'head right' }, children = 
-                    icon \KebabHorizontal
+                if store.current.device is \mobile
+                    react.create-element 'span', { on-click: expand-collapse, style: icon-style, className: 'head right' }, children = 
+                        icon \KebabHorizontal
             if store.current.send-menu-open
                 react.create-element 'div', { style: menu-style, className: 'more-buttons' }, children = 
                     if store.preference.invoice-visible is yes
-                        react.create-element 'a', { on-click: open-invoice, className: 'more receive' }, children = 
-                            react.create-element 'div', {}, children = 
-                                react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
-                                    icon \Mail, 20
-                                react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.invoice ? 'Invoice'
+                        if store.current.device is \desktop
+                            react.create-element 'a', { on-click: open-invoice, className: 'more receive' }, children = 
+                                react.create-element 'div', {}, children = 
+                                    react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
+                                        icon \Mail, 20
+                                    react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.invoice ? 'Invoice'
                     if store.current.device is \mobile    
                         react.create-element 'a', { on-click: history, className: 'more history' }, children = 
                             react.create-element 'div', {}, children = 
                                 react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
                                     icon \Inbox, 20
                                 react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.history ? 'History'
-                    react.create-element 'a', { on-click: topup, className: 'more history' }, children = 
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
-                                icon \DiffAdded, 20
-                            react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.topup ? 'Topup'
+                    if store.current.device is \desktop
+                        react.create-element 'a', { on-click: topup, className: 'more history' }, children = 
+                            react.create-element 'div', {}, children = 
+                                react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
+                                    icon \DiffAdded, 20
+                                react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.topup ? 'Topup'
             react.create-element 'form', {}, children = 
                 form-group lang.send-from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 

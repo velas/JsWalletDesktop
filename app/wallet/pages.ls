@@ -9,7 +9,11 @@ require! {
     \./pages/loading.ls
     \./pages/invoice.ls
     \./pages/terms.ls
+    \./pages/terms2.ls
+    \./pages/newseed2.ls
+    \./pages/verifyseed.ls
 }
+export verifyseed
 export loading
 export wallets
 export history
@@ -20,3 +24,5 @@ export newseed
 export sent
 export invoice
 export terms
+export terms2
+export newseed2

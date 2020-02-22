@@ -1,19 +1,15 @@
 {
   "name": "velas-desktop-wallet",
-  "version": "0.10.28",
+  "version": "0.11.01",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder --publish always",
     "dist-nix": "electron-builder --linux",
     "dist-deb": "electron-builder --linux deb tar.xz",
     "dist-win": "electron-builder --win portable",
-    "cleanup": "npm run cleanup1 && npm run cleanup2 && npm run cleanup3",
-    "cleanup3": "rm -rf node_modules/bitcore-message/node_modules/",
-    "cleanup1": "rm -rf node_modules/whitebox/node_modules/bitcore-message",
-    "cleanup2": "rm -rf node_modules/whitebox/node_modules/bitcore-lib",
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -27,6 +23,7 @@
   ],
   "license": "CC0-1.0",
   "devDependencies": {
+    "app-builder-bin": "^3.5.2",
     "electron": "^7.1.11",
     "electron-builder": "^22.3.2",
     "electron-builder-notarize": "^1.1.2",
@@ -35,6 +32,7 @@
   },
   "author": "Andrey Stehno <a.stegno@gmail.com>",
   "build": {
+    "framework": "electron",
     "afterSign": "electron-builder-notarize",
     "appId": "web3.space",
     "mac": {

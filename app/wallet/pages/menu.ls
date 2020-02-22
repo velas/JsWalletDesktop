@@ -9,14 +9,15 @@ require! {
     \./icon.ls
     \./header.ls
 }
-# .menu548686148
+# .menu1043635947
 #     padding: 0 5px
-#     height: 28vh
+#     height: 219px
 #     line-height: 30vh
 #     >.menu-body
 #         display: inline-block
 #         line-height: normal
 #         vertical-align: middle
+#         vertical-align: -webkit-baseline-middle
 #         width: 100%
 #         max-width: 450px
 #         >.balance
@@ -62,12 +63,13 @@ module.exports = ({ store, web3t })->
     syncing = 
         | store.current.refreshing => \syncing
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu menu548686148' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu menu1043635947' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: 'currency' }, ' ' + lang.total-balance ? 'Total Balance'
                 react.create-element 'div', { className: 'amount' }, children = 
                     react.create-element 'div', { className: 'symbol' }, ' $'
                     react.create-element 'div', { className: 'number' }, ' ' + money current.balance-usd
-            your-account store, web3t
+            if store.current.device is \mobile    
+                your-account store, web3t
             project-links { store, web3t }

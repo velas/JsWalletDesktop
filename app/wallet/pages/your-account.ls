@@ -5,9 +5,12 @@ require! {
     \../get-lang.ls
     \../add-coin.ls
     \../topup.ls
+    \./icon.ls
 }
-# .your-account1977590316
+# .your-account-2084698148
 #     position: relative
+#     width: auto
+#     display: inline-block
 #     $size: 50px
 #     $color: rgba(#FFF, 0.5)
 #     >.username
@@ -34,10 +37,10 @@ require! {
 #             font-size: 12px
 #             color: black
 #             margin: 5px
-#             padding: 10px 6px
+#             padding: 10px
 #             font-weight: 600
-#             height: 20px
-#             line-height: 20px
+#             height: 10px
+#             line-height: 10px
 #             border-radius: 5px
 #             display: inline-block
 #             width: auto
@@ -68,7 +71,7 @@ module.exports = (store, web3t)->
         background: style.app.primary2
     lang = get-lang store
     account-index = "#{lang.account-index ? 'Account index'}: #{current.account-index}"
-    react.create-element 'div', { className: 'your-account your-account1977590316' }, children = 
+    react.create-element 'div', { className: 'your-account your-account-2084698148' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name
@@ -76,4 +79,4 @@ module.exports = (store, web3t)->
         react.create-element 'div', { className: 'buttons' }, children = 
             if no
                 react.create-element 'div', { on-click: topup(store), style: button-primary1-style, className: 'button edit' }, ' ' + lang.topup
-            react.create-element 'div', { on-click: add-coin(store), style: button-primary2-style, className: 'button lock' }, ' ' + lang.add-coin
+            react.create-element 'div', { on-click: add-coin(store), style: button-primary2-style, className: 'button lock' }, ' ' + lang.edit-coins

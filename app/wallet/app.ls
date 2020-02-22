@@ -11,9 +11,12 @@ require! {
     \./get-primary-info.ls
     \./pages/confirmation.ls : { confirmation-control }
 }
-# .app1470044321
+# .app1775986108
 #     *
 #         user-select: none
+#         -ms-overflow-style: none
+#         scrollbar-width: none
+#         overflow: -moz-scrollbars-none
 #     user-select: none
 #     overflow: hidden
 #     @import scheme
@@ -49,7 +52,7 @@ module.exports = ({ store, web3t })->
         | _ => ""
     react.create-element 'div', {}, children = 
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1470044321" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1775986108" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

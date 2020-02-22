@@ -4,8 +4,10 @@ require! {
     \./naming.ls
     \../get-primary-info.ls
     \../get-lang.ls
+    \./icon.ls
+    \../navigate.ls
 }
-# .manage-account159841677
+# .manage-account-1262459210
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -50,19 +52,20 @@ require! {
 #             padding: 10px
 #             height: 60px
 #             background: black
+#             >.header
+#                 margin: 5px
 #             >.close
 #                 position: absolute
-#                 padding: 5px 10px
-#                 font-size: 30px
-#                 right: 0
-#                 top: 0
+#                 font-size: 20px
+#                 right: 20px
+#                 top: 13px
 #                 cursor: pointer
 #                 &:hover
 #                     color: #CCC
 #         >.settings
 #             padding-top: 60px
 #             overflow-y: auto
-#             height: calc(65vh - 60px)
+#             height: calc(65vh - 30px)
 #             .title
 #                 color: $primary
 #                 text-transform: uppercase
@@ -71,6 +74,7 @@ require! {
 #                     color: #ee8791
 #             input
 #                 border-radius: 5px
+#                 height: 26px
 #             textarea
 #                 border-radius: 5px
 #             input, textarea
@@ -84,16 +88,20 @@ require! {
 #                 border: 1px solid $primary
 #                 border-radius: 5px
 #                 color: white
-#                 padding: 5px 15px
+#                 padding: 6px 15px
 #                 margin-top: 5px
+#                 text-decoration: none
 #                 text-transform: uppercase
 #                 font-size: 10px
 #                 font-weight: 600
 #                 cursor: pointer
 #                 outline: none
+#                 display: inline-block
 #                 &:hover
 #                     background: transparent
 #                     color: $primary
+#                 &.link
+#                     min-width: 190px
 #             textarea
 #                 width: 244px
 #                 height: 37px
@@ -111,28 +119,54 @@ require! {
 #                     height: 16px
 #                     display: inline-block
 #                     color: white
+#                     padding: 4px
 #                     border-radius: 5px
-#                     margin: 0 5px
 #                     cursor: pointer
+#                     vertical-align: top
 #                     &:hover
 #                         background: gray
+#                     &.left
+#                         border-radius: 5px 0 0 5px
+#                     &.right
+#                         border-radius: 0 5px 5px 0
+#                 .mb-12
+#                     margin-bottom: 12px
 #         .bold
 #             color: #f0c16b
 #         .section
 #             border-bottom: 1px solid rgba(240, 237, 237, 0.16)
 #             &.last
 #                 border-bottom: 0
-#             padding: 10px
+#             &:first-child
+#                 background: url("https://res.cloudinary.com/dfbhd7liw/image/upload/v1582209591/velas/logo-velas-opacity.png")
+#                 background-repeat: no-repeat
+#                 background-position: left 10px
+#             padding: 20px
 #             .title
 #                 padding: 2px
 #             .description
 #                 padding: 7px
 #                 font-size: 13px
 #                 color: #b0aeae
+#             .logo
+#                 margin-bottom: 5px
+#                 img
+#                     width: 30px
+#             .cap
+#                 text-transform: capitalize
+#             .low
+#                 text-transform: lowercase
+#             .link
+#                 color: #6f6fe2
+#                 text-decoration: underline
+#                 cursor: pointer
+#             .pb-0
+#                 padding-bottom: 0
 #             .content
 #         .change-index
 #             width: 80px
 #             padding: 1px
+#             border-radius: 0 !important
 #             text-align: center
 switch-account = (store, web3t)->
     {  account-left, account-right, change-account-index } = menu-funcs store, web3t
@@ -144,15 +178,17 @@ switch-account = (store, web3t)->
     color =
         color: style.app.text
     button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
+        border: "1px solid #{style.app.wallet}"
         color: style.app.text
         background: style.app.primary2
     react.create-element 'div', { style: color, className: 'switch-account' }, children = 
-        react.create-element 'span', {}, ' Account Index:'
-        react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button' }, ' <'
+        react.create-element 'div', { className: 'mb-12' }, ' Account Index:'
+        react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button left' }, children = 
+            icon \ChevronLeft, 15
         react.create-element 'span', { className: 'bold' }, children = 
             react.create-element 'input', { value: "#{store.current.account-index}", style: input-style, on-change: change-account-index, className: 'change-index' }
-        react.create-element 'span', { on-click: account-right, style: button-primary2-style, className: 'button' }, ' >'
+        react.create-element 'span', { on-click: account-right, style: button-primary2-style, className: 'button right' }, children = 
+            icon \ChevronRight, 15
 naming-part = ({ store, web3t })->
     react.create-element 'div', { className: 'section' }, children = 
         react.create-element 'div', { className: 'title' }, ' ' + lang.your-nickname ? 'Your Nickname'
@@ -168,11 +204,33 @@ manage-account = (store, web3t)->
         color: style.app.text
     color =
         color: style.app.text
+    logo-style =
+        filter: style.app.filterLogo
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
+    button-primary3-style=
+        border: "1px solid #{style.app.border}"
+        color: style.app.text2
+        background: style.app.primary3
+    goto-terms = ->
+        navigate store, web3t, \terms2
     react.create-element 'div', {}, children = 
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { className: 'logo' }, children = 
+                react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style }
+            react.create-element 'div', { style: color, className: 'title' }, children = 
+                react.create-element 'span', {}, ' Velas Wallet'
+                react.create-element 'span', { className: 'bold low' }, ' ' + store.version
+            react.create-element 'div', { style: color, className: 'description pb-0' }, children = 
+                react.create-element 'span', {}, ' ' + lang.about-wallet ? 'Multi-currency Wallet Managed by one mnemonic phrase' + '.'
+                react.create-element 'br', {}
+                react.create-element 'span', {}, ' ' + lang.pls-read ? 'Please read our' + ' '
+                react.create-element 'span', {}, children = 
+                    react.create-element 'a', { href: "https://velas.com/privacy.html", target: "_blank", className: 'link' }, ' ' + lang.privacy-policy ? 'Privacy Policy'
+                react.create-element 'span', {}, '  & '
+                react.create-element 'span', { on-click: goto-terms, className: 'link' }, ' ' + lang.terms-of-use ? 'Terms of Use'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.secret-phrase ? 'Secret Phrase'
             react.create-element 'div', { style: color, className: 'description' }, ' ' + lang.secret-phrase-warning ? 'You are responsible for keeping this phrase safe. In case of loss of this phrase, we will not be able to help you restore it.'
@@ -202,14 +260,13 @@ manage-account = (store, web3t)->
                 react.create-element 'span', {}, ' ' + lang.switch-account-info ? 'You could have a lot of unique addresses by switching account index. By default, you are given an index of 1, but you can change it in range 0 - 2,147,483,647'
             react.create-element 'div', { className: 'content' }, children = 
                 switch-account store, web3t
-        if no
-            react.create-element 'div', { className: 'section last' }, children = 
-                react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.export-private-key ? 'Export PRIVATE KEY'
-                react.create-element 'div', { style: color, className: 'description' }, children = 
-                    react.create-element 'span', { className: 'bold' }, ' ' + lang.for-advanced-users ? 'For advanced users only'
-                    react.create-element 'span', {}, ' ' + lang.export-private-key-warning ? 'Please never do it in case when you do not understand exact reason of this action and do not accept risks' + '.'
-                react.create-element 'div', { className: 'content' }, children = 
-                    react.create-element 'button', { on-click: export-private-key, style: button-primary2-style }, ' ' + lang.show-secret ? 'Show Secret'
+        react.create-element 'div', { className: 'section last' }, children = 
+            react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.export-private-key ? 'Export PRIVATE KEY'
+            react.create-element 'div', { style: color, className: 'description' }, children = 
+                react.create-element 'span', { className: 'bold' }, ' ' + lang.for-advanced-users ? 'For advanced users only'
+                react.create-element 'span', {}, ' ' + lang.export-private-key-warning ? 'Please never do it in case when you do not understand exact reason of this action and do not accept risks' + '.'
+            react.create-element 'div', { className: 'content' }, children = 
+                react.create-element 'button', { on-click: export-private-key, style: button-primary2-style }, ' ' + lang.show-secret ? 'Show Secret'
 module.exports = ({ store, web3t } )->
     return null if store.current.manage-account isnt yes
     { close-account } = menu-funcs store, web3t
@@ -217,11 +274,15 @@ module.exports = ({ store, web3t } )->
     account-body-style = 
         background: style.app.background
         color: style.app.text
+    border-style =
+        background: style.app.header
+        color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { className: 'manage-account manage-account159841677' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account-1262459210' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
-            react.create-element 'div', { style: account-body-style, className: 'title' }, children = 
-                react.create-element 'div', {}, ' ' + lang.manage-account
-                react.create-element 'div', { on-click: close-account, className: 'close' }, ' x'
+            react.create-element 'div', { style: border-style, className: 'title' }, children = 
+                react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
+                react.create-element 'div', { on-click: close-account, className: 'close' }, children = 
+                    icon \X, 20
             react.create-element 'div', { className: 'settings' }, children = 
                 manage-account store, web3t
