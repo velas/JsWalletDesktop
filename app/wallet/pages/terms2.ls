@@ -7,7 +7,8 @@ require! {
     \../get-lang.ls
     \../history-funcs.ls
 }
-# .terms601981902
+# .terms-780672038
+#     @import scheme
 #     text-align: center
 #     .terms-body
 #         >.header
@@ -24,12 +25,18 @@ require! {
 #                 width: auto
 #                 margin: 15px 5px 0
 #                 text-transform: uppercase
-#                 font-weight: 600
-#                 padding: 10px 6px
+#                 font-weight: bold
+#                 padding: 0px 6px
+#                 height: 36px
 #                 border: 0
 #                 background: #248295
-#                 border-radius: 7px
-#                 font-size: 12px
+#                 border-radius: $border
+#                 font-size: 10px
+#                 min-width: 80px
+#                 width: auto
+#                 white-space: nowrap
+#                 text-overflow: ellipsis
+#                 overflow: hidden
 #         textarea
 #             padding: 10px
 #             overflow: auto
@@ -38,7 +45,7 @@ require! {
 #             height: 350px
 #             width: 300px
 #             border: 0
-#             border-radius: 5px
+#             border-radius: $border
 #             outline: none
 terms = ({ store, web3t })->
     lang = get-lang store
@@ -50,13 +57,13 @@ terms = ({ store, web3t })->
     button-style=
         color: info.app.text
     button-primary1-style=
-        border: "1px solid #{info.app.border}"
+        border: "1px solid #{info.app.primary1}"
         color: info.app.text
         background: info.app.primary1
     accept = ->
         navigate store, web3t, \:init
         <- web3t.refresh
-    react.create-element 'div', { className: 'terms terms601981902' }, children = 
+    react.create-element 'div', { className: 'terms terms-780672038' }, children = 
         react.create-element 'div', { className: 'terms-body' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.terms-of-use ? 'Terms of Use'
             react.create-element 'textarea', { value: "#{store.terms}", style: style }

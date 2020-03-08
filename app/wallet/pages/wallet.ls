@@ -12,7 +12,8 @@ require! {
     \../get-primary-info.ls
 }
 #
-# .wallet-133027376
+# .wallet1357697076
+#     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
 #     $radius: 15px 
@@ -114,7 +115,7 @@ require! {
 #                 $round: 36px
 #                 padding: 0
 #                 box-sizing: border-box
-#                 border-radius: 6px
+#                 border-radius: $border
 #                 font-size: 10px
 #                 width: auto
 #                 padding: 0 6px
@@ -126,7 +127,7 @@ require! {
 #                 transition: all .5s
 #                 text-overflow: ellipsis
 #                 overflow: hidden
-#                 width: 40%
+#                 width: 80px
 #                 @media screen and (max-width: 800px)
 #                     width: 40px
 #                 &:hover
@@ -156,7 +157,7 @@ require! {
 #             width: 100%
 #             z-index: 1
 #             position: relative
-#             border-radius: 5px
+#             border-radius: $border
 #             border: 0
 #             background: #E6F0FF
 #             box-sizing: border-box
@@ -186,11 +187,11 @@ module.exports = (store, web3t, wallets, wallet)-->
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.wallet
     button-primary1-style=
-        border: "1px solid #{style.app.border}"
+        border: "1px solid #{style.app.primary1}"
         color: style.app.text
         background: style.app.primary1
     button-primary3-style=
-        border: "1px solid #{style.app.border}"
+        border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
     address-input=
@@ -198,28 +199,37 @@ module.exports = (store, web3t, wallets, wallet)-->
         background: style.app.addressBg
     filter-icon=
         filter: style.app.filterIcon
+    placeholder = 
+        | store.current.refreshing => "placeholder"
+        | _ => ""
     name = wallet.coin.name ? wallet.coin.token
-    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-133027376" }, children = 
+    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet1357697076" }, children = 
         react.create-element 'div', { className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: 'img' }, children = 
                     react.create-element 'img', { src: "#{wallet.coin.image}" }
                 react.create-element 'div', { className: 'info' }, children = 
-                    react.create-element 'div', { className: 'name' }, ' $' +  money(usd-rate)
-                    react.create-element 'div', { className: 'price' }, ' $' + balanceUsd
+                    react.create-element 'div', { className: "#{placeholder} name" }, ' $' +  money(usd-rate)
+                    react.create-element 'div', { className: "#{placeholder} price" }, ' $' + balanceUsd
             react.create-element 'div', { style: wallet-style, className: 'top-middle' }, children = 
                 if +wallet.pending-sent is 0
-                    react.create-element 'div', { className: 'balance title' }, ' ' + name
-                react.create-element 'div', { className: 'balance' }, children = 
+                    react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
+                react.create-element 'div', { className: "#{placeholder} balance" }, children = 
                     react.create-element 'div', {}, ' ' +  balance 
                     if +wallet.pending-sent >0
                         react.create-element 'div', { className: 'pending' }, children = 
                             react.create-element 'span', {}, ' -' + pending
             react.create-element 'div', { className: 'top-right' }, children = 
                 react.create-element 'button', { on-click: send(wallet), style: button-primary3-style }, children = 
-                    icon "ArrowSmallUp", 25
+                    if store.current.device is \mobile
+                        icon "ArrowSmallUp", 25
+                    if store.current.device is \desktop
+                        react.create-element 'span', {}, ' ' + lang.send
                 react.create-element 'button', { on-click: receive(wallet), style: button-primary1-style }, children = 
-                    icon "ArrowSmallDown", 25
+                    if store.current.device is \mobile
+                        icon "ArrowSmallDown", 25
+                    if store.current.device is \desktop
+                        react.create-element 'span', {}, ' ' + lang.receive
         react.create-element 'div', { className: 'wallet-middle' }, children = 
             react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}", style: address-input }, ' ' + get-address-title wallet
             react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 

@@ -10,6 +10,7 @@ require! {
     \./pages/invoice.ls
     \./pages/terms.ls
     \./pages/terms2.ls
+    \./pages/settings.ls
     \./pages/newseed2.ls
     \./pages/verifyseed.ls
 }
@@ -25,4 +26,5 @@ export sent
 export invoice
 export terms
 export terms2
+export settings
 export newseed2

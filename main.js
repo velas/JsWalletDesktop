@@ -24,7 +24,7 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   //console.log(path.join(__dirname, '/res/Icon-256.png'));
-  const height = 650;
+  const height = 750;
   const width = 900;
   mainWindow = new BrowserWindow({
     width: width, 

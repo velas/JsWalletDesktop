@@ -6,10 +6,10 @@ require! {
     \./icon.ls
     \../get-lang.ls
 }
-# .content-209746772
+# .content-1631131720
 #     position: relative
 #     @import scheme
-#     $border-radius: 5px
+#     $border-radius: $border
 #     $label-padding: 3px
 #     $label-font: 13px
 #     .pending
@@ -26,7 +26,7 @@ require! {
 #         right: 0
 #         width: 150px
 #         box-shadow: 0px 0px 2px black
-#         border-radius: 3px
+#         border-radius: $border
 #         text-align: left
 #         padding-bottom: 3px
 #         >.more
@@ -50,11 +50,11 @@ require! {
 #         @import scheme
 #         color: gray
 #         a
-#             color: gray
+#             color: #6f6fe2
 #         >form
 #             >table
 #                 background: transparent
-#                 border-radius: 5px
+#                 border-radius: $border
 #                 width: 100%
 #                 border-spacing: 0
 #                 tr
@@ -177,7 +177,7 @@ require! {
 #             color: orange
 #             vertical-align: top
 #             padding: 0 5px
-#             border-radius: 3px
+#             border-radius: $border
 #             line-height: 12px
 #             font-size: 12px
 #         .balance
@@ -186,7 +186,7 @@ require! {
 #             background: #3a63e4
 #             outline: none
 #             border: 0
-#             border-radius: 4px
+#             border-radius: $border
 #             font-size: 12px
 #             line-height: 16px
 #             text-align: center
@@ -211,7 +211,7 @@ require! {
 #                 padding: 2px 5px
 #                 font-size: 12px
 #                 line-height: 8px
-#                 border-radius: 4px
+#                 border-radius: $border
 #                 cursor: pointer
 #                 text-align: center
 #                 &.chosen
@@ -234,22 +234,23 @@ require! {
 #             .buttons
 #                 margin-top: 40px
 #                 text-align: center
-#                 border-radius: 5px
+#                 border-radius: $border
 #                 width: 100%
 #                 display: inline-block
 #                 overflow: hidden
 #                 .btn
 #                     width: auto
-#                     min-width: 110px
+#                     min-width: 80px
 #                     padding: 0 6px
 #                     line-height: 36px
+#                     height: 36px
 #                     text-transform: uppercase
 #                     text-align: center
-#                     font-weight: 600
+#                     font-weight: bold
 #                     border: 0
 #                     margin: 5px
-#                     font-size: 12px
-#                     border-radius: 5px
+#                     font-size: 10px
+#                     border-radius: $border
 #                     display: inline-block
 #                     cursor: pointer
 #                     box-sizing: border-box
@@ -305,7 +306,7 @@ send = ({ store, web3t })->
     wallet-title = "#{name + network} #{lang.wallet ? 'wallet'}"
     open-invoice = ->
         invoice store, wallet
-    react.create-element 'div', { className: 'content content-209746772' }, children = 
+    react.create-element 'div', { className: 'content content-1631131720' }, children = 
         react.create-element 'div', { style: more-text, className: 'content-body' }, children = 
             react.create-element 'div', { className: 'header' }, children = 
                 react.create-element 'span', { className: 'head left' }, children = 

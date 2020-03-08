@@ -37,6 +37,7 @@ store =
     langs: { en, ru, ua, kr, cn }
     registry: []
     terms: "Loading..."
+    collapse: ""
     preference:
         settings-visible: yes
         invoice-visible: yes
@@ -66,8 +67,12 @@ store =
         prompt: no
         send-menu-open: no
         langs-open: no
+        langs-open-side: no
         langs-open-start: no
         add-coin: no
+        token-migration: no
+        banner: no
+        hide-btn: no
         wallet-index: 0
         account-index: 1
         manage-account: no
@@ -93,6 +98,7 @@ store =
         checking-name: no
         seed: ""
         seed-temp: ""
+        seed-generated: no
         saved-seed: saved-seed
         balance-usd: \...
         filter: <[ IN OUT ]>
@@ -101,6 +107,10 @@ store =
         invoice : create-send!
     history:
         filter-open: no
+        tx-details: no
+    seed:
+        no-copy: no
+        about: no
     rates: {}
     coins: []
     version: "v0.2"

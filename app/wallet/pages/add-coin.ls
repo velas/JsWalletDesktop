@@ -8,7 +8,7 @@ require! {
     \./icon.ls
     \superagent : { get }
 }
-# .manage-account1396316328
+# .manage-account-1157548064
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -35,7 +35,7 @@ require! {
 #         width: 100%
 #         margin-top: 5vh
 #         margin-bottom: 25vh
-#         border-radius: 5px
+#         border-radius: $border
 #         position: relative
 #         height: 65vh
 #         overflow: hidden
@@ -60,19 +60,20 @@ require! {
 #                     color: #CCC
 #             .search-content
 #                 position: relative
+#                 padding: 0 10px
 #                 .search
 #                     margin-top: 10px
 #                     border: 1px solid #CCC
 #                     padding: 9px
-#                     border-radius: 6px
-#                     width: 97%
+#                     border-radius: $border
+#                     width: 100%
 #                     padding-left: 35px
 #                     box-sizing: border-box
 #                     font-size: 13px
 #                     outline: none
 #                 .icon
 #                     top: 6px
-#                     left: 18px
+#                     left: 20px
 #                     position: absolute
 #         >.settings
 #             padding-top: 90px
@@ -93,7 +94,7 @@ require! {
 #                         margin-bottom: 10px
 #                         display: inline-block
 #                         background: #642dbd
-#                         border-radius: 7px
+#                         border-radius: $border
 #                         padding: 10px
 #                         text-align: left
 #                         float: left
@@ -113,10 +114,11 @@ require! {
 #                             box-sizing: border-box
 #                         input
 #                             margin: 0 5px
-#                             border-radius: 5px
+#                             border-radius: $border
 #                             width: calc(100% - 90px)
 #                             border: 0
-#                             padding: 5px
+#                             padding: 5px 10px
+#                             outline: none
 #                             font-size: 15px
 #                         img
 #                             width: 40px
@@ -129,7 +131,7 @@ require! {
 #                             width: 40px
 #                             height: 40px
 #                             line-height: 45px
-#                             border-radius: 40px
+#                             border-radius: $border
 #                             border: 0 !important
 #                             box-sizing: border-box
 #                             padding: 0
@@ -202,7 +204,7 @@ module.exports = ({ store, web3t } )->
         color: style.app.text
         background: style.app.wallet
         border: "0"
-    react.create-element 'div', { className: 'manage-account manage-account1396316328' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account-1157548064' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: account-body-style, className: 'title' }, children = 
                 react.create-element 'div', {}, children = 

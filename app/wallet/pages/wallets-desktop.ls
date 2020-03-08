@@ -7,13 +7,14 @@ require! {
     \../web3.ls
     \../wallets-funcs.ls
     \./manage-account.ls
+    \./token-migration.ls
     \./add-coin.ls : add-coin-page
     \../get-lang.ls
     \../get-primary-info.ls
     \./history.ls
     \./your-account.ls
 }
-# .wallets-1776488283
+# .wallets-304457809
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -31,8 +32,13 @@ require! {
 #         position: absolute
 #         width: auto
 #         display: inline-block
-#         right: 10px
-#         top: 10px
+#         right: 12.1px
+#         top: 12.1px
+#         .buttons
+#             >.button
+#                 width: 20px
+#                 padding: 0
+#                 outline: none
 #     >*
 #         width: 100%
 #     >.arrow
@@ -71,10 +77,11 @@ mobile = ({ store, web3t })->
     row =
         display: "flex"
         height: "100vh"
+        margin-left: "60px"
     left-side =
-        width: "40%"
+        width: "45%"
     right-side =
-        width: "60%"
+        width: "55%"
         border-left: "1px solid #{style.app.border}"
     header-style =
         border-top: "1px solid #{style.app.border}"
@@ -87,8 +94,9 @@ mobile = ({ store, web3t })->
         react.create-element 'div', { style: left-side }, children = 
             menu { store, web3t }
             manage-account { store, web3t }
+            token-migration { store, web3t }
             add-coin-page { store, web3t }
-            react.create-element 'div', { key: "wallets-body", className: 'wallets wallets-1776488283' }, children = 
+            react.create-element 'div', { key: "wallets-body", className: 'wallets wallets-304457809' }, children = 
                 react.create-element 'div', { style: header-style, className: 'header' }, children = 
                     react.create-element 'span', { style: header-left, className: 'head left' }, ' ' + lang.your-wallets
                     your-account store, web3t

@@ -7,7 +7,7 @@ require! {
     \../get-lang.ls
     \../send-form.ls : { notify-form-result }
 }
-# .locked-1747929001
+# .locked-1331735696
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
@@ -39,12 +39,11 @@ require! {
 #             font-size: 17px
 #             display: inline-block
 #             height: 36px
-#             line-height: 36px
 #             background: transparent
 #             border: 1px solid #549D90
-#             border-radius: 7px
+#             border-radius: $border
 #             outline: none
-#             width: 120px
+#             width: 100px
 #             letter-spacing: 5px
 #             box-sizing: border-box
 #             &:focus
@@ -56,14 +55,15 @@ require! {
 #         font-size: 12px
 #         margin-top: 10px
 #     button.setup
-#         font-weight: 600
+#         font-weight: bold
 #         cursor: pointer
-#         margin-top: 20px
-#         width: 120px
-#         font-size: 12px
+#         margin-top: 15px
+#         width: 100px
+#         height: 36px
+#         font-size: 10px
 #         text-transform: uppercase
-#         padding: 10px 6px
-#         border-radius: 7px
+#         padding: 0px 6px
+#         border-radius: $border
 #         border: 0px
 #         background: transparent
 #         &:hover
@@ -135,12 +135,25 @@ setup-button = (store, web3t)->
     text-color=
         color: style.app.text
     button-style =
-        border: "1px solid #{style.app.border}"
+        border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
     react.create-element 'div', { key: "setup-button" }, children = 
         react.create-element 'button', { on-click: setup, style: button-style, className: 'setup' }, ' ' + lang.setup ? 'Setup'
         react.create-element 'div', { style: text-color, className: 'hint' }, ' ' + lang.pin-info ? 'Please memorize this PIN and do not provide it to third party.'
+create-wallet = (store, web3t)->
+    lang = get-lang store
+    style = get-primary-info store
+    create = ->
+        next!
+    text-color=
+        color: style.app.text
+    button-primary2-style=
+        border: "1px solid #{style.app.primary2}"
+        color: style.app.text
+        background: style.app.primary2
+    react.create-element 'div', { key: "create-wallet" }, children = 
+        react.create-element 'button', { on-click: create, style: button-primary2-style, className: 'setup' }, ' ' + lang.create-wallet ? 'Create Wallet'
 locked = ({ store, web3t })->
     return null if store.current.loading is yes
     lang = get-lang store
@@ -157,7 +170,7 @@ locked = ({ store, web3t })->
         background-size: "cover"
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1747929001' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1331735696' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + info.branding.title
