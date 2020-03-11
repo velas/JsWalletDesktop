@@ -1,0 +1,11 @@
+
+echo $(curl https://web3.space/wallet-main-bundle.css > main-bundle.css)
+rm -rf ./app
+mkdir ./app
+echo $(curl https://web3.space/ssr.zip > ./app/ssr.zip)
+cd ./app
+unzip -a ./ssr.zip
+rm ./ssr.zip
+cd ../
+
+

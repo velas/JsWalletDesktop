@@ -142,32 +142,33 @@ module.exports = (store, web3)->
         if store.current.device is \mobile    
             react.create-element 'div', { on-click: expand-collapse, className: 'menu-item right' }, children = 
                 react.create-element 'img', { alt: '', src: "#{langs[store.lang]}" }
-        if store.current.langs-open
-            react.create-element 'div', { style: langs-menu-body, className: 'langs-menu' }, children = 
-                react.create-element 'div', { on-click: change-lang-en, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.en}" }
-                    react.create-element 'span', { style: text-style }, ' English'
-                react.create-element 'div', { on-click: change-lang-ru, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.ru}" }
-                    react.create-element 'span', { style: text-style }, ' Russian'
-                react.create-element 'div', { on-click: change-lang-ua, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.ua}" }
-                    react.create-element 'span', { style: text-style }, ' Ukrainian'
-                react.create-element 'div', { on-click: change-lang-kr, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.kr}" }
-                    react.create-element 'span', { style: text-style }, ' Korean'
-                react.create-element 'div', { on-click: change-lang-cn, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.cn}" }
-                    react.create-element 'span', { style: text-style }, ' Chinese'
-                react.create-element 'div', { style: comming-soon, className: 'langs-item' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'img', { alt: '', src: "#{langs.fr}" }
-                    react.create-element 'span', { style: text-style }, ' French'
+        if no    
+            if store.current.langs-open
+                react.create-element 'div', { style: langs-menu-body, className: 'langs-menu' }, children = 
+                    react.create-element 'div', { on-click: change-lang-en, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.en}" }
+                        react.create-element 'span', { style: text-style }, ' English'
+                    react.create-element 'div', { on-click: change-lang-ru, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.ru}" }
+                        react.create-element 'span', { style: text-style }, ' Russian'
+                    react.create-element 'div', { on-click: change-lang-ua, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.ua}" }
+                        react.create-element 'span', { style: text-style }, ' Ukrainian'
+                    react.create-element 'div', { on-click: change-lang-kr, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.kr}" }
+                        react.create-element 'span', { style: text-style }, ' Korean'
+                    react.create-element 'div', { on-click: change-lang-cn, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.cn}" }
+                        react.create-element 'span', { style: text-style }, ' Chinese'
+                    react.create-element 'div', { style: comming-soon, className: 'langs-item' }, children = 
+                        react.create-element 'div', {}, children = 
+                            react.create-element 'img', { alt: '', src: "#{langs.fr}" }
+                        react.create-element 'span', { style: text-style }, ' French'
         if store.preference.refresh-visible is yes
             if no
                 react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item" }, children = 

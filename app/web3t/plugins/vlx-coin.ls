@@ -8,7 +8,7 @@ export mainnet =
         #apiUrl : \https://mainnet.velas.website/api/v1
         #apiUrl: \http://174.138.46.174:8088/api/v1
         url: \https://explorer.velas.com
-        historyUrl : \https://explorer.velas.com/api/txs/:address?limit=289&offset=0
+        historyUrl : \https://wallet.velas.com/api/txs/:address?limit=289&offset=0
 export testnet =
     decimals: 8
     tx-fee: \0.001

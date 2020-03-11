@@ -51,7 +51,7 @@ export get-transactions = ({ network, address }, cb)->
     new-txs = 
         txs
             |> map transform-tx network
-    console.log \velas, txs, new-txs
+    #console.log \velas, txs, new-txs
     cb null, new-txs
     #err, data <- get "https://explorer.velas.com/api/v1/txs/tranlist2" .end
     #return cb err if err?
@@ -119,10 +119,13 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
     cb null, 0
 export get-balance = ({ network, address} , cb)->
     return cb "Given address is not valid Velas address" if not Wallet.Is-valid-address address
-    err, unspents-native <- get-unspents { network, address }
+    err, data <- get "https://explorer.velas.com/api/v1/wallet/balance/#{address}" .end
     return cb err if err?
-    return cb null, 0 if unspents-native.length is 0
+    #err, unspents-native <- get-unspents { network, address }
+    #return cb err if err?
+    #return cb null, 0 if unspents-native.length is 0
     decimals = (10^network.decimals)
-    balance =
-        unspents-native |> map (.value) |> map (-> it `div` decimals ) |> foldl plus, 0
+    #balance =
+    #    unspents-native |> map (.value) |> map (-> it `div` decimals ) |> foldl plus, 0
+    balance = data.body.amount `div` decimals
     cb null, balance

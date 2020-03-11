@@ -72,6 +72,7 @@ store =
         add-coin: no
         token-migration: no
         banner: no
+        active: no
         hide-btn: no
         wallet-index: 0
         account-index: 1
