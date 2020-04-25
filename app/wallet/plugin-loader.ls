@@ -15,11 +15,11 @@ common = (store)->
     vlx2 = require \../web3t/plugins/vlx2-coin.ls
     btc  = require \../web3t/plugins/btc-coin.ls
     coins = [btc, vlx2]
-    if store.preference.disablevlx1 isnt true
-        vlx = require \../web3t/plugins/vlx-coin.ls
-        coins.push vlx
-    if window.location.search.index-of("plugin=gbx") > -1  
-        coins.push gobyte
+    #if store.preference.disablevlx1 isnt true
+    #    vlx = require \../web3t/plugins/vlx-coin.ls
+    #    coins.push vlx
+    #if window.location.search.index-of("plugin=gbx") > -1  
+    #    coins.push gobyte
     coins
 export get-coins = (store, cb)->
     base =
