@@ -19,7 +19,7 @@ lock-wallet = ->
     return if window.nolock is yes or store.current.page isnt \wallets
     store.current.page = \locked
 new-idle = ->
-    set-timeout lock-wallet, 60000
+    set-timeout lock-wallet, 90000
 reset-idle = ->
     clear-timeout state.timeout
     state.timeout = new-idle!
@@ -27,7 +27,7 @@ window.addEventListener "resize", change-device
 for event in <[ mousemove click touchmove keydown ]>
     window.addEventListener event, reset-idle
 export web3t = web3 store
-export store
+#export store
 Main = observer ({store})->
     app { store, web3t }
 export bootstrap = (root, options)->

@@ -7,12 +7,17 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \./icon.ls
+    \../icons.ls
     \./header.ls
+    \../round-human.ls
 }
-# .menu28540061
+# .menu1818567143
 #     padding: 0 5px
 #     height: 199px
 #     line-height: 200px
+#     &.wallet-main
+#         @media(max-width: 800px)
+#             margin: 60px 0 0
 #     .syncing
 #         @keyframes spin
 #             from
@@ -26,9 +31,13 @@ require! {
 #     .loader
 #         display: inline-block
 #         cursor: pointer
+#         color: #00ffdc
 #         svg
 #             vertical-align: sub !important
-#             width: 12px
+#             width: 20px
+#         .icon-svg
+#             vertical-align: sub !important
+#             width: 20px
 #     >.menu-body
 #         display: inline-block
 #         line-height: normal
@@ -64,13 +73,22 @@ require! {
 #                     margin-left: 15px
 #             text-align: center
 #             >.currency
+#                 &.h1
+#                     font-size: 12px
+#                     text-transform: uppercase
+#                     letter-spacing: 2px
+#                     line-height: 24px
+#                     opacity: .8
 #             >.amount
 #                 font-size: 40px
+#                 .symbol
+#                     font-size: 20px
+#                     vertical-align: super
 #                 >*
 #                     display: inline-block
 #     .placeholder
 #         width: auto !important
-#         height: 34px !important
+#         height: 54px !important
 #         line-height: 34px !important
 #         -webkit-animation-duration: 1s
 #         animation-duration: 1s
@@ -111,7 +129,8 @@ module.exports = ({ store, web3t })->
     menu-style=
         color: style.app.text
     icon-style =
-        color: style.app.icon
+        color: style.app.loader
+        margin-top: "10px"
     lang = get-lang store
     syncing = 
         | store.current.refreshing => \syncing
@@ -119,17 +138,17 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu menu28540061' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu1818567143' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
+                react.create-element 'div', { className: "#{placeholder} amount" }, children = 
+                    react.create-element 'div', { className: 'symbol' }, ' $'
+                    react.create-element 'div', { title: "#{current.balance-usd}", className: 'number' }, ' ' + round-human current.balance-usd
+                react.create-element 'div', { className: 'currency h1' }, ' ' + lang.total-balance ? 'Total Balance'
                 react.create-element 'div', {}, children = 
                     if store.preference.refresh-visible is yes
                         react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item loader" }, children = 
-                            icon \Sync, 20
-                react.create-element 'div', { className: "#{placeholder} amount" }, children = 
-                    react.create-element 'div', { className: 'symbol' }, ' $'
-                    react.create-element 'div', { className: 'number' }, ' ' + money current.balance-usd
-                react.create-element 'div', { className: 'currency' }, ' ' + lang.total-balance ? 'Total Balance'
+                            icon \Sync, 25
             if store.current.device is \mobile    
                 your-account store, web3t
             project-links { store, web3t }

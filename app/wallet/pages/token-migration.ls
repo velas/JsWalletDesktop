@@ -6,8 +6,16 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../navigate.ls
+    \../../web3t/providers/superagent.ls : { get }
+    \prelude-ls : { find }
+    \react-copy-to-clipboard : { CopyToClipboard }
+    \../copied-inform.ls
+    \../copy.ls
+    \../math.ls : { minus }
+    \../send-funcs.ls
+    \../icons.ls
 }
-# .manage-account250550829
+# .manage-account1271596569
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -77,19 +85,20 @@ require! {
 #                     width: 104px
 #             input
 #                 border-radius: $border
-#                 height: 36px
-#                 width: 40px
 #                 line-height: 36px
 #                 text-align: center
 #                 font-size: 13px
 #             textarea
 #                 border-radius: $border
+#                 height: 200px
+#                 width: 400px
 #             input, textarea
 #                 outline: none
 #                 margin-bottom: 3px
 #                 border: 0px
 #                 padding: 3px 10px
 #                 box-sizing: border-box
+#                 position: relative
 #             button
 #                 background-color: $primary
 #                 border: 1px solid $primary
@@ -147,6 +156,9 @@ require! {
 #             color: #f0c16b
 #         .section
 #             border-bottom: 1px solid rgba(240, 237, 237, 0.16)
+#             padding: 20px 5% !important
+#             @media(max-width: 400px)
+#                 padding: 10px 3% !important
 #             &.last
 #                 border-bottom: 0
 #             &:first-child
@@ -158,17 +170,36 @@ require! {
 #                 text-overflow: ellipsis
 #                 overflow: hidden
 #                 display: block
+#                 position: relative
+#                 img
+#                     top: 3px
+#                     right: 0px
+#                     width: 15px
+#                     position: absolute
+#                     @media(max-width: 400px)
+#                         right: 0
 #             .title
 #                 padding: 2px
 #             .description
-#                 padding: 7px
 #                 font-size: 16px
 #                 color: #b0aeae
+#                 .step
+#                     color: #fff
+#                     font-weight: 600
+#                     border: 1px solid orange
+#                     border-radius: 50px
+#                     padding: 3px 10px
+#                     margin-right: 10px
+#                     box-shadow: 0 0 0 rgba(204,169,44, 0.4)
+#                     animation: pulse 2s infinite
+#                     @media(max-width: 600px)
+#                         margin: 10px auto
+#                         width: 10px
 #             .migrate-img
 #                 margin-bottom: 5px
 #                 img
-#                     margin: 10px auto
-#                     width: 100px
+#                     margin: 1px auto 0
+#                     width: 40px
 #             .cap
 #                 text-transform: capitalize
 #             .low
@@ -178,21 +209,166 @@ require! {
 #                 text-decoration: underline
 #                 cursor: pointer
 #                 font-size: 16px
+#                 @media(max-width: 600px)
+#                     text-overflow: ellipsis
+#                     white-space: nowrap
+#                     overflow: hidden
+#                     max-width: 250px
+#                     width: 100%
+#                     display: block
+#                     margin: 0 auto
 #             .pb-0
 #                 padding-bottom: 0
-#             .content
+#             .terms-migrate
+#                 button
+#                     img
+#                     &.icon-svg
+#                         position: relative
+#                         height: 12px
+#                         top: 2px
+#                         padding: 0px 5px 0 0px
+#                 .terms-body
+#                     >.header
+#                         font-size: 19px
+#                         padding: 10px
+#                     display: inline-block
+#                     min-width: 250px
+#                     textarea
+#                         padding: 10px
+#                         overflow: auto
+#                         width: 100%
+#                         box-sizing: border-box
+#                         height: 220px
+#                         width: 350px
+#                         border: 0
+#                         border-radius: $border
+#                         outline: none
+#                         @media(min-width: 560px)
+#                             width: 480px
+#                         @media(max-width: 400px)
+#                             width: 100%
+#                     form
+#                         text-align: left
+#                         display: flex
+#                         span
+#                             padding-left: 10px
+#                             font-size: 13px
+#                             &.orange
+#                                 color: orange
+#                         ol
+#                             margin: 0
+#                             padding: 0
+#                             li
+#                                 margin-left: 15px
+#                         @media(min-width: 560px)
+#                             width: 480px
+#                         @media(max-width: 400px)
+#                             width: 100%
+#                 &.hide
+#                     display: none
+#                 input[type=checkbox]
+#                     + label
+#                         display: block
+#                         cursor: pointer
+#                         text-align: left
+#                         padding-left: 25px
+#                         position: relative
+#                         span
+#                             font-size: 13px
+#                             &.orange
+#                                 color: orange
+#                         &:before
+#                             content: "\2714"
+#                             border: 0.1em solid #ecf1fa
+#                             border-radius: 0
+#                             display: inline-block
+#                             width: 10px
+#                             font-size: 10px
+#                             height: 10px
+#                             padding-left: 0.2em
+#                             padding-bottom: 0.3em
+#                             margin-right: 0.2em
+#                             margin-top: 4px
+#                             vertical-align: bottom
+#                             color: transparent
+#                             transition: .2s
+#                             position: absolute
+#                             left: 0
+#                         &:active:before
+#                             transform: scale(0)
+#                     &:checked + label:before
+#                         background-color: #3cd5af
+#                         border-color: #3cd5af
+#                         color: #fff
+#             .content-migrate
+#                 display: none
+#                 img
+#                     width: 180px
+#                     margin: 20px auto
+#                     &.icon
+#                         height: 12px
+#                         width: auto
+#                         padding: 0px 5px 0 0px
+#                         margin: 0
+#                         vertical-align: bottom
+#                     .content
+#                 .support
+#                     margin-top: 80px
+#                     a
+#                         color: #6f6fe2
+#                 span
+#                     @media(max-width: 600px)
+#                         display: block
+#                         width: 100%
+#                 &.visible
+#                     margin-top: 30px
+#                     margin-bottom: 60px
+#                     display: block
+#                     @media(max-width: 600px)
+#                         margin-top: 20px
 #         .change-index
 #             width: 80px
 #             padding: 1px
 #             border-radius: 0 !important
 #             text-align: center
+#     .iron
+#         -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: shine 2s infinite
+#     @keyframes shine
+#         0%
+#             -webkit-mask-position: right
+#         100%
+#             -webkit-mask-position: left
+#     @-webkit-keyframes pulse
+#         0%
+#             -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+#         70%
+#             -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+#         100%
+#             -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)
+#     @keyframes pulse
+#         0%
+#             -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+#             box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+#         70%
+#             -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+#             box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+#         100%
+#             -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)
+#             box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)
 token-migration = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
+    btn-icon =
+        filter: style.app.btn-icon
     input-style =
         background: style.app.wallet
         color: style.app.text
     color =
+        color: style.app.text
+    style-textarea=
+        background: style.app.wallet
         color: style.app.text
     logo-style =
         filter: style.app.filterLogo
@@ -204,20 +380,124 @@ token-migration = (store, web3t)->
         border: "1px solid #{style.app.border}"
         color: style.app.text2
         background: style.app.primary3
+    button-primary4-style=
+        border: "1px solid #{style.app.border}"
+        color: style.app.text
+        background: 'rgb(195, 92, 95)'
+    filter-icon=
+        filter: style.app.filterIcon
+    goto-terms = ->
+        navigate store, web3t, \terms2
+    visible-migrate = ->
+        #err <- load-terms
+        store.current.content-migrate = not store.current.content-migrate
+    visible-migrate-accept = ->
+        #err <- load-terms
+        store.current.accept-migrate = not store.current.accept-migrate
+    visible-class =
+        if store.current.content-migrate then \visible else \hide
+    hide-class =
+        if store.current.content-migrate then \hide else \ ""
+    hide =
+        if store.current.accept-migrate then \hide else \ ""
+    visible =
+        if store.current.accept-migrate then \visible else \ ""
+    try-migrate = (trials, amount, cb)->
+        return cb "You coins can't be transferred by automatic script please contact support in https://t.me/velasmigration for additional verification." if trials <= 0
+        address = 
+            store.current.account.wallets 
+                |> find (-> it.coin.token is \vlx2) 
+                |> (.address)
+        err <- get "https://mainnet-v2.velas.com/migration/try-migrate/#{address}" .end
+        <- set-timeout _, 5000
+        <- web3t.refresh
+        amount2 = 
+            store.current.account.wallets 
+                |> find (-> it.coin.token is \vlx2) 
+                |> (.balance)
+        return cb null if amount isnt amount2
+        trials-next = trials - 1
+        return try-migrate trials-next, amount, cb if err?
+        cb null
+    swap = ->
+        #return if store.current.token-migration is 'Loading...'
+        amount = 
+            store.current.account.wallets 
+                |> find (-> it.coin.token is \vlx) 
+                |> (.balance)
+        amount2 = 
+            | window.location.href.index-of('internal') > -1 => 1 
+            | _ => amount `minus` 0.01
+        #amount2 = 1
+        to = store.current.token-migration
+        store.current.token-migration = null
+        err <- web3t.vlx.send-transaction { to, amount: amount2 }
+        return alert "#{err}" if err?
+        amount2 = 
+            store.current.account.wallets 
+                |> find (-> it.coin.token is \vlx2) 
+                |> (.balance)
+        #err <- try-migrate 10, amount2
+        return alert "#{err}" if err?
+        cb null
+    { close-migration } = menu-funcs store, web3t
     react.create-element 'div', {}, children = 
         react.create-element 'div', { className: 'section last' }, children = 
-            react.create-element 'div', { className: 'migrate-img' }, children = 
-                react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style }
             react.create-element 'div', { style: color, className: 'description' }, children = 
-                react.create-element 'span', {}, ' Please make a deposit of all your coins at this address to get the same amount of coins vlx2'
-                react.create-element 'br', {}
-                react.create-element 'br', {}
-                react.create-element 'span', { className: 'address' }, children = 
-                    react.create-element 'a', { className: 'link' }, ' VLT1bBeEj7phmjioUBmzspPVSU7YTRcAnjJ'
-            react.create-element 'div', { className: 'content' }, children = 
-                react.create-element 'button', { on-click: '', style: button-primary2-style }, ' Swap Tokens'
+                react.create-element 'div', { className: "#{hide-class} terms-migrate" }, children = 
+                    react.create-element 'div', { className: 'migrate-img' }, children = 
+                        react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
+                    react.create-element 'div', { className: 'terms-body' }, children = 
+                        react.create-element 'div', { className: 'header' }, ' Terms of Swap'
+                        react.create-element 'textarea', { value: "#{store.terms2}", style: style-textarea }
+                        react.create-element 'form', {}, children = 
+                            react.create-element 'input', { type: 'checkbox' }
+                            react.create-element 'span', {}, ' I accept and agree to the Terms & Conditions relating to the Velas Token Swap.'
+                    react.create-element 'div', { className: 'content' }, children = 
+                        react.create-element 'button', { on-click: visible-migrate, style: button-primary3-style }, children = 
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'img', { src: "#{icons.accept}", style: btn-icon, className: 'icon-svg' }
+                                """ Accept"""
+                        react.create-element 'button', { on-click: close-migration, style: button-primary4-style }, children = 
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'img', { src: "#{icons.deny}", className: 'icon-svg' }
+                                """ Deny"""
+                react.create-element 'div', { className: "#{visible-class + ' ' + hide} terms-migrate" }, children = 
+                    react.create-element 'div', { className: 'migrate-img' }, children = 
+                        react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
+                    react.create-element 'div', { className: 'terms-body' }, children = 
+                        react.create-element 'div', { className: 'header' }, ' Confirm to continue'
+                        react.create-element 'form', {}, children = 
+                            react.create-element 'input', { type: 'checkbox' }
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'span', { className: 'orange' }, ' I am not:'
+                                react.create-element 'ol', { type: 'I' }, children = 
+                                    react.create-element 'li', {}, ' a citizen or resident of, or domiciled in;'
+                                    react.create-element 'li', {}, ' participating in the token swap from a location in;'
+                                    react.create-element 'li', {}, ' representing or acting on behalf of a person residing or located in,'
+                                    react.create-element 'li', {}, ' representing or acting on behalf of an entity (including, but not limited to, any company or partnership) incorporated, established or registered in or under the laws of: the United States of America (USA) and its territories (American Samoa, Guam, the Northern Mariana Islands, Puerto Rico, and the U.S. Virgin Islands), Peoples Republic of China (except for Hong Kong and Macao), Cuba, Democratic Republic of Congo, Iran, Iraq, Malaysia, North Korea, Sudan, Syria, Zimbabwe.'
+                    react.create-element 'div', { className: 'content' }, children = 
+                        react.create-element 'button', { on-click: visible-migrate-accept, style: button-primary3-style }, children = 
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'img', { src: "#{icons.accept}", style: btn-icon, className: 'icon-svg' }
+                                """ Accept"""
+                        react.create-element 'button', { on-click: close-migration, style: button-primary4-style }, children = 
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'img', { src: "#{icons.deny}", className: 'icon-svg' }
+                                """ Deny"""
+                react.create-element 'div', { className: "#{visible} content-migrate" }, children = 
+                    react.create-element 'img', { src: "#{icons.migrate-img}" }
+                    react.create-element 'div', {}, ' Swap all your coins automatically.'
+                    react.create-element 'div', { className: 'content' }, children = 
+                        react.create-element 'button', { on-click: swap, style: button-primary2-style }, children = 
+                            react.create-element 'span', {}, children = 
+                                react.create-element 'img', { src: "#{icons.swap}", className: 'icon' }
+                                """ Swap Coins"""
+                    react.create-element 'div', { className: 'support' }, children = 
+                        """ Support: """
+                        react.create-element 'a', { href: "https://t.me/velasmigration", target: "_blank" }, ' t.me/velasmigration'
 module.exports = ({ store, web3t } )->
-    return null if store.current.token-migration isnt yes
+    return null if not store.current.token-migration?
     { close-migration } = menu-funcs store, web3t
     style = get-primary-info store
     account-body-style = 
@@ -227,7 +507,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { className: 'manage-account manage-account250550829' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account1271596569' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: border-style, className: 'title' }, children = 
                 react.create-element 'div', { className: 'header' }, ' Token Migration'

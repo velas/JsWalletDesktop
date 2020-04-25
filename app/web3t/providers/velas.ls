@@ -32,18 +32,18 @@ export get-keys = ({ network, mnemonic, index }, cb)->
 #status: 1
 #to_address: "VLQMGJ3pBYm9v7J1FiYNSJiN62Y6zZ5xo6T"
 #tx_hash: "0255c87e9306225ccda32e98772c6c32341469aba9e3cb9e11ab283dac444f6e"
-transform-tx = (network, t)-->
-    { url } = network.api
-    network = \vlx
-    tx = t.tx_hash
-    time = moment.utc(t.dt).unix!
-    url = "#{url}/tx/#{tx}"
-    to = t.to_address
-    from = t.from_address
-    fee = t.commission
-    { network, tx, t.amount, fee, time, url, from, to }
+#transform-tx = (network, t)-->
+#    { url } = network.api
+#    network = \vlx
+#    tx = t.tx_hash
+#    time = moment.utc(t.dt).unix!
+#    url = "#{url}/tx/#{tx}"
+#    to = t.to_address
+#    from = t.from_address
+#    fee = t.commission
+#    { network, tx, t.amount, fee, time, url, from, to }
 export get-transactions = ({ network, address }, cb)->
-    err, data <- get network.api.historyUrl.replace(':address', address) .end
+    #err, data <- get network.api.historyUrl.replace(':address', address) .end
     return cb err if err?
     txs = data.body?items ? []
     return cb "expected array" if typeof! txs isnt \Array
@@ -61,6 +61,13 @@ export get-transactions = ({ network, address }, cb)->
     #txs =
     #    data.body |> filter only-my |> map transform-tx
     #return cb null, txs
+export get-transactions = ({ network, address }, cb)->
+    err, data <- get "https://oldexplorer.velas.com/history-api/#{address}/txs" .end
+    return cb err if err?
+    txs = data.body
+    return cb "expected array" if typeof! txs isnt \Array
+    return cb null, [] if txs.length is 0
+    cb null, txs
 bigInt = -> new big-integer(it)
 get-unspents = ({ network, address }, cb)->
     base-url = network.api.api-url
@@ -117,9 +124,15 @@ export get-total-received = ({ address, network }, cb)->
 export get-unconfirmed-balance = ({ network, address} , cb)->
     return cb "Given address is not valid Velas address" if not Wallet.Is-valid-address address
     cb null, 0
+try-parse-amount = (data, cb)->
+    return cb null, data.body.amount if typeof! data.body is \Object
+    amount = data.text.match(/[0-9]+/)?0
+    cb null, amount
 export get-balance = ({ network, address} , cb)->
     return cb "Given address is not valid Velas address" if not Wallet.Is-valid-address address
-    err, data <- get "https://explorer.velas.com/api/v1/wallet/balance/#{address}" .end
+    err, data <- get "https://oldexplorer.velas.com/api/v1/wallet/balance/#{address}" .end
+    return cb err if err?
+    err, amount <- try-parse-amount data
     return cb err if err?
     #err, unspents-native <- get-unspents { network, address }
     #return cb err if err?
@@ -127,5 +140,5 @@ export get-balance = ({ network, address} , cb)->
     decimals = (10^network.decimals)
     #balance =
     #    unspents-native |> map (.value) |> map (-> it `div` decimals ) |> foldl plus, 0
-    balance = data.body.amount `div` decimals
+    balance = amount `div` decimals
     cb null, balance

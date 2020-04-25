@@ -2,20 +2,36 @@ require! {
     \react
     \../get-primary-info.ls
     \../get-lang.ls
+    \./icon.ls
+    \../icons.ls
 }
-# .confirmation-1364983317
+# .confirmation-1077810398
 #     @import scheme
 #     position: absolute
-#     z-index: 999999
+#     z-index: 99999999
 #     height: 100vh
 #     top: 0
 #     left: 0
 #     width: 100%
 #     box-sizing: border-box
-#     background: rgba(black, 0.8)
+#     background: rgba(black, 0.7)
+#     .icon-svg-apply
+#         position: relative
+#         height: 12px
+#         top: 2px
+#         margin-right: 3px
+#         filter: invert(23%) sepia(99%) saturate(1747%) hue-rotate(430deg) brightness(58%) contrast(175%)
+#     .icon-svg-cancel
+#         position: relative
+#         height: 12px
+#         top: 2px
+#         margin-right: 3px
+#         filter: invert(22%) sepia(65%) saturate(7127%) hue-rotate(694deg) brightness(94%) contrast(115%)
 #     >.confirmation-body
 #         background: white
 #         text-align: center
+#         position: fixed
+#         width: 100%
 #         input
 #             border-radius: $border
 #             height: 36px
@@ -39,7 +55,7 @@ require! {
 #                 display: inline-block
 #                 cursor: pointer
 #                 height: 36px
-#                 width: 90px
+#                 width: 110px
 #                 font-weight: bold
 #                 font-size: 10px
 #                 text-transform: uppercase
@@ -51,6 +67,12 @@ require! {
 #                 text-overflow: ellipsis
 #                 overflow: hidden
 #                 white-space: nowrap
+#                 .apply
+#                     vertical-align: middle
+#                     margin-right: 2px
+#                 .cancel
+#                     vertical-align: middle
+#                     margin-right: 2px
 alert-modal = (store)->
     return null if typeof! store.current.alert isnt \String
     cancel = ->
@@ -69,13 +91,17 @@ alert-modal = (store)->
     confirmation=
         background: style.app.background
         color: style.app.text
+        border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1364983317' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.alert
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, ' ' + lang.cancel
+                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                    react.create-element 'span', { className: 'cancel' }, children = 
+                        react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
+                        """ #{lang.cancel}"""
 confirmation-modal = (store)->
     return null if typeof! store.current.confirmation isnt \String
     confirm = ->
@@ -99,14 +125,21 @@ confirmation-modal = (store)->
     confirmation=
         background: style.app.background
         color: style.app.text
+        border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1364983317' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.confirmation
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, ' ' + lang.confirm
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, ' ' + lang.cancel
+                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, children = 
+                    react.create-element 'span', { className: 'apply' }, children = 
+                        react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-apply' }
+                        """ #{lang.confirm}"""
+                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                    react.create-element 'span', { className: 'cancel' }, children = 
+                        react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
+                        """ #{lang.cancel}"""
 prompt-modal = (store)->
     return null if typeof! store.current.prompt isnt \String
     confirm = ->
@@ -136,16 +169,23 @@ prompt-modal = (store)->
     confirmation=
         background: style.app.background
         color: style.app.text
+        border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1364983317' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt
             react.create-element 'div', {}, children = 
                 react.create-element 'input', { on-change: change-input, value: "#{store.current.prompt-answer}", style: input-style }
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, ' ' + lang.confirm
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, ' ' + lang.cancel
+                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, children = 
+                    react.create-element 'span', { className: 'apply' }, children = 
+                        react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-apply' }
+                        """ #{lang.confirm}"""
+                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                    react.create-element 'span', { className: 'cancel' }, children = 
+                        react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
+                        """ #{lang.cancel}"""
 export confirmation-control = (store)->
     react.create-element 'div', {}, children = 
         confirmation-modal store

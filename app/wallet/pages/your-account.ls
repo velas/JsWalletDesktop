@@ -6,14 +6,143 @@ require! {
     \../add-coin.ls
     \../topup.ls
     \./icon.ls
+    \prelude-ls : { map, filter }
+    \localStorage
+    \../icons.ls
 }
-# .your-account-184267482
+# .your-account-1382879681
 #     @import scheme
 #     position: relative
 #     width: auto
 #     display: inline-block
 #     $size: 50px
 #     $color: rgba(#FFF, 0.5)
+#     .icon-svg1
+#         position: relative
+#         border-radius: 0px
+#         height: 15px
+#         top: 0
+#     .icon-svg-plus
+#         position: relative
+#         height: 16px
+#         top: 2px
+#         padding: 0
+#     .switch-menu
+#         position: absolute
+#         right: 60px
+#         top: 60px
+#         width: 170px
+#         background: #321260
+#         display: inline-grid
+#         z-index: 3
+#         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
+#         .folder-menu
+#             width: 130px
+#             div
+#                 text-overflow: ellipsis
+#                 white-space: nowrap
+#                 overflow: hidden
+#                 font-size: 12px
+#                 text-transform: uppercase
+#                 letter-spacing: 2px
+#         .col
+#             font-size: 12px
+#             padding: 10px
+#             margin: 0
+#             display: inline-block
+#             vertical-align: top
+#             box-sizing: border-box
+#             overflow-y: hidden
+#             &.folder-menu
+#                 text-align: left
+#                 display: inline-flex
+#                 span
+#                     margin-right: 10px
+#         .table-row-menu
+#             text-align: left
+#             &:hover
+#                 cursor: pointer
+#                 background: rgba(75, 40, 136, 0.6)
+#             &.active
+#                 background: rgba(75, 40, 136, 0.6)
+#         .middle
+#             padding: 11px 10px
+#             height: 37px
+#             &.account
+#                 padding: 10px
+#                 min-height: 155px
+#                 overflow: scroll
+#                 background: linear-gradient(#321260 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), #321260 70%) 0 100%, radial-gradient(farthest-side at 50% 0, #594aaa, rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, #594aaa, rgba(0,0,0,0)) 0 100%
+#                 background-color: #321260
+#                 background-repeat: no-repeat
+#                 background-attachment: local, local, scroll, scroll
+#                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 animation: breathe 3s ease-in infinite
+#                 -moz-transition: breathe 3s ease-in infinite
+#                 -web-kit-transition: breathe 3s ease-in infinite
+#             @keyframes breathe
+#                 0%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 15%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 30%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 45%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 60%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 75%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 90%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 100%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#             @-webkit-keyframes breathe
+#                 0%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 15%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 30%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 45%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 60%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 75%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 90%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 100%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#             .buttons
+#                 padding: 0
+#                 width: 100%
+#                 button
+#                     outline: none
+#                     cursor: pointer
+#                     border: 1px solid
+#                     padding: 0
+#                     box-sizing: border-box
+#                     border-radius: $border
+#                     font-size: 10px
+#                     padding: 0 6px
+#                     height: 36px
+#                     color: #6CA7ED
+#                     text-transform: uppercase
+#                     font-weight: bold
+#                     background: transparent
+#                     transition: all .5s
+#                     text-overflow: ellipsis
+#                     overflow: hidden
+#                     width: 100%
+#                     margin: 0 auto
+#                     opacity: 1
+#                     img
+#                     &.icon-svg
+#                         position: relative
+#                         height: 12px
+#                         top: 2px
+#                         padding-right: 5px
 #     >.username
 #         color: $color
 #         font-size: 13px
@@ -44,14 +173,14 @@ require! {
 #             line-height: 10px
 #             border-radius: $border
 #             display: inline-block
-#             width: 80px
+#             width: 100%
 #             vertical-align: middle
 #             text-align: center
 #             white-space: nowrap
 #             &.mt-5
 #                 margin-top: 15px
 #             &:last-child
-#                 margin-left: 10px
+#                 margin-left: 0px
 #             &.lock
 #                 background: transparent
 #                 border: 1px solid white
@@ -71,6 +200,15 @@ module.exports = (store, web3t)->
         border: "1px solid #{style.app.primary1}"
         color: style.app.text
         background: style.app.primary1
+    button-primary4-style=
+        color: style.app.text
+        border-radius: "50px"
+        border: "0"
+        background: "rgba(157, 127, 206, 0.3)"
+        line-height: "25px"
+        padding: "10px"
+        width: "40px"
+        height: "40px"
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
@@ -79,9 +217,40 @@ module.exports = (store, web3t)->
         border: "0"
         color: style.app.text
         background: "transparent"
+    button-primary3-style=
+        border: "0px"
+        color: style.app.text2
+        background: style.app.primary3
+    filter-body =
+        border: "1px solid #{style.app.border}"
+        background: style.app.header
+    border-top=
+        border-top: "1px solid #{style.app.border}"
+    button-primary1-style=
+        border: "1px solid #{style.app.primary1}"
+        color: style.app.text
+        background: style.app.primary1
     lang = get-lang store
     account-index = "#{lang.account-index ? 'Account index'}: #{current.account-index}"
-    react.create-element 'div', { className: 'your-account your-account-184267482' }, children = 
+    length = +(localStorage.get-item('Accounts') ? 3)
+    exclude-current = ->
+        it isnt store.current.account-index
+    create-account-position = (index)->
+        #ref = react.create-ref!
+        change-account = ->
+            store.current.account-index = index
+            store.current.switch-account = no
+            <- web3t.refresh
+        default-account-name = -> "Account #{index}"
+        current-account-name = ->
+            local-storage.get-item(default-account-name!) ? default-account-name!
+        account-name = current-account-name!
+        position-style =
+            color: if store.current.account-index is index then '#3cd5af' else ''
+        react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
+            react.create-element 'div', { className: 'col folder-menu' }, children = 
+                react.create-element 'div', {}, ' ' + account-name
+    react.create-element 'div', { className: 'your-account your-account-1382879681' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name
@@ -90,14 +259,32 @@ module.exports = (store, web3t)->
             if no
                 react.create-element 'div', { on-click: topup(store), style: button-primary1-style, className: 'button edit' }, ' ' + lang.topup
             if store.current.device is \mobile
-                react.create-element 'button', { on-click: add-coin(store), style: button-primary2-style, className: 'button lock mt-5' }, ' ' + lang.edit-coins
+                react.create-element 'button', { on-click: add-coin(store), style: button-primary4-style, className: 'button lock mt-5' }, children = 
+                    react.create-element 'img', { src: "#{icons.plus}", className: 'icon-svg-plus' }
             if no
                 if store.current.device is \mobile
                     react.create-element 'button', { on-click: open-migration, style: button-primary1-style, className: 'button lock mt-5' }, ' Migration'
             if store.current.device is \desktop
                 react.create-element 'button', { on-click: add-coin(store), style: button-primary0-style, className: 'button lock' }, children = 
-                    icon "Plus", 20
+                    react.create-element 'img', { src: "#{icons.plus}", className: 'icon-svg1' }
             if no
                 if store.current.device is \desktop
                     react.create-element 'button', { on-click: open-migration, style: button-primary0-style, className: 'button lock' }, children = 
                         icon "Zap", 20
+        create-account = ->
+            new-length = 1 + length
+            store.current.account-index = new-length
+            localStorage.set-item('Accounts', new-length)
+            store.current.switch-account = no
+            <- web3t.refresh
+        if store.current.switch-account
+            react.create-element 'div', { style: filter-body, className: 'switch-menu' }, children = 
+                react.create-element 'div', { className: 'middle account' }, children = 
+                    [1 to length] |> map create-account-position
+                react.create-element 'div', { style: border-top, className: 'middle' }, children = 
+                    react.create-element 'div', { className: 'table-row-menu' }, children = 
+                        react.create-element 'div', { on-click: create-account, className: 'col buttons folder-menu' }, children = 
+                            react.create-element 'button', { style: button-primary2-style }, children = 
+                                react.create-element 'span', {}, children = 
+                                    react.create-element 'img', { src: "#{icons.create-acc}", className: 'icon-svg' }
+                                    """ Create Account"""

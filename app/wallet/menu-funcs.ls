@@ -9,7 +9,7 @@ require! {
     \copy-to-clipboard
     \./pages/confirmation.ls : { confirm, prompt, alert }
     \./get-lang.ls
-    \bip39
+    \../web3t/providers/deps.ls : { bip39 }
 }
 export generate-wallet = ->
     bip39.generate-mnemonic!
@@ -66,11 +66,12 @@ module.exports = (store, web3t)->
         #current.saved-seed = no
     cancel-try = ->
         current.try-edit-seed = no
-    enter-pin = (e)->
-        store.current.pin = e.target.value
+    check-pin = ->
         return if not check(store.current.pin)
         cancel-try!
         current.saved-seed = no
+    enter-pin = (e)->
+        store.current.pin = e.target.value
     generate = ->
         agree <- confirm store, "Are you sure you want to override the current seed?"
         return if not agree?
@@ -97,10 +98,12 @@ module.exports = (store, web3t)->
     close-account = ->
         store.current.manage-account = no
     open-migration = ->
-        { account-name } = store.current.account
-        store.current.token-migration = yes
     close-migration = ->
-        store.current.token-migration = no
+        store.current.token-migration = null
+    open-language = ->
+        store.current.choose-language = yes
+    close-language = ->
+        store.current.choose-language = no
     account-left = ->
         cb = console.log
         return alert store, "0 is smallest account index", cb if store.current.account-index is 0
@@ -133,4 +136,4 @@ module.exports = (store, web3t)->
         message = "This is your Private KEY"
         copy-to-clipboard wallet.private-key
         alert store, "Your Private KEY is copied into your clipboard", cb
-    { export-private-key, change-account-index, account-left, account-right, open-account, close-account, open-migration, close-migration, current, wallet-style, info, activate-s1, activate-s2, activate-s3, switch-network, generate, enter-pin, cancel-try, edit-seed, save-seed, change-seed, refresh, lock }
+    { export-private-key, check-pin, change-account-index, account-left, account-right, open-account, close-account, open-migration, close-migration, open-language, close-language, current, wallet-style, info, activate-s1, activate-s2, activate-s3, switch-network, generate, enter-pin, cancel-try, edit-seed, save-seed, change-seed, refresh, lock }

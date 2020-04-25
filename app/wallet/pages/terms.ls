@@ -5,6 +5,7 @@ require! {
     \../get-primary-info.ls
     \../web3.ls
     \../get-lang.ls
+    \../icons.ls
 }
 # .terms-780672038
 #     @import scheme
@@ -67,9 +68,12 @@ terms = ({ store, web3t })->
             react.create-element 'textarea', { value: "#{store.terms}", style: style }
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'div', {}, ' ' + lang.terms ? 'Please accept terms of use'
-                react.create-element 'button', { on-click: accept, style: button-primary1-style }, ' ' + lang.accept ? 'Accept'
+                react.create-element 'button', { on-click: accept, style: button-primary1-style }, children = 
+                    react.create-element 'span', {}, children = 
+                        react.create-element 'img', { src: "#{icons.accept}", className: 'icon-svg' }
+                        """ #{lang.accept ? 'Accept'}"""
 terms.init = ({ store }, cb)->
-    err, res <- get \https://raw.githubusercontent.com/velas/JsWallet/master/TERMS.md .end
+    err, res <- get \https://raw.githubusercontent.com/okhrimenkoalexey/Velas/master/terms.md .end
     return cb err if err?
     store.terms = res.text
     cb null

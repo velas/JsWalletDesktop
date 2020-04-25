@@ -13,7 +13,7 @@ require! {
     \../get-primary-info.ls
     \./history.ls
 }
-# .wallets53293340
+# .wallets-692725631
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -54,10 +54,14 @@ require! {
 #         overflow: hidden
 #         overflow-y: auto
 #         border-radius: $border
-#         height: 299px
+#         max-height: 328px
+#         height: 100%
 #         max-width: 450px
 #         border-top: 1px solid #213040
 #         display: inline-block
+#         .wallet
+#             &:last-child
+#                 margin-bottom: 0px
 mobile = ({ store, web3t })->
     return null if not store.current.account?
     { wallets, go-up, can-up, go-down, can-down } = wallets-funcs store, web3t
@@ -70,7 +74,7 @@ mobile = ({ store, web3t })->
         manage-account { store, web3t }
         token-migration { store, web3t }
         add-coin-page { store, web3t }
-        react.create-element 'div', { key: "wallets-body", className: 'wallets wallets53293340' }, children = 
+        react.create-element 'div', { key: "wallets-body", className: 'wallets wallets-692725631' }, children = 
             react.create-element 'div', { key: "wallets-viewport", style: border-style, className: 'wallet-container' }, children = 
                 wallets |> map wallet store, web3t, wallets
 module.exports = mobile

@@ -1,19 +1,30 @@
 require! {
     \react
     \prelude-ls : { map }
-    \../pin.ls : { set, check, exists } 
+    \../pin.ls : { set, check, exists, del } 
     \../navigate.ls
     \../get-primary-info.ls
     \../get-lang.ls
     \../send-form.ls : { notify-form-result }
+    \../seed.ls
+    \../menu-funcs.ls
+    \./choose-language.ls
+    \../icons.ls
 }
-# .locked-1331735696
+# .locked215399816
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
 #     height: 100vh
 #     box-sizing: border-box
 #     text-align: center
+#     .icon-svg
+#         position: relative
+#         height: 12px
+#         top: 2px
+#         margin-right: 3px
+#     .language
+#         position: absolute
 #     .password
 #         -webkit-text-security: disc
 #         text-security: disc
@@ -34,6 +45,25 @@ require! {
 #         font-size: 22px
 #         margin-bottom: 1rem
 #     >.inputs
+#         div
+#             position: relative
+#             .division
+#                 float: none
+#                 margin: 15px auto 0
+#                 overflow: hidden
+#                 position: relative
+#                 text-align: center
+#                 width: 100px
+#                 font-size: 10px
+#                 .line
+#                     border-top: 1px solid rgba(223, 223, 223, 0.2)
+#                     position: absolute
+#                     top: 6px
+#                     width: 34%
+#                     &.l
+#                         left: 0
+#                     &.r
+#                         right: 0
 #         input
 #             text-align: center
 #             font-size: 17px
@@ -43,7 +73,7 @@ require! {
 #             border: 1px solid #549D90
 #             border-radius: $border
 #             outline: none
-#             width: 100px
+#             width: 120px
 #             letter-spacing: 5px
 #             box-sizing: border-box
 #             &:focus
@@ -52,13 +82,15 @@ require! {
 #                 color: $primary + 40
 #     >.wrong
 #         color: red
-#         font-size: 12px
-#         margin-top: 10px
+#         font-size: 15px
+#         margin-top: 15px
+#         max-width: 400px
+#         display: inline-block
 #     button.setup
 #         font-weight: bold
 #         cursor: pointer
 #         margin-top: 15px
-#         width: 100px
+#         width: 120px
 #         height: 36px
 #         font-size: 10px
 #         text-transform: uppercase
@@ -85,18 +117,20 @@ require! {
 #         100%
 #             -webkit-mask-position: left
 #     .version
-#         font-size: 10px
-#         font-weight: 600
-#         letter-spacing: 0px
-#         text-align: center
-#         opacity: .4
-#         bottom: 30px
-#         position: absolute
-#         width: 100%
+#         letter-spacing: 1px
+#         font-size: 8px
+#         padding: 6px
+#         color: #89829d
+#         border-radius: 8px
+#         height: 5px
+#         line-height: 5px
+#         width: 20px
+#         margin: 5px auto
 wrong-pin = (store)->
-    #console.log \wrong-pin, 
     store.current.pin = ""
     store.current.pin-trial += 1
+    left-trials = total-trials - store.current.pin-trial
+    reset-wallet store if left-trials <= 0
 check-pin = (store, web3t)->
     <- set-timeout _, 100
     return if not exists!
@@ -104,32 +138,68 @@ check-pin = (store, web3t)->
     store.current.pin-trial = 0
     store.current.pin = ""
     store.current.loading = yes
-    #console.log \start
-    #<- set-timeout _, 1
     navigate store, web3t, \:init
     notify-form-result \unlock, null
 version = (store, web3t)->
     react.create-element 'div', { className: 'version' }, ' ' + store.version
 input = (store, web3t)->
-    info = get-primary-info store
-    locked-style=
-        color: info.app.text
-        background: info.app.wallet
+    style = get-primary-info store
+    button-primary1-style=
+        border: "1px solid #{style.app.primary1}"
+        color: style.app.text
+        background: style.app.primary1
+        width: "120px"
+        height: "36px"
+        margin-top: "10px"
+    button-primary0-style=
         border: "0"
+        color: style.app.text
+        background: "transparent"
+        width: "100px"
+        height: "36px"
+        margin-top: "0px"
+    locked-style=
+        color: style.app.text
+        background: style.app.wallet
+        border: "0"
+    enter = ->
+        check-pin store, web3t
     change = (e)->
         store.current.pin = e.target.value
-        check-pin store, web3t if store.current.pin.length is 4
-    react.create-element 'input', { key: "pin", style: locked-style, type: "number", value: "#{store.current.pin}", placeholder: "••••", on-change: change, pattern: "[0-9]*", input-mode: "numeric", auto-complete: "off", className: 'password' }
+    lang = get-lang store
+    react.create-element 'div', {}, children = 
+        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: '', on-change: change, auto-complete: "off", className: 'password' }
+        if exists!
+            react.create-element 'div', {}, children = 
+                react.create-element 'button', { on-click: enter, style: button-primary1-style, className: 'setup' }, children = 
+                    react.create-element 'span', {}, children = 
+                        react.create-element 'img', { src: "#{icons.enter}", className: 'icon-svg' }
+                        """ #{lang.enter}"""
+                if no    
+                    react.create-element 'div', { className: 'division' }, children = 
+                        react.create-element 'div', { className: 'line l' }
+                        react.create-element 'span', {}, ' OR'
+                        react.create-element 'div', { className: 'line r' }
+                    react.create-element 'div', {}, children = 
+                        react.create-element 'button', { style: button-primary0-style, className: 'setup' }, ' NEW ACCOUNT'
+reset-wallet = (store)->
+    del!
+    seed.del!
+    store.current.pin = ""
+    store.current.pin-trial = 0
+total-trials = 8
 wrong-trials = (store)->
     return null if store.current.pin-trial is 0
     lang = get-lang store
-    wrong-pin-text = "#{lang.wrong-pin-trials ? 'Wrong PIN. Trials'}: #{store.current.pin-trial}"
+    left-trials = total-trials - store.current.pin-trial
+    wrong-pin-text = "#{left-trials}/#{total-trials} attempts left till wallet reset to default"
     react.create-element 'div', { key: "wrong-trial", className: 'wrong' }, ' ' + wrong-pin-text
 setup-button = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
+    { open-language } = menu-funcs store, web3t
     setup = ->
-        return alert(lang.wrong-pin-should ? 'PIN should be 4 digits') if not store.current.pin.match(/^[0-9]{4}$/)?
+        return alert(lang.wrong-pin-should ? 'PIN should be 4 at least 4 chars length') if store.current.pin.length < 4
         set store.current.pin
         check-pin store, web3t
     text-color=
@@ -138,9 +208,15 @@ setup-button = (store, web3t)->
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
+    btn-icon =
+        filter: style.app.btn-icon
     react.create-element 'div', { key: "setup-button" }, children = 
-        react.create-element 'button', { on-click: setup, style: button-style, className: 'setup' }, ' ' + lang.setup ? 'Setup'
-        react.create-element 'div', { style: text-color, className: 'hint' }, ' ' + lang.pin-info ? 'Please memorize this PIN and do not provide it to third party.'
+        react.create-element 'button', { on-click: setup, style: button-style, className: 'setup' }, children = 
+            react.create-element 'span', {}, children = 
+                react.create-element 'img', { src: "#{icons.key}", style: btn-icon, className: 'icon-svg' }
+                """ #{lang.setup ? 'Setup'}"""
+        react.create-element 'div', { style: text-color, className: 'hint p' }, ' ' + lang.pin-info ? 'Please make sure to use a pin you remember. You have 7 tries. After that, you need to restore the wallet from your 12-word recovery Phrase.'
+        choose-language { store, web3t }
 create-wallet = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
@@ -153,13 +229,16 @@ create-wallet = (store, web3t)->
         color: style.app.text
         background: style.app.primary2
     react.create-element 'div', { key: "create-wallet" }, children = 
-        react.create-element 'button', { on-click: create, style: button-primary2-style, className: 'setup' }, ' ' + lang.create-wallet ? 'Create Wallet'
+        react.create-element 'button', { on-click: create, style: button-primary2-style, className: 'setup' }, children = 
+            react.create-element 'span', {}, children = 
+                react.create-element 'img', { src: "#{icons.create-wallet}", className: 'icon-svg' }
+                """ #{lang.create-wallet ? 'Create Wallet'}"""
 locked = ({ store, web3t })->
     return null if store.current.loading is yes
     lang = get-lang store
     title = 
-        | not exists! => lang.setup-pin ? "Setup PIN"
-        | _ => lang.enter-pin ? "Enter PIN"
+        | not exists! => lang.setup-pin ? "Setup Password"
+        | _ => lang.enter-pin ? "Enter Password"
     footer =
         | not exists! => setup-button
         | _ => wrong-trials
@@ -170,15 +249,15 @@ locked = ({ store, web3t })->
         background-size: "cover"
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1331735696' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked215399816' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + info.branding.title
+            version store, web3t
         react.create-element 'div', { key: "locked-title", className: 'title' }, ' ' + title
         react.create-element 'div', { key: "locked-inputs", className: 'inputs' }, children = 
             input store, web3t
         footer store, web3t
-        version store, web3t
 focus = ({ store }, cb)->
     cb null
 locked.focus = focus

@@ -35,7 +35,7 @@ module.exports = (store, web3t)->
     primary-button-style =
         background: color
     default-button-style = { color }
-    send-tx = ({ to, wallet, network, amount-send, amount-send-fee, data, coin, tx-type }, cb)->
+    send-tx = ({ to, wallet, network, amount-send, amount-send-fee, data, coin, tx-type, gas, gas-price }, cb)->
         { token } = send.coin
         tx =
             account: { wallet.address, wallet.private-key } 
@@ -46,13 +46,15 @@ module.exports = (store, web3t)->
             amount: amount-send
             amount-fee: amount-send-fee
             data: data
+            gas: gas
+            gas-price: gas-price
         #console.log 'before create tx'
         err, data <- create-transaction tx
         #console.log 'after create tx', err
         return cb err if err?
-        agree <- confirm store, "Are you sure to send #{tx.amount} #{send.coin.token} to #{send.to}"
+        agree <- confirm store, "Send #{round5 tx.amount} #{send.coin.token} to #{send.to}"
         #console.log 'after confirm', agree
-        return cb "You are not agree" if not agree
+        return cb "Cancelled" if not agree
         err, tx <- push-tx { token, tx-type, network, ...data }
         return cb err if err?
         err <- create-pending-tx { store, token, network, tx, amount-send, amount-send-fee }
@@ -95,7 +97,7 @@ module.exports = (store, web3t)->
         amount-ethers = send.amount-send
         err <- send-to { name, amount-ethers }
     send-anyway = ->
-        return send-escrow! if send.propose-escrow
+        #return send-escrow! if send.propose-escrow
         send-money!
     send-title = 
         | send.propose-escrow then 'SEND (Escrow)'
@@ -113,23 +115,23 @@ module.exports = (store, web3t)->
         value2
     amount-change = (event)->
         value = get-value event
-        change-amount store, value
+        <- change-amount store, value, no
     perform-amount-eur-change = (value)->
         to-send = calc-crypto-from-eur store, value
-        change-amount store, to-send        
+        <- change-amount store, to-send , no       
     perform-amount-usd-change = (value)->
         to-send = calc-crypto-from-usd store, value
-        change-amount store, to-send
+        <- change-amount store, to-send, no
     amount-eur-change = (event)->
         value = get-value event
         send.amount-send-eur = value
         amount-eur-change.timer = clear-timeout amount-eur-change.timer
-        amount-eur-change.timer = set-timeout (-> perform-amount-eur-change value), 1000
+        amount-eur-change.timer = set-timeout (-> perform-amount-eur-change value), 500
     amount-usd-change = (event)->
         value = get-value event
         send.amount-send-usd = value
         amount-usd-change.timer = clear-timeout amount-usd-change.timer
-        amount-usd-change.timer = set-timeout (-> perform-amount-usd-change value), 1000
+        amount-usd-change.timer = set-timeout (-> perform-amount-usd-change value), 500
     encode-decode = ->
         send.show-data-mode =
             | send.show-data-mode is \decoded => \encoded 
@@ -170,10 +172,10 @@ module.exports = (store, web3t)->
     is-data = (send.data ? "").length > 0
     choose-auto = ->
         send.fee-type = \auto
-        change-amount store, send.amount-send
+        <- change-amount store, send.amount-send, no
     choose-cheap = ->
         send.fee-type = \cheap
-        change-amount store, send.amount-send
+        <- change-amount store, send.amount-send, no
     chosen-cheap =  if send.fee-type is \cheap then \chosen else ""
     chosen-auto  =  if send.fee-type is \auto then \chosen else ""
     send-options = send.coin.tx-types ? []
@@ -182,7 +184,7 @@ module.exports = (store, web3t)->
         return cb "Cannot estimate max amount. Please try to type manually" if trials <= 0
         return cb "Balance is not enough to send tx" if +amount-send is 0
         account = { wallet.address, wallet.private-key }
-        err, amount-send-fee <- calc-fee { token, send.network, amount: amount-send, send.fee-type, send.tx-type, account }
+        err, amount-send-fee <- calc-fee { token, send.network, amount: amount-send, send.fee-type, send.tx-type, send.to, send.data, account }
         #console.log amount-send, err
         return cb null, { amount-send, amount-send-fee } if not err?
         return cb err if err? and err isnt "Balance is not enough to send tx"
@@ -192,7 +194,7 @@ module.exports = (store, web3t)->
         next-trials = trials - 1
         calc-amount-and-fee next-amount, next-trials, cb 
     use-max = (cb)->
-        return cb "Data is not ready yet" if +(send.amount-send-fee ? 0) is 0
+        return cb "Fee is not calculated" if +(send.amount-send-fee ? 0) is 0
         amount = wallet.balance `minus` (wallet.pending-sent ? 0) `minus` send.amount-send-fee
         return cb "Amount is too small" if +amount <= 0
         #console.log { amount }
@@ -202,7 +204,7 @@ module.exports = (store, web3t)->
         return cb "Amount is 0" if +info.amount-send is 0
         send.amount-send = info.amount-send
         send.amount-send-fee = info.amount-send-fee
-        change-amount store, send.amount-send
+        <- change-amount store, send.amount-send, no
         cb null
     use-max-try-catch = (cb)->
         try
@@ -212,4 +214,4 @@ module.exports = (store, web3t)->
     use-max-amount = ->
         err <- use-max-try-catch
         alert "#{err}" if err?
-    { invoice, token, name, network, send, wallet, pending, fee-token, primary-button-style, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, topup: topup(store), history, cancel, send-anyway, choose-auto, choose-cheap, chosen-auto, chosen-cheap, get-address-link, get-address-title, default-button-style, round5edit, round5, send-options, send-title, is-data, encode-decode, change-amount }
+    { change-amount, invoice, token, name, network, send, wallet, pending, fee-token, primary-button-style, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, topup: topup(store), history, cancel, send-anyway, choose-auto, choose-cheap, chosen-auto, chosen-cheap, get-address-link, get-address-title, default-button-style, round5edit, round5, send-options, calc-amount-and-fee, send-title, is-data, encode-decode }

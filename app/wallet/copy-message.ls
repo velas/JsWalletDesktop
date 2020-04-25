@@ -3,10 +3,10 @@ require! {
     \./get-primary-info.ls
     \./get-lang.ls
 }
-# .copied1481124514
+# .copied989608403
 #     position: fixed
 #     background: #74cee1
-#     z-index: 999
+#     z-index: 9999999
 #     font-size: 14px
 #     box-sizing: border-box
 #     color: white
@@ -26,6 +26,10 @@ require! {
 #         animation: top 0.5s forwards
 #     .mb-5
 #         margin-bottom: 5px
+#     .content
+#         height: 35px
+#         overflow: hidden
+#         text-overflow: ellipsis
 module.exports = (store)->
     { copied } = store.current
     return null if copied is ''
@@ -36,6 +40,6 @@ module.exports = (store)->
         background: style.app.background
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
-    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied1481124514" }, children = 
+    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied989608403" }, children = 
         react.create-element 'div', { className: 'mb-5' }, ' ' + lang.copied
-        react.create-element 'div', {}, ' ' + copied
+        react.create-element 'div', { className: 'content' }, ' ' + copied

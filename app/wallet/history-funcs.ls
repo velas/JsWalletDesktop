@@ -4,10 +4,13 @@ require! {
     \./navigate.ls
     \react
     \./pending-tx.ls : { remove-tx }
+    \./api.ls : { get-transaction-info }
     \./web3.ls
     \mobx : { toJS }
     \./pages/confirmation.ls : { confirm, prompt }
     \./apply-transactions.ls
+    \./get-lang.ls
+    \./icons.ls
 }
 module.exports = (store, web3t)->
     return null if not store? or not web3t?
@@ -21,12 +24,13 @@ module.exports = (store, web3t)->
     date = (time)->
         moment(time * 1000).format!
     filt = store.current.filter
+    lang = get-lang store
     arrow = (type)->
-        | type is \IN => \IN
-        | _ => \OUT
+        | type is \IN => \ "#{lang.in}"
+        | _ => \ "#{lang.out}"
     arrow-lg = (type)->
-        | type is \IN => \↓
-        | _ => \↑
+        | type is \IN => \ "#{icons.get}"
+        | _ => \ "#{icons.send}"
     sign = (type)->
         | type is \IN => \+
         | _ => \-
@@ -69,4 +73,7 @@ module.exports = (store, web3t)->
         err <- remove-tx { store, ...tx }
         #return alert "Cannot Remove Tx. Looks like it is already in blockchain" if err?
         <- web3t.refresh
-    { go-back, switch-type-in, switch-type-out, store.coins, is-active, switch-filter, cut-tx, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago }
+    transaction-info = (config)-> (event)->
+        err, info <- get-transaction-info config
+        console.log err, info
+    { go-back, switch-type-in, transaction-info, switch-type-out, store.coins, is-active, switch-filter, cut-tx, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago }
