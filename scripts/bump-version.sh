@@ -16,3 +16,4 @@ JSSCRIPT=${JSSCRIPT//"'"/$'"'}
 INCREMENTED=`echo $JSSCRIPT | node`
 # echo $INCREMENTED
 sed "s/\"version\": \"[0-9\.]*\"/\"version\": \"${INCREMENTED}\"/" $TARGET > $TARGET.tmp && mv $TARGET.tmp $TARGET
+git tag -a ${INCREMENTED} -m "Autocreated tag from version ${INCREMENTED}"
