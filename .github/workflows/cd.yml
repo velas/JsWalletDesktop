@@ -23,6 +23,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Release Asset
+        uses: actions/checkout@v2
       - run: |
           set -x
           assets=()
