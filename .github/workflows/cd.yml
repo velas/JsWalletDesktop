@@ -10,10 +10,10 @@ jobs:
     steps:
       - name: Checkout code
       - uses: actions/checkout@v2
-      - run: npm i -g electron
-      - run: npm i
-      - run: npm run dist
       - run: |
+          npm i -g electron
+          npm i
+          npm run dist
           set -x
           assets=()
           for asset in ./dist/*; do
