@@ -1,32 +1,51 @@
-name: Create Release
+name: Build/release
+
+# Only run the workflow when a new tag is found
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "*"
+
 jobs:
-  build:
-    name: Upload Release Asset
-    runs-on: ubuntu-latest
+  release:
+    runs-on: ${{ matrix.os }}
+
+    # Platforms to build on/for
+    strategy:
+      matrix:
+        #macos-10.14, 
+        os: [windows-2019, ubuntu-18.04]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Install Node.js and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
-      - name: Build and Publish
-        run: |
-          node -v
-          sudo snap install snapcraft --classic
-          sudo npm i -g electron --unsafe-perm=true --allow-root
-          sudo npm i -g electron-builder --unsafe-perm=true --allow-root
-          sudo npm i --unsafe-perm=true --allow-root
-          npm run dist
-          set -x
-          assets=()
-          for asset in ./dist/*; do
-            assets+=("-a" "$asset")
-          done
-          tag_name="${GITHUB_REF##*/}"
-          hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 10
+
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@master
+        with:
+          github_token: ${{ secrets.github_token }} # Automatically generated
+          # mac_certs: ${{ secrets.mac_certs }}
+          # mac_certs_password: ${{ secrets.mac_certs_password }}
+
+      # - name: Build and Publish
+      #   run: |
+      #     node -v
+      #     sudo snap install snapcraft --classic
+      #     sudo npm i -g electron --unsafe-perm=true --allow-root
+      #     sudo npm i -g electron-builder --unsafe-perm=true --allow-root
+      #     sudo npm i --unsafe-perm=true --allow-root
+      #     npm run dist
+      #     set -x
+      #     assets=()
+      #     for asset in ./dist/*; do
+      #       assets+=("-a" "$asset")
+      #     done
+      #     tag_name="${GITHUB_REF##*/}"
+      #     hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
