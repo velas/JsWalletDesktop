@@ -1,22 +1,31 @@
-name: Build/release
-
-# Only run the workflow when a new tag is found
+name: Create Release
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - master
 
 jobs:
   release:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.os }}
+
+    # Platforms to build on/for
+    strategy:
+      matrix:
+        #macos-10.14, 
+        os: [windows-2019, ubuntu-18.04]
+
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
+
       - name: Install Node.js and Yarn
         uses: actions/setup-node@v1
         with:
           node-version: 10
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@master
         with:
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.github_token }} # Automatically generated
+          # mac_certs: ${{ secrets.mac_certs }}
+          # mac_certs_password: ${{ secrets.mac_certs_password }}
