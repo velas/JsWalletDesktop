@@ -15,7 +15,7 @@ jobs:
         #, ubuntu-18.04
         os: [windows-2019]
 
-    # steps:
+    steps:
     #   - name: Install Snapcraft
     #     uses: samuelmeuli/action-snapcraft@v1
     #     # Only install Snapcraft on Ubuntu
@@ -23,7 +23,6 @@ jobs:
     #     with:
     #       # Log in to Snap Store
     #       snapcraft_token: ${{ secrets.snapcraft_token }}
-    #
       - name: Check out Git repository
         uses: actions/checkout@v1
 
