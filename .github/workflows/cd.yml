@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 10.x
+      - name: Use Node.js 11.x
         uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '11.x'
       - name: Build and Publish
         run: |
           node -v
