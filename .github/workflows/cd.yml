@@ -1,8 +1,8 @@
 name: Create Release
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "*"
 
 jobs:
   release:
@@ -11,7 +11,7 @@ jobs:
     # Platforms to build on/for
     strategy:
       matrix:
-        #macos-10.14, 
+        #macos-10.14,
         os: [windows-2019, ubuntu-18.04]
 
     steps:
