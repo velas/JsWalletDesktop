@@ -13,7 +13,7 @@ jobs:
     # Platforms to build on/for
     strategy:
       matrix:
-        #macos-10.14, 
+        #macos-10.14,
         os: [windows-2019, ubuntu-18.04]
 
     steps:
@@ -28,7 +28,8 @@ jobs:
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@master
         with:
-          github_token: ${{ secrets.github_token }} # Automatically generated
+          github_token: ${{ secrets.github_token }}
+          # Automatically generated
           # mac_certs: ${{ secrets.mac_certs }}
           # mac_certs_password: ${{ secrets.mac_certs_password }}
 
