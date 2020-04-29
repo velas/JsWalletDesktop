@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.40",
+  "version": "0.12.41",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -13,8 +13,8 @@
     "dist-deb": "electron-builder --linux deb tar.xz",
     "dist-win": "electron-builder --win portable",
     "dist-mac": "electron-builder --mac",
-    "build": "electron-builder --mac --windows --linux",
-    "release": "electron-builder --mac --windows --linux --publish always",
+    "build": "electron-builder --windows --linux",
+    "release": "electron-builder --windows --linux --publish always",
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps",
     "install": "pwd && cp scripts/pre-commit .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x scripts/bump-version.sh"
