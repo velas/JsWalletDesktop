@@ -12,8 +12,8 @@ jobs:
       - name: Build and Publish
         run: |
           sudo snap install snapcraft --classic
-          sudo npm i -g electron
-          sudo npm i -g electron-builder
+          sudo npm i -g electron --unsafe-perm=true --allow-root
+          sudo npm i -g electron-builder --unsafe-perm=true --allow-root
           sudo npm i
           sudo npm run dist
           set -x
