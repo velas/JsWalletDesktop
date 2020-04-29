@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and Publish
+      - name: Use Node.js 13.x
         uses: actions/setup-node@v1
         with:
           node-version: '13.x'
+      - name: Build and Publish
         run: |
           sudo snap install snapcraft --classic
           sudo npm i -g electron --unsafe-perm=true --allow-root
