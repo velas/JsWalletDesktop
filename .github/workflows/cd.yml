@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build and Publish
+        uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
         run: |
           sudo snap install snapcraft --classic
           sudo npm i -g electron --unsafe-perm=true --allow-root
