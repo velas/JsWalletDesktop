@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.51",
+  "version": "0.12.52",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -56,7 +56,7 @@
       "icon": "./icon.ico"
     },
 		"linux": {
-			"target": ["AppImage"],
+			"target": ["snap"],
 			"category": "Utility"
 		}
   },
