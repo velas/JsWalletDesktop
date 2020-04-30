@@ -12,7 +12,7 @@ declare -a LINE;
 
 LINE=(`echo $LINE | tr ":" " "`);
 
-VERSION=(${LINE[1]});
+VERSION=(${LINE[1]}//'"'/$''});
 
 git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
 
