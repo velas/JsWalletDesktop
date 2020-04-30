@@ -1,6 +1,8 @@
 #!/bin/sh
 
+echo RUNNING PRE PUSH
 if [ "$branch" = "master" ]; then
+  echo RUNNING PRE PUSH ON MASTER
   TARGET="./package.json"
   if [ ! -f "$TARGET" ]; then
      echo "missing file $TARGET"
@@ -17,6 +19,7 @@ if [ "$branch" = "master" ]; then
 
   LINE=(`git tag -l | grep v${VERSION}`)
   if [-z "$LINE"]; then
+    echo RUNNING PRE PUSH ON MASTER WITHOUT TAG v${VERSION}
     git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
 
     git push --tags
