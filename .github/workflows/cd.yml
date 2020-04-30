@@ -13,7 +13,8 @@ jobs:
       matrix:
         #macos-10.14,
         #, ubuntu-18.04
-        os: [windows-2019]
+        #windows-2019
+        os: [ubuntu-18.04]
 
     steps:
     #   - name: Install Snapcraft
