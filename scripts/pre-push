@@ -14,6 +14,6 @@ LINE=(`echo $LINE | tr ":" " "`);
 
 VERSION=(${LINE[1]});
 
-git tag -a v${VERSION} -m \"Autocreated tag from version ${VERSION}
+git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
 
 git push --tags
