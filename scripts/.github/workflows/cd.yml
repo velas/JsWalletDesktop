@@ -1,0 +1,52 @@
+name: Expo Publish
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Install and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.15.3
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 3.12.1
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+      - run: sudo apt-get update && sudo apt-get install procps -y
+      - run: npm i --global yarn
+      - run: yarn install
+      - run: expo build:android -t app-bundle
+        continue-on-error: true
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+  publish:
+    needs: build
+    name: Publish
+    runs-on: macos-latest
+    steps:
+      - name: Write Android API file
+        id: write_file
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: 'api-android.json'
+          encodedString: ${{ secrets.ANDROID_API_JSON }}
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.15.3
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 3.12.1
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+      - run: npm i --global yarn
+      - run: yarn install
+      - run: expo upload:android --key ${{ steps.write_file.outputs.filePath }} --track beta
+        continue-on-error: true

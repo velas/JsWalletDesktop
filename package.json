@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.54",
+  "version": "0.12.55",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -16,11 +16,11 @@
     "release": "electron-builder --windows --linux --mac --publish always",
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps",
-    "install": "pwd && cp scripts/pre-commit .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x scripts/bump-version.sh"
+    "install": "pwd && cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/velas/JsWalletDesktop"
+    "type": "git",
+    "url": "https://github.com/velas/JsWalletDesktop"
   },
   "repository_prev_value": "https://web3.space",
   "keywords": [
@@ -50,16 +50,18 @@
       "entitlements": "./node_modules/electron-builder-notarize/entitlements.mac.inherit.plist"
     },
     "dmg": {
-			"icon": false
-		},
+      "icon": false
+    },
     "win": {
       "icon": "./icon.ico"
     },
-		"linux": {
-			"target": ["snap"],
-			"category": "Utility",
+    "linux": {
+      "target": [
+        "snap"
+      ],
+      "category": "Utility",
       "publish": "github"
-		}
+    }
   },
   "dependencies": {
     "@primer/octicons-react": "^9.6.0",
