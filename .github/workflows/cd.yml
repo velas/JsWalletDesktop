@@ -24,8 +24,11 @@ jobs:
           node-version: 10
 
       - name: Install wine
-        run: sudo apt-get install wine
-
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt update
+          sudo apt install wine64 wine32
+          
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
