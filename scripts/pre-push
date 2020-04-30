@@ -1,9 +1,7 @@
 #!/bin/sh
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 
-echo "RUNNING PRE PUSH $BRANCH"
 if [ "$BRANCH" = "master" ]; then
-  echo RUNNING PRE PUSH ON MASTER
   TARGET="./package.json"
   if [ ! -f "$TARGET" ]; then
      echo "missing file $TARGET"
@@ -18,7 +16,7 @@ if [ "$BRANCH" = "master" ]; then
 
   VERSION=(${LINE[1]//'"'/$''});
 
-  LINE=(`git tag -l | grep v${VERSION}`)
+  LINE=(`git tag -l | grep v${VERSION}`);
   if [-z "$LINE"]; then
     echo RUNNING PRE PUSH ON MASTER WITHOUT TAG v${VERSION}
     git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
