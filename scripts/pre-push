@@ -1,19 +1,24 @@
 #!/bin/sh
 
-TARGET="./package.json"
-if [ ! -f "$TARGET" ]; then
-   echo "missing file $TARGET"
-   exit 1;
+if [ "$branch" = "master" ]; then
+  TARGET="./package.json"
+  if [ ! -f "$TARGET" ]; then
+     echo "missing file $TARGET"
+     exit 1;
+  fi
+
+  LINE=$(grep -o ${TARGET} -e '\"version\": \"[0-9\.]*\"');
+  declare -a LINE;
+
+
+  LINE=(`echo $LINE | tr ":" " "`);
+
+  VERSION=(${LINE[1]//'"'/$''});
+
+  LINE=(`git tag -l | grep v${VERSION}`)
+  if [-z "$LINE"]; then
+    git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
+
+    git push --tags
+  fi
 fi
-
-LINE=$(grep -o ${TARGET} -e '\"version\": \"[0-9\.]*\"');
-declare -a LINE;
-
-
-LINE=(`echo $LINE | tr ":" " "`);
-
-VERSION=(${LINE[1]}//'"'/$''});
-
-git tag -a v${VERSION} -m "Autocreated tag from version ${VERSION}"
-
-git push --tags
