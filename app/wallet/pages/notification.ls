@@ -12,7 +12,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .notice1340944983
+# .notice-1097822946
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -596,7 +596,7 @@ require! {
 #         font-size: 22px
 #         padding: 10px
 #         height: 60px
-#         z-index: 2
+#         z-index: 3
 #         >.header
 #             margin: 5px
 #             text-align: center
@@ -779,6 +779,7 @@ require! {
 #                             display: inline-block
 #                             max-width: 50%
 #                             position: relative
+#                             font-size: 15px
 #                             span
 #                                 float: right
 #                                 opacity: .6
@@ -787,29 +788,29 @@ require! {
 #                     .in
 #                         text-align: left
 #                         >span
-#                             background: #351971
+#                             background: rgb(51, 20, 99)
 #                             &:after
 #                                 border-left: 15px solid transparent
 #                                 left: -10px
 #                                 position: absolute
-#                                 top: 19px
+#                                 bottom: 0
 #                                 content: ''
 #                                 width: 0
 #                                 height: 0
-#                                 border-bottom: 15px solid #351971
+#                                 border-bottom: 15px solid rgb(51, 20, 99)
 #                     .out
 #                         text-align: right
 #                         >span
-#                             background: #481a8e
+#                             background: #43207c
 #                             &:after
 #                                 border-right: 15px solid transparent
 #                                 right: -10px
 #                                 position: absolute
-#                                 top: 19px
+#                                 bottom: 0
 #                                 content: ''
 #                                 width: 0
 #                                 height: 0
-#                                 border-bottom: 15px solid #481a8e
+#                                 border-bottom: 15px solid #43207c
 #             &.file-tree
 #                 margin-left: 0px
 #                 @media(max-width: 800px)
@@ -838,7 +839,31 @@ require! {
 #                 text-align: left
 #                 font-size: 13px
 #                 margin: 0
-#             .header, .textarea
+#             .search
+#                 transform: translateY(0%)
+#                 transition: .5s
+#                 &.active
+#                     transform: translateY(100%)
+#                     transition: .5s
+#                 input
+#                     outline: none
+#                     width: calc(100vw - 390px)
+#                     text-align: center
+#                     box-sizing: border-box
+#                     height: 30px
+#                     line-height: 36px
+#                     border-radius: 0px
+#                     border-radius: 4px
+#                     padding: 0px 10px
+#                     font-size: 14px
+#                     margin-top: 8px
+#                     transition: all .5s
+#                     border: 0px
+#                     box-shadow: none
+#                     &:active, &:focus
+#                         transition: all .5s
+#                         text-align: left
+#             .header, .textarea, .search
 #                 text-align: left
 #                 font-size: 17px
 #                 line-height: 48px
@@ -852,15 +877,13 @@ require! {
 #                 >img
 #                     width: 30px
 #                     height: auto
-#                     float: left
 #                     margin-top: 10px
 #                     background: #909090
 #                     border-radius: 50px
 #                     margin-right: 10px
 #                 span
 #                     display: inline-block
-#                     width: 190px
-#                     vertical-align: middle
+#                     width: calc(100vw - 460px)
 #                     .name
 #                         font-size: 14px
 #                         line-height: 20px
@@ -868,12 +891,29 @@ require! {
 #                         font-size: 12px
 #                         line-height: 17px
 #                         opacity: .6
-#             .header, .textarea
+#                 .action
+#                     margin: 0
+#                     padding: 0
+#                     list-style: none
+#                     line-height: 0
+#                     vertical-align: super
+#                     width: 100%
+#                     display: inline
+#                     li
+#                         display: inline-block
+#                         img
+#                             width: 15px !important
+#                             height: 15px !important
+#                             margin-left: 10px
+#                             cursor: pointer
+#             .header, .textarea, .search
 #                 text-align: left
 #                 font-size: 18px
 #                 font-weight: 400
 #                 margin: 0 0 20px
 #                 z-index: 1
+#             .header
+#                 z-index: 2
 #             .textarea
 #                 bottom: 0
 #                 margin: 0
@@ -993,6 +1033,21 @@ require! {
 #                     scrollbar-width: none
 #                     text-align: left
 #                     height: calc(100vh - 170px)
+#                     .action
+#                         margin: 0
+#                         padding: 0
+#                         list-style: none
+#                         line-height: 0
+#                         vertical-align: super
+#                         width: 100%
+#                         display: inline
+#                         li
+#                             display: inline-block
+#                             img
+#                                 width: 15px !important
+#                                 height: 15px !important
+#                                 margin-left: 10px
+#                                 cursor: pointer
 #                 .left-menu
 #                     height: 50px
 #                     background: #331462
@@ -1027,7 +1082,7 @@ require! {
 #                         border-right: 1px solid #6b268e
 #                         input
 #                             outline: none
-#                             width: 280px
+#                             width: 230px
 #                             text-align: center
 #                             box-sizing: border-box
 #                             height: 30px
@@ -1038,14 +1093,32 @@ require! {
 #                             font-size: 14px
 #                             margin-top: 8px
 #                             margin-left: 8px
+#                             transition: .5s
 #                             border: 0px
 #                             box-shadow: none
+#                             &:active, &:focus
+#                                 width: 280px
+#                                 transition: .5s
+#                                 text-align: left
+#                                 ~ .edit
+#                                     transition: .5s
+#                                     position: absolute
+#                                     opacity: 0
+#                                     transform: translateX(100%)
+#                         .edit
+#                             width: 15px
+#                             height: 15px
+#                             margin-top: 15px
+#                             margin-left: 25px
+#                             cursor: pointer
+#                             transition: .5s
 #                     &:nth-child(2)
 #                         margin-top: 50px
 #                     span.notification
 #                         display: inline-block
 #                         width: 10%
 #                         vertical-align: top
+#                         text-align: right
 #                         .count
 #                             width: 20px
 #                             height: 20px
@@ -1199,6 +1272,10 @@ item = (store, web3t)->
         filter: info.app.nothingIcon
     switch-files = ->
         store.current.files = not store.current.files
+    search = ->
+        store.notice.search = not store.notice.search
+    search-show =
+        if store.notice.search then \active else \ ""
     file-tree =
         if store.current.files then \file-tree else \ ""
     imgs=
@@ -1209,6 +1286,11 @@ item = (store, web3t)->
             react.create-element 'span', {}, children = 
                 react.create-element 'div', { className: 'name' }, ' Paul Smith'
                 react.create-element 'div', { className: 'activity' }, ' last seen 2 minutes ago'
+            react.create-element 'ul', { className: 'action' }, children = 
+                react.create-element 'li', {}, children = 
+                    react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
+        react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
         react.create-element 'div', { style: border-t, className: 'textarea' }, children = 
             react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Write a message..." }
         react.create-element 'div', { className: 'content-msg' }, children = 
@@ -1232,6 +1314,10 @@ item = (store, web3t)->
                 react.create-element 'li', { className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ And you?"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'in' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ Inconspicuous motes of rock and gas how far away brain is the seed of intelligence gathered by gravity concept of the number one Orions sword."""
                         react.create-element 'span', {}, ' 22:53'
 item2 = (store, web3t)->
     lang = get-lang store
@@ -1378,7 +1464,7 @@ notice = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     imgs=
         ava: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1588866150/velas/interface_1.png"
-    react.create-element 'div', { className: 'notice notice1340944983' }, children = 
+    react.create-element 'div', { className: 'notice notice-1097822946' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
@@ -1406,11 +1492,12 @@ notice = ({ store, web3t })->
                         react.create-element 'ul', { style: border-style3 }, children = 
                             react.create-element 'li', { style: border-b }, children = 
                                 react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
+                                react.create-element 'img', { src: "#{icons.create}", className: 'edit' }
                             react.create-element 'li', { on-click: activate-item, style: border-b, className: "#{active-item}" }, children = 
                                 react.create-element 'img', { src: "#{imgs.ava}", className: 'ava' }
                                 react.create-element 'span', { className: 'preview' }, children = 
                                     react.create-element 'div', { className: 'name' }, ' Paul Smith'
-                                    react.create-element 'div', { className: 'msg' }, ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                                    react.create-element 'div', { className: 'msg' }, ' Inconspicuous motes of rock and gas how far away brain is the seed of intelligence gathered by gravity concept of the number one Orions sword.'
                                 react.create-element 'span', { className: 'notification' }, children = 
                                     react.create-element 'div', { className: 'time' }, ' 22:51'
                                     react.create-element 'div', { className: 'count' }, ' 2'

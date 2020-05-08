@@ -9,7 +9,7 @@ require! {
     \./choose-language.ls
 }
 # ss
-# .newseed-429777432
+# .newseed593147813
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
@@ -103,7 +103,7 @@ require! {
 #             padding: 0px 6px
 #             border: 0
 #             height: 36px
-#             width: auto
+#             min-width: 120px
 #             cursor: pointer
 #             background: #248295
 #             border-radius: $border
@@ -178,7 +178,7 @@ newseed = ({ store, web3t })->
         store.current.seed-words.length = 0
         navigate store, web3t, \:init
         #store.current.page = 'newseedrestore'
-    react.create-element 'div', { className: 'newseed newseed-429777432' }, children = 
+    react.create-element 'div', { className: 'newseed newseed593147813' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + style.branding.title

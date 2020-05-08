@@ -14,7 +14,7 @@ require! {
 #     height: $height
 #     box-sizing: border-box
 #     height: 100%
-#     >.logo
+#     >.logo 
 #         margin: 3rem 0
 #         >img
 #             height: 80px
@@ -194,7 +194,7 @@ newseed = ({ store, web3t })->
         store.current.seed-words =
             [1 to count] |> map -> { part: "", index: 0 }
         store.current.seed-generated = no
-        sorted =
+        sorted = 
             store.current.seed-words |> sort-by random
         map-index = ->
             it.index = sorted.index-of(it)
@@ -204,28 +204,27 @@ newseed = ({ store, web3t })->
     restore24 = restore-wallet 24
     back = ->
         store.current.page = 'chooseinit'
-    react.create-element 'div', { className: 'newseed-restore newseed-restore-365220278' }, children =
-        react.create-element 'div', { className: 'logo' }, children =
+    react.create-element 'div', { className: 'newseed-restore newseed-restore-365220278' }, children = 
+        react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.restore-from
-        react.create-element 'div', { className: 'align-v' }, children =
-            react.create-element 'button', { style: button-primary1-style, on-click: restore12, className: 'left' }, children =
-                react.create-element 'span', {}, children =
+        react.create-element 'div', { className: 'align-v' }, children = 
+            react.create-element 'button', { style: button-primary1-style, on-click: restore12, className: 'left' }, children = 
+                react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ 12 words"""
-            react.create-element 'button', { style: button-primary1-style, on-click: restore24, className: 'right' }, children =
-                react.create-element 'span', {}, children =
+            react.create-element 'button', { style: button-primary1-style, on-click: restore24, className: 'right' }, children = 
+                react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ 24 words"""
-            react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children =
+            react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.back ? 'Back' }"""
 focus = ({ store }, cb)->
     <- set-timeout _, 1000
     textarea = store.root.query-selector '.newseed textarea'
-    # EXCEPTION HERE
-    # textarea.focus!
+    textarea.focus!
     cb null
 newseed.focus = focus
 module.exports = newseed
