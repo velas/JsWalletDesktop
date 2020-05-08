@@ -9,6 +9,7 @@ require! {
     \../history-funcs.ls
     \./icon.ls
     \./switch-account.ls
+    \./epoch.ls
     \../icons.ls
 }
 # .search1532405700
@@ -459,13 +460,16 @@ search = ({ store, web3t })->
     active-web = active-class \web
     active-images = active-class \images
     active-files = active-class \files
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'search search1532405700' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Search page'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Search page'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'search-input' }, children = 
             react.create-element 'div', { style: border-style3, className: 'section' }, children = 

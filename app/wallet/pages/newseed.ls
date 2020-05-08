@@ -4,9 +4,10 @@ require! {
     \../get-lang.ls
     \../get-primary-info.ls
     \prelude-ls : { map, sort-by }
+    \../navigate.ls
     \../icons.ls
 }
-# .newseed1216118654
+# .newseed-2137724749
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -128,6 +129,19 @@ require! {
 #                 font-size: 14px
 #                 text-align: center
 #                 cursor: auto
+#             input:focus ~ span.effect
+#                 background: rgb(60, 213, 175) !important
+#                 color: #190841 !important
+#                 transition: all .5s
+#                 animation: pulse_effect 1.5s linear
+#                 transform-origin: 50% 50%
+#             @keyframes pulse_effect
+#                 0%
+#                     transform: scale(1)
+#                 50%
+#                     transform: scale(1.3)
+#                 100%
+#                     transform: scale(1)
 #             span
 #                 &:first-child
 #                     background: #7651ae
@@ -142,6 +156,20 @@ require! {
 #                     line-height: 11px
 #                     @media(max-width: 500px)
 #                         margin-right: 5px
+#                 &.effect    
+#                     &:last-child
+#                         background: #7651ae
+#                         color: #fff
+#                         display: inline-block
+#                         padding: 4px
+#                         float: left
+#                         border-radius: 50px
+#                         width: 11px
+#                         height: 10px
+#                         font-size: 10px
+#                         line-height: 11px
+#                         @media(max-width: 500px)
+#                             margin-right: 5px
 #     .about
 #         border-radius: $border
 #         padding: 10px
@@ -155,10 +183,10 @@ restore-words = (store, web3t, item)-->
         color: style.app.text
     index = store.current.seed-words.index-of(item) + 1
     change-part = (it)->
-        item.part = it.target.value
+        item.part = it.target.value    #.to-lower-case!.trim!.replace(/[^a-z]/, '')
     react.create-element 'div', { style: seed-style, className: 'word' }, children = 
-        react.create-element 'span', {}, ' ' + index
         react.create-element 'input', { type: 'text', value: "#{item.part}", placeholder: "Enter #{index} word", on-change: change-part }
+        react.create-element 'span', { className: 'effect' }, ' ' + index
 create-word = (store, words, word)-->
     index = words.index-of(word) + 1
     style = get-primary-info store
@@ -221,10 +249,11 @@ newseed = ({ store, web3t })->
     hide-class =
         if store.current.hide-btn then \none else \ ""
     back = ->
+        #navigate store, web3t, \:init
         store.current.page = 'newseedrestore'
     back2 = ->
-        store.current.page = 'newseed2'
-    react.create-element 'div', { className: 'newseed newseed1216118654' }, children = 
+        store.current.page = 'chooseinit'
+    react.create-element 'div', { className: 'newseed newseed-2137724749' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.newseed}" }
         if store.current.seed-generated
             react.create-element 'div', { style: text-style, className: 'title' }, children = 
@@ -260,7 +289,7 @@ newseed = ({ store, web3t })->
                     """ #{lang.back ? 'Back' }"""
                 react.create-element 'button', { on-click: save, style: button-primary1-style, className: 'right' }, children = 
                     react.create-element 'img', { src: "#{icons.save}", className: 'icon-svg' }
-                    """ #{lang.save ? 'Save' }"""
+                    """ #{lang.next-save ? 'Next' }"""
         if has-issue!
             react.create-element 'div', { style: text-style, className: 'warning' }, children = 
                 react.create-element 'div', {}, ' ' + lang.seed-warning

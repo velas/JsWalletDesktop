@@ -13,7 +13,7 @@ require! {
     \./pages/terms2.ls
     \./pages/filestorage.ls
     \./pages/settings.ls
-    \./pages/newseed2.ls
+    \./pages/chooseinit.ls
     \./pages/newseedrestore.ls
     \./pages/verifyseed.ls
     \./pages/staking.ls
@@ -27,7 +27,10 @@ require! {
     \./pages/faq.ls
     \./pages/claim.ls
     \./pages/soundstorage.ls
+    \./pages/monitor.ls
+    \./pages/notification.ls
 }
+export monitor
 export resources
 export staking
 export verifyseed
@@ -45,7 +48,7 @@ export terms
 export terms2
 export filestorage
 export settings
-export newseed2
+export chooseinit
 export newseedrestore
 export search
 export resources2
@@ -56,3 +59,4 @@ export info
 export faq
 export claim
 export soundstorage
+export notification

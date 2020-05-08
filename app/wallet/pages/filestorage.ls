@@ -10,6 +10,7 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \../icons.ls
+    \./epoch.ls
 }
 # .filestore-547492130
 #     @import scheme
@@ -487,13 +488,16 @@ filestorage = ({ store, web3t })->
         store.filestore.file-tree = not store.filestore.file-tree
     active-folder =
         if store.filestore.file-tree then \arrow-down else \ ""
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'filestore filestore-547492130' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' File Storage'
+            react.create-element 'div', { className: "#{show-class} header" }, ' File Storage'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { style: border-style, className: 'toolbar' }, children = 
             react.create-element 'span', { on-click: switch-files, className: "#{file-tree} files" }, children = 

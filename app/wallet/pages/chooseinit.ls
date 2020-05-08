@@ -5,9 +5,11 @@ require! {
     \../get-primary-info.ls
     \./icon.ls
     \../icons.ls
-    \prelude-ls : { map, each, sort-by }
+    \../navigate.ls
+    \./choose-language.ls
 }
-# .newseed-restore-365220278
+# ss
+# .newseed-429777432
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
@@ -101,7 +103,7 @@ require! {
 #             padding: 0px 6px
 #             border: 0
 #             height: 36px
-#             width: 120px
+#             width: auto
 #             cursor: pointer
 #             background: #248295
 #             border-radius: $border
@@ -144,10 +146,6 @@ newseed = ({ store, web3t })->
     address-input=
         color: style.app.text
         background: style.app.wallet
-    button-primary1-style=
-        border: "1px solid #{style.app.primary1}"
-        color: style.app.text
-        background: style.app.primary1
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
@@ -168,63 +166,37 @@ newseed = ({ store, web3t })->
     set-lang = (lang)->
         return alert "lang is not available" if not store.langs[store.lang]?
         store.lang = lang
-    change-lang-en = ->
-        return set-lang \en
-    change-lang-ru = ->
-        return set-lang \ru
-    change-lang-ua = ->
-        return set-lang \ua
-    change-lang-cn = ->
-        return set-lang \cn
-    change-lang-kr = ->
-        return set-lang \kr
-    change-lang-fr = ->
-        return set-lang \fr
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
-        border: "1px solid #{style.app.primary3}"
-        color: style.app.text2
-        background: style.app.primary3
     new-wallet = ->
         generate-seed!
+        store.current.seed-generated = yes
         next!
-    random = -> Math.random!
-    restore-wallet = (count)-> ->
-        store.current.seed-words =
-            [1 to count] |> map -> { part: "", index: 0 }
+    restore-option = ->
         store.current.seed-generated = no
-        sorted = 
-            store.current.seed-words |> sort-by random
-        map-index = ->
-            it.index = sorted.index-of(it)
-        store.current.seed-words |> each map-index
-        next!
-    restore12 = restore-wallet 12
-    restore24 = restore-wallet 24
-    back = ->
-        store.current.page = 'chooseinit'
-    react.create-element 'div', { className: 'newseed-restore newseed-restore-365220278' }, children = 
+        store.current.seed-words.length = 0
+        navigate store, web3t, \:init
+        #store.current.page = 'newseedrestore'
+    react.create-element 'div', { className: 'newseed newseed-429777432' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
-        react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.restore-from
+        react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.welcome-wallet ? 'Welcome!'
         react.create-element 'div', { className: 'align-v' }, children = 
-            react.create-element 'button', { style: button-primary1-style, on-click: restore12, className: 'left' }, children = 
+            react.create-element 'button', { style: button-primary2-style, on-click: new-wallet, className: 'left' }, children = 
                 react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
-                    """ 12 words"""
-            react.create-element 'button', { style: button-primary1-style, on-click: restore24, className: 'right' }, children = 
+                    react.create-element 'img', { src: "#{icons.create-wallet}", className: 'icon-svg' }
+                    """ #{lang.new-wallet ? 'Create New Wallet'}"""
+            react.create-element 'button', { style: button-primary3-style, on-click: restore-option, className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
-                    """ 24 words"""
-            react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
-                """ #{lang.back ? 'Back' }"""
+                    react.create-element 'img', { src: "#{icons.restore}", style: btn-icon, className: 'icon-svg' }
+                    """ #{lang.restore-wallet ? 'Restore Existing Wallet'}"""
+            choose-language { store, web3t }
 focus = ({ store }, cb)->
     <- set-timeout _, 1000
-    textarea = store.root.query-selector '.newseed textarea'
-    textarea.focus!
+    #textarea = store.root.query-selector '.newseed textarea'
+    #textarea.focus!
     cb null
 newseed.focus = focus
 module.exports = newseed

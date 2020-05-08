@@ -14,6 +14,7 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \../icons.ls
+    \./epoch.ls
 }
 # .resources909809931
 #     @import scheme
@@ -348,13 +349,16 @@ resources = ({ store, web3t })->
         background: "url('#{icons.bg-gpu}')"
     bg-spacing=
         background: "url('#{icons.bg-spacing}')"
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'resources resources909809931' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Resources Center'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Resources Center'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'container-price' }, children = 
             react.create-element 'div', { className: 'plan' }, children = 

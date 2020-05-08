@@ -9,7 +9,7 @@ require! {
     \../navigate.ls
     \../icons.ls
 }
-# .settings-menu-1451073095
+# .settings-menu474215560
 #     @import scheme
 #     position: relative
 #     display: block
@@ -177,7 +177,7 @@ require! {
 #             &.last
 #                 border-bottom: 0
 #             &:first-child
-#                 background: url("https://res.cloudinary.com/dfbhd7liw/image/upload/v1582209591/velas/logo-velas-opacity.png")
+#                 background: $logo-opacity
 #                 background-repeat: no-repeat
 #                 background-position: left 10px
 #             padding: 30px 20px
@@ -313,6 +313,8 @@ manage-account = (store, web3t)->
         return set-lang \kr
     change-lang-fr = ->
         return set-lang \fr
+    change-lang-es = ->
+        return set-lang \es
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
@@ -345,7 +347,7 @@ manage-account = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
                         """ हिंदी"""
                         react.create-element 'img', { src: "#{icons.langs-hn}" }
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
                         """ Español"""
                         react.create-element 'img', { src: "#{icons.langs-sp}" }
                     react.create-element 'li', { on-click: change-lang-ua, style: color, className: 'lang-item' }, children = 
@@ -422,7 +424,7 @@ module.exports = ({ store, web3t } )->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'settings-menu settings-menu-1451073095' }, children = 
+    react.create-element 'div', { className: 'settings-menu settings-menu474215560' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

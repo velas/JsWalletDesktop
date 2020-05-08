@@ -1,7 +1,7 @@
 require! {
     \react
     \prelude-ls : { map }
-    \../pin.ls : { set, check, exists, del } 
+    \../pin.ls : { set, check, exists, del, setbkp } 
     \../navigate.ls
     \../get-primary-info.ls
     \../get-lang.ls
@@ -10,8 +10,9 @@ require! {
     \../menu-funcs.ls
     \./choose-language.ls
     \../icons.ls
+    \./confirmation.ls : { confirm }
 }
-# .locked215399816
+# .locked227384245
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
@@ -42,7 +43,7 @@ require! {
 #             letter-spacing: 4px
 #             text-align: center
 #     >.title
-#         font-size: 22px
+#         font-size: 20px
 #         margin-bottom: 1rem
 #     >.inputs
 #         div
@@ -80,10 +81,10 @@ require! {
 #                 border-color: #248295
 #             &:placeholder
 #                 color: $primary + 40
-#     >.wrong
+#     >div>.wrong
 #         color: red
 #         font-size: 15px
-#         margin-top: 15px
+#         padding-top: 15px
 #         max-width: 400px
 #         display: inline-block
 #     button.setup
@@ -98,8 +99,9 @@ require! {
 #         border-radius: $border
 #         border: 0px
 #         background: transparent
-#         &:hover
-#             background: #248295 - 20
+#         &.reset
+#             &:hover
+#                 text-decoration: underline
 #         color: white
 #     .hint
 #         color: #f2eeee
@@ -167,23 +169,31 @@ input = (store, web3t)->
     change = (e)->
         store.current.pin = e.target.value
     lang = get-lang store
+    catch-key = ->
+        enter! if it.key-code is 13
+    reset-account = ->
+        res <- confirm store, "Do you have backup word phrase of current account?"
+        return if res is no
+        reset-wallet store
     react.create-element 'div', {}, children = 
-        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: '', on-change: change, auto-complete: "off", className: 'password' }
+        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: '', on-change: change, on-key-down: catch-key, auto-complete: "off", className: 'password' }
         if exists!
             react.create-element 'div', {}, children = 
                 react.create-element 'button', { on-click: enter, style: button-primary1-style, className: 'setup' }, children = 
                     react.create-element 'span', {}, children = 
                         react.create-element 'img', { src: "#{icons.enter}", className: 'icon-svg' }
                         """ #{lang.enter}"""
-                if no    
+                react.create-element 'div', {}, children = 
                     react.create-element 'div', { className: 'division' }, children = 
                         react.create-element 'div', { className: 'line l' }
                         react.create-element 'span', {}, ' OR'
                         react.create-element 'div', { className: 'line r' }
                     react.create-element 'div', {}, children = 
-                        react.create-element 'button', { style: button-primary0-style, className: 'setup' }, ' NEW ACCOUNT'
+                        react.create-element 'button', { style: button-primary0-style, on-click: reset-account, className: 'setup' }, ' NEW ACCOUNT'
 reset-wallet = (store)->
+    setbkp!
     del!
+    seed.setbkp!
     seed.del!
     store.current.pin = ""
     store.current.pin-trial = 0
@@ -192,8 +202,16 @@ wrong-trials = (store)->
     return null if store.current.pin-trial is 0
     lang = get-lang store
     left-trials = total-trials - store.current.pin-trial
-    wrong-pin-text = "#{left-trials}/#{total-trials} attempts left till wallet reset to default"
-    react.create-element 'div', { key: "wrong-trial", className: 'wrong' }, ' ' + wrong-pin-text
+    reset-account = ->
+        res <- confirm store, "Do you have backup word phrase of current account?"
+        return if res is no
+        reset-wallet store
+    wrong-pin-text = "#{left-trials}/#{total-trials} attempts left till wallet reset to default."
+    react.create-element 'div', {}, children = 
+        react.create-element 'div', { key: "wrong-trial", className: 'wrong' }, ' ' + wrong-pin-text
+        react.create-element 'div', {}, ' NOTICE! Try to restore you account from seed phrase in different browser or incognito window before you reset it'
+        react.create-element 'div', {}, children = 
+            react.create-element 'button', { on-click: reset-account, className: 'reset setup' }, ' Reset Account'
 setup-button = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
@@ -216,7 +234,6 @@ setup-button = (store, web3t)->
                 react.create-element 'img', { src: "#{icons.key}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.setup ? 'Setup'}"""
         react.create-element 'div', { style: text-color, className: 'hint p' }, ' ' + lang.pin-info ? 'Please make sure to use a pin you remember. You have 7 tries. After that, you need to restore the wallet from your 12-word recovery Phrase.'
-        choose-language { store, web3t }
 create-wallet = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
@@ -237,7 +254,7 @@ locked = ({ store, web3t })->
     return null if store.current.loading is yes
     lang = get-lang store
     title = 
-        | not exists! => lang.setup-pin ? "Setup Password"
+        | not exists! => lang.setup-pin ? "Setup Password or PIN"
         | _ => lang.enter-pin ? "Enter Password"
     footer =
         | not exists! => setup-button
@@ -249,7 +266,7 @@ locked = ({ store, web3t })->
         background-size: "cover"
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked215399816' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked227384245' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + info.branding.title

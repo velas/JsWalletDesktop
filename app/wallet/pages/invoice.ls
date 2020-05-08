@@ -320,16 +320,25 @@ address-link = (store, web3t)->
         color: style.app.addressText
         background: style.app.addressBg
     href-style=
-        max-width: "320px"
+        max-width: "340px"
         margin: "10px auto 0"
     filter-icon=
         filter: style.app.filterIcon
     lang = get-lang store
+    cut-receive = (tx)->
+        return \none if not tx?
+        t = tx.to-string!
+        m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
+        r =
+            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 20) + \.. + t.substr(t.length - 4, 4)
+            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 15) + \.. + t.substr(t.length - 4, 4)
+    color-address=
+        color: "rgb(158, 79, 235)"
     react.create-element 'div', { style: more-text, className: 'content-body' }, children = 
         react.create-element 'form', {}, children = 
             form-group lang.funding-address, icon-style, ->
                 react.create-element 'div', { style: href-style, className: 'address' }, children = 
-                    react.create-element 'a', { href: "#{get-address-link wallet}", target: "_blank", style: default-button-style }, ' ' + get-address-title wallet
+                    react.create-element 'a', { href: "#{get-address-link wallet}", target: "_blank", style: color-address }, ' ' + cut-receive get-address-title wallet
                     react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 
                         copy store
 ill-qr = (store, web3t)->

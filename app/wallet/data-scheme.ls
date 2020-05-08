@@ -8,6 +8,7 @@ require! {
     \./langs/kr.ls
     \./langs/cn.ls
     \./langs/fr.ls
+    \./langs/es.ls
     \./icons.ls
     \./get-device.ls
 }
@@ -36,7 +37,7 @@ store =
     root: null
     theme: \velas
     lang: \en
-    langs: { en, ru, ua, kr, cn, fr }
+    langs: { en, ru, ua, kr, cn, fr, es }
     icons: \icons
     registry: []
     terms: "Loading..."
@@ -56,9 +57,21 @@ store =
         tab: "home"
         menu-open: no
         drag: no
+    sound:
+        tab: "home"
+        menu-open: no
+        drag: no
     faq:
         tab: "item"
-        answer: "item"
+        answer: ""
+        answer2: ""
+    dashboard:
+        epoch-percent: ".."
+        epoch-next: '..'
+        current-block: '..'
+        epoch: '..'
+    peerinfo:
+        peers: []
     staking: 
         reward-info: []
         add:
@@ -71,7 +84,11 @@ store =
         reward: null
         reward-claim: 0
         rewards: []
-        keystore: {}
+        keystore: 
+            staking:
+                keystore: ""
+            mining: 
+                keystore: ""
         data-generation: 1
         tab: "line"
         pools: []
@@ -128,6 +145,8 @@ store =
         step: "first"
         verify-seed-indexes: []
         switch-account: no
+        open-menu: no
+        current-epoch: no
         switch-currency: no
         send-menu-open: no
         langs-open: no
@@ -160,7 +179,7 @@ store =
         pin-trial: 0
         refreshing: no
         copied: ""
-        page: \locked
+        page: if saved-seed then \locked else \chooseinit
         send-to-mask: ""
         status: \main
         nickname: ""

@@ -12,7 +12,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .faq956633232
+# .faq1405432570
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -958,44 +958,6 @@ require! {
 #                         background: rgb(67, 32, 124)
 #                         padding-bottom: 15px
 #                         transition: .5s
-#     .staking-info
-#         display: block
-#         overflow-y: scroll
-#         scrollbar-width: none
-#         margin-top: 0
-#         display: flex
-#         flex-wrap: wrap
-#         margin-right: -10px
-#         margin-left: -10px
-#         .value
-#             color: orange
-#             text-align: center
-#             &.green
-#                 color: rgb(60, 213, 175)
-#                 text-align: center
-#         .header
-#             font-size: 12px
-#             text-transform: uppercase
-#             letter-spacing: 2px
-#             opacity: .8
-#             font-weight: 400
-#             margin-top: 10px
-#             text-align: center
-#         .col
-#             box-sizing: border-box
-#             padding: 0 5px
-#             margin-bottom: 10px
-#             &.col-4
-#                 -webkit-box-flex: 0
-#                 flex: 0 0 25%
-#                 max-width: 25%
-#                 @media(max-width: 992px)
-#                     -webkit-box-flex: 0
-#                     flex: 0 0 50%
-#                     max-width: 50%
-#             > div
-#                 background: #3b1771
-#                 padding: 30px 20px
 item = (store, web3t)->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -1548,8 +1510,7 @@ item4 = (store, web3t)->
                 react.create-element 'div', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header question placeholder' }, children = 
                         react.create-element 'img', { src: "#{icons.star}", className: 'star' }
-                        """Does Velas have fees to send or receive?"""
-faq = ({ store, web3t })->
+                        """Does Velas have fees to send or receive?faq = ({ store, web3t })->"""
     lang = get-lang store
     { go-back } = history-funcs store, web3t
     info = get-primary-info store
@@ -1625,13 +1586,11 @@ faq = ({ store, web3t })->
     active-item2 = active-class \item2
     active-item3 = active-class \item3
     active-item4 = active-class \item4
-    show-class =
-        if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'faq faq956633232' }, children = 
+    react.create-element 'div', { className: 'faq faq1405432570' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' FAQ’S'
+            react.create-element 'div', { className: 'header' }, ' FAQ’S'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t

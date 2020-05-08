@@ -17,6 +17,7 @@ require! {
     \prelude-ls : { map, foldl }
     \../math.ls : { plus, div }
     \../round-human.ls
+    \./epoch.ls
 }
 # .info-2054257772
 #     @import scheme
@@ -222,11 +223,14 @@ info = ({ store, web3t })->
         color: info.app.addressText
     icon-style=
         filter: info.app.nothingIcon
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'info info-2054257772' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Info page'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Info page'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'wrapper' }, children = 
             total-pool store, web3t
