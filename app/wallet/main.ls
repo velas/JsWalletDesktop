@@ -10,7 +10,6 @@ require! {
     \./web3.ls
     \./autodetect-lang.ls
     \./get-device.ls
-    
 }
 state =
     timeout: null
