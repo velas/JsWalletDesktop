@@ -17,7 +17,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .choose-account518512686
+# .choose-account-298485850
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -33,7 +33,7 @@ require! {
 #     .icon-svg-edit
 #         height: 15px
 #     .icon-svg-create
-#         height: 10px
+#         height: 9px
 #     .switch-menu
 #         right: -20px !important
 #         top: 39px !important
@@ -52,12 +52,20 @@ require! {
 #         float: right
 #         line-height: 10px
 #         width: auto
-#         top: 0px
+#         top: 2px
 #         right: 5px
 #         position: absolute
 #         text-align: right
 #         display: block
 #         z-index: 2
+#         @media(max-width: 620px)
+#             .name, .icon
+#                 visibility: hidden
+#             .icon.menus, .icon.ckeck, .icon.cancel
+#                 visibility: visible
+#             &.show
+#                 .name, .icon
+#                     visibility: visible
 #         .ckeck
 #             color: #3cd5af
 #         .cancel
@@ -66,7 +74,7 @@ require! {
 #             text-overflow: ellipsis
 #             white-space: nowrap
 #             overflow: hidden
-#             width: 110px
+#             width: 90px
 #             text-align: right
 #             cursor: default
 #             display: inline-block
@@ -90,6 +98,12 @@ require! {
 #             margin-left: 20px
 #             transition: transform .5s
 #             display: inline-block
+#             &.menus
+#                 display: none
+#                 @media(max-width: 620px)
+#                     display: inline-block
+#                 &.show
+#                     opacity: .5
 #             &.rotate
 #                 transform: rotate(180deg)
 #                 transition: transform .5s
@@ -164,6 +178,8 @@ module.exports = (store, web3t)->
         border-right: "1px solid #{style.app.border}"
     open-account = ->
         store.current.switch-account = not store.current.switch-account
+    open-menu = ->
+        store.current.open-menu = not store.current.open-menu
     edit-account-name = ->
         store.current.edit-account-name = current-account-name!
     default-account-name = -> "Account #{store.current.account-index}"
@@ -180,13 +196,17 @@ module.exports = (store, web3t)->
     account-name = current-account-name!
     rotate-class =
         if store.current.switch-account then \rotate else \ ""
+    show-class =
+        if store.current.open-menu then \show else \ ""
     view-account-template = ->
-        react.create-element 'div', { className: 'switch-account h1' }, children = 
+        react.create-element 'div', { className: "#{show-class} switch-account h1" }, children = 
             react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
             react.create-element 'span', { on-click: edit-account-name, className: 'icon' }, children = 
                 react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-edit' }
             react.create-element 'span', { on-click: open-account, className: "#{rotate-class} icon" }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
+            react.create-element 'span', { on-click: open-menu, className: "#{show-class} icon menus" }, children = 
+                react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-create' }
     edit-account-template = ->
         react.create-element 'div', { className: 'switch-account h1' }, children = 
             react.create-element 'input', { value: "#{store.current.edit-account-name}", on-change: edit-account, style: input, className: 'h1' }
@@ -195,7 +215,7 @@ module.exports = (store, web3t)->
             react.create-element 'span', { on-click: cancel-edit-account-name, className: 'cancel icon' }, children = 
                 icon "X", 20
     chosen-account-template =
-        if store.current.edit-account-name is "" then view-account-template! else edit-account-template!  
-    react.create-element 'div', { className: 'choose-account choose-account518512686' }, children = 
+        if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
+    react.create-element 'div', { className: 'choose-account choose-account-298485850' }, children = 
         chosen-account-template
         your-account store, web3t

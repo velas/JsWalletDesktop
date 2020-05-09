@@ -15,7 +15,7 @@ require! {
     \../send-funcs.ls
     \../icons.ls
 }
-# .manage-account1271596569
+# .manage-account685650602
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -162,7 +162,7 @@ require! {
 #             &.last
 #                 border-bottom: 0
 #             &:first-child
-#                 background: url("https://res.cloudinary.com/dfbhd7liw/image/upload/v1582209591/velas/logo-velas-opacity.png")
+#                 background: $logo-opacity
 #                 background-repeat: no-repeat
 #                 background-position: left 10px
 #             padding: 50px 10%
@@ -507,7 +507,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { className: 'manage-account manage-account1271596569' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account685650602' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: border-style, className: 'title' }, children = 
                 react.create-element 'div', { className: 'header' }, ' Token Migration'

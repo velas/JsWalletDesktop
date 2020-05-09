@@ -201,11 +201,6 @@ newseed = ({ store, web3t })->
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", style: btn-icon, className: 'icon-svg' }
                     """ #{lang.restore-wallet ? 'Restore Existing Wallet'}"""
-            if no
-                react.create-element 'button', { style: button-primary3-style, on-click: restore-wallet, className: 'right' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.restore}", style: btn-icon, className: 'icon-svg' }
-                        """ #{lang.restore-wallet ? 'Restore Existing Wallet'}"""
 focus = ({ store }, cb)->
     <- set-timeout _, 1000
     #textarea = store.root.query-selector '.newseed textarea'

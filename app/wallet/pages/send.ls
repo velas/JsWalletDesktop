@@ -11,6 +11,7 @@ require! {
     \../round-human.ls
     \../wallets-funcs.ls
     \../icons.ls
+    \./epoch.ls
 }
 # .content-1757912783
 #     position: relative
@@ -482,11 +483,21 @@ send = ({ store, web3t })->
         if store.current.convert is convert then 'active' else ''
     active-usd = active-class \usd
     active-eur = active-class \eur
+    cut-send = (tx)->
+        return \none if not tx?
+        t = tx.to-string!
+        m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
+        r =
+            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 20) + \.. + t.substr(t.length - 4, 4)
+            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 15) + \.. + t.substr(t.length - 4, 4)
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'content content-1757912783' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Send'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Send'
             react.create-element 'div', { on-click: cancel, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { style: more-text, className: 'content-body' }, children = 
             react.create-element 'div', { className: 'header' }, children = 
@@ -520,7 +531,7 @@ send = ({ store, web3t })->
             react.create-element 'form', {}, children = 
                 form-group lang.send-from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 
-                        react.create-element 'a', { href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
+                        react.create-element 'a', { href: "#{get-address-link wallet}" }, ' ' + cut-send get-address-title wallet
                 form-group lang.recipient, icon-style, ->
                     react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}" }
                 form-group lang.amount, icon-style, ->

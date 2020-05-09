@@ -11,7 +11,7 @@ require! {
     \../menu-funcs.ls
     \../icons.ls
 }
-# .choose-language-1030559057
+# .choose-language-76123078
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -24,6 +24,7 @@ require! {
 #     padding-top: 30px
 #     width: 100%
 #     top: 0
+#     left: 0
 #     z-index: 999
 #     height: 100%
 #     min-height: 100vh
@@ -225,6 +226,8 @@ language = (store, web3t)->
         return set-lang \kr
     change-lang-fr = ->
         return set-lang \fr
+    change-lang-es = ->
+        return set-lang \es
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
@@ -258,7 +261,7 @@ language = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-hn}" }
                         react.create-element 'div', {}, ' हिंदी'
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-sp}" }
                         react.create-element 'div', {}, ' Español'
                 react.create-element 'ul', {}, children = 
@@ -288,7 +291,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-1030559057' }, children = 
+    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-76123078' }, children = 
         react.create-element 'div', { className: 'account-body' }, children = 
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 

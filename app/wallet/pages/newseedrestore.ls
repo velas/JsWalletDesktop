@@ -203,12 +203,12 @@ newseed = ({ store, web3t })->
     restore12 = restore-wallet 12
     restore24 = restore-wallet 24
     back = ->
-        store.current.page = 'newseed2'
+        store.current.page = 'chooseinit'
     react.create-element 'div', { className: 'newseed-restore newseed-restore-365220278' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
-        react.create-element 'div', { style: text-style, className: 'welcome' }, ' Restore wallet from'
+        react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.restore-from
         react.create-element 'div', { className: 'align-v' }, children = 
             react.create-element 'button', { style: button-primary1-style, on-click: restore12, className: 'left' }, children = 
                 react.create-element 'span', {}, children = 

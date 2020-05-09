@@ -10,8 +10,9 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \../icons.ls
+    \./epoch.ls
 }
-# .videostorage-782899304
+# .videostorage1812653883
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -179,6 +180,8 @@ require! {
 #             cursor: pointer
 #             position: absolute
 #             right: 80px
+#             @media(max-width:800px)
+#                 right: 20px
 #         .close
 #             line-height: 2.4
 #             cursor: pointer
@@ -249,7 +252,7 @@ require! {
 #                     scrollbar-width: none
 #                     white-space: nowrap
 #             @media(max-width: 800px)
-#                 width: 100%
+#                 width: 80%
 #             ul
 #                 list-style: none
 #                 padding: 0
@@ -343,7 +346,7 @@ require! {
 #             line-height: 1.8
 #             &.path
 #     >.wrapper
-#         height: 540px
+#         height: calc(100vh - 190px)
 #         display: flex
 #         flex-wrap: wrap
 #         overflow-y: scroll
@@ -552,6 +555,11 @@ require! {
 #                 height: 140px
 #                 opacity: .8
 #                 transition: .5s
+#                 &.icon-svg-play
+#                     height: 50px
+#                     width: 70px
+#                     margin-top: 45px
+#                     margin-left: 13px
 #             @media(max-width: 800px)
 #                 width: 100%
 #                 margin-left: 0
@@ -1106,8 +1114,126 @@ subscr = (store, web3t)->
                                 react.create-element 'li', {}, children = 
                                     react.create-element 'span', {}, ' 1 mounth ago'
 history = (store, web3t)->
-    react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' This tab is under development'
+    lang = get-lang store
+    { go-back } = history-funcs store, web3t
+    info = get-primary-info store
+    style=
+        background: info.app.wallet
+        color: info.app.text
+    border-style =
+        color: info.app.text
+        border-bottom: "1px solid #{info.app.border}"
+    border-right =
+        color: info.app.text
+        border-right: "1px solid #{info.app.border}"
+    border-style2 =
+        color: info.app.text
+        border-bottom: "1px solid #{info.app.border}"
+        background: "#4b2888"
+    border-style3 =
+        color: info.app.text
+        border-bottom: "0"
+    border-right =
+        color: info.app.text
+        border-right: "1px solid #{info.app.border}"
+    button-primary2-style=
+        border: "1px solid #{info.app.primary2}"
+        color: info.app.text
+        background: info.app.primary2
+    header-table-style=
+        border-bottom: "1px solid #{info.app.border}"
+        background: info.app.wallet-light
+        position: "sticky"
+    dashed-border=
+        border-color: "#{info.app.border}"
+        color: info.app.addressText
+    filter-body =
+        border: "1px solid #{info.app.border}"
+        background: info.app.header
+    border-b =
+        border-bottom: "1px solid #{info.app.border}"
+    button-primary1-style=
+        border: "1px solid #{info.app.primary1}"
+        color: info.app.text
+        background: info.app.primary1
+    input-style=
+        background: info.app.wallet
+        border: "0"
+        color: info.app.text
+    lightText=
+        color: info.app.addressText
+    icon-style=
+        filter: info.app.nothingIcon
+    goto-details = ->
+        navigate store, web3t, \videostoragedetails
+    switch-files = ->
+        store.current.files = not store.current.files
+    file-tree =
+        if store.current.files then \file-tree else \ ""
+    react.create-element 'div', { className: "#{file-tree} similarvideo" }, children = 
+        react.create-element 'h2', { className: 'header' }, ' Watch history'
+        react.create-element 'h2', { className: 'header' }, ' Today'
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
+                react.create-element 'span', { className: 'play' }, children = 
+                    icon \TriangleRight, 15
+                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/2jdA5EwQV9M', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
+                react.create-element 'span', { className: 'content-right' }, children = 
+                    react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
+                    react.create-element 'ul', { className: 'stat' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 122 views'
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 5 days ago'
+                    react.create-element 'ul', { className: 'stat-text' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
+                react.create-element 'span', { className: 'play' }, children = 
+                    icon \TriangleRight, 15
+                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/USGLlp-zfhI', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
+                react.create-element 'span', { className: 'content-right' }, children = 
+                    react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
+                    react.create-element 'ul', { className: 'stat' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 1.4K views'
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 8 mounths ago'
+                    react.create-element 'ul', { className: 'stat-text' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
+        react.create-element 'h2', { className: 'header' }, ' Yesterday'
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
+                react.create-element 'span', { className: 'play' }, children = 
+                    icon \TriangleRight, 15
+                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/2jdA5EwQV9M', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
+                react.create-element 'span', { className: 'content-right' }, children = 
+                    react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
+                    react.create-element 'ul', { className: 'stat' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 122 views'
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 5 days ago'
+                    react.create-element 'ul', { className: 'stat-text' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
+                react.create-element 'span', { className: 'play' }, children = 
+                    icon \TriangleRight, 15
+                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/USGLlp-zfhI', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
+                react.create-element 'span', { className: 'content-right' }, children = 
+                    react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
+                    react.create-element 'ul', { className: 'stat' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 1.4K views'
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' 8 mounths ago'
+                    react.create-element 'ul', { className: 'stat-text' }, children = 
+                        react.create-element 'li', {}, children = 
+                            react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
 video = (store, web3t)->
     react.create-element 'div', { className: 'panel-content' }, children = 
         react.create-element 'p', { className: 'results' }, ' This tab is under development'
@@ -1193,7 +1319,9 @@ videostorage = ({ store, web3t })->
     active-video = active-class \video
     expand-collapse = ->
         store.video.menu-open = not store.video.menu-open
-    react.create-element 'div', { className: 'videostorage videostorage-782899304' }, children = 
+    show-class =
+        if store.current.open-menu then \hide else \ ""
+    react.create-element 'div', { className: 'videostorage videostorage1812653883' }, children = 
         react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
             react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
                 react.create-element 'div', { className: 'table-row-menu' }, children = 
@@ -1221,9 +1349,10 @@ videostorage = ({ store, web3t })->
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Video storage'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         if store.video.menu-open
             menu store, web3t

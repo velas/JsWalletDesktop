@@ -227,7 +227,7 @@ require! {
 #             -webkit-mask-position: right
 #         100%
 #             -webkit-mask-position: left
-#setup-pages = <[ locked newseed newseed2 loading loading2 verifyseed terms terms2 ]>
+#setup-pages = <[ locked newseed chooseinit loading loading2 verifyseed terms terms2 ]>
 module.exports = (store, web3)->
     return null if not store? or store.current.page in setup-pages
     { current, open-account, lock, wallet-style, info, activate-s1, activate-s2, activate-s3, switch-network, refresh, lock } = menu-funcs store, web3t
@@ -242,6 +242,7 @@ module.exports = (store, web3)->
     info-active = if store.current.page is \info then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
     faq = if store.current.page is \faq then \active else \not-active
+    notice = if store.current.page is \notification then \active else \not-active
     claim-active = if store.current.page is \claim then \active else \not-active
     menu-style=
         color: style.app.text
@@ -250,6 +251,10 @@ module.exports = (store, web3)->
     icon-style2 =
         opacity: "0"
         bottom: "-280px"
+        left: "-57px"
+    icon-style3 =
+        opacity: "0"
+        bottom: "-130px"
         left: "-57px"
     lang = get-lang store
     info = get-primary-info store
@@ -308,6 +313,8 @@ module.exports = (store, web3)->
         navigate store, web3t, \info
     goto-faq = ->
         navigate store, web3t, \faq
+    goto-notice = ->
+        navigate store, web3t, \notification
     goto-claim = ->
         navigate store, web3t, \claim
     comming-soon =
@@ -316,8 +323,10 @@ module.exports = (store, web3)->
         store.current.submenu = not store.current.submenu
     menu-staking =
         if store.current.submenu then \submenu else \ ''
+    menu-out = ->
+        store.current.submenu = no
     staking = if store.current.submenu then \active else \not-active
-    react.create-element 'div', { style: border-style, className: 'menu side-menu menu-788428362' }, children = 
+    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu-788428362' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo}", style: logo-style }
         if store.preference.lock-visible is yes
@@ -358,4 +367,8 @@ module.exports = (store, web3)->
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' faq'
+                    react.create-element 'img', { src: "#{icons.setting}" }
+            if store.preference.settings-visible is yes
+                react.create-element 'div', { on-click: goto-notice, style: icon-style3, className: "#{notice} menu-item" }, children = 
+                    react.create-element 'span', { className: 'arrow_box' }, ' notice'
                     react.create-element 'img', { src: "#{icons.setting}" }

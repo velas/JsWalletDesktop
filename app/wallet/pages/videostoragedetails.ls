@@ -10,8 +10,9 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \../icons.ls
+    \./epoch.ls
 }
-# .videodetails187310634
+# .videodetails-1630865977
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -188,7 +189,7 @@ require! {
 #             line-height: 1.8
 #             &.path
 #     >.wrapper
-#         height: 540px
+#         height: calc(100vh - 190px)
 #         display: flex
 #         flex-wrap: wrap
 #         overflow-y: scroll
@@ -1036,13 +1037,16 @@ videodetails = ({ store, web3t })->
         color: info.app.text
     goto-videostorage = ->
         navigate store, web3t, \videostorage
-    react.create-element 'div', { className: 'videodetails videodetails187310634' }, children = 
+    show-class =
+        if store.current.open-menu then \hide else \ ""
+    react.create-element 'div', { className: 'videodetails videodetails-1630865977' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Video storage'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg-arrow' }
+            epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'search-input' }, children = 
             react.create-element 'div', { style: border-style, className: 'section' }, children = 

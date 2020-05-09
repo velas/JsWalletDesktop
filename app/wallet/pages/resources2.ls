@@ -24,6 +24,7 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./placeholder.ls
+    \./epoch.ls
 }
 # .staking-res915449353
 #     @import scheme
@@ -632,13 +633,16 @@ staking = ({ store, web3t })->
         background: info.app.wallet-light
     lightText=
         color: info.app.addressText
+    show-class =
+        if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'staking-res staking-res915449353' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: 'header' }, ' Resource Staking'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Resource Staking'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+            epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
 staking.init = ({ store, web3t }, cb)->
