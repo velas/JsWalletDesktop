@@ -4,10 +4,10 @@ require! {
     \../get-lang.ls
     \../get-primary-info.ls
     \../icons.ls
-    \prelude-ls : { map, find, foldl, unique, take }
+    \prelude-ls : { map, find, foldl, unique, take, sort-by }
 }
 # verification seed
-# .newseed1263756171
+# .newseed47169244
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -41,6 +41,12 @@ require! {
 #                 font-size: 14px
 #                 text-align: center
 #                 cursor: auto
+#             input:focus ~ span.effect
+#                 background: rgb(60, 213, 175) !important
+#                 color: #190841 !important
+#                 transition: all .5s
+#                 animation: pulse_effect 1.5s linear
+#                 transform-origin: 50% 50%
 #             span
 #                 &:first-child
 #                     background: #7651ae
@@ -55,6 +61,20 @@ require! {
 #                     line-height: 11px
 #                     @media(max-width: 500px)
 #                         margin-right: 5px
+#                 &.effect    
+#                     &:last-child
+#                         background: #7651ae
+#                         color: #fff
+#                         display: inline-block
+#                         padding: 4px
+#                         float: left
+#                         border-radius: 50px
+#                         width: 11px
+#                         height: 10px
+#                         font-size: 10px
+#                         line-height: 11px
+#                         @media(max-width: 500px)
+#                             margin-right: 5px
 #     .title
 #         color: #ebf6f8
 #         font-size: 22px
@@ -127,9 +147,10 @@ newseed = ({ store, web3t })->
     newseed-style=
         # filter: style.app.nothingIcon
         margin-bottom: "10px"
-        width: "100px"
+        width: "120px"
     wrong-word = (item)->
-        store.current.seed-words[item.index].part isnt item.part
+        console.log item.original.part, item.part
+        item.original.part isnt item.part
     verify-seed = ->
         wrong =
             store.current.verify-seed-indexes |> find wrong-word
@@ -142,10 +163,9 @@ newseed = ({ store, web3t })->
             item.part = it.target.value
         react.create-element 'div', { style: seed-style, className: 'word' }, children = 
             react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "Enter #{item.index + 1} word" }
-    react.create-element 'div', { className: 'newseed newseed1263756171' }, children = 
+    react.create-element 'div', { className: 'newseed newseed47169244' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase ? 'Verify Seed Phrase'
-        react.create-element 'div', { style: text-style, className: 'hint' }, ' ' + lang.phrase-word ? 'Please enter the 4th word to confirm that you wrote down the seed phrase'
         react.create-element 'div', { className: 'words' }, children = 
             store.current.verify-seed-indexes |> map build-verify-seed store
         react.create-element 'div', {}, children = 
@@ -163,13 +183,14 @@ newseed = ({ store, web3t })->
                 react.create-element 'div', {}, ' ' + lang.words-are-not-match ? 'Words are not match' 
 random = ->
     Math.floor((Math.random! * 10) + 1)
+get-verifier = (store)-> (original)->
+    index = store.current.seed-words.index-of(original)
+    { index, part: '', original }
 init = ({ store }, cb)->
     store.current.verify-seed-indexes =
-        [0 to 20]
-            |> map random
-            |> unique
-            |> take 3
-            |> map -> index: it, part: ''
+        store.current.seed-words
+            |> map get-verifier(store)
+            |> sort-by random
     cb null
 focus = ({ store }, cb)->
     cb null

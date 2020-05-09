@@ -10,6 +10,7 @@ require! {
     \../copy.ls
     \../address-link.ls : { get-address-link, get-address-title }
     \../icons.ls
+    \react-middle-ellipsis : { default: MiddleEllipsis }
 }
 # .content942897921
 #     position: relative
@@ -338,7 +339,8 @@ address-link = (store, web3t)->
         react.create-element 'form', {}, children = 
             form-group lang.funding-address, icon-style, ->
                 react.create-element 'div', { style: href-style, className: 'address' }, children = 
-                    react.create-element 'a', { href: "#{get-address-link wallet}", target: "_blank", style: color-address }, ' ' + cut-receive get-address-title wallet
+                    react.create-element MiddleEllipsis, {}, children = 
+                        react.create-element 'a', { href: "#{get-address-link wallet}", target: "_blank", style: color-address }, ' ' + get-address-title wallet
                     react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 
                         copy store
 ill-qr = (store, web3t)->

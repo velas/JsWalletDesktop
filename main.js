@@ -24,7 +24,7 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   //console.log(path.join(__dirname, '/res/Icon-256.png'));
-  const height = 800;
+  const height = 900;
   const width = 1000;
   mainWindow = new BrowserWindow({
     width: width,
@@ -47,7 +47,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

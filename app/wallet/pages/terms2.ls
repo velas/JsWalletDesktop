@@ -76,7 +76,7 @@ terms = ({ store, web3t })->
                         react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
                         """ #{lang.back}"""
 terms.init = ({ store }, cb)->
-    err, res <- get \https://raw.githubusercontent.com/okhrimenkoalexey/Velas/master/terms.md .end
+    err, res <- get \https://raw.githubusercontent.com/velas/JsWallet/master/TERMS.md .end
     return cb err if err?
     store.terms = res.text
     cb null

@@ -278,7 +278,7 @@ newseed = ({ store, web3t })->
                     """ #{lang.back ? 'Back' }"""
                 react.create-element 'button', { on-click: next, style: button-primary1-style, className: "#{hide-class} right save" }, children = 
                     react.create-element 'img', { src: "#{icons.save}", className: 'icon-svg' }
-                    """ #{lang.save ? 'Save' }"""
+                    """ #{lang.next-save ? 'Next' }"""
                 react.create-element 'button', { on-click: print, style: button-primary2-style, className: "#{hide-class} right doc" }, children = 
                     react.create-element 'img', { src: "#{icons.print}", className: 'icon-svg' }
                     """ #{lang.print ? 'Print' }"""

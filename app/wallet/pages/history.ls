@@ -10,8 +10,9 @@ require! {
     \../copied-inform.ls
     \../copy.ls
     \../icons.ls
+    \react-middle-ellipsis : { default: MiddleEllipsis }
 }
-# .history80433799
+# .history944185242
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -301,7 +302,9 @@ require! {
 #                     div
 #                         text-align: center
 #                 &.txhash
-#                     width: 90%
+#                     width: 60%
+#                     div:first-child
+#                         display: inline
 #                     .loader-ios
 #                         margin-left: 10px
 #                     a
@@ -316,6 +319,8 @@ require! {
 #                 &.amount
 #                     width: 24%
 #                     text-align: right
+#                 &.divider2
+#                     width: 30%
 #                 &.divider
 #                     width: 10%
 #                     .direction
@@ -328,7 +333,7 @@ require! {
 #                     opacity: .5
 #                     padding-left: 0
 #                 &.created
-#                     width: 25%
+#                     width: 20%
 #                     text-align: left
 #                     .syncing
 #                         svg
@@ -395,14 +400,13 @@ require! {
 #                             border-width: 8px
 #                             margin-top: 0px
 #                 &.details-from, &.details-to
-#                     width: 35%
+#                     width: 40%
 #                     text-align: left
 #                     height: 60px
+#                     div:last-child
+#                         width: 330px
 #                     a
 #                         display: block
-#                         text-overflow: ellipsis
-#                         overflow: hidden
-#                         width: 100%
 #                         font-size: 14px
 #                         text-decoration: none
 #                         &:hover
@@ -567,7 +571,7 @@ render-transaction = (store, web3t, tran)-->
         background: style.app.wallet-light
     lightText=
         color: style.app.addressText
-    { token, tx, amount, fee, time, url, type, pending, from, to, recipient-type } = tran
+    { token, tx, amount, fee, time, url, type, pending, from, to, recipient-type, description } = tran
     coin = 
         coins |> find (.token is token)
     return null if not coin?
@@ -582,8 +586,8 @@ render-transaction = (store, web3t, tran)-->
         t = tx.to-string!
         m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
         r =
-            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 15) + \.. + t.substr(t.length - 4, 4)
-            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 12) + \.. + t.substr(t.length - 4, 4)
+            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
+            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
     cut-hash = (tx)->
         return \none if not tx?
         t = tx.to-string!
@@ -593,6 +597,11 @@ render-transaction = (store, web3t, tran)-->
         filter: if pending is yes then 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-370deg) saturate(790%) contrast(0.5)' else ''
     amount-pending=
         color: if pending is yes then 'orange' else ''
+    about = 
+        | recipient-type is \contract => 'Smart'
+        | description is \internal => 'Smart'
+        | description is \external => 'User'
+        | _ => 'Unknown'
     react.create-element 'div', { key: "#{tx + type}", style: border-style, className: "#{type} record" }, children = 
         react.create-element 'div', { style: line-style, className: 'tx-top' }, children = 
             react.create-element 'div', { className: 'cell text-center network' }, children = 
@@ -607,7 +616,9 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'span', {}, ' ' + lang.tx-from + ':'
                     react.create-element CopyToClipboard, { text: "#{from}", on-copy: copied-inform(store), style: filter-icon }, children = 
                         copy store
-                react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + cut-tx from
+                    react.create-element 'span', { className: 'smart-contract' }, ' ' + about
+                react.create-element MiddleEllipsis, {}, children = 
+                    react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + from
             if no
                 react.create-element 'div', { className: 'cell arrow' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg1' }
@@ -616,9 +627,9 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'span', {}, ' ' + lang.tx-to + ':'
                     react.create-element CopyToClipboard, { text: "#{to}", on-copy: copied-inform(store), style: filter-icon }, children = 
                         copy store
-                    if recipient-type is \contract
-                        react.create-element 'span', { className: 'smart-contract' }, ' Smart Contract'
-                react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + cut-tx to
+                    react.create-element 'span', { className: 'smart-contract' }, ' ' + about
+                react.create-element MiddleEllipsis, {}, children = 
+                    react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + to
             react.create-element 'div', { className: 'cell created' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                     react.create-element 'span', {}, ' ' + lang.created + ': '
@@ -652,7 +663,8 @@ render-transaction = (store, web3t, tran)-->
                     if no
                         react.create-element 'div', { className: 'direction' }, ' ' + arrow(type)
                 react.create-element 'div', { className: 'cell txhash' }, children = 
-                    react.create-element 'a', { href: "#{url}", target: "_blank" }, ' ' + cut-hash tx
+                    react.create-element MiddleEllipsis, {}, children = 
+                        react.create-element 'a', { href: "#{url}", target: "_blank" }, ' ' + tx
                     react.create-element CopyToClipboard, { text: "#{tx}", on-copy: copied-inform(store), style: filter-icon }, children = 
                         copy store
                     react.create-element 'div', { style: lightText, className: 'gray' }, children = 
@@ -666,6 +678,7 @@ render-transaction = (store, web3t, tran)-->
                                 react.create-element 'span', { className: 'bold' }, children = 
                                     react.create-element 'img', { src: 'data:image/svg+xml;base64,\PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNNTA0LjUwMiw3NS40OTZjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5OC0zNi4yMDQsMEwxNjEuNTk0LDM4Mi4yMDNMNDMuNzAyLDI2NC4zMTFjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5Ny0zNi4yMDQsMCAgICBjLTkuOTk4LDkuOTk3LTkuOTk4LDI2LjIwNSwwLDM2LjIwM2wxMzUuOTk0LDEzNS45OTJjOS45OTQsOS45OTcsMjYuMjE0LDkuOTksMzYuMjA0LDBMNTA0LjUwMiwxMTEuNyAgICBDNTE0LjUsMTAxLjcwMyw1MTQuNDk5LDg1LjQ5NCw1MDQuNTAyLDc1LjQ5NnoiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzNDRDVBRiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+', className: 'icon-check' }
                                 react.create-element 'span', { className: 'bold confirmed' }, ' confirmed'
+                react.create-element 'div', { className: 'cell divider2' }
 module.exports = ({ store, web3t })->
     { go-back, switch-type-in, switch-type-out, coins, is-active, switch-filter } = history-funcs store, web3t
     style = get-primary-info store
@@ -715,7 +728,7 @@ module.exports = ({ store, web3t })->
         background: style.app.wallet-light
     expand-collapse = ->
         store.history.filter-open = not store.history.filter-open
-    react.create-element 'div', { className: 'normalheader history history80433799' }, children = 
+    react.create-element 'div', { className: 'normalheader history history944185242' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

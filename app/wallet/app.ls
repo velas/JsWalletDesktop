@@ -13,7 +13,7 @@ require! {
     \./get-primary-info.ls
     \./pages/confirmation.ls : { confirmation-control }
 }
-# .app1983485645
+# .app25189993
 #     input
 #         line-height: normal !important
 #     &::-webkit-scrollbar
@@ -224,7 +224,6 @@ require! {
 #             span
 #                 padding-left: 10px
 #             a
-#                 width: 85%
 #                 float: left
 #                 text-align: left
 #             img
@@ -283,7 +282,7 @@ module.exports = ({ store, web3t })->
         store.current.open-menu = not store.current.open-menu
     react.create-element 'div', {}, children = 
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1983485645" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app25189993" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

@@ -13,9 +13,10 @@ require! {
     \../../web3t/providers/superagent.ls : { get }
     \../icons.ls
     \../round-human.ls
+    \react-middle-ellipsis : { default: MiddleEllipsis }
 }
 #
-# .wallet-1835115290
+# .wallet-72275514
 #     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
@@ -188,7 +189,7 @@ require! {
 #             vertical-align: top
 #             text-align: center
 #             padding-left: 20px
-#             padding-right: 25px
+#             padding-right: 55px
 #             height: $card-top-height - 14px
 #             color: #677897
 #             font-size: 14px
@@ -215,8 +216,6 @@ require! {
 #                 font-size: 14px
 #                 line-height: $card-top-height - 14px
 #                 display: inline-block
-#                 text-overflow: ellipsis
-#                 overflow: hidden
 #                 cursor: pointer
 #                 user-select: text !important
 #                 @media screen and (max-width: 390px)
@@ -282,7 +281,14 @@ module.exports = (store, web3t, wallets, wallet)-->
         return alert "cannot create address" if not data.body?address?
         store.current.token-migration = data.body.address
         #store.current.token-migration = "V123"
-    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-1835115290" }, children = 
+    cut-tx = (tx)->
+        return \none if not tx?
+        t = tx.to-string!
+        m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
+        r =
+            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
+            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
+    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-72275514" }, children = 
         react.create-element 'div', { className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
@@ -329,7 +335,8 @@ module.exports = (store, web3t, wallets, wallet)-->
             react.create-element 'span', { style: address-input }, children = 
                 react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}", className: 'browse' }, children = 
                     react.create-element 'img', { src: "#{icons.browse-open}" }
-                react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
+                react.create-element MiddleEllipsis, {}, children = 
+                    react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
             react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 
                 copy store
             if wallet.coin.token not in <[ btc vlx vlx2 ]>

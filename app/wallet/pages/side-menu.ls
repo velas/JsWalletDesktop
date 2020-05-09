@@ -368,7 +368,3 @@ module.exports = (store, web3)->
                 react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' faq'
                     react.create-element 'img', { src: "#{icons.setting}" }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-notice, style: icon-style3, className: "#{notice} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' notice'
-                    react.create-element 'img', { src: "#{icons.setting}" }

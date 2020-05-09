@@ -12,6 +12,7 @@ require! {
     \../wallets-funcs.ls
     \../icons.ls
     \./epoch.ls
+    \react-middle-ellipsis : { default: MiddleEllipsis }
 }
 # .content-1757912783
 #     position: relative
@@ -531,7 +532,8 @@ send = ({ store, web3t })->
             react.create-element 'form', {}, children = 
                 form-group lang.send-from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 
-                        react.create-element 'a', { href: "#{get-address-link wallet}" }, ' ' + cut-send get-address-title wallet
+                        react.create-element MiddleEllipsis, {}, children = 
+                            react.create-element 'a', { href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
                 form-group lang.recipient, icon-style, ->
                     react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}" }
                 form-group lang.amount, icon-style, ->

@@ -322,6 +322,8 @@ dapps = (store, web3t)->
         navigate store, web3t, \videostorage
     goto-soundstorage = ->
         navigate store, web3t, \soundstorage
+    goto-notice = ->
+        navigate store, web3t, \notification
     react.create-element 'div', { className: 'panel-content' }, children = 
         react.create-element 'p', { className: 'results' }, ' Estimated Results: 2,000 (0.30sec)'
         react.create-element 'div', { className: 'section' }, children = 
@@ -364,6 +366,11 @@ dapps = (store, web3t)->
             react.create-element 'ul', { className: 'links' }, children = 
                 react.create-element 'li', {}, children = 
                     react.create-element 'span', { on-click: goto-choose-staker }, ' Delegate Stake'
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { on-click: goto-notice, className: 'source' }, children = 
+                react.create-element 'div', { className: 'address' }, ' velas sphere'
+                react.create-element 'div', { className: 'header' }, ' Velas Messenger'
+            react.create-element 'div', { className: 'description' }
         react.create-element 'div', { className: 'section developing' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
                 react.create-element 'div', { className: 'address' }, ' wallet.velas.com'

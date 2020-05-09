@@ -12,7 +12,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .notice-1097822946
+# .notice-2052754932
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -629,7 +629,7 @@ require! {
 #         scrollbar-width: none
 #         margin-top: 0px
 #         @media(max-width: 800px)
-#             padding: 20px
+#             padding: 0px
 #         >.panel-content
 #             margin-left: 300px
 #             padding: 20px
@@ -788,7 +788,7 @@ require! {
 #                     .in
 #                         text-align: left
 #                         >span
-#                             background: rgb(51, 20, 99)
+#                             background: #391e61
 #                             &:after
 #                                 border-left: 15px solid transparent
 #                                 left: -10px
@@ -797,7 +797,7 @@ require! {
 #                                 content: ''
 #                                 width: 0
 #                                 height: 0
-#                                 border-bottom: 15px solid rgb(51, 20, 99)
+#                                 border-bottom: 15px solid #391e61
 #                     .out
 #                         text-align: right
 #                         >span
@@ -884,6 +884,8 @@ require! {
 #                 span
 #                     display: inline-block
 #                     width: calc(100vw - 460px)
+#                     @media(max-width: 800px)
+#                         width: calc(100vw - 100px)
 #                     .name
 #                         font-size: 14px
 #                         line-height: 20px
@@ -1019,6 +1021,7 @@ require! {
 #                 display: inline-table
 #                 position: relative
 #                 margin-bottom: 40px
+#                 display: none
 #             &.file-tree
 #                 display: none
 #                 @media(max-width: 800px)
@@ -1359,6 +1362,9 @@ item2 = (store, web3t)->
     border-b =
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.header
+    border-t =
+        border-top: "1px solid #{info.app.border}"
+        background: info.app.header
     button-primary1-style=
         border: "1px solid #{info.app.primary1}"
         color: info.app.text
@@ -1373,6 +1379,10 @@ item2 = (store, web3t)->
         filter: info.app.nothingIcon
     switch-files = ->
         store.current.files = not store.current.files
+    search = ->
+        store.notice.search = not store.notice.search
+    search-show =
+        if store.notice.search then \active else \ ""
     file-tree =
         if store.current.files then \file-tree else \ ""
     imgs=
@@ -1380,10 +1390,47 @@ item2 = (store, web3t)->
     react.create-element 'div', { className: "#{file-tree} msg-content" }, children = 
         react.create-element 'div', { style: border-b, className: 'header' }, children = 
             react.create-element 'img', { src: "#{imgs.ava}" }
-            """Nicolas Gate"""
+            react.create-element 'span', {}, children = 
+                react.create-element 'div', { className: 'name' }, ' Nicolas Gate'
+                react.create-element 'div', { className: 'activity' }, ' last seen 2 minutes ago'
+            react.create-element 'ul', { className: 'action' }, children = 
+                react.create-element 'li', {}, children = 
+                    react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
+        react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
+        react.create-element 'div', { style: border-t, className: 'textarea' }, children = 
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Write a message..." }
+        react.create-element 'div', { className: 'content-msg' }, children = 
+            react.create-element 'ul', {}, children = 
+                react.create-element 'li', { className: 'in' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ Hi, bro"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'out' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ Hello"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'in' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ How are you feeling?"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'out' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ Good"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'out' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ And you?"""
+                        react.create-element 'span', {}, ' 22:53'
+                react.create-element 'li', { className: 'in' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ Also good!"""
+                        react.create-element 'span', {}, ' 22:53'
 notice = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
+    goto-search = ->
+        navigate store, web3t, \search
     info = get-primary-info store
     filter-body =
         border: "1px solid #{info.app.border}"
@@ -1464,12 +1511,12 @@ notice = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     imgs=
         ava: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1588866150/velas/interface_1.png"
-    react.create-element 'div', { className: 'notice notice-1097822946' }, children = 
+    react.create-element 'div', { className: 'notice notice-2052754932' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Messenger'
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
+            react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
