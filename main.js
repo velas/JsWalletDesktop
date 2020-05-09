@@ -24,23 +24,23 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   //console.log(path.join(__dirname, '/res/Icon-256.png'));
-  const height = 750;
+  const height = 800;
   const width = 1000;
   mainWindow = new BrowserWindow({
-    width: width, 
-    minWidth: width,
-    maxWidth: width,
+    width: width,
     height: height,
     minHeight: height,
     maxHeight: height,
     webPreferences: {
       nodeIntegration: true
     },
-    enableLargerThanScreen: true,
+    enableLargerThanScreen: false,
     fullscreenable: true,
     maximizable: true,
     resizable: true,
     center: true,
+    movable: true,
+    title: "Velas Wallet",
     icon: path.join(__dirname, 'res/Icon-1024.png')
   })
   // and load the index.html of the app.
