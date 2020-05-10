@@ -87,7 +87,7 @@ module.exports =
     cta: "Please select an action below"
     new-wallet: "Create"
     restore-wallet: "Restore"
-    words-are-not-match: "Words are not match"
+    words-are-not-match: "The word is entered incorrectly"
     back: "Back"
     your-language: "Your language"
     links-doc: "Links"

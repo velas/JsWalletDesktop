@@ -139,6 +139,7 @@ store =
         all: []
         applied: []
     current:
+        verify-seed-index: 0
         verify-seed: ""
         verify-seed-error: no
         device: get-device!

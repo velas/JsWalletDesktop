@@ -152,11 +152,14 @@ newseed = ({ store, web3t })->
         console.log item.original.part, item.part
         item.original.part isnt item.part
     verify-seed = ->
-        wrong =
-            store.current.verify-seed-indexes |> find wrong-word
-        return store.current.verify-seed-error = yes if wrong?
+        ixs = store.current.verify-seed-indexes
+        item = ixs[store.current.verify-seed-index]
+        wrong = item.original.part isnt item.part
+        return store.current.verify-seed-error = yes if wrong
+        return store.current.verify-seed-index += 1 if store.current.verify-seed-index + 1 < ixs.length
         save!
     back = ->
+        return store.current.verify-seed-indexes += 1 if store.current.verify-seed-indexes > 0
         store.current.page = \newseed
     build-verify-seed = (store, item)-->
         enter-confirm = ->
@@ -167,7 +170,7 @@ newseed = ({ store, web3t })->
         react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase ? 'Verify Seed Phrase'
         react.create-element 'div', { className: 'words' }, children = 
-            store.current.verify-seed-indexes |> map build-verify-seed store
+            build-verify-seed store, store.current.verify-seed-indexes[store.current.verify-seed-index]
         react.create-element 'div', {}, children = 
             react.create-element 'button', { style: button-primary1-style, on-click: verify-seed, className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
@@ -180,13 +183,14 @@ newseed = ({ store, web3t })->
                     """ #{lang.back ? 'Back' }"""
         if store.current.verify-seed-error is yes
             react.create-element 'div', { style: text-style, className: 'warning' }, children = 
-                react.create-element 'div', {}, ' ' + lang.words-are-not-match ? 'Words are not match' 
+                react.create-element 'div', {}, ' ' + lang.words-are-not-match ? 'The word is entered incorrectly' 
 random = ->
     Math.floor((Math.random! * 10) + 1)
 get-verifier = (store)-> (original)->
     index = store.current.seed-words.index-of(original)
     { index, part: '', original }
 init = ({ store }, cb)->
+    store.current.verify-seed-index = 0
     store.current.verify-seed-indexes =
         store.current.seed-words
             |> map get-verifier(store)
