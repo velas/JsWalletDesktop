@@ -11,7 +11,6 @@ require! {
     \./langs/es.ls
     \./icons.ls
     \./get-device.ls
-    \../package.json : { version }
 }
 saved-seed = saved!
 create-send =->
@@ -212,5 +211,5 @@ store =
         about: no
     rates: {}
     coins: []
-    version: version
+    version: "0.12.73"
 module.exports = store
