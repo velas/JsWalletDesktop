@@ -280,19 +280,6 @@ module.exports = (store, web3)->
         vertical-align: "sub"
         width: "12px"
         padding-right: "10px"
-    set-lang = (lang)->
-        return alert "lang is not available" if not store.langs[store.lang]?
-        store.lang = lang
-    change-lang-en = ->
-        return set-lang \en
-    change-lang-ru = ->
-        return set-lang \ru
-    change-lang-ua = ->
-        return set-lang \ua
-    change-lang-cn = ->
-        return set-lang \cn
-    change-lang-kr = ->
-        return set-lang \kr
     text-style=
         color: style.app.text
     wallet = ->
@@ -328,7 +315,7 @@ module.exports = (store, web3)->
     staking = if store.current.submenu then \active else \not-active
     react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu-788428362' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
-            react.create-element 'img', { src: "#{info.branding.logo}", style: logo-style }
+            react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
         if store.preference.lock-visible is yes
             react.create-element 'div', { on-click: lock, style: icon-style, className: 'menu-item bottom' }, children = 
                 react.create-element 'img', { src: "#{icons.lock}", style: lock-icon }
@@ -364,7 +351,8 @@ module.exports = (store, web3)->
                 react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' settings'
                     react.create-element 'img', { src: "#{icons.setting}" }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' faq'
-                    react.create-element 'img', { src: "#{icons.setting}" }
+            if no
+                if store.preference.settings-visible is yes
+                    react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' faq'
+                        react.create-element 'img', { src: "#{icons.setting}" }

@@ -11,6 +11,7 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./videoupload.ls
 }
 # .videostorage1812653883
 #     @import scheme
@@ -768,8 +769,15 @@ menu = (store, web3t)->
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
+    open-upload-link = ->
+        store.video.upload-link = yes
     react.create-element 'div', { style: filter-body, className: 'menu' }, children = 
         react.create-element 'div', { className: 'middle' }, children = 
+            react.create-element 'div', { on-click: open-upload-link, className: 'table-row-menu' }, children = 
+                react.create-element 'div', { className: 'col folder-menu' }, children = 
+                    react.create-element 'span', {}, children = 
+                        react.create-element 'img', { src: "#{icons.add-video}", className: 'icon-svg' }
+                        """ Upload link"""
             react.create-element 'div', { on-click: drag-file, className: 'table-row-menu' }, children = 
                 react.create-element 'div', { className: 'col folder-menu' }, children = 
                     react.create-element 'span', {}, children = 
@@ -1240,6 +1248,8 @@ video = (store, web3t)->
 videostorage = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
+    goto-search = ->
+        navigate store, web3t, \search
     info = get-primary-info store
     filter-body =
         border: "1px solid #{info.app.border}"
@@ -1321,7 +1331,10 @@ videostorage = ({ store, web3t })->
         store.video.menu-open = not store.video.menu-open
     show-class =
         if store.current.open-menu then \hide else \ ""
+    open-upload-link = ->
+        store.video.upload-link = yes
     react.create-element 'div', { className: 'videostorage videostorage1812653883' }, children = 
+        videoupload { store, web3t }
         react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
             react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
                 react.create-element 'div', { className: 'table-row-menu' }, children = 
@@ -1350,7 +1363,7 @@ videostorage = ({ store, web3t })->
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
+            react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t

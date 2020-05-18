@@ -299,18 +299,18 @@ manage-account = (store, web3t)->
     goto-terms = ->
         navigate store, web3t, \terms2
     set-lang = (lang)->
-        return alert "lang is not available" if not store.langs[store.lang]?
+        #return alert "lang is not available" if not store.langs[store.lang]?
         store.lang = lang
     change-lang-en = ->
         return set-lang \en 
     change-lang-ru = ->
         return set-lang \ru
     change-lang-ua = ->
-        return set-lang \ua
+        return set-lang \uk
     change-lang-cn = ->
-        return set-lang \cn
+        return set-lang \zh
     change-lang-kr = ->
-        return set-lang \kr
+        return set-lang \ko
     change-lang-fr = ->
         return set-lang \fr
     change-lang-es = ->
@@ -359,7 +359,7 @@ manage-account = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
                         """ Қазақ"""
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
-        if window.location.href.index-of('internal') > -1
+        if store.url-params.internal?
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.secret-phrase ? 'Secret Phrase'
                 react.create-element 'div', { style: color, className: 'description' }, ' ' + lang.secret-phrase-warning ? 'You are responsible for keeping this phrase safe. In case of loss of this phrase, we will not be able to help you restore it.'

@@ -260,13 +260,13 @@ module.exports = (store, web3t)->
                 react.create-element 'div', { on-click: topup(store), style: button-primary1-style, className: 'button edit' }, ' ' + lang.topup
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: add-coin(store), style: button-primary4-style, className: 'button lock mt-5' }, children = 
-                    react.create-element 'img', { src: "#{icons.plus}", className: 'icon-svg-plus' }
+                    react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
             if no
                 if store.current.device is \mobile
                     react.create-element 'button', { on-click: open-migration, style: button-primary1-style, className: 'button lock mt-5' }, ' Migration'
             if store.current.device is \desktop
                 react.create-element 'button', { on-click: add-coin(store), style: button-primary0-style, className: 'button lock' }, children = 
-                    react.create-element 'img', { src: "#{icons.plus}", className: 'icon-svg1' }
+                    react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg1' }
             if no
                 if store.current.device is \desktop
                     react.create-element 'button', { on-click: open-migration, style: button-primary0-style, className: 'button lock' }, children = 

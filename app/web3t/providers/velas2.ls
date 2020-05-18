@@ -84,14 +84,13 @@ make-query = (network, method, params, cb)->
 export get-transaction-info = (config, cb)->
     { network, tx } = config
     query = [tx]
-    err, info <- make-query network, \eth_getTransactionReceipt , query
+    err, tx <- make-query network, \eth_getTransactionReceipt , query
     return cb err if err?
-    tx = info?result
-    return cb "expected result" if typeof! tx isnt \Object
     status = 
+        | typeof! tx isnt \Object => \pending
         | tx.status is \0x1 => \confirmed
         | _ => \pending
-    result = { tx.from, tx.to, status, info: tx }
+    result = { tx?from, tx?to, status, info: tx }
     cb null, result
 get-gas-estimate = ({ network, query, gas }, cb)->
     return cb null, gas if gas?

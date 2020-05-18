@@ -13,7 +13,7 @@ require! {
     \./get-primary-info.ls
     \./pages/confirmation.ls : { confirmation-control }
 }
-# .app25189993
+# .app1096592069
 #     input
 #         line-height: normal !important
 #     &::-webkit-scrollbar
@@ -48,6 +48,12 @@ require! {
 #                 text-align: left !important
 #                 margin-left: 70px !important
 #                 font-size: 12px !important
+#         &.alert
+#             .header
+#                 @media(max-width: 820px)
+#                     text-align: center !important
+#                     margin-left: 0px !important
+#                     font-size: 12px !important
 #         .close
 #             @media(max-width: 820px)
 #                 position: absolute !important
@@ -76,6 +82,14 @@ require! {
 #                 line-height: 44px
 #             @media(max-width: 800px)
 #                 visibility: hidden
+#                 display: none
+#             &.txn
+#                 margin-left: 60px
+#                 @media(max-width: 800px)
+#                     visibility: visible
+#                     margin-top: 60px
+#                     margin-left: 0
+#                     display: block
 #     .manage-account
 #         margin-left: -60px
 #         @media (max-width: 800px)
@@ -135,7 +149,7 @@ require! {
 #             >.title
 #                 margin: 60px 0 0
 #                 position: fixed
-#                 z-index: 1111111
+#                 z-index: 11
 #     .show-detail
 #         overflow: hidden
 #         .wallet
@@ -282,7 +296,7 @@ module.exports = ({ store, web3t })->
         store.current.open-menu = not store.current.open-menu
     react.create-element 'div', {}, children = 
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app25189993" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1096592069" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

@@ -14,9 +14,10 @@ require! {
     \../icons.ls
     \../round-human.ls
     \react-middle-ellipsis : { default: MiddleEllipsis }
+    \./confirmation.ls : { alert }
 }
 #
-# .wallet-72275514
+# .wallet1861632262
 #     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
@@ -76,7 +77,7 @@ require! {
 #                     vertical-align: top
 #                     max-width: 50px
 #                     $s: 35px
-#                     border-radius: $s
+#                     border-radius: 0
 #                     width: $s
 #                     height: $s
 #             >.info
@@ -218,8 +219,7 @@ require! {
 #                 display: inline-block
 #                 cursor: pointer
 #                 user-select: text !important
-#                 @media screen and (max-width: 390px)
-#                     width: 90%
+cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
     { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
@@ -269,16 +269,15 @@ module.exports = (store, web3t, wallets, wallet)-->
         store.terms2 = res.text
         cb null
     migrate = (wallet)-> ->
-        #return alert "disabled" if window.location.href.index-of('internal') is -1
         err <- load-terms
         address = 
             store.current.account.wallets 
                 |> find (-> it.coin.token is \vlx2) 
                 |> (.address)
-        return alert "addres #{address} is wrong" if typeof! address isnt \String
+        return alert store, "addres #{address} is wrong", cb if typeof! address isnt \String
         err, data <- get "https://mainnet-v2.velas.com/migration/topup-velas-address/#{address}" .end
-        return alert "#{err}" if err?
-        return alert "cannot create address" if not data.body?address?
+        return alert store, "#{err}", cb if err?
+        return alert store, "cannot create address", cb if not data.body?address?
         store.current.token-migration = data.body.address
         #store.current.token-migration = "V123"
     cut-tx = (tx)->
@@ -288,7 +287,7 @@ module.exports = (store, web3t, wallets, wallet)-->
         r =
             | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
             | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
-    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-72275514" }, children = 
+    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet1861632262" }, children = 
         react.create-element 'div', { className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 

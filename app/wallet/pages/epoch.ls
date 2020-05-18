@@ -305,7 +305,7 @@ module.exports = (store, web3t)->
         store.current.current-epoch = no
     react.create-element 'div', { className: 'choose-account choose-account2040873820' }, children = 
         react.create-element 'div', { className: "#{show-class} current-epoch h1" }, children = 
-            react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' Epoch'
+            react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
             react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
         if store.current.current-epoch
@@ -321,7 +321,9 @@ module.exports = (store, web3t)->
                         react.create-element 'div', { className: 'col folder-menu' }, children = 
                             react.create-element 'div', {}, children = 
                                 react.create-element 'progress', { value: "#{store.dashboard.epoch-percent}", max: "100" }
-                            react.create-element 'span', {}, ' Change ' + epoch-next
+                            react.create-element 'span', {}, children = 
+                                """ #{lang.change} """
+                                """ #{epoch-next}"""
                         if window.location.href.index-of('internal') > -1
                             react.create-element 'div', { className: 'col folder-menu' }, children = 
                                 react.create-element 'div', {}, children = 

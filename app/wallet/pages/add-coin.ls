@@ -9,7 +9,7 @@ require! {
     \../icons.ls
     \superagent : { get }
 }
-# .manage-account-1157548064
+# .manage-account1944151434
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -50,7 +50,7 @@ require! {
 #             color: gray
 #             font-size: 22px
 #             padding: 10px
-#             .close
+#             .closed
 #                 position: absolute
 #                 padding: 10px 20px
 #                 font-size: 20px
@@ -62,6 +62,8 @@ require! {
 #             .search-content
 #                 position: relative
 #                 padding: 0 10px
+#                 @media (max-width: 580px)
+#                     padding: 0
 #                 .search
 #                     margin-top: 10px
 #                     border: 1px solid #CCC
@@ -76,6 +78,8 @@ require! {
 #                     top: 6px
 #                     left: 20px
 #                     position: absolute
+#                     @media (max-width: 580px)
+#                         left: 10px
 #         >.settings
 #             padding-top: 90px
 #             padding-bottom: 90px
@@ -88,8 +92,8 @@ require! {
 #                     height: 80%
 #                     padding: 10px
 #                     margin: auto 10px
-#                     @media (max-width: 550px)
-#                         margin: auto
+#                     @media (max-width: 580px)
+#                         padding: 10px 0
 #                     .item
 #                         width: 49%
 #                         margin-bottom: 10px
@@ -100,12 +104,12 @@ require! {
 #                         text-align: left
 #                         float: left
 #                         box-sizing: border-box
-#                         @media (max-width: 550px)
-#                             width: 97%
+#                         @media (max-width: 580px)
+#                             width: 100%
 #                             float: none
 #                         &:nth-child(odd)
 #                             margin-right: 10px
-#                             @media (max-width: 550px)
+#                             @media (max-width: 580px)
 #                                 margin-right: 0
 #                         >*
 #                             display: inline-block
@@ -142,8 +146,9 @@ require! {
 #                             background: transparent
 #                             outline: none
 #                             &:hover
-#                                 background: #7083e8
 #                                 color: white
+#                                 opacity: .6
+#                                 transition: .5s
 #                             >*
 #                                 vertical-align: middle
 create-item = ({ store, web3t }, item)-->
@@ -205,12 +210,12 @@ module.exports = ({ store, web3t } )->
         color: style.app.text
         background: style.app.wallet
         border: "0"
-    react.create-element 'div', { className: 'manage-account manage-account-1157548064' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account1944151434' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: account-body-style, className: 'title' }, children = 
                 react.create-element 'div', {}, children = 
-                    react.create-element 'div', {}, ' ' + lang.edit-coins
-                    react.create-element 'div', { on-click: close, className: 'close' }, children = 
+                    react.create-element 'div', {}, ' ' + lang.your-wallets
+                    react.create-element 'div', { on-click: close, className: 'closed' }, children = 
                         icon \X, 20
                 react.create-element 'div', { className: 'search-content' }, children = 
                     react.create-element 'input', { placeholder: "#{lang.search}", on-change: filter-registery, style: input-style, className: 'search' }

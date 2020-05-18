@@ -5,6 +5,8 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \../icons.ls
+    \prelude-ls : { filter }
+    \./confirmation.ls : { confirm }
 }
 # .sent-1181172205
 #     .animation
@@ -167,17 +169,28 @@ module.exports = ({ store, web3t })->
         filter: style.app.nothingIcon
     btn-icon =
         filter: style.app.btn-icon
+    has-pending =
+        store.transactions.applied 
+            |> filter (.pending) 
+            |> (.length > 0)
+    inacurate = (cb)->
+        return cb null if has-pending is no
+        agree <- confirm store, "Your still have a pending transaction. Some of the counts may be inaccurate."
+        #console.log 'after confirm', agree
+        return cb "disagree" if not agree
+        cb null
     go-home = ->
+        err <- inacurate
+        return cb err if err?
         navigate store, web3t, \wallets
     lang = get-lang store
     react.create-element 'div', { className: 'sent sent-1181172205' }, children = 
         react.create-element 'div', { className: 'animation' }, children = 
-            react.create-element 'div', { className: 'show' }, children = 
-                react.create-element 'img', { src: "#{icons.sent-check}", className: 'icon-sent' }
-            react.create-element 'div', { className: 'hide' }, children = 
+            if has-pending
                 react.create-element 'img', { style: sent-icon, src: "#{icons.sent-plane}", className: 'icon-sent' }
+            else
+                react.create-element 'img', { src: "#{icons.sent-check}", className: 'icon-sent' }
         react.create-element 'div', { style: text-style, className: 'text' }, children = 
-            react.create-element 'span', {}, ' ' + lang.your + ' '
             react.create-element 'a', { style: link-style, href: "#{store.current.last-tx-url}", target: "_blank" }, ' ' + lang.transaction ? 'transaction'
             react.create-element 'span', {}, '  ' + lang.has-been-sent ? 'has been sent'
         react.create-element 'button', { on-click: go-home, style: button-primary3-style, className: 'button' }, children = 

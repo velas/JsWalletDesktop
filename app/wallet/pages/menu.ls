@@ -11,13 +11,19 @@ require! {
     \./header.ls
     \../round-human.ls
 }
-# .menu1818567143
-#     padding: 0 5px
+# .menu-965638392
 #     height: 199px
 #     line-height: 200px
+#     $mobile: 425px
+#     $tablet: 800px
 #     &.wallet-main
 #         @media(max-width: 800px)
-#             margin: 60px 0 0
+#             margin: 0px 15px 0
+#             position: relative
+#             left: 0
+#             right: 0
+#         @media(max-width: $mobile)
+#             margin: 0
 #     .syncing
 #         @keyframes spin
 #             from
@@ -138,13 +144,13 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu1818567143' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-965638392' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
                     react.create-element 'div', { className: 'symbol' }, ' $'
                     react.create-element 'div', { title: "#{current.balance-usd}", className: 'number' }, ' ' + round-human current.balance-usd
-                react.create-element 'div', { className: 'currency h1' }, ' ' + lang.total-balance ? 'Total Balance'
+                react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance ? 'Balance'
                 react.create-element 'div', {}, children = 
                     if store.preference.refresh-visible is yes
                         react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item loader" }, children = 

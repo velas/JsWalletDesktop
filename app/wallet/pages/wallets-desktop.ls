@@ -17,7 +17,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .wallets998991253
+# .wallets1800984887
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -39,6 +39,8 @@ require! {
 #         position: relative
 #         height: 10px
 #     &.hide-detail
+#         .wallet-middle
+#             display: none !important
 #         .big
 #             height: 60px
 #         .big.active
@@ -79,9 +81,6 @@ require! {
 #             opacity: .05
 #             top: 20px
 #             left: -5px
-#         .hidden
-#             @media(max-width: 940px)
-#                 visibility: hidden
 #     .switch-account
 #         float: right
 #         line-height: 2
@@ -96,7 +95,7 @@ require! {
 #             text-overflow: ellipsis
 #             white-space: nowrap
 #             overflow: hidden
-#             width: 110px
+#             width: 90px
 #             text-align: right
 #             cursor: default
 #         input
@@ -227,23 +226,23 @@ mobile = ({ store, web3t })->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!  
-    react.create-element 'div', { key: "wallets", style: row }, children = 
-        react.create-element 'div', { style: left-side }, children = 
-            menu { store, web3t }
-            manage-account { store, web3t }
-            token-migration { store, web3t }
-            add-coin-page { store, web3t }
-            react.create-element 'div', { key: "wallets-body", className: 'wallets hide-detail wallets998991253' }, children = 
-                react.create-element 'div', { style: header-style, className: 'header' }, children = 
-                    react.create-element 'span', { style: header-left, className: 'head left h1 hidden' }, ' ' + lang.your-wallets
-                    chosen-account-template
-                    your-account store, web3t
-                react.create-element 'div', { key: "wallets-viewport", style: border-style, className: 'wallet-container' }, children = 
-                    wallets
-                        #|> filter -> it.coin.token isnt \vlx2 or window.location.href.index-of('internal') > -1
-                        |> map wallet store, web3t, wallets
-        react.create-element 'div', { style: right-side, className: 'show-detail' }, children = 
-            wallets
-                |> map wallet store, web3t, wallets
-            history { store, web3t }
+    react.create-element 'div', { key: "wallets" }, children = 
+        react.create-element 'div', { style: row }, children = 
+            react.create-element 'div', { style: left-side }, children = 
+                menu { store, web3t }
+                manage-account { store, web3t }
+                token-migration { store, web3t }
+                add-coin-page { store, web3t }
+                react.create-element 'div', { key: "wallets-body", className: 'wallets hide-detail wallets1800984887' }, children = 
+                    react.create-element 'div', { style: header-style, className: 'header' }, children = 
+                        react.create-element 'span', { style: header-left, className: 'head left h1 hidden' }, ' ' + lang.your-wallets
+                        chosen-account-template
+                        your-account store, web3t
+                    react.create-element 'div', { key: "wallets-viewport", style: border-style, className: 'wallet-container' }, children = 
+                        wallets
+                            |> map wallet store, web3t, wallets
+            react.create-element 'div', { style: right-side, className: 'show-detail' }, children = 
+                wallets
+                    |> map wallet store, web3t, wallets
+                history { store, web3t }
 module.exports = mobile

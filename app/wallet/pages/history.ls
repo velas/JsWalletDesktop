@@ -12,12 +12,48 @@ require! {
     \../icons.ls
     \react-middle-ellipsis : { default: MiddleEllipsis }
 }
-# .history944185242
+# .history606400110
 #     @import scheme
 #     width: 100%
 #     position: relative
 #     padding-bottom: 0px
 #     display: inline-block
+#     .from-to
+#         width: 40px
+#         display: inline-block
+#     .tooltip
+#         position: absolute
+#         text-transform: uppercase
+#         left: 25px
+#         top: -8px
+#         z-index: 1
+#         line-height: 14px
+#         font-size: 9px
+#         font-weight: 600
+#         color: #fff
+#         padding: 5px
+#         background: #210b4a
+#         visibility: hidden
+#         border: 1px solid #6b268e
+#         &:after, &:before
+#             right: 100%
+#             top: 21%
+#             border: solid transparent
+#             content: " "
+#             height: 0
+#             width: 0
+#             position: absolute
+#             pointer-events: none
+#         &:after
+#             border-color: rgba(136, 183, 213, 0)
+#             border-right-color: #210b4a
+#             border-width: 6px
+#             margin-top: 2px
+#         &:before
+#             border-color: rgba(194, 225, 245, 0)
+#             border-right-color: #6b268e
+#             border-width: 8px
+#             margin-top: 0px
 #     .icon-svg1
 #         position: relative
 #         border-radius: 0px
@@ -28,8 +64,13 @@ require! {
 #         height: 12px
 #         top: 0px
 #     .smart-contract
-#         padding-left: 10px
 #         color: orange
+#         position: relative
+#         .help
+#             cursor: help
+#         &:hover
+#             .tooltip
+#                 visibility: visible
 #     &.normalheader
 #         @media(max-width: 800px)
 #             margin: 60px 0 0
@@ -312,7 +353,7 @@ require! {
 #                     img
 #                         border-radius: inherit
 #                         border: none
-#                         margin-left: 3px
+#                         margin-right: 13px
 #                         height: 12px
 #                         left: 3px
 #                         position: relative
@@ -350,7 +391,7 @@ require! {
 #                             position: relative
 #                             width: 15px
 #                             height: 13px !important
-#                     a
+#                     .time-ago
 #                         display: block
 #                         text-overflow: ellipsis
 #                         overflow: hidden
@@ -372,7 +413,7 @@ require! {
 #                         top: 17px
 #                         z-index: 1
 #                         line-height: 14px
-#                         font-size: 10px
+#                         font-size: 9px
 #                         font-weight: 600
 #                         color: #fff
 #                         padding: 5px
@@ -421,7 +462,7 @@ require! {
 #                 img
 #                     border-radius: inherit
 #                     border: none
-#                     margin-left: 3px
+#                     margin-right: 13px
 #                     height: 12px
 #                     left: 3px
 #                     position: relative
@@ -556,7 +597,7 @@ loader = ({ store, web3t })->
             react.create-element 'path', { d: 'M10.3866667,9.16777778 C10.54,8.90111111 10.8794444,8.80888889 11.145,8.96388889 L13.7922222,10.4905556 C14.0583333,10.6455556 14.1477778,10.9844444 13.9944444,11.2505556 C13.8416667,11.5166667 13.5011111,11.6061111 13.2333333,11.4538889 L10.5894444,9.92666667 C10.3238889,9.77222222 10.2338889,9.43277778 10.3866667,9.16777778 Z' }
             react.create-element 'path', { d: 'M14.4433333,6.94388889 L11.3872222,6.94388889 C11.0805556,6.94388889 10.8311111,7.19277778 10.8311111,7.5 C10.8311111,7.80666667 11.0794444,8.05555556 11.3872222,8.05555556 L14.4433333,8.05555556 C14.7511111,8.05555556 15,7.80666667 15,7.5 C15,7.19222222 14.7511111,6.94388889 14.4433333,6.94388889 Z' }
 render-transaction = (store, web3t, tran)-->
-    { transaction-info, coins, cut-tx, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago } = history-funcs store, web3t
+    { transaction-info, coins, checked, cut-tx, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago } = history-funcs store, web3t
     style = get-primary-info store
     filter-icon=
         filter: style.app.filterIcon
@@ -602,6 +643,11 @@ render-transaction = (store, web3t, tran)-->
         | description is \internal => 'Smart'
         | description is \external => 'User'
         | _ => 'Unknown'
+    about-icon = 
+        | recipient-type is \contract => \ "#{icons.smart}"
+        | description is \internal => \ "#{icons.smart}"
+        | description is \external => \ "#{icons.user}"
+        | _ => \ "#{icons.unknown}"
     react.create-element 'div', { key: "#{tx + type}", style: border-style, className: "#{type} record" }, children = 
         react.create-element 'div', { style: line-style, className: 'tx-top' }, children = 
             react.create-element 'div', { className: 'cell text-center network' }, children = 
@@ -613,10 +659,13 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'img', { src: "#{arrow-lg(type)}", className: 'icon-svg' }
             react.create-element 'div', { className: 'cell details-from' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
-                    react.create-element 'span', {}, ' ' + lang.tx-from + ':'
-                    react.create-element CopyToClipboard, { text: "#{from}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                        copy store
-                    react.create-element 'span', { className: 'smart-contract' }, ' ' + about
+                    react.create-element 'span', { className: 'from-to' }, ' ' + lang.from + ':'
+                    react.create-element 'span', { className: 'action' }, children = 
+                        react.create-element CopyToClipboard, { text: "#{from}", on-copy: copied-inform(store), style: filter-icon }, children = 
+                            copy store
+                        react.create-element 'span', { className: 'smart-contract' }, children = 
+                            react.create-element 'div', { className: 'tooltip' }, ' ' + about
+                            react.create-element 'img', { src: "#{about-icon}", className: 'help' }
                 react.create-element MiddleEllipsis, {}, children = 
                     react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + from
             if no
@@ -624,28 +673,27 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg1' }
             react.create-element 'div', { className: 'cell details-to' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
-                    react.create-element 'span', {}, ' ' + lang.tx-to + ':'
-                    react.create-element CopyToClipboard, { text: "#{to}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                        copy store
-                    react.create-element 'span', { className: 'smart-contract' }, ' ' + about
+                    react.create-element 'span', { className: 'from-to' }, ' ' + lang.to + ':'
+                    react.create-element 'span', { className: 'action' }, children = 
+                        react.create-element CopyToClipboard, { text: "#{to}", on-copy: copied-inform(store), style: filter-icon }, children = 
+                            copy store
+                        react.create-element 'span', { className: 'smart-contract' }, children = 
+                            react.create-element 'div', { className: 'tooltip' }, ' ' + about
+                            react.create-element 'img', { src: "#{about-icon}", className: 'help' }
                 react.create-element MiddleEllipsis, {}, children = 
                     react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + to
             react.create-element 'div', { className: 'cell created' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                     react.create-element 'span', {}, ' ' + lang.created + ': '
-                react.create-element 'a', {}, children = 
+                react.create-element 'div', { className: 'time-ago' }, children = 
                     if pending is yes
                         react.create-element 'span', {}, children = 
                             react.create-element 'span', { className: 'bold' }, children = 
                                 loader store, web3t
-                                if no
-                                    icon \Sync, 10
                     else
                         react.create-element 'span', {}, children = 
                             react.create-element 'span', { className: 'bold' }, children = 
                                 react.create-element 'img', { src: 'data:image/svg+xml;base64,\PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNNTA0LjUwMiw3NS40OTZjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5OC0zNi4yMDQsMEwxNjEuNTk0LDM4Mi4yMDNMNDMuNzAyLDI2NC4zMTFjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5Ny0zNi4yMDQsMCAgICBjLTkuOTk4LDkuOTk3LTkuOTk4LDI2LjIwNSwwLDM2LjIwM2wxMzUuOTk0LDEzNS45OTJjOS45OTQsOS45OTcsMjYuMjE0LDkuOTksMzYuMjA0LDBMNTA0LjUwMiwxMTEuNyAgICBDNTE0LjUsMTAxLjcwMyw1MTQuNDk5LDg1LjQ5NCw1MDQuNTAyLDc1LjQ5NnoiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzNDRDVBRiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+', className: 'icon-check' }
-                                if no
-                                    react.create-element 'img', { src: "#{icons.sent-check}", className: 'icon-check' }, ' '
                     """#{ago time}"""
             react.create-element 'div', { style: menu-style, className: 'cell amount' }, children = 
                 react.create-element 'div', { title: "#{amount}", style: amount-pending }, children = 
@@ -728,7 +776,7 @@ module.exports = ({ store, web3t })->
         background: style.app.wallet-light
     expand-collapse = ->
         store.history.filter-open = not store.history.filter-open
-    react.create-element 'div', { className: 'normalheader history history944185242' }, children = 
+    react.create-element 'div', { className: 'normalheader history history606400110' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 
@@ -756,17 +804,11 @@ module.exports = ({ store, web3t })->
                         react.create-element 'button', { on-click: '', style: button-primary1-style }, children = 
                             react.create-element 'span', {}, children = 
                                 react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-btn' }
-                                """ #{lang.apply}"""
+                                """ #{lang.btn-apply}"""
                     react.create-element 'div', { className: 'bottom' }, children = 
                         for coin in coins
                             react.create-element 'button', { key: "#{coin.token}", style: filter-style, on-click: switch-filter(coin.token), className: "#{is-active(coin.token)}" }, children = 
                                 react.create-element 'img', { src: "#{coin.image}" }
-        if no    
-            if store.transactions.applied.length > 0
-                react.create-element 'div', { style: header-table-style, className: 'header-table' }, children = 
-                    react.create-element 'span', { style: lightText, className: 'cell network' }, ' ' + lang.network
-                    react.create-element 'span', { style: lightText, className: 'cell txhash' }, ' ' + lang.trx-id
-                    react.create-element 'span', { style: lightText, className: 'cell amount' }, ' ' + lang.trx-amount
         react.create-element 'div', {}, children = 
             react.create-element 'div', { className: 'table' }, children = 
                 if store.transactions.applied.length > 0

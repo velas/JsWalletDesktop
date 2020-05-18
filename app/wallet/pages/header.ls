@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .menu516230070
+# .menu-2053005981
 #     width: 100%
 #     text-align: right
 #     padding: 20px 15px
@@ -19,6 +19,12 @@ require! {
 #     position: fixed
 #     z-index: 111
 #     $smooth: color .15s ease-in-out
+#     &.show
+#         .menu-item
+#             display: inline-block
+#             &.menu-btn
+#                 opacity: .5
+#                 transition: all .5s
 #     .logo
 #         position: absolute
 #         width: auto
@@ -100,6 +106,135 @@ require! {
 #             -webkit-mask-position: right
 #         100%
 #             -webkit-mask-position: left
+#     .menu-item
+#         span
+#             opacity: 0
+#             position: absolute
+#             left: 0
+#         svg, img
+#             transition: transform .5s
+#         .menu
+#             opacity: 0
+#             position: absolute
+#             top: -160px
+#         &.submenu
+#             .menu
+#                 padding: 15px !important
+#                 position: absolute
+#                 text-transform: uppercase
+#                 left: -110px
+#                 top: 37px
+#                 z-index: 1
+#                 height: auto
+#                 width: 140px
+#                 font-size: 10px
+#                 color: #fff
+#                 padding: 5px
+#                 background: rgb(51, 20, 99)
+#                 opacity: 1
+#                 transition: opacity .5s
+#                 box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
+#                 ul
+#                     list-style: none
+#                     padding: 0
+#                     text-align: left
+#                     margin: 0
+#                     li
+#                         &:hover
+#                             color: #9264b6 !important
+#                             transition: .5s
+#                             img
+#                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+#                                 transition: .5s
+#                         margin-bottom: 15px
+#                         font-size: 12px
+#                         &:last-child
+#                             margin-bottom: 0
+#                         &.active
+#                             color: #9264b6 !important
+#                             img
+#                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+#                         img
+#                             filter: none
+#                 &.arrow_box
+#                     border: 1px solid #6b268e
+#         &:hover
+#             svg, img
+#                 transform: scale(1)
+#                 transition: transform .5s
+#             span
+#                 position: absolute
+#                 text-transform: uppercase
+#                 left: 70px
+#                 top: 17px
+#                 font-size: 10px
+#                 font-weight: 600
+#                 color: #fff
+#                 padding: 5px
+#                 background: #210b4a
+#                 opacity: 1
+#                 transition: opacity .5s
+#                 &.arrow_box
+#                     border: 1px solid #6b268e
+#                     &:after, &:before
+#                         right: 100%
+#                         top: 21%
+#                         border: solid transparent
+#                         content: " "
+#                         height: 0
+#                         width: 0
+#                         position: absolute
+#                         pointer-events: none
+#                     &:after
+#                         border-color: rgba(136, 183, 213, 0)
+#                         border-right-color: #210b4a
+#                         border-width: 6px
+#                         margin-top: 2px
+#                     &:before
+#                         border-color: rgba(194, 225, 245, 0)
+#                         border-right-color: #6b268e
+#                         border-width: 8px
+#                         margin-top: 0px
+#         &.active
+#             color: #9264b6 !important
+#             transition: $smooth
+#             -webkit-transition: $smooth
+#             -moz-transition: $smooth
+#             -ms-transition: $smooth
+#             -o-transition: $smooth
+#             img
+#                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+#         &.syncing
+#             @keyframes spin
+#                 from
+#                     transform: rotate(0deg)
+#                 to 
+#                     transform: rotate(360deg)
+#             animation-name: spin
+#             animation-duration: 4000ms
+#             animation-iteration-count: infinite
+#             animation-timing-function: linear
+#         cursor: pointer
+#         opacity: 0.9
+#         &:hover
+#             opacity: 1
+#         vertical-align: bottom
+#         line-height: normal
+#         display: none
+#         margin-left: 20px
+#         position: relative
+#         height: 20px
+#         line-height: 15px
+#         width: 20px
+#         text-align: center
+#         z-index: 11
+#         &.menu-btn, &.locked
+#             display: inline-block
+#         &.class
+#             position: absolute
+#             top: 530px
+#             left: 0
+#             color: transparent !important
 module.exports = (store, web3)->
     #return null if not store? or store.current.page in <[ locked ]>
     return null if not store? or store.current.page in setup-pages
@@ -111,6 +246,9 @@ module.exports = (store, web3)->
     filestorage = if store.current.page is \filestorage then \active else \not-active
     staking = if store.current.page is \staking then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
+    staking-active = if store.current.page is \staking then \active else \not-active
+    delegate-active = if store.current.page is \choosestaker then \active else \not-active
+    info-active = if store.current.page is \info then \active else \not-active
     menu-style=
         color: style.app.text
     icon-style =
@@ -134,22 +272,15 @@ module.exports = (store, web3)->
         width: "14px"
     wallet-icon = 
         width: "18px"
-    set-lang = (lang)->
-        return alert "lang is not available" if not store.langs[store.lang]?
-        store.lang = lang
-    change-lang-en = ->
-        return set-lang \en
-    change-lang-ru = ->
-        return set-lang \ru
-    change-lang-ua = ->
-        return set-lang \ua
-    change-lang-cn = ->
-        return set-lang \cn
-    change-lang-kr = ->
-        return set-lang \kr
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
+    icon-node =
+        position: "inherit"
+        vertical-align: "sub"
+        width: "12px"
+        height: "12px"
+        padding-right: "10px"
     text-style=
         color: style.app.text
     goto-settings = ->
@@ -160,20 +291,42 @@ module.exports = (store, web3)->
         navigate store, web3t, \wallets
     goto-staking = ->
         navigate store, web3t, \staking
-    react.create-element 'div', { style: border-style, className: 'menu menu516230070' }, children = 
+    goto-choose-staker = ->
+        navigate store, web3t, \choosestaker
+    goto-info = ->
+        navigate store, web3t, \info
+    open-submenu = ->
+        store.current.submenu = not store.current.submenu
+    menu-staking =
+        if store.current.submenu then \submenu else \ ''
+    menu-out = ->
+        store.current.submenu = no
+    staking = if store.current.submenu then \active else \not-active
+    hide-menu = ->
+        store.menu.mobile = not store.menu.mobile
+    show-menu =
+        if store.menu.mobile then \show else \ ""
+    react.create-element 'div', { style: border-style, className: "#{show-menu} menu menu-2053005981" }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
-            react.create-element 'img', { src: "#{info.branding.logo}", style: logo-style }
-        if store.preference.refresh-visible is yes
-            if no
-                react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item" }, children = 
-                    icon \Sync , 20
+            react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
         if store.preference.settings-visible is yes
             if store.current.device is \mobile
                 react.create-element 'div', { on-click: wallet, style: icon-style, className: "#{wallets} menu-item" }, children = 
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
         if store.preference.settings-visible is yes
             if store.current.device is \mobile
-                react.create-element 'div', { on-click: goto-staking, style: icon-style, className: "#{staking} menu-item" }, children = 
+                react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
+                    react.create-element 'div', { className: 'menu arrow_box menu-2053005981' }, children = 
+                        react.create-element 'ul', {}, children = 
+                            react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
+                                react.create-element 'img', { src: "#{icons.node}", style: icon-node }
+                                """ Node"""
+                            react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, className: "#{delegate-active}" }, children = 
+                                react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
+                                """ Delegate"""
+                            react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
+                                react.create-element 'img', { src: "#{icons.info}", style: icon-node }
+                                """ Stats"""
                     react.create-element 'img', { src: "#{icons.staking}" }
         if store.preference.settings-visible is yes
             if store.current.device is \mobile
@@ -185,5 +338,9 @@ module.exports = (store, web3)->
                     react.create-element 'img', { src: "#{icons.setting}" }
         if store.preference.lock-visible is yes
             if store.current.device is \mobile    
-                react.create-element 'div', { on-click: lock, style: icon-style, className: 'menu-item' }, children = 
+                react.create-element 'div', { on-click: hide-menu, style: icon-style, className: 'menu-item menu-btn' }, children = 
+                    react.create-element 'img', { src: "#{icons.menu}", style: lock-icon }
+        if store.preference.lock-visible is yes
+            if store.current.device is \mobile    
+                react.create-element 'div', { on-click: lock, style: icon-style, className: 'menu-item locked' }, children = 
                     react.create-element 'img', { src: "#{icons.lock}", style: lock-icon }

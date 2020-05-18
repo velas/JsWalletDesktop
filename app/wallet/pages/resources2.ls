@@ -497,7 +497,7 @@ staking-content = (store, web3t)->
                                             react.create-element 'img', { src: "#{icons.generate}", className: 'icon-svg' }
                                             """ Generate Script"""
                                 react.create-element 'div', {}, ' Please allow 30 seconds'
-                    if pairs.mining.keystore.length > 0 or window.location.href.index-of('dev') > -1
+                    if pairs.mining.keystore.length > 0 or store.url-params.dev?
                         react.create-element 'div', {}, children = 
                             react.create-element 'div', { className: 'tabs' }, children = 
                                 react.create-element 'span', { on-click: activate-line, className: "#{active-line} tab" }, ' Line by Line'

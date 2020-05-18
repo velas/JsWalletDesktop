@@ -530,11 +530,11 @@ send = ({ store, web3t })->
                                     icon \DiffAdded, 20
                                 react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.topup ? 'Topup'
             react.create-element 'form', {}, children = 
-                form-group lang.send-from, icon-style, ->
+                form-group lang.from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 
                         react.create-element MiddleEllipsis, {}, children = 
                             react.create-element 'a', { href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
-                form-group lang.recipient, icon-style, ->
+                form-group lang.to, icon-style, ->
                     react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}" }
                 form-group lang.amount, icon-style, ->
                     react.create-element 'div', {}, children = 
@@ -576,16 +576,8 @@ send = ({ store, web3t })->
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + token
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-charged-usd
-                        if no    
-                            react.create-element 'tr', { className: 'green' }, children = 
-                                react.create-element 'td', {}, ' ' + lang.recipient-obtains ? 'Recipient Obtains'
-                                react.create-element 'td', {}, children = 
-                                    react.create-element 'span', { className: 'bold' }, ' ' + round5(send.amount-obtain)
-                                        react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                        react.create-element 'span', { className: 'bold' }, ' ' + token
-                                    react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-obtain-usd
                         react.create-element 'tr', { className: 'orange' }, children = 
-                            react.create-element 'td', {}, ' ' + lang.transaction-fee ? 'Transaction Fee'
+                            react.create-element 'td', {}, ' ' + lang.fee ? 'Transaction Fee'
                             react.create-element 'td', {}, children = 
                                 react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + round5(send.amount-send-fee)
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
@@ -615,9 +607,9 @@ module.exports.init = ({ store, web3t }, cb)->
     { wallets } = wallets-funcs store, web3t
     current-wallet = 
         wallets |> find (-> it.coin.token is wallet.coin.token)
-    console.log \match, current-wallet.address, wallet.address
     return cb null if current-wallet.address is wallet.address 
     { wallet } = send-funcs store, web3t
+    return cb null if not web3t[wallet.coin.token]?
     { send-transaction } = web3t[wallet.coin.token]
     to = ""
     value = 0

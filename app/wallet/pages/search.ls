@@ -11,6 +11,7 @@ require! {
     \./switch-account.ls
     \./epoch.ls
     \../icons.ls
+    \./alert-demo.ls
 }
 # .search1532405700
 #     @import scheme
@@ -470,10 +471,9 @@ search = ({ store, web3t })->
     show-class =
         if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'search search1532405700' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Search page'
+            react.create-element 'div', { className: "#{show-class} header" }, ' Search'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t

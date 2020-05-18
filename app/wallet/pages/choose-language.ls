@@ -211,7 +211,7 @@ language = (store, web3t)->
     text-style =
         color: style.app.text
     set-lang = (lang)->
-        return alert "lang is not available" if not store.langs[store.lang]?
+        #return alert "lang is not available" if not store.langs[store.lang]?
         store.lang = lang
         store.current.choose-language = no
     change-lang-en = ->
@@ -219,11 +219,11 @@ language = (store, web3t)->
     change-lang-ru = ->
         return set-lang \ru
     change-lang-ua = ->
-        return set-lang \ua
+        return set-lang \uk
     change-lang-cn = ->
-        return set-lang \cn
+        return set-lang \zh
     change-lang-kr = ->
-        return set-lang \kr
+        return set-lang \ko
     change-lang-fr = ->
         return set-lang \fr
     change-lang-es = ->
@@ -236,7 +236,7 @@ language = (store, web3t)->
             react.create-element 'div', { className: 'logo' }, children = 
                 react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
                 react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
-            react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.choose-language
+            react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
                 react.create-element 'ul', {}, children = 
                     react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
@@ -274,9 +274,6 @@ language = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
                         react.create-element 'div', {}, ' Қазақ'
-        if no
-            react.create-element 'div', { className: 'content' }, children = 
-                react.create-element 'button', { on-click: close-language, style: button-primary2-style }, ' ' + lang.next
 module.exports = ({ store, web3t } )->
     return null if store.current.choose-language isnt yes
     { close-language } = menu-funcs store, web3t

@@ -12,7 +12,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .notice-2052754932
+# .notice1687838996
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -863,6 +863,8 @@ require! {
 #                     &:active, &:focus
 #                         transition: all .5s
 #                         text-align: left
+#                     @media(max-width: 800px)
+#                         width: 100%
 #             .header, .textarea, .search
 #                 text-align: left
 #                 font-size: 17px
@@ -1511,7 +1513,7 @@ notice = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     imgs=
         ava: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1588866150/velas/interface_1.png"
-    react.create-element 'div', { className: 'notice notice-2052754932' }, children = 
+    react.create-element 'div', { className: 'notice notice1687838996' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 

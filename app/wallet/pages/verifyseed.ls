@@ -175,7 +175,7 @@ newseed = ({ store, web3t })->
             react.create-element 'button', { style: button-primary1-style, on-click: verify-seed, className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.confirm}", className: 'icon-svg' }
-                    """ #{lang.confirm-seed ? 'Confirm' }"""
+                    """ #{lang.confirm ? 'Confirm' }"""
         react.create-element 'div', {}, children = 
             react.create-element 'button', { style: button-primary3-style, on-click: back, className: 'right' }, children = 
                 react.create-element 'span', {}, children = 

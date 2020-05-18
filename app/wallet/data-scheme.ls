@@ -2,15 +2,11 @@ require! {
     \prelude-ls : { map, pairs-to-obj }
     \./seed.ls : { saved }
     \./browser/location.ls
-    \./langs/en.ls
-    \./langs/ru.ls
-    \./langs/ua.ls
-    \./langs/kr.ls
-    \./langs/cn.ls
-    \./langs/fr.ls
-    \./langs/es.ls
+    \./langs/langs.json
     \./icons.ls
     \./get-device.ls
+    \../package.json : { version }
+    \qs
 }
 saved-seed = saved!
 create-send =->
@@ -33,11 +29,15 @@ create-send =->
     decoded-data: ""
     show-data-mode: \encoded
     error: ''
+url-params =
+    | window? => qs.parse window.location.search.replace('?', '')
+    | _ => {}
 store =
+    url-params: url-params
     root: null
     theme: \velas
     lang: \en
-    langs: { en, ru, ua, kr, cn, fr, es }
+    langs: langs
     icons: \icons
     registry: []
     terms: "Loading..."
@@ -57,6 +57,8 @@ store =
         tab: "home"
         menu-open: no
         drag: no
+        upload-link: no
+        action: "upload"
     sound:
         tab: "home"
         menu-open: no
@@ -127,6 +129,7 @@ store =
         wallet: null
     menu:
         active: 's2'
+        mobile: no
     ask: 
         text: ''
         enabled: no
@@ -211,5 +214,5 @@ store =
         about: no
     rates: {}
     coins: []
-    version: "0.12.73"
+    version: version
 module.exports = store

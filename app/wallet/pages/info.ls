@@ -19,7 +19,7 @@ require! {
     \../round-human.ls
     \./epoch.ls
 }
-# .info-2054257772
+# .info-1654963996
 #     @import scheme
 #     color: white
 #     $border-radius: $border
@@ -117,6 +117,10 @@ require! {
 #                     -webkit-box-flex: 0
 #                     flex: 0 0 50%
 #                     max-width: 50%
+#                 @media screen and (max-width: 400px)
+#                     -webkit-box-flex: 0
+#                     flex: 0 0 100%
+#                     max-width: 100%
 #             &.col-6
 #                 -webkit-box-flex: 0
 #                 flex: 0 0 50%
@@ -225,9 +229,9 @@ info = ({ store, web3t })->
         filter: info.app.nothingIcon
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'info info-2054257772' }, children = 
+    react.create-element 'div', { className: 'info info-1654963996' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Info page'
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t

@@ -990,7 +990,7 @@ staking-content = (store, web3t)->
     vote-for-change = ->
         err, can <- web3t.velas.ValidatorSet.emitInitiateChangeCallable
         return alert err if err?
-        return alert "Please wait for epoch change" if can isnt yes
+        return alert "Consensus change is initiated. Operation is not permitted" if can isnt yes
         data = web3t.velas.ValidatorSet.emitInitiateChange.get-data!
         to = web3t.velas.ValidatorSet.address
         amount = 0
@@ -1000,7 +1000,7 @@ staking-content = (store, web3t)->
     your-staking-amount = store.staking.stake-amount-total `div` (10^18)
     your-staking = " #{round-human your-staking-amount}"
     vlx-token = "VLX"
-    staker-status = if store.staking.is-active-staker then 'Active' else 'Inactive'
+    staker-status = if store.staking.is-active-staker then \Active else \Inactive
     check-uncheck = ->
         change = not store.staking.rewards.0.checked
         store.staking.rewards |> map (-> it.checked = change)
@@ -1093,12 +1093,12 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'label', {}, ' ' + lang.stake
-                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake-placeholder}" }
+                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' Max'
-                                react.create-element 'span', {}, ' ' + lang.your-balance + ': '
+                                react.create-element 'span', {}, ' ' + lang.balance + ': '
                                 react.create-element 'span', { className: 'color' }, ' ' + your-balance
                                     react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
                                     react.create-element 'span', { className: 'color' }, ' ' + vlx-token
@@ -1109,7 +1109,7 @@ staking-content = (store, web3t)->
             if +store.staking.stake-amount-total > 0
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.your-staking
+                        react.create-element 'h3', {}, ' ' + lang.staking
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'div', { className: 'staking-info' }, children = 
@@ -1120,7 +1120,7 @@ staking-content = (store, web3t)->
                                                 react.create-element 'span', {}, ' ' + your-staking
                                                 react.create-element 'span', {}, ' ' + vlx-token
                                         react.create-element 'div', { className: 'header' }, children = 
-                                            """ #{lang.your-staking}"""
+                                            """ #{lang.staking}"""
                                 react.create-element 'div', { className: 'col col-4' }, children = 
                                     react.create-element 'div', {}, children = 
                                         react.create-element 'div', { className: 'value green' }, children = 
@@ -1141,7 +1141,7 @@ staking-content = (store, web3t)->
                                             react.create-element 'div', { className: 'number' }, children = 
                                                 """ #{store.staking.epoch}"""
                                         react.create-element 'div', { className: 'header' }, children = 
-                                            """ #{lang.current-epoch}"""
+                                            """ #{lang.epoch}"""
                             react.create-element 'div', { className: 'table' }, children = 
                                 if store.staking.is-active-staker is no
                                     react.create-element 'div', { className: 'warning' }, children = 
@@ -1151,7 +1151,7 @@ staking-content = (store, web3t)->
                             if no
                                 react.create-element 'div', { className: 'table' }, children = 
                                     react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' ' + lang.your-staking + ': '
+                                        react.create-element 'span', { className: 'header' }, ' ' + lang.staking + ': '
                                         react.create-element 'span', { className: 'color' }, ' ' + your-staking
                                         react.create-element 'span', { className: 'color' }, ' ' + vlx-token
                                     react.create-element 'div', { className: 'balance' }, children = 
@@ -1166,11 +1166,11 @@ staking-content = (store, web3t)->
                                                 react.create-element 'li', {}, ' ' + lang.your-status1
                                                 react.create-element 'li', {}, ' ' + lang.your-status2
                                     react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' ' + lang.current-epoch + ':'
+                                        react.create-element 'span', { className: 'header' }, ' ' + lang.epoch + ':'
                                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.epoch
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' ' + lang.stake-more
-                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake-placeholder}" }
+                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -1227,7 +1227,7 @@ staking = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'staking staking-1934749877' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.title-staking
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.staking
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t

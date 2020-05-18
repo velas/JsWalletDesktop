@@ -278,7 +278,7 @@ newseed = ({ store, web3t })->
                     """ #{lang.back ? 'Back' }"""
                 react.create-element 'button', { on-click: next, style: button-primary1-style, className: "#{hide-class} right save" }, children = 
                     react.create-element 'img', { src: "#{icons.save}", className: 'icon-svg' }
-                    """ #{lang.next-save ? 'Next' }"""
+                    """ #{lang.next ? 'Next' }"""
                 react.create-element 'button', { on-click: print, style: button-primary2-style, className: "#{hide-class} right doc" }, children = 
                     react.create-element 'img', { src: "#{icons.print}", className: 'icon-svg' }
                     """ #{lang.print ? 'Print' }"""
@@ -289,7 +289,7 @@ newseed = ({ store, web3t })->
                     """ #{lang.back ? 'Back' }"""
                 react.create-element 'button', { on-click: save, style: button-primary1-style, className: 'right' }, children = 
                     react.create-element 'img', { src: "#{icons.save}", className: 'icon-svg' }
-                    """ #{lang.next-save ? 'Next' }"""
+                    """ #{lang.next ? 'Next' }"""
         if has-issue!
             react.create-element 'div', { style: text-style, className: 'warning' }, children = 
                 react.create-element 'div', {}, ' ' + lang.seed-warning
