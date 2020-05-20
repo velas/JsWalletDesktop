@@ -18,7 +18,7 @@ jobs:
       - name: Install Node.js and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 13.9
+          node-version: 10
 
       # - name: Install Snapcraft
       #   # uses: samuelmeuli/action-snapcraft@v1
@@ -30,7 +30,7 @@ jobs:
       #     # snapcraft_token: ${{ secrets.snapcraft_token }}
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@latest
+        uses: samuelmeuli/action-electron-builder@1
         with:
           github_token: ${{ secrets.github_token }} # Automatically generated
           mac_certs: ${{ secrets.mac_certs }}
