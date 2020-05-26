@@ -8,10 +8,10 @@ require! {
 }
 clean = ->
     it.match(/[a-z]+/)?0
-fix =
+fix =  
     words >> (map clean) >> (filter (?)) >> (join " ")
-not-in-dictionary = (item)->
-    item.part not in bip39.wordlists.EN
+not-in-dictionary = (word)->
+    word not in bip39.wordlists.EN
 module.exports = (store, web3t)->
     return null if not store? or not web3t?
     lang = get-lang store
@@ -24,17 +24,14 @@ module.exports = (store, web3t)->
     verify-seed = (cb)->
         empty =
             store.current.seed-words
-                |> filter -> it.part.length is 0
-                |> map -> it.part
-
+                |> filter (.part.length is 0)
         if empty.length is not 0
-          store.current.alert = "Please fill all words"
-          return cb "cancelled"
-           
-        wrong =
-            store.current.seed-words
-                |> filter not-in-dictionary
-                |> map -> it.part
+            store.current.alert = "Please fill all words"
+            return cb "cancelled"
+        wrong = 
+            store.current.seed-words 
+                |> map (.part)
+                |> filter not-in-dictionary 
         return cb null if wrong.length is 0
         res <- confirm store, "Some words do not match the dictionary. Do you want to continue?"
         return cb "cancelled" if res is no
@@ -48,7 +45,7 @@ module.exports = (store, web3t)->
         next!
     has-issue = ->
         return no if store.current.seed.length is 0
-        not store.current.seed.match(/^([a-z]+[ ]){0,11}([a-z]+)$/)? and not store.current.seed.match(/^([a-z]+[ ]){0,23}([a-z]+)$/)?
+        not store.current.seed.match(/^([a-z]+[ ]){0,11}([a-z]+)$/)? and not store.current.seed.match(/^([a-z]+[ ]){0,23}([a-z]+)$/)? 
     fix-issue = ->
         store.current.seed = fix store.current.seed
         store.current.seed-temp = store.current.seed

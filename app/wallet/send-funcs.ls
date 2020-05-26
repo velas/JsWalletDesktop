@@ -23,6 +23,7 @@ require! {
     \./pages/confirmation.ls : { confirm }
     \./get-lang.ls
     \./apply-transactions.ls
+    \./get-tx-details.ls
 }
 module.exports = (store, web3t)->
     return null if not store? or not web3t?
@@ -50,7 +51,8 @@ module.exports = (store, web3t)->
             gas-price: gas-price
         err, data <- create-transaction tx-obj
         return cb err if err?
-        agree <- confirm store, "Send #{round5 tx-obj.amount} #{send.coin.token} to #{send.to}"
+        parts = get-tx-details store
+        agree <- confirm store, parts.0
         #console.log 'after confirm', agree
         return cb "Cancelled" if not agree
         err, tx <- push-tx { token, tx-type, network, ...data }
@@ -95,11 +97,7 @@ module.exports = (store, web3t)->
         amount-ethers = send.amount-send
         err <- send-to { name, amount-ethers }
     send-anyway = ->
-        #return send-escrow! if send.propose-escrow
         send-money!
-    send-title = 
-        | send.propose-escrow then 'SEND (Escrow)'
-        | _ => lang.send
     cancel = (event)->
         navigate store, web3t, \wallets
         notify-form-result send.id, "Cancelled by user"
@@ -146,16 +144,16 @@ module.exports = (store, web3t)->
         store.current.filter = [\IN, \OUT, send.coin.token]
         apply-transactions store
         navigate store, web3t, \history
-    network = 
+    export network = 
         | store.current.network is \testnet => " (TESTNET) "
         | _ => ""
-    invoice = (wallet)->
+    export invoice = (wallet)->
         store.current.send-menu-open = no
         { coin, network } = store.current.send
         store.current.invoice <<<< { coin, wallet, network }
         navigate store, web3t, \invoice
-    token = send.coin.token.to-upper-case!
-    name = send.coin.name ? token
+    export token = send.coin.token.to-upper-case!
+    export name = send.coin.name ? token
     fee-token = (wallet.network.tx-fee-in ? send.coin.token).to-upper-case!
     is-data = (send.data ? "").length > 0
     choose-auto = ->
@@ -199,7 +197,36 @@ module.exports = (store, web3t)->
             use-max cb
         catch err
             cb err
-    use-max-amount = ->
+    export use-max-amount = ->
         err <- use-max-try-catch
         alert "#{err}" if err?
-    { change-amount, invoice, token, name, network, send, wallet, pending, fee-token, primary-button-style, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, topup: topup(store), history, cancel, send-anyway, choose-auto, choose-cheap, chosen-auto, chosen-cheap, get-address-link, get-address-title, default-button-style, round5edit, round5, send-options, calc-amount-and-fee, send-title, is-data, encode-decode }
+    export change-amount
+    export send
+    export wallet
+    export pending
+    export fee-token
+    export primary-button-style
+    export recipient-change
+    export amount-change
+    export amount-usd-change
+    export amount-eur-change
+    export show-data
+    export show-label
+    export topup : topup(store)
+    export history 
+    export cancel
+    export send-anyway 
+    export choose-auto 
+    export choose-cheap 
+    export chosen-auto 
+    export chosen-cheap
+    export get-address-link 
+    export get-address-title
+    export default-button-style
+    export round5edit 
+    export round5
+    export send-options
+    export calc-amount-and-fee
+    export is-data
+    export encode-decode
+    out$

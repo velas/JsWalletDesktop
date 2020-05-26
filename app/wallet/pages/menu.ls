@@ -10,12 +10,20 @@ require! {
     \../icons.ls
     \./header.ls
     \../round-human.ls
+    \../add-coin.ls
 }
-# .menu-965638392
+# .menu-1332697486
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
 #     $tablet: 800px
+#     .icon-svg-plus
+#         position: relative
+#         height: 16px
+#         top: 2px
+#         padding: 0
+#         cursor: pointer
+#         vertical-align: top
 #     &.wallet-main
 #         @media(max-width: 800px)
 #             margin: 0px 15px 0
@@ -39,8 +47,7 @@ require! {
 #         cursor: pointer
 #         color: #00ffdc
 #         svg
-#             vertical-align: sub !important
-#             width: 20px
+#             width: 25px
 #         .icon-svg
 #             vertical-align: sub !important
 #             width: 20px
@@ -53,6 +60,9 @@ require! {
 #         max-width: 450px
 #         >.balance
 #             position: relative
+#             button
+#                 svg
+#                     width: 20px
 #             >.menu
 #                 position: absolute
 #                 right: 0
@@ -137,6 +147,26 @@ module.exports = ({ store, web3t })->
     icon-style =
         color: style.app.loader
         margin-top: "10px"
+    button-add=
+        color: style.app.text
+        border-radius: "50px"
+        border: "0"
+        background: "rgba(157, 127, 206, 0.3)"
+        line-height: "25px"
+        padding: "10px"
+        width: "40px"
+        height: "40px"
+        margin: "10px 5px 0"
+    button-syncing=
+        color: style.app.loader
+        border-radius: "50px"
+        border: "0"
+        background: "rgba(157, 127, 206, 0.3)"
+        line-height: "25px"
+        padding: "10px"
+        width: "40px"
+        height: "40px"
+        margin: "10px 5px 0"
     lang = get-lang store
     syncing = 
         | store.current.refreshing => \syncing
@@ -144,7 +174,7 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-965638392' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-1332697486' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
@@ -152,9 +182,13 @@ module.exports = ({ store, web3t })->
                     react.create-element 'div', { title: "#{current.balance-usd}", className: 'number' }, ' ' + round-human current.balance-usd
                 react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance ? 'Balance'
                 react.create-element 'div', {}, children = 
-                    if store.preference.refresh-visible is yes
-                        react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item loader" }, children = 
-                            icon \Sync, 25
+                    if store.current.device is \desktop
+                        if store.preference.refresh-visible is yes
+                            react.create-element 'button', { on-click: refresh, style: button-syncing, className: "#{syncing} button lock mt-5" }, children = 
+                                icon \Sync, 20
+                    if store.current.device is \desktop
+                        react.create-element 'button', { on-click: add-coin(store), style: button-add, className: 'button lock mt-5' }, children = 
+                            react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
             if store.current.device is \mobile    
                 your-account store, web3t
             project-links { store, web3t }

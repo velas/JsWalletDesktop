@@ -322,7 +322,7 @@ module.exports = (store, web3)->
         react.create-element 'div', { className: 'menu-items' }, children = 
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: wallet, style: icon-style, className: "#{wallets} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' wallets'
+                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
@@ -330,29 +330,29 @@ module.exports = (store, web3)->
                         react.create-element 'ul', {}, children = 
                             react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }
-                                """ Node"""
+                                """ #{lang.install-node}"""
                             react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, className: "#{delegate-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
-                                """ Delegate"""
+                                """ #{lang.delegate-stake}"""
                             if no
                                 react.create-element 'li', { on-click: goto-claim, style: icon-style, className: "#{claim-active}" }, children = 
                                     react.create-element 'img', { src: "#{icons.claim}", style: icon-node }
-                                    """ Claim"""
+                                    """ #{lang.claim-reward}"""
                             react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.info}", style: icon-node }
-                                """ Stats"""
-                    react.create-element 'span', { className: 'arrow_box' }, ' staking'
+                                """ #{lang.stats}"""
+                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
                     react.create-element 'img', { src: "#{icons.staking}" }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' search'
+                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.search
                     react.create-element 'img', { src: "#{icons.search}" }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' settings'
+                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
                     react.create-element 'img', { src: "#{icons.setting}" }
             if no
                 if store.preference.settings-visible is yes
                     react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' faq'
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.faq
                         react.create-element 'img', { src: "#{icons.setting}" }

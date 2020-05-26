@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -256,8 +255,9 @@ require! {
 #         100%
 #             -webkit-mask-position: left
 all = (store, web3t)->
+    lang = get-lang store
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' This tab is under development'
+        react.create-element 'p', { className: 'results' }, ' ' + lang.under-development
 dapps = (store, web3t)->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -326,23 +326,26 @@ dapps = (store, web3t)->
     goto-notice = ->
         navigate store, web3t, \notification
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' Estimated Results: 2,000 (0.30sec)'
+        react.create-element 'p', { className: 'results' }, children = 
+            """ #{lang.estimated-results}: """
+            """ 2,000 """
+            """ (0.30"""
+            """ #{lang.sec}"""
+            """ )"""
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-file-storage, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' velas sphere'
-                react.create-element 'div', { className: 'header' }, ' Velas Storage Dapp'
-            react.create-element 'div', { className: 'description' }, ' Keep your data on encrypted distributed servers with censorship resistance. Get access to them in a convenient and familiar way.'
+                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
+                react.create-element 'div', { className: 'header' }, ' ' + lang.storage-dapp
+            react.create-element 'div', { className: 'description' }, ' ' + lang.storage-description
             react.create-element 'ul', { className: 'links' }, children = 
                 react.create-element 'li', {}, children = 
-                    react.create-element 'span', { on-click: goto-videostorage }, ' Video Storage'
-                react.create-element 'li', {}, children = 
-                    react.create-element 'span', {}, ' About Storage'
+                    react.create-element 'span', { on-click: goto-videostorage }, ' ' + lang.video-storage
                 react.create-element 'li', { on-click: goto-soundstorage, style: hide-sound }, children = 
-                    react.create-element 'span', {}, ' About Storage'
+                    react.create-element 'span', {}, ' Sound Storage'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-resources2, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' velas sphere'
-                react.create-element 'div', { className: 'header' }, ' Velas CPU/GPU/STORAGE Staking Dapp'
+                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
+                react.create-element 'div', { className: 'header' }, ' ' + lang.velas-cpu-staking
             react.create-element 'div', { className: 'description' }
             react.create-element 'ul', { className: 'links' }, children = 
                 react.create-element 'li', {}, children = 
@@ -351,9 +354,9 @@ dapps = (store, web3t)->
                     react.create-element 'span', {}, ' FAQs'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-resources, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' velas sphere'
-                react.create-element 'div', { className: 'header' }, ' Velas CPU/GPU/STORAGE Dapp'
-            react.create-element 'div', { className: 'description' }, ' Use distributed resources to perform complex tasks for science, AI, video rendering.'
+                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
+                react.create-element 'div', { className: 'header' }, ' ' + lang.velas-cpu
+            react.create-element 'div', { className: 'description' }, ' ' + lang.cpu-description
             react.create-element 'ul', { className: 'links' }, children = 
                 react.create-element 'li', {}, children = 
                     react.create-element 'span', {}, ' About'
@@ -361,16 +364,16 @@ dapps = (store, web3t)->
                     react.create-element 'span', {}, ' FAQs'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-staking, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' velas blockchain'
-                react.create-element 'div', { className: 'header' }, ' Velas Staking Dapp'
-            react.create-element 'div', { className: 'description' }, ' Help the blockchain be more decentralized by launching an additional validator.'
+                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-blockchain
+                react.create-element 'div', { className: 'header' }, ' ' + lang.staking-dapp
+            react.create-element 'div', { className: 'description' }, ' ' + lang.staking-description
             react.create-element 'ul', { className: 'links' }, children = 
                 react.create-element 'li', {}, children = 
-                    react.create-element 'span', { on-click: goto-choose-staker }, ' Delegate Stake'
+                    react.create-element 'span', { on-click: goto-choose-staker }, ' ' + lang.delegate-stake
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-notice, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' velas sphere'
-                react.create-element 'div', { className: 'header' }, ' Velas Messenger'
+                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
+                react.create-element 'div', { className: 'header' }, ' ' + lang.velas-messenger
             react.create-element 'div', { className: 'description' }
         react.create-element 'div', { className: 'section developing' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -398,14 +401,17 @@ dapps = (store, web3t)->
                 react.create-element 'li', {}, children = 
                     react.create-element 'span', {}, ' FAQs'
 web = (store, web3t)->
+    lang = get-lang store
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' This tab is under development'
+        react.create-element 'p', { className: 'results' }, ' ' + lang.under-development
 images = (store, web3t)->
+    lang = get-lang store
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' This tab is under development'
+        react.create-element 'p', { className: 'results' }, ' ' + lang.under-development
 files = (store, web3t)->
+    lang = get-lang store
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' This tab is under development'
+        react.create-element 'p', { className: 'results' }, ' ' + lang.under-development
 search = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -473,7 +479,7 @@ search = ({ store, web3t })->
     react.create-element 'div', { className: 'search search1532405700' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Search'
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.search
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t
@@ -494,23 +500,23 @@ search = ({ store, web3t })->
                         react.create-element 'li', { on-click: activate-all, className: "#{active-all}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Search, 15
-                            react.create-element 'span', {}, ' All'
+                            react.create-element 'span', {}, ' ' + lang.all
                         react.create-element 'li', { on-click: activate-dapps, className: "#{active-dapps}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Rocket, 15
-                            react.create-element 'span', {}, ' Dapps'
+                            react.create-element 'span', {}, ' ' + lang.dapps
                         react.create-element 'li', { on-click: activate-web, className: "#{active-web}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Globe, 15
-                            react.create-element 'span', {}, ' Web'
+                            react.create-element 'span', {}, ' ' + lang.web
                         react.create-element 'li', { on-click: activate-images, className: "#{active-images}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \FileMedia, 15
-                            react.create-element 'span', {}, ' Images'
+                            react.create-element 'span', {}, ' ' + lang.images
                         react.create-element 'li', { on-click: activate-files, className: "#{active-files}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \FileDirectory, 15
-                            react.create-element 'span', {}, ' Public Files'
+                            react.create-element 'span', {}, ' ' + lang.public-files
         react.create-element 'div', { className: 'wrapper' }, children = 
             if active-all is \active
                 all store, web3t

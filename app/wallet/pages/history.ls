@@ -1,6 +1,6 @@
 require! {
     \react
-    \prelude-ls : { sort-by, reverse, filter, map, find }
+    \prelude-ls : { sort-by, reverse, filter, map, find, take }
     \../history-funcs.ls
     \../get-primary-info.ls
     \../get-lang.ls
@@ -11,8 +11,9 @@ require! {
     \../copy.ls
     \../icons.ls
     \react-middle-ellipsis : { default: MiddleEllipsis }
+    \../components/address-holder.ls
 }
-# .history606400110
+# .history-158682127
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -353,7 +354,8 @@ require! {
 #                     img
 #                         border-radius: inherit
 #                         border: none
-#                         margin-right: 13px
+#                         margin-right: 0px
+#                         margin-left: 5px
 #                         height: 12px
 #                         left: 3px
 #                         position: relative
@@ -397,6 +399,7 @@ require! {
 #                         overflow: hidden
 #                         width: 100%
 #                         font-size: 14px
+#                         line-height: 25px
 #                         text-decoration: none
 #                 &.more
 #                     text-align: center
@@ -446,12 +449,37 @@ require! {
 #                     height: 60px
 #                     div:last-child
 #                         width: 330px
-#                     a
-#                         display: block
-#                         font-size: 14px
-#                         text-decoration: none
-#                         &:hover
-#                             text-decoration: underline
+#                     .action
+#                         .address-holder
+#                             text-align: left
+#                             .copy
+#                                 margin-left: -7px
+#                                 width: 13px
+#                                 height: 15px
+#                             >img
+#                                 margin: 5px
+#                                 &:first-child
+#                                     top: -6px
+#                                     margin: 0 10px 0 0
+#                             .browse
+#                                 right: 0px
+#                             >span a
+#                                 height: 25px
+#                                 line-height: 25px
+#                             span
+#                                 padding: 0
+#                                 width: 120px
+#                                 text-align: left
+#                                 a
+#                                     img
+#                                         height: 16px
+#                                 div
+#                                     width: auto
+#                                     margin-right: 0px
+#                                     a
+#                                         padding: 0
+#                                         width: 250px
+#                                         text-align: left
 #             .gray
 #                 $gray: #8290ad
 #                 color: $gray
@@ -622,18 +650,6 @@ render-transaction = (store, web3t, tran)-->
         store.history.tx-details = 
             | store.history.tx-details is tx => null
             | _ => tx
-    cut-tx = (tx)->
-        return \none if not tx?
-        t = tx.to-string!
-        m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
-        r =
-            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
-            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
-    cut-hash = (tx)->
-        return \none if not tx?
-        t = tx.to-string!
-        r = t.substr(0, 4) + \.. + t.substr(tx.length - 25, 15) + \.. + t.substr(t.length - 4, 4)
-        #r.to-upper-case!
     icon-pending=
         filter: if pending is yes then 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-370deg) saturate(790%) contrast(0.5)' else ''
     amount-pending=
@@ -648,6 +664,10 @@ render-transaction = (store, web3t, tran)-->
         | description is \internal => \ "#{icons.smart}"
         | description is \external => \ "#{icons.user}"
         | _ => \ "#{icons.unknown}"
+    wallet-from =
+        address: from
+    wallet-to =
+        address: to
     react.create-element 'div', { key: "#{tx + type}", style: border-style, className: "#{type} record" }, children = 
         react.create-element 'div', { style: line-style, className: 'tx-top' }, children = 
             react.create-element 'div', { className: 'cell text-center network' }, children = 
@@ -659,29 +679,25 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'img', { src: "#{arrow-lg(type)}", className: 'icon-svg' }
             react.create-element 'div', { className: 'cell details-from' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
-                    react.create-element 'span', { className: 'from-to' }, ' ' + lang.from + ':'
-                    react.create-element 'span', { className: 'action' }, children = 
-                        react.create-element CopyToClipboard, { text: "#{from}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                            copy store
+                    react.create-element 'span', { className: 'from-to' }, children = 
                         react.create-element 'span', { className: 'smart-contract' }, children = 
                             react.create-element 'div', { className: 'tooltip' }, ' ' + about
                             react.create-element 'img', { src: "#{about-icon}", className: 'help' }
-                react.create-element MiddleEllipsis, {}, children = 
-                    react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + from
+                        react.create-element 'span', {}, ' ' + lang.from + ':'
+                    react.create-element 'span', { className: 'action' }, children = 
+                        address-holder { store, wallet: wallet-from }
             if no
                 react.create-element 'div', { className: 'cell arrow' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg1' }
             react.create-element 'div', { className: 'cell details-to' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
-                    react.create-element 'span', { className: 'from-to' }, ' ' + lang.to + ':'
-                    react.create-element 'span', { className: 'action' }, children = 
-                        react.create-element CopyToClipboard, { text: "#{to}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                            copy store
+                    react.create-element 'span', { className: 'from-to' }, children = 
                         react.create-element 'span', { className: 'smart-contract' }, children = 
                             react.create-element 'div', { className: 'tooltip' }, ' ' + about
                             react.create-element 'img', { src: "#{about-icon}", className: 'help' }
-                react.create-element MiddleEllipsis, {}, children = 
-                    react.create-element 'a', { target: "_blank", style: menu-style }, ' ' + to
+                        react.create-element 'span', {}, ' ' + lang.to + ':'
+                    react.create-element 'span', { className: 'action' }, children = 
+                        address-holder { store, wallet: wallet-to }
             react.create-element 'div', { className: 'cell created' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                     react.create-element 'span', {}, ' ' + lang.created + ': '
@@ -704,7 +720,7 @@ render-transaction = (store, web3t, tran)-->
                     amount-beautify fee, 10
             react.create-element 'div', { on-click: tx-details, className: 'cell divider more' }, children = 
                 react.create-element 'img', { src: "#{icons.more}", style: icon-pending, className: 'icon-svg1' }
-                react.create-element 'div', { className: 'arrow_box' }, ' details'
+                react.create-element 'div', { className: 'arrow_box' }, ' ' + lang.details
         if store.history.tx-details is tx
             react.create-element 'div', { style: light-style, on-click: transaction-info(request), className: 'tx-middle' }, children = 
                 react.create-element 'div', { className: 'cell divider' }, children = 
@@ -776,7 +792,13 @@ module.exports = ({ store, web3t })->
         background: style.app.wallet-light
     expand-collapse = ->
         store.history.filter-open = not store.history.filter-open
-    react.create-element 'div', { className: 'normalheader history history606400110' }, children = 
+    length = store.transactions.applied.length
+    rowRenderer = ({ key, index, isScrolling, isVisible, style })->
+        return render-transaction store, web3t, store.transactions.applied[index] # if isVisible
+        null
+    history-width = store.current.size.width / 1.9
+    history-height = store.current.size.height - 200 - 60
+    react.create-element 'div', { className: 'normalheader history history-158682127' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 
@@ -811,9 +833,8 @@ module.exports = ({ store, web3t })->
                                 react.create-element 'img', { src: "#{coin.image}" }
         react.create-element 'div', {}, children = 
             react.create-element 'div', { className: 'table' }, children = 
-                if store.transactions.applied.length > 0
-                    store.transactions.applied |> map render-transaction store, web3t
-            if store.transactions.applied.length is 0
+                store.transactions.applied |> take 20 |> map render-transaction store, web3t
+            if length is 0
                 react.create-element 'div', { style: menu-style, className: 'nothin-to-show' }, children = 
                     react.create-element 'img', { style: nothing-icon, src: "#{icons.search-history}" }
                     react.create-element 'div', { className: 'head' }, ' ' + lang.nothing-to-show

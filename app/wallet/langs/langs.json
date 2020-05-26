@@ -119,12 +119,21 @@
         ],
         "enterPin": [
             "Password",
-            "Ввести пароль или PIN",
-            "Ввести PIN",
-            "Entrez le PIN",
-            "Introducir PIN",
-            "输入密码",
-            "PIN을 입력하십시오"
+            "Пароль",
+            "Пароль",
+            "Mot de passe",
+            "Contraseña",
+            "密码",
+            "비밀번호"
+        ],
+        "pinPlaceholder": [
+            "Password or PIN",
+            "Пароль или PIN",
+            "Пароль або PIN",
+            "Mot de passe ou un code PIN",
+            "Contraseña o PIN",
+            "密码或PIN",
+            "암호 또는 PIN"
         ],
         "secretPhrase": [
             "Secret Phrase",
@@ -191,7 +200,7 @@
         ],
         "switchAccountIndex": [
             "Switch Account Index",
-            "Сменить Account Index",
+            "Сменить Идекс Кошелька",
             "Змінити Account Index",
             "Changer d'Index de Compte",
             "Cambiar Indice de Cuenta",
@@ -280,13 +289,22 @@
             "새로운 씨구"
         ],
         "newSeedWarning": [
-            "It will be reliable to write down the phrase on paper. Do not transfer it to a third party and store it in a safe place.",
-            "Будет надежно записать фразу на бумаге. Не передавайте его третьему лицу и храните его в надежном месте.",
-            "Буде надійно записати фразу на папері. Не передавайте його третій стороні та зберігайте в безпечному місці.",
-            "Il serait fiable de noter la phrase sur papier. Ne la donnez pas à un tiers et stockez la en lieu sûr.",
-            "Es recomendable que escribas tu frase de recuperación en un papel. No lo transfieras a nadie y almacénalo en un lugar seguro.",
-            "在紙上寫下該短語將是可靠的。 請勿將其轉讓給第三方並存放在安全的地方。",
-            "종이에 문구를 적어 두는 것이 좋습니다. 타사에 양도하지 말고 안전한 곳에 보관하십시오."
+            "Click 'Print' and print out paper instructions and write down your 24 words seed carefuly. Anyone with access to your recovery phrase could take your assets, store it securely. We do not keep a backup of your 24 words, if you lose it all coins in your wallet will be gone forever!",
+            "Нажмите кнопку 'Печать' и распечатать инструкции бумаги и запишите свои 24 слова семян изучили. Кто имеет доступ к вашему восстановления фраза может завладеть вашими активами, надежно хранить его. Мы не храним резервных копий 24 слова, Если вы его потеряете все монеты в вашем кошельке будет навсегда!",
+            "Натисніть кнопку 'Друк' і роздрукувати інструкції паперу і запишіть свої 24 слова насіння вивчили. Хто має доступ до вашого відновлення фраза може заволодіти вашими активами, надійно зберігати його. Ми не зберігаємо резервних копій 24 слова, Якщо ви втратите всі монети у вашому гаманці буде назавжди!",
+            "Cliquez sur 'Imprimer' et imprimer des instructions de papier et écrivez votre 24 mots de graines soigneusement. Toute personne ayant accès à votre rétablissement phrase pourrait prendre de vos biens, de les stocker de manière sécurisée. Nous n'avons pas de garder une copie de sauvegarde de votre 24 mots, si vous les perdez toutes les pièces de monnaie dans votre porte-monnaie sera à jamais disparu!",
+            "Haga clic en 'Imprimir' y imprimir las instrucciones de papel y anote sus 24 palabras de semilla abundante. Cualquier persona con acceso a tu frase de recuperación podría tomar sus activos, almacenar de forma segura. No guardamos una copia de seguridad de su 24 palabras, si usted pierde todas las monedas en su monedero, se ha ido para siempre!",
+            "击打印和印刷出来文的指示写下你的24话的种子门洞. 有权访问你的回收的短语可能需要您的资产，存放它的安全。 我们不保持一个备份的24个字，如果你失去它所有的硬币，你的钱包就会永远消失!",
+            "클릭하'인쇄 및 인쇄 종이 지침에 적 24 말 씨 carefuly. 대한 액세스 권한이 있는 모든 사람을 당신의 복구를 구할 수 없습을 귀하의 자산이,저장 이를 안전하게 보관합니다. 우리가 지키지 않는 백업하고 24 말,당신이 그것을 잃으면 모든 동전 지갑에 영원히 사라질 것입니다!"
+        ],
+        "newSeedWarningRestore": [
+            "Please pay close attention to spelling and the order of words you are being asked, incorrect order will create different wallet from original.",
+            "Пожалуйста, обратите пристальное внимание на орфографию и порядок слов, что вас просят, неправильный порядок будет создать другой кошелек от оригинала.",
+            "Будь ласка, зверніть пильну увагу на орфографію і порядок слів, що вас просять, неправильний порядок буде створити інший гаманець від оригіналу.",
+            "S'il vous plaît prêter une attention particulière à l'orthographe et l'ordre des mots qui vous sont posées, ordre incorrect permettra de créer différents porte-monnaie à partir de l'original.",
+            "Por favor, preste atención a la ortografía y el orden de las palabras que se te pide, orden incorrecto creará cartera diferente de la original.",
+            "请密切注意的拼写和秩序的话，你是在问，不正确的顺序将建立不同的钱包里从原来的。",
+            "주의하시기 바랍니다 맞춤법 및 순서의 단어는 요청을 받고,잘못되었기를 만들 다른 지갑에서 원래 있습니다."
         ],
         "receive": [
             "Receive",
@@ -533,8 +551,8 @@
         ],
         "verifySeedPhrase": [
             "Verify Seed Phrase",
-            "Проверьте сид-фразу",
-            "Перевірте сід-фразу",
+            "Подтвердите сид-фразу",
+            "Підтвердіть сід-фразу",
             "Vérifier la phrase de Récupération",
             "Verifica tu frase de recuperación",
             "验证种子短语",
@@ -566,6 +584,15 @@
             "Restaurar",
             "恢復",
             "복원"
+        ],
+        "restoreWords": [
+            "words",
+            "слова",
+            "слова",
+            "mots",
+            "palabras",
+            "话",
+            "말"
         ],
         "wordsAreNotMatch": [
             "The word is entered incorrectly",
@@ -679,10 +706,10 @@
             "Node",
             "Node",
             "Node",
-            "Installer un Nœud",
-            "Instalar Nodo",
-            "安裝節點",
-            "설치 노드"
+            "Nœud",
+            "Nodo",
+            "节点",
+            "노드"
         ],
         "in": [
             "In",
@@ -748,13 +775,13 @@
             "개인 지갑 데이터를 사용하여 지갑에서 생성 된이 스크립트를 다른 사람에게 전송하지 마십시오."
         ],
         "generateScript": [
-            "Generate Script",
-            "Создать скрипт",
-            "Створити сценарій",
-            "Générer un script",
-            "Generar Script",
-            "生成腳本",
-            "스크립트 생성"
+            "Generate",
+            "Генерировать",
+            "Генерувати",
+            "Générer",
+            "Generar",
+            "产生",
+            "성"
         ],
         "plsAllow": [
             "Please allow 30 seconds",
@@ -839,12 +866,12 @@
         ],
         "claimReward": [
             "Claim",
-            "Претензия о вознаграждении",
-            "Вимога про винагороду",
-            "Réclamation récompense",
-            "Reclamar Recompensa",
-            "領取獎勵",
-            "보상 청구"
+            "Требовать",
+            "Заявляти",
+            "Demande",
+            "Reclamación",
+            "要求",
+            "구"
         ],
         "calculateReward": [
             "Calculate",
@@ -983,12 +1010,12 @@
         ],
         "restoreFrom": [
             "From",
-            "Восстановить кошелек из",
-            "Відновити гаманець із",
-            "Restaurer le portefeuille à partir de",
-            "Restaurar wallet desde",
-            "從還原錢包",
-            "에서 지갑 복원"
+            "Из",
+            "Із",
+            "De",
+            "De",
+            "的",
+            "의"
         ],
         "statistics": [
             "Statistics",
@@ -1007,6 +1034,492 @@
             "Cambio",
             "改变",
             "변경"
+        ],
+        "currentEpoch": [
+            "Current Epoch",
+            "Текущая Эпоха",
+            "Нинішня Епоха",
+            "Époque Actuelle",
+            "Época Actual",
+            "目前的时代",
+            "Epoch 현재"
+        ],
+        "currentBlock": [
+            "Current Block",
+            "Текущий Блок",
+            "Поточний Блок",
+            "Bloc Courant",
+            "Bloque Actual",
+            "当前块",
+            "현재 블록"
+        ],
+        "all": [
+            "All",
+            "Все",
+            "Всі",
+            "Tous",
+            "Todos",
+            "所有",
+            "모든"
+        ],
+        "dapps": [
+            "Dapps",
+            "Dapps",
+            "Dapps",
+            "Dapps",
+            "Dapps",
+            "Dapps",
+            "Dapps"
+        ],
+        "images": [
+            "Images",
+            "Изображения",
+            "Зображення",
+            "Images",
+            "Imágenes",
+            "图像",
+            "이미지"
+        ],
+        "publicFiles": [
+            "Public files",
+            "Общедоступные файлы",
+            "Спільні файли",
+            "Fichiers publics",
+            "Los archivos públicos",
+            "公共文件",
+            "공 파일"
+        ],
+        "web": [
+            "Web",
+            "Веб",
+            "Веб",
+            "Web",
+            "Web",
+            "网",
+            "웹사"
+        ],
+        "underDevelopment": [
+            "This tab is under development",
+            "Эта вкладка находится в стадии разработки",
+            "Ця вкладка знаходиться в стадії розробки",
+            "Cet onglet est en cours de développement",
+            "Esta ficha está en desarrollo",
+            "这个标签是在发展",
+            "이 탭은 개발"
+        ],
+        "estimatedResults": [
+            "Estimated Results",
+            "Ожидаемые Результаты",
+            "Очікувані Результати",
+            "Les Résultats Estimés",
+            "Resultados Estimados",
+            "估计结果",
+            "예상 결과"
+        ],
+        "sec": [
+            "sec",
+            "сек",
+            "с",
+            "sec",
+            "sec",
+            "sec",
+            "sec"
+        ],
+        "velasSphere": [
+            "velas sphere",
+            "сфера Velas",
+            "сфера Velas",
+            "velas sphère",
+            "velas esfera",
+            "酒店（领域",
+            "벨라 구체"
+        ],
+        "velasBlockchain": [
+            "velas blockchain",
+            "Velas блокчейн",
+            "Velas блокчейн",
+            "velas blockchain",
+            "velas blockchain",
+            "酒店（区块链",
+            "벨라 blockchain"
+        ],
+        "storageDescription": [
+            "Keep your data on encrypted distributed servers with censorship resistance. Get access to them in a convenient and familiar way.",
+            "Храните ваши данные в зашифрованном распределенных серверах с сопротивление цензуры. Получите доступ к ним в удобном и привычным способом.",
+            "Зберігайте ваші дані в зашифрованому розподілених серверах опір цензури. Отримайте доступ до них в зручному і звичним способом.",
+            "Gardez vos données sur les serveurs distribués avec la censure de la résistance. Avoir accès à eux dans un moyen pratique et familièrement.",
+            "Mantener sus datos cifrados servidores distribuidos con la censura de la resistencia. De acceder a ellos en un cómodo y familiar y a la forma.",
+            "保持你的数据加密的分布服务器的与审查的阻力。 获得他们在一个方便的和熟悉的方式。",
+            "유지 귀하의 데이터를 암호화된 분산 서버와 검열 저항입니다. 스에서 그들에게 편리하고 익숙한 방법입니다."
+        ],
+        "cpuDescription": [
+            "Use distributed resources to perform complex tasks for science, AI, video rendering.",
+            "Использование распределенных ресурсов для выполнения сложных задач для науки, АИ, рендеринг видео.",
+            "Використання розподілених ресурсів для виконання складних завдань для науки, АІ, рендеринг відео.",
+            "L'utilisation de ressources distribuées à effectuer des tâches complexes de la science, de l'IA, le rendu vidéo.",
+            "El uso de los recursos distribuidos para realizar tareas complejas, para la ciencia, AI, procesamiento de vídeo.",
+            "采用分布式资源，以执行复杂的任务，科学、大赦国际、视频渲染。",
+            "사용 배포를 수행하는 리소스가 복잡한 작업을 위해 과학,AI,동영상 렌더링이 가능합니다."
+        ],
+        "stakingDescription": [
+            "Help the blockchain be more decentralized by launching an additional validator.",
+            "Помогите блокчейн будет более децентрализованным путем запуска дополнительной проверки.",
+            "Допоможіть блокчейн буде більш децентралізованим шляхом запуску додаткової перевірки.",
+            "Aider à la blockchain être plus décentralisée, par le lancement d'un supplément de programme de validation.",
+            "Ayudar a la blockchain ser más descentralizado, con el lanzamiento de un adicional de validación.",
+            "帮助区块链可以更加分散的通过启动一个额外的验证程序。",
+            "도록 더 분산 시작하여 추가적인 검증이다."
+        ],
+        "storageDapp": [
+            "Velas Storage Dapp",
+            "Velas ДАПП Хранения ",
+            "Velas ДАПП Зберігання ",
+            "Velas De Stockage Dapp",
+            "Velas De Almacenamiento Dapp",
+            "酒店（储存Dapp",
+            "벨라 저장 Dapp"
+        ],
+        "videoStorage": [
+            "Video Storage",
+            "Хранения Видео ",
+            "Зберігання Відео ",
+            "Vidéo De Stockage",
+            "De Almacenamiento De Vídeo",
+            "视频存储",
+            "비디오 스토리지"
+        ],
+        "velasCpuStaking": [
+            "Velas CPU/GPU/STORAGE Staking Dapp",
+            "Velas ЦП/ГПУ/хранение кернеры ДАПП",
+            "Velas ЦП/ГПУ/зберігання кернери ДАПП",
+            "Velas CPU/GPU/STOCKAGE de Jalonnement Dapp",
+            "Velas de la CPU/GPU/ALMACENAMIENTO de Estacando de Dapp",
+            "酒店（CPU/GPU/存储赌Dapp",
+            "벨라 CPU/GPU/저장소 감시 Dapp"
+        ],
+        "velasCpu": [
+            "Velas CPU/GPU/STORAGE Dapp",
+            "Velas ЦП/ГПУ/ДАПП хранения ",
+            "Velas ЦП/ГПУ/ДАПП зберігання ",
+            "Velas CPU/GPU/STOCKAGE Dapp",
+            "Velas de la CPU/GPU/ALMACENAMIENTO Dapp",
+            "酒店（CPU/GPU/存储Dapp",
+            "벨라 CPU/GPU/관 Dapp"
+        ],
+        "stakingDapp": [
+            "Velas Staking Dapp",
+            "Velas Кернеры ДАПП",
+            "Velas Кернери ДАПП",
+            "Velas Jalonnement Dapp",
+            "Velas De Estacando De Dapp",
+            "酒店（赌Dapp",
+            "벨라 걸고 Dapp"
+        ],
+        "delegateStake": [
+            "Delegate",
+            "Делегат",
+            "Делегат",
+            "Délégué",
+            "Delegado",
+            "委派",
+            "대"
+        ],
+        "velasMessenger": [
+            "Velas Messenger",
+            "Мессенджер Velas ",
+            "Мессенджер Velas ",
+            "Velas Messenger",
+            "Velas Messenger",
+            "酒店（使者",
+            "벨라 메신저"
+        ],
+        "writemsg": [
+            "Write a message...",
+            "Написать сообщение...",
+            "Написати повідомлення...",
+            "Écrire un message...",
+            "Escribe un mensaje...",
+            "写一个消息...",
+            "메시지를 쓰세요..."
+        ],
+        "or": [
+            "or",
+            "или",
+            "або",
+            "ou",
+            "o",
+            "或",
+            "나"
+        ],
+        "newAccount": [
+            "New account",
+            "Новый аккаунт",
+            "Новий обліковий запис",
+            "Nouveau compte",
+            "De nueva cuenta",
+            "新帐户",
+            "새로운 계정"
+        ],
+        "backupInfo": [
+            "Do you have backup word phrase of current account?",
+            "У вас есть резервная слово фразу текущего счета?",
+            "У вас є резервна слово фразу поточного рахунку?",
+            "Vous avez de sauvegarde de mots de la phrase de compte courant?",
+            "¿Tienes copia de seguridad de palabra frase de cuenta corriente?",
+            "你有备用的词语为目前的帐户吗？",
+            "당신은 백업 단어의 문장의 현재 account?"
+        ],
+        "word": [
+            "word",
+            "слово",
+            "слово",
+            "mot",
+            "palabra",
+            "字",
+            "단어"
+        ],
+        "noticeReset": [
+            "attempts left till wallet reset to default",
+            "попытки осталось до кошелек по умолчанию",
+            "спроби залишилося до гаманець за замовчуванням",
+            "les tentatives de gauche jusqu'à ce que le portefeuille réinitialiser les paramètres par défaut",
+            "los intentos de la izquierda hasta la cartera de restablecer a la configuración predeterminada",
+            "试图左一直到重置为默认的钱包",
+            "도 왼쪽까지 지갑 기본값으로 재설정"
+        ],
+        "notice": [
+            "Notice",
+            "Уведомление",
+            "Повідомлення",
+            "Avis",
+            "Aviso",
+            "注意到",
+            "알"
+        ],
+        "noticeText": [
+            "Try to restore you account from seed phrase in different browser or incognito window before you reset it",
+            "Попробуйте восстановить ваш аккаунт из семян фразу в другом окне браузера или инкогнито, прежде чем сбросить его",
+            "Спробуйте відновити ваш аккаунт з насіння фразу в іншому вікні браузера або інкогніто, перш ніж скинути його",
+            "Essayez de restaurer votre compte à partir de la graine de la phrase dans différents navigateur ou d'une fenêtre de navigation privée avant de le réinitialiser",
+            "Intente restaurar la cuenta desde la semilla frase en otro navegador o ventana de incógnito antes de reiniciarlo",
+            "尝试恢复你的帐户种语在不同的浏览器或隐姓埋名的窗口之前你重置它",
+            "를 복원하려고 당신은 계정에서 씨앗이 문구를 다른 브라우저 또는 시크릿 창을 하기 전에 당신은 그것을 다시 설정"
+        ],
+        "resetAccount": [
+            "Reset Account",
+            "Сбросить Учетную Запись ",
+            "Скинути Обліковий Запис ",
+            "Réinitialiser Le Compte",
+            "Restablecer La Cuenta",
+            "重设的帐户",
+            "Reset 계정"
+        ],
+        "createAccount": [
+            "Create Account",
+            "Создать Аккаунт",
+            "Створити Акаунт",
+            "Créer Un Compte",
+            "Crear Cuenta",
+            "创建的帐户",
+            "계정 만들기"
+        ],
+        "per": [
+            "Per 1",
+            "За 1",
+            "За 1",
+            "Par 1",
+            "Por 1",
+            "每1",
+            "1"
+        ],
+        "selectPool": [
+            "Select pool",
+            "Выберите пул",
+            "Виберіть пул",
+            "Sélectionnez la piscine",
+            "Seleccione la piscina",
+            "选择泳池",
+            "선택 수영장"
+        ],
+        "stakerPool": [
+            "Staker Pool",
+            "Стейкер Пул",
+            "Стейкер Пул",
+            "Stakeur Piscine",
+            "Staker Piscina",
+            "Staker游泳池",
+            "Staker 수영장"
+        ],
+        "totalStake": [
+            "Total Stake",
+            "Общая Ставка",
+            "Загальна Ставка",
+            "La Mise Totale",
+            "La Apuesta Total",
+            "总的股份",
+            "총 지분"
+        ],
+        "filled": [
+            "Filled %",
+            "Заполненные %",
+            "Заповнені %",
+            "Rempli %",
+            "Rellena %",
+            "充满%",
+            "으로 가득%"
+        ],
+        "myStake": [
+            "My Stake",
+            "Моя Ставка",
+            "Моя Ставка",
+            "Mon Pieu",
+            "Mi Apuesta",
+            "我的股份",
+            "나의 스테이크"
+        ],
+        "stakers": [
+            "Stakers",
+            "Стейкеры",
+            "Стейкери",
+            "Stakers",
+            "Stakers",
+            "Stakers",
+            "Stakers"
+        ],
+        "min": [
+            "min",
+            "мин",
+            "мiн",
+            "min",
+            "min",
+            "min",
+            "min"
+        ],
+        "max": [
+            "max",
+            "макс",
+            "макс",
+            "max",
+            "max",
+            "max",
+            "max"
+        ],
+        "btnSelect": [
+            "Select",
+            "Выберите",
+            "Виберіть",
+            "Sélectionnez",
+            "Seleccione",
+            "选择",
+            "선택"
+        ],
+        "totalPools": [
+            "Total Pools",
+            "Всего Пулов",
+            "Всього Пулів",
+            "Total Des Piscines",
+            "Total De Piscinas",
+            "总池",
+            "총 수영장"
+        ],
+        "totalStakers": [
+            "Total Stakers",
+            "Всего Стейкеров",
+            "Всього Стейкерів",
+            "Total Des Stakers",
+            "Total Stakers",
+            "总Stakers",
+            "총 Stakers"
+        ],
+        "totalStaking": [
+            "Total Staking",
+            "Общая Ставка",
+            "Загальна Ставка",
+            "Total De Jalonnement",
+            "Total De Estaca",
+            "总赌",
+            "총 감시"
+        ],
+        "totalMyStake": [
+            "Total My Stake",
+            "Всего Моя Ставка",
+            "Всього Моя Ставка",
+            "Total Mon Pieu",
+            "Total De Mi Estaca",
+            "总的我的股份",
+            "총 내 스테이크"
+        ],
+        "stakeSizes": [
+            "Pool stake sizes",
+            "Бассейн Кола размеры",
+            "Басейн Кола розміри",
+            "Piscine enjeu tailles",
+            "Piscina tallas de apuesta",
+            "游泳池股的大小",
+            "수영장 스테이크 크기"
+        ],
+        "poolPopulation": [
+            "Pool Population",
+            "Население Бассейна ",
+            "Населення Басейну ",
+            "La Piscine De La Population",
+            "La Piscina De La Población",
+            "游泳池的人口",
+            "수영장 인구"
+        ],
+        "settings": [
+            "Settings",
+            "Параметры",
+            "Параметри",
+            "Paramètres",
+            "Configuración",
+            "设置",
+            "설정"
+        ],
+        "faq": [
+            "Faq",
+            "Вопросы",
+            "Питання",
+            "Faq",
+            "Preguntas frecuentes",
+            "常见问题",
+            "Faq"
+        ],
+        "stats": [
+            "Stats",
+            "Статистика",
+            "Статистика",
+            "Stats",
+            "Estadísticas",
+            "统计数据",
+            "통계"
+        ],
+        "details": [
+            "Details",
+            "Детали",
+            "Деталі",
+            "Détails",
+            "Detalles",
+            "详细信息",
+            "상세정보"
+        ],
+        "comingSoon": [
+            "Coming Soon",
+            "В Ближайшее Время ",
+            "Найближчим Часом ",
+            "Bientôt",
+            "Próximamente",
+            "很快来",
+            "곧"
+        ],
+        "delegators": [
+            "Delegators",
+            "Делегаты",
+            "Делегати",
+            "Delegators",
+            "Delegators",
+            "委派器",
+            "Delegators"
         ]
     }
 }

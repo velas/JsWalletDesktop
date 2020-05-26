@@ -8,6 +8,7 @@ require! {
     \./icon.ls
     \../navigate.ls
     \../icons.ls
+    \../components/button.ls
 }
 # .settings-menu474215560
 #     @import scheme
@@ -253,6 +254,7 @@ require! {
 switch-account = (store, web3t)->
     {  account-left, account-right, change-account-index } = menu-funcs store, web3t
     style = get-primary-info store
+    lang = get-lang store
     input-style =
         background: style.app.wallet
         color: style.app.text
@@ -264,7 +266,7 @@ switch-account = (store, web3t)->
         color: style.app.text
         background: style.app.primary2
     react.create-element 'div', { style: color, className: 'switch-account' }, children = 
-        react.create-element 'div', { className: 'mb-12' }, ' Account Index:'
+        react.create-element 'div', { className: 'mb-12' }, ' ' + lang.account-index + ':'
         react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button left' }, children = 
             icon \ChevronLeft, 15
         react.create-element 'span', { className: 'bold' }, children = 
@@ -292,10 +294,6 @@ manage-account = (store, web3t)->
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
-    button-primary3-style=
-        border: "1px solid #{style.app.border}"
-        color: style.app.text2
-        background: style.app.primary3
     goto-terms = ->
         navigate store, web3t, \terms2
     set-lang = (lang)->
@@ -395,10 +393,7 @@ manage-account = (store, web3t)->
                 react.create-element 'span', { className: 'bold' }, ' ' + lang.for-advanced-users ? 'For advanced users only'
                 react.create-element 'span', {}, ' ' + lang.export-private-key-warning ? 'Please never do it in case when you do not understand exact reason of this action and do not accept risks' + '.'
             react.create-element 'div', { className: 'content' }, children = 
-                react.create-element 'button', { on-click: export-private-key, style: button-primary2-style, className: 'btn-width' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.show}", className: 'icon-svg' }
-                        """ #{lang.show-secret ? 'Show Secret'}"""
+                button { store, text: \showSecret , on-click: export-private-key, icon: \show, type: \secondary }
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, children = 
                 react.create-element 'div', { className: 'logo' }, children = 

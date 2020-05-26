@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.92",
+  "version": "0.12.93",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -81,6 +81,7 @@
     "ethereumjs-common": "^1.5.0",
     "ethereumjs-util": "^5.2.0",
     "hdkey": "^1.1.2",
+    "identicon": "^3.0.1",
     "libsodium-wrappers-sumo": "^0.7.6",
     "localStorage": "^1.0.4",
     "md5": "^2.2.1",
@@ -96,6 +97,7 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-middle-ellipsis": "^1.1.0",
+    "react-virtualized": "^9.21.2",
     "require-ls": "0.0.8",
     "scryptsy": "^1.2.1",
     "secp256k1": "^4.0.0",

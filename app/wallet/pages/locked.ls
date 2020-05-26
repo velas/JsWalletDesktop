@@ -11,14 +11,24 @@ require! {
     \./choose-language.ls
     \../icons.ls
     \./confirmation.ls : { confirm }
+    \../components/button.ls
 }
-# .locked-1709733927
+# .locked-1518901669
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
 #     height: 100vh
 #     box-sizing: border-box
 #     text-align: center
+#     .notice
+#         position: fixed
+#         width: 230px
+#         text-align: left
+#         right: 10px
+#         bottom: 10px
+#         font-size: 13px
+#         background: #43207c
+#         padding: 10px
 #     .icon-svg
 #         position: relative
 #         height: 12px
@@ -56,6 +66,8 @@ require! {
 #                 text-align: center
 #                 width: 100px
 #                 font-size: 10px
+#                 span
+#                     text-transform: uppercase
 #                 .line
 #                     border-top: 1px solid rgba(223, 223, 223, 0.2)
 #                     position: absolute
@@ -67,7 +79,7 @@ require! {
 #                         right: 0
 #         input
 #             text-align: center
-#             font-size: 17px
+#             font-size: 12px
 #             display: inline-block
 #             height: 36px
 #             background: transparent
@@ -75,7 +87,9 @@ require! {
 #             border-radius: $border
 #             outline: none
 #             width: 120px
+#             margin-bottom: 5px
 #             letter-spacing: 5px
+#             padding: 7px 0
 #             box-sizing: border-box
 #             &:focus
 #                 border-color: #248295
@@ -87,7 +101,11 @@ require! {
 #         padding-top: 15px
 #         max-width: 400px
 #         display: inline-block
+#         ~div .orange
+#             color: #f0c16b
+#             text-transform: uppercase
 #     button
+#         width: 120px
 #         &.text-primary
 #             color: rgb(156, 65, 235) !important
 #             &:hover
@@ -135,6 +153,11 @@ require! {
 #     ::placeholder
 #         color: #ffffff91
 #         font-size: 12px
+#         letter-spacing: 0
+#         line-height: 18px
+#     ::-ms-input-placeholder
+#         color: #ffffff91
+#         font-size: 12px !important
 #         letter-spacing: 0
 #         line-height: 22px
 #     .drag
@@ -186,7 +209,7 @@ input = (store, web3t)->
         border: "0"
         color: style.app.text
         background: "transparent"
-        width: "100px"
+        width: "120px"
         height: "36px"
         margin-top: "0px"
     locked-style=
@@ -201,26 +224,23 @@ input = (store, web3t)->
     catch-key = ->
         enter! if it.key-code is 13
     reset-account = ->
-        res <- confirm store, "Do you have backup word phrase of current account?"
+        res <- confirm store, "#{lang.backup-info}"
         return if res is no
         reset-wallet store
     drag =
         if store.current.pin-trial is 0 then \ "" else \drag
     react.create-element 'div', {}, children = 
-        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: "Password or PIN", on-change: change, on-key-down: catch-key, auto-complete: "off", className: "#{drag} password" }
+        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: "#{lang.pin-placeholder}", on-change: change, on-key-down: catch-key, auto-complete: "off", className: "#{drag} password" }
         if exists!
             react.create-element 'div', {}, children = 
-                react.create-element 'button', { on-click: enter, style: button-primary1-style, className: 'setup' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.enter}", className: 'icon-svg' }
-                        """ #{lang.enter}"""
+                button { store, on-click: enter, type: \primary , text: \enter }
                 react.create-element 'div', {}, children = 
                     react.create-element 'div', { className: 'division' }, children = 
                         react.create-element 'div', { className: 'line l' }
-                        react.create-element 'span', {}, ' OR'
+                        react.create-element 'span', {}, ' ' + lang.or
                         react.create-element 'div', { className: 'line r' }
                     react.create-element 'div', {}, children = 
-                        react.create-element 'button', { style: button-primary0-style, on-click: reset-account, className: 'setup text-primary' }, ' NEW ACCOUNT'
+                        react.create-element 'button', { style: button-primary0-style, on-click: reset-account, className: 'setup text-primary' }, ' ' + lang.new-account
 reset-wallet = (store)->
     setbkp!
     del!
@@ -235,15 +255,17 @@ wrong-trials = (store)->
     lang = get-lang store
     left-trials = total-trials - store.current.pin-trial
     reset-account = ->
-        res <- confirm store, "Do you have backup word phrase of current account?"
+        res <- confirm store, "#{lang.backup-info}"
         return if res is no
         reset-wallet store
-    wrong-pin-text = "#{left-trials}/#{total-trials} attempts left till wallet reset to default."
+    wrong-pin-text = "#{left-trials}/#{total-trials} #{lang.notice-reset}."
     react.create-element 'div', {}, children = 
         react.create-element 'div', { key: "wrong-trial", className: 'wrong' }, ' ' + wrong-pin-text
-        react.create-element 'div', {}, ' NOTICE! Try to restore you account from seed phrase in different browser or incognito window before you reset it'
+        react.create-element 'div', { className: 'notice' }, children = 
+            react.create-element 'span', { className: 'orange' }, ' ' + lang.notice + '! '
+            react.create-element 'span', {}, ' ' + lang.notice-text
         react.create-element 'div', {}, children = 
-            react.create-element 'button', { on-click: reset-account, className: 'reset setup text-primary' }, ' Reset Account'
+            react.create-element 'button', { on-click: reset-account, className: 'reset setup text-primary' }, ' ' + lang.reset-account
 setup-button = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
@@ -298,7 +320,7 @@ locked = ({ store, web3t })->
         background-size: "cover"
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1709733927' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1518901669' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + info.branding.title

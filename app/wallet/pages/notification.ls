@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -11,6 +10,7 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
 # .notice1687838996
 #     @import scheme
@@ -1295,9 +1295,9 @@ item = (store, web3t)->
                 react.create-element 'li', {}, children = 
                     react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
         react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
-            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
         react.create-element 'div', { style: border-t, className: 'textarea' }, children = 
-            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Write a message..." }
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.writemsg}" }
         react.create-element 'div', { className: 'content-msg' }, children = 
             react.create-element 'ul', {}, children = 
                 react.create-element 'li', { className: 'in' }, children = 
@@ -1399,9 +1399,9 @@ item2 = (store, web3t)->
                 react.create-element 'li', {}, children = 
                     react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
         react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
-            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
         react.create-element 'div', { style: border-t, className: 'textarea' }, children = 
-            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Write a message..." }
+            react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.writemsg}" }
         react.create-element 'div', { className: 'content-msg' }, children = 
             react.create-element 'ul', {}, children = 
                 react.create-element 'li', { className: 'in' }, children = 
@@ -1514,10 +1514,9 @@ notice = ({ store, web3t })->
     imgs=
         ava: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1588866150/velas/interface_1.png"
     react.create-element 'div', { className: 'notice notice1687838996' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Messenger'
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.velas-messenger
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t
@@ -1540,7 +1539,7 @@ notice = ({ store, web3t })->
                         react.create-element 'div', { className: 'left-menu' }
                         react.create-element 'ul', { style: border-style3 }, children = 
                             react.create-element 'li', { style: border-b }, children = 
-                                react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "Search" }
+                                react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
                                 react.create-element 'img', { src: "#{icons.create}", className: 'edit' }
                             react.create-element 'li', { on-click: activate-item, style: border-b, className: "#{active-item}" }, children = 
                                 react.create-element 'img', { src: "#{imgs.ava}", className: 'ava' }

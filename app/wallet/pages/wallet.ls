@@ -2,10 +2,6 @@ require! {
     \react
     \../tools.ls : { money }
     \prelude-ls : { each, find }
-    \react-copy-to-clipboard : { CopyToClipboard }
-    \../copied-inform.ls
-    \../copy.ls
-    \../address-link.ls : { get-address-link, get-address-title }
     \../wallet-funcs.ls
     \../get-lang.ls
     \./icon.ls
@@ -13,11 +9,12 @@ require! {
     \../../web3t/providers/superagent.ls : { get }
     \../icons.ls
     \../round-human.ls
-    \react-middle-ellipsis : { default: MiddleEllipsis }
     \./confirmation.ls : { alert }
+    \../components/button.ls
+    \../components/address-holder.ls
 }
 #
-# .wallet1861632262
+# .wallet-1625868451
 #     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
@@ -45,8 +42,46 @@ require! {
 #     &.big
 #         height: 120px
 #     &.active
-#         >.wallet-middle
-#             display: inline-block
+#     .wallet-middle
+#         >.uninstall
+#             text-align: left
+#             font-size: 10px
+#             padding-top: 5px
+#         box-sizing: border-box
+#         width: 70%
+#         height: 85px
+#         float: left
+#         padding: 20px
+#         border-top: 1px solid rgb(107, 38, 142)
+#         border-right: 1px solid rgb(107, 38, 142)
+#         &:last-child
+#             display: block
+#         &:last-child
+#             width: 30%
+#             border-right: 0 !important
+#         .name
+#             color: #fff
+#             font-size: 16px
+#             font-weight: 700
+#             &.per
+#                 font-size: 10px
+#                 color: orange
+#                 font-weight: 100
+#             &:last-child
+#                 font-size: 10px
+#                 text-transform: uppercase
+#                 letter-spacing: 2px
+#                 margin-top: 5px
+#                 opacity: .8
+#         .title-balance
+#             color: #fff
+#             font-size: 14px
+#             text-align: left
+#         span
+#             padding-left: 10px
+#         a
+#             float: left
+#             text-align: left
 #     >.wallet-top
 #         padding: 0 12px
 #         box-sizing: border-box
@@ -155,70 +190,6 @@ require! {
 #                 &:hover
 #                     background: #7aa7f3
 #                     color: white
-#     >.wallet-middle
-#         $card-top-height: 50px
-#         width: 100%
-#         padding: 0 12px
-#         box-sizing: border-box
-#         color: #A8BACB
-#         font-size: 14px
-#         margin-top: 10px
-#         text-align: center
-#         position: relative
-#         .browse
-#             display: none
-#         &:last-child
-#             display: none
-#         >.uninstall
-#             text-align: left
-#             font-size: 10px
-#             padding-top: 5px
-#         >img
-#             position: absolute
-#             right: 3%
-#             margin: 10px
-#             margin-left: 50px
-#             z-index: 2
-#         >span
-#             width: 100%
-#             z-index: 1
-#             position: relative
-#             border-radius: $border
-#             border: 0
-#             background: #E6F0FF
-#             box-sizing: border-box
-#             vertical-align: top
-#             text-align: center
-#             padding-left: 20px
-#             padding-right: 55px
-#             height: $card-top-height - 14px
-#             color: #677897
-#             font-size: 14px
-#             line-height: $card-top-height - 14px
-#             display: inline-block
-#             text-overflow: ellipsis
-#             overflow: hidden
-#             user-select: text !important
-#             cursor: auto
-#             @media screen and (max-width: 390px)
-#                 padding-right: 25px
-#             a
-#                 width: auto
-#                 z-index: 1
-#                 position: relative
-#                 border-radius: $border
-#                 border: 0
-#                 background: transparent
-#                 box-sizing: border-box
-#                 vertical-align: top
-#                 text-align: center
-#                 height: $card-top-height - 14px
-#                 color: rgb(204, 204, 204)
-#                 font-size: 14px
-#                 line-height: $card-top-height - 14px
-#                 display: inline-block
-#                 cursor: pointer
-#                 user-select: text !important
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
     { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
@@ -232,18 +203,9 @@ module.exports = (store, web3t, wallets, wallet)-->
     border-style =
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.wallet
-    button-primary1-style=
-        border: "1px solid #{style.app.primary1}"
-        color: style.app.text
-        background: style.app.primary1
-    button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
-        color: style.app.text
-        background: style.app.primary2
-    button-primary1-style-m=
-        border: "1px solid rgb(195, 92, 95)"
-        color: style.app.text
-        background: "rgb(195, 92, 95)"
+    border =
+        border-top: "1px solid #{style.app.border}"
+        border-right: "1px solid #{style.app.border}"
     button-primary3-style=
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
@@ -251,8 +213,6 @@ module.exports = (store, web3t, wallets, wallet)-->
     address-input=
         color: style.app.addressText
         background: style.app.addressBg
-    filter-icon=
-        filter: style.app.filterIcon
     btn-icon =
         filter: style.app.btn-icon
     placeholder = 
@@ -262,33 +222,28 @@ module.exports = (store, web3t, wallets, wallet)-->
         | store.current.refreshing => "placeholder-coin"
         | _ => ""
     name = wallet.coin.name ? wallet.coin.token
-    load-terms = (cb)->
-        #return cb null if store.current.content-migrate?
-        err, res <- get \https://raw.githubusercontent.com/okhrimenkoalexey/Velas/master/terms.md .end
-        return cb err if err?
-        store.terms2 = res.text
-        cb null
-    migrate = (wallet)-> ->
-        err <- load-terms
-        address = 
-            store.current.account.wallets 
-                |> find (-> it.coin.token is \vlx2) 
-                |> (.address)
-        return alert store, "addres #{address} is wrong", cb if typeof! address isnt \String
-        err, data <- get "https://mainnet-v2.velas.com/migration/topup-velas-address/#{address}" .end
-        return alert store, "#{err}", cb if err?
-        return alert store, "cannot create address", cb if not data.body?address?
-        store.current.token-migration = data.body.address
-        #store.current.token-migration = "V123"
-    cut-tx = (tx)->
-        return \none if not tx?
-        t = tx.to-string!
-        m = Math.max(document.documentElement.clientWidth, window.innerWidth or 0)
-        r =
-            | m > 800 => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
-            | _ => t.substr(0, 4) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 4, 4)
-    react.create-element 'div', { on-click: expand, key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet1861632262" }, children = 
-        react.create-element 'div', { className: 'wallet-top' }, children = 
+    #load-terms = (cb)->
+    #    #return cb null if store.current.content-migrate?
+    #    err, res <- get \https://raw.githubusercontent.com/okhrimenkoalexey/Velas/master/terms.md .end
+    #    return cb err if err?
+    #    store.terms2 = res.text
+    #    cb null
+    #migrate = (wallet)-> ->
+    #    err <- load-terms
+    #    address = 
+    #        store.current.account.wallets 
+    #            |> find (-> it.coin.token is \vlx2) 
+    #            |> (.address)
+    #    return alert store, "addres #{address} is wrong", cb if typeof! address isnt \String
+    #    err, data <- get "https://mainnet-v2.velas.com/migration/topup-velas-address/#{address}" .end
+    #    return alert store, "#{err}", cb if err?
+    #    return alert store, "cannot create address", cb if not data.body?address?
+    #    store.current.token-migration = data.body.address
+    #    #store.current.token-migration = "V123"
+    receive-click = receive(wallet)
+    send-click = send(wallet)
+    react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-1625868451" }, children = 
+        react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
                     react.create-element 'img', { src: "#{wallet.coin.image}" }
@@ -310,36 +265,14 @@ module.exports = (store, web3t, wallets, wallet)-->
                 if store.current.device is \desktop
                     react.create-element 'button', { on-click: expand, style: button-primary3-style, className: 'btn-open' }, children = 
                         react.create-element 'img', { src: "#{icons.open}", style: btn-icon, className: 'icon' }
-                react.create-element 'button', { on-click: send(wallet), style: button-primary1-style }, children = 
-                    if store.current.device is \mobile
-                        react.create-element 'img', { src: "#{icons.send}", className: 'icon-svg' }
-                    if store.current.device is \desktop
-                        react.create-element 'span', {}, children = 
-                            react.create-element 'img', { src: "#{icons.send}", className: 'icon-svg' }
-                            """ #{lang.send}"""
-                if wallet.coin.token isnt \vlx or store.current.device isnt \desktop
-                    react.create-element 'button', { on-click: receive(wallet), style: button-primary2-style }, children = 
-                        if store.current.device is \mobile
-                            react.create-element 'img', { src: "#{icons.get}", className: 'icon-svg' }
-                        if store.current.device is \desktop
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.get}", className: 'icon-svg' }
-                                """ #{lang.receive}"""
-                else
-                    react.create-element 'button', { on-click: migrate(wallet), style: button-primary1-style-m }, children = 
-                        react.create-element 'span', {}, children = 
-                            react.create-element 'img', { src: "#{icons.migrate}", className: 'icon-svg' }
-                            """ #{lang.btn-migrate}"""
-        react.create-element 'div', { className: 'wallet-middle' }, children = 
-            react.create-element 'span', { style: address-input }, children = 
-                react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}", className: 'browse' }, children = 
-                    react.create-element 'img', { src: "#{icons.browse-open}" }
-                react.create-element MiddleEllipsis, {}, children = 
-                    react.create-element 'a', { target: "_blank", href: "#{get-address-link wallet}" }, ' ' + get-address-title wallet
-            react.create-element CopyToClipboard, { text: "#{get-address-title wallet}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                copy store
+                button { store, on-click=send-click, text: \send , icon: \send , type: \primary }
+                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \secondary }
+        react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
+            address-holder { store, wallet, type: \bg }
             if wallet.coin.token not in <[ btc vlx vlx2 ]>
                 react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall
-        react.create-element 'div', { className: 'wallet-middle title-balance' }, children = 
+        react.create-element 'div', { style: border, className: 'wallet-middle title-balance' }, children = 
             react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human(usd-rate)
-            react.create-element 'div', { className: "#{placeholder} name per" }, ' Per 1 ' +  wallet.coin.token.to-upper-case! 
+            react.create-element 'div', { className: "#{placeholder} name per" }, children = 
+                react.create-element 'span', {}, ' ' + lang.per + ' '
+                """ #{ wallet.coin.token.to-upper-case! }"""

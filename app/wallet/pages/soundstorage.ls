@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -10,6 +9,7 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \./epoch.ls
+    \./tor.ls
     \../icons.ls
 }
 # .videostorage1006399051
@@ -1160,6 +1160,7 @@ videostorage = ({ store, web3t })->
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
+            tor store, web3t
         if store.sound.menu-open
             menu store, web3t
         react.create-element 'div', { className: 'search-input' }, children = 

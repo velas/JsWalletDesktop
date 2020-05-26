@@ -20,7 +20,7 @@ require! {
     \moment
     \../navigate.ls
 }
-# .choose-account2040873820
+# .choose-account-948947335
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -29,7 +29,7 @@ require! {
 #     height: auto
 #     box-sizing: border-box
 #     position: relative
-#     right: 10px
+#     right: 40px
 #     bottom: 30px
 #     $cards-pad: 15px
 #     z-index: 2
@@ -303,31 +303,32 @@ module.exports = (store, web3t)->
         store.current.open-menu = not store.current.open-menu
     on-exit = ->
         store.current.current-epoch = no
-    react.create-element 'div', { className: 'choose-account choose-account2040873820' }, children = 
-        react.create-element 'div', { className: "#{show-class} current-epoch h1" }, children = 
-            react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
-            react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
-        if store.current.current-epoch
-            react.create-element 'div', { style: filter-body, on-mouse-leave: on-exit, className: 'epoch' }, children = 
-                react.create-element 'div', { className: 'middle account' }, children = 
-                    react.create-element 'div', { className: 'table-row-menu' }, children = 
-                        react.create-element 'div', { className: 'col folder-menu' }, children = 
-                            react.create-element 'div', {}, ' ' + current-block
-                            react.create-element 'span', {}, ' Current block'
-                        react.create-element 'div', { className: 'col folder-menu' }, children = 
-                            react.create-element 'div', {}, ' ' + store.dashboard.epoch
-                            react.create-element 'span', {}, ' Current epoch'
-                        react.create-element 'div', { className: 'col folder-menu' }, children = 
-                            react.create-element 'div', {}, children = 
-                                react.create-element 'progress', { value: "#{store.dashboard.epoch-percent}", max: "100" }
-                            react.create-element 'span', {}, children = 
-                                """ #{lang.change} """
-                                """ #{epoch-next}"""
-                        if window.location.href.index-of('internal') > -1
+    if store.current.device is \desktop
+        react.create-element 'div', { className: 'choose-account choose-account-948947335' }, children = 
+            react.create-element 'div', { className: "#{show-class} current-epoch h1" }, children = 
+                react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
+                react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 
+                    react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
+            if store.current.current-epoch
+                react.create-element 'div', { style: filter-body, on-mouse-leave: on-exit, className: 'epoch' }, children = 
+                    react.create-element 'div', { className: 'middle account' }, children = 
+                        react.create-element 'div', { className: 'table-row-menu' }, children = 
+                            react.create-element 'div', { className: 'col folder-menu' }, children = 
+                                react.create-element 'div', {}, ' ' + current-block
+                                react.create-element 'span', {}, ' ' + lang.current-block
+                            react.create-element 'div', { className: 'col folder-menu' }, children = 
+                                react.create-element 'div', {}, ' ' + store.dashboard.epoch
+                                react.create-element 'span', {}, ' ' + lang.current-epoch
                             react.create-element 'div', { className: 'col folder-menu' }, children = 
                                 react.create-element 'div', {}, children = 
-                                    react.create-element 'button', { on-click: monitor, style: button-primary2-style }, children = 
-                                        react.create-element 'span', {}, children = 
-                                            react.create-element 'img', { src: "#{icons.monitor}", className: 'icon-svg' }
-                                            """ Monitor"""
+                                    react.create-element 'progress', { value: "#{store.dashboard.epoch-percent}", max: "100" }
+                                react.create-element 'span', {}, children = 
+                                    """ #{lang.change} """
+                                    """ #{epoch-next}"""
+                            if window.location.href.index-of('internal') > -1
+                                react.create-element 'div', { className: 'col folder-menu' }, children = 
+                                    react.create-element 'div', {}, children = 
+                                        react.create-element 'button', { on-click: monitor, style: button-primary2-style }, children = 
+                                            react.create-element 'span', {}, children = 
+                                                react.create-element 'img', { src: "#{icons.monitor}", className: 'icon-svg' }
+                                                """ Monitor"""

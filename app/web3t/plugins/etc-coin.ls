@@ -1,7 +1,7 @@
 export mainnet =
     decimals: 18
     tx-fee: \0.0014
-    tx-fee-options:
+    tx-fee-options: 
         auto: \0.0014
         cheap: \0.00014
     message-prefix: 'Ethereum'
@@ -16,7 +16,7 @@ export testnet =
     decimals: 18
     disabled: yes
     tx-fee: \0.0014
-    tx-fee-options:
+    tx-fee-options: 
         auto: \0.0014
         cheap: \0.00014
     message-prefix: 'Ethereum'
@@ -27,7 +27,7 @@ export testnet =
         url : \https://ropsten.etherscan.io
         apiUrl : \https://api-ropsten.etherscan.io/api
 export color = \#71DF8F
-export type = \coin
+export type = \coin    
 export enabled = yes
 export name = 'Ethereum Classic'
 export token = \etc

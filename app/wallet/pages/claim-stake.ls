@@ -7,6 +7,7 @@ require! {
     \../math.ls : { div, times, plus, minus }
     \prelude-ls : { map, split, filter, find, foldl, drop, take }
     \../round-human.ls
+    \../components/button.ls
 }
 # .section-reward1503114766
 #     @import scheme
@@ -373,7 +374,6 @@ calc-reward-epoch = (store, web3t, check, [item, ...items], cb)->
     return cb err if err?
     item.reward = reward-long `div` (10^18)
     item.checked = +store.staking.epoch isnt +item.epoch and check > 0
-    console.log \update, item
     cb null
 calc-next-reward = (store, web3t, cb)->
     unloaded =
@@ -404,10 +404,6 @@ calc-reward = (store, web3t)->
 build-claim-reward = (store, web3t)-> (item)->
     style = get-primary-info store
     lang = get-lang store
-    button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
-        color: style.app.text
-        background: style.app.primary2
     checked = item.checked
     load-or-skip = (item, cb)->
         return cb null if item.reward isnt '..'
@@ -438,10 +434,6 @@ module.exports = (store, web3t)->
     lang = get-lang store
     calc-reward-click = ->
         calc-reward store, web3t
-    button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
-        color: style.app.text
-        background: style.app.primary2
     claim = ->
         epochs =
             store.staking.rewards
@@ -466,23 +458,17 @@ module.exports = (store, web3t)->
                         react.create-element 'span', {}, ' ' + lang.available-reward + ': '
                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.reward
                         react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                        react.create-element 'span', { className: 'color' }, '  VLX'
+                        react.create-element 'span', { className: 'color' }, '  VLX2'
                     react.create-element 'div', { className: 'staking-reward' }, children = 
                         store.staking.rewards |> map build-claim-reward store, web3t
                     react.create-element 'div', { className: 'balance' }, children = 
                         react.create-element 'span', {}, ' ' + lang.claim-reward + ': '
                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.reward-claim
                         react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                        react.create-element 'span', { className: 'color' }, '  VLX'
-                    react.create-element 'button', { on-click: claim, style: button-primary2-style }, children = 
-                        react.create-element 'span', {}, children = 
-                            react.create-element 'img', { src: "#{icons.reward}", className: 'icon-svg' }
-                            """ #{lang.claim-reward}"""
+                        react.create-element 'span', { className: 'color' }, '  VLX2'
+                    button { store, on-click: claim , icon : \reward , text : \claimReward , type : \secondary }
             else if store.staking.reward-loading is yes
                 react.create-element 'div', { className: 'placeholder' }, ' Loading... Please wait'
             else
-                react.create-element 'button', { style: button-primary2-style, on-click: calc-reward-click, className: 'mt-0' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.calculate}", className: 'icon-svg' }
-                        """ #{lang.calculate-reward}"""
+                button { store, on-click: calc-reward-click , icon : \calculate , text : \calculateReward , type : \secondary }
 module.exports.calc-reward = calc-reward

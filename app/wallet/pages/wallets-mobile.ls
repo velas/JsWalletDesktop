@@ -15,20 +15,24 @@ require! {
     \../icons.ls
     \./icon.ls
 }
-# .wallet-mobile-1878974387
+# .wallet-mobile2008033141
 #     $mobile: 425px
 #     $tablet: 800px
+#     button.btn
+#         min-width: auto
+#         margin: 0
 #     .your-account
 #         position: relative
 #         display: block
 #         max-width: 450px
+#         border: 0 !important
 #         .switch-menu
 #             right: -1px
-#             top: 144px
+#             top: 165px
 #             @media(max-width: 480px)
 #                 right: -2px
 #     @media(max-width: 800px)
-#         margin-top: 60px
+#         margin-top: 0px
 #     .wallets
 #         @import scheme
 #         $real-height: 300px
@@ -141,6 +145,25 @@ require! {
 #             border-right: 1px solid rgb(107, 38, 142)
 #             @media(max-width: $mobile)
 #                 border: 0
+#     .wallet
+#         .wallet-middle
+#             width: 100%
+#             padding: 10px 12px
+#             box-sizing: border-box
+#             color: #A8BACB
+#             font-size: 14px
+#             margin-top: 5px
+#             text-align: center
+#             position: relative
+#             display: inline-block
+#             height: auto
+#             border: 0 !important
+#             .address-holder
+#                 div
+#                     a
+#                         padding-right: 20px
+#             &.title-balance
+#                 display: none
 mobile = ({ store, web3t })->
     return null if not store.current.account?
     { wallets, go-up, can-up, go-down, can-down } = wallets-funcs store, web3t
@@ -207,7 +230,7 @@ mobile = ({ store, web3t })->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile-1878974387' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile2008033141' }, children = 
         menu { store, web3t }
         manage-account { store, web3t }
         token-migration { store, web3t }

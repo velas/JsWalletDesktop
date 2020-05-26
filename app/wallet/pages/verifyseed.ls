@@ -7,7 +7,7 @@ require! {
     \prelude-ls : { map, find, foldl, unique, take, sort-by }
 }
 # verification seed
-# .newseed47169244
+# .newseed-1353730657
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -91,7 +91,7 @@ require! {
 #     button
 #         outline: none
 #         width: auto
-#         min-width: 180px
+#         min-width: 80px
 #         height: 36px
 #         margin: 15px 5px 0
 #         text-transform: uppercase
@@ -160,27 +160,26 @@ newseed = ({ store, web3t })->
         save!
     back = ->
         return store.current.verify-seed-indexes += 1 if store.current.verify-seed-indexes > 0
-        store.current.page = \newseed
+        store.current.page = \reviewwords
     build-verify-seed = (store, item)-->
         enter-confirm = ->
             item.part = it.target.value
         react.create-element 'div', { style: seed-style, className: 'word' }, children = 
-            react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "Enter #{item.index + 1} word" }
-    react.create-element 'div', { className: 'newseed newseed47169244' }, children = 
+            react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "#{lang.word} ##{item.index + 1}" }
+    react.create-element 'div', { className: 'newseed newseed-1353730657' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase ? 'Verify Seed Phrase'
         react.create-element 'div', { className: 'words' }, children = 
             build-verify-seed store, store.current.verify-seed-indexes[store.current.verify-seed-index]
         react.create-element 'div', {}, children = 
-            react.create-element 'button', { style: button-primary1-style, on-click: verify-seed, className: 'right' }, children = 
-                react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.confirm}", className: 'icon-svg' }
-                    """ #{lang.confirm ? 'Confirm' }"""
-        react.create-element 'div', {}, children = 
             react.create-element 'button', { style: button-primary3-style, on-click: back, className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
-                    """ #{lang.back ? 'Back' }"""
+                    react.create-element 'img', { src: "#{icons.close2}", style: btn-icon, className: 'icon-svg' }
+                    """ #{lang.cancel}"""
+            react.create-element 'button', { style: button-primary1-style, on-click: verify-seed, className: 'right' }, children = 
+                react.create-element 'span', {}, children = 
+                    react.create-element 'img', { src: "#{icons.right}", className: 'icon-svg' }
+                    """ #{lang.next}"""
         if store.current.verify-seed-error is yes
             react.create-element 'div', { style: text-style, className: 'warning' }, children = 
                 react.create-element 'div', {}, ' ' + lang.words-are-not-match ? 'The word is entered incorrectly' 

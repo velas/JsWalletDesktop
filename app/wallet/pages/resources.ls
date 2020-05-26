@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \react-copy-to-clipboard : { CopyToClipboard }
@@ -16,7 +15,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .resources909809931
+# .resources-1831468487
 #     @import scheme
 #     position: relative
 #     display: block
@@ -115,8 +114,8 @@ require! {
 #     .price-month
 #         width: 100%
 #         .per-price
-#             color: #6f6fe2;
-#             font-size: 14px;
+#             color: #6f6fe2
+#             font-size: 16px
 #     .entry-content
 #         padding: 20px 12px
 #         color: #323232
@@ -351,7 +350,7 @@ resources = ({ store, web3t })->
         background: "url('#{icons.bg-spacing}')"
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'resources resources909809931' }, children = 
+    react.create-element 'div', { className: 'resources resources-1831468487' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 

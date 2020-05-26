@@ -1,12 +1,12 @@
 require! {
     \react
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
     \../get-lang.ls
     \../history-funcs.ls
     \../icons.ls
+    \../components/button.ls
 }
 # .terms-780672038
 #     @import scheme
@@ -57,10 +57,6 @@ terms = ({ store, web3t })->
         color: info.app.text
     button-style=
         color: info.app.text
-    button-primary1-style=
-        border: "1px solid #{info.app.primary1}"
-        color: info.app.text
-        background: info.app.primary1
     btn-icon =
         filter: info.app.btn-icon
     accept = ->
@@ -71,10 +67,7 @@ terms = ({ store, web3t })->
             react.create-element 'div', { className: 'header' }, ' ' + lang.terms-of-use ? 'Terms of Use'
             react.create-element 'textarea', { value: "#{store.terms}", style: style }
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: go-back, style: button-primary1-style }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
-                        """ #{lang.back}"""
+                button { store, text: \back , on-click: go-back, icon: \arrowLeft, type: \primary }
 terms.init = ({ store }, cb)->
     err, res <- get \https://raw.githubusercontent.com/velas/JsWallet/master/TERMS.md .end
     return cb err if err?

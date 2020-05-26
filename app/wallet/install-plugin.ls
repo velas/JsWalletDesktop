@@ -3,7 +3,7 @@ require! {
     \prelude-ls : { any, map, filter }
     #react controls
     \./modal.ls : { install, replace }
-    \superagent : { get }
+    \../web3t/providers/superagent.ls : { get }
     \./json-parse.ls
     \./providers.ls
 }
@@ -98,7 +98,7 @@ export build-quick-install = (cweb3, store)-> (plugin, cb)->
 export build-uninstall = (cweb3, store)-> (name, cb)->
     uninstall-plugin cweb3, name, cb
 export build-install-by-name = (cweb3, store)-> (name, cb)->
-    err, resp <- get "https://raw.githubusercontent.com/web3space/plugin-registry/master/plugins/#{name}.json"
+    err, resp <- get "https://raw.githubusercontent.com/web3space/plugin-registry/master/plugins/#{name}.json" .end
     return cb err if err?
     err, plugin <- json-parse resp.text
     return cb err if err?
