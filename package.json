@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.93",
+  "version": "0.12.94",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
