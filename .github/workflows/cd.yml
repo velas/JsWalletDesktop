@@ -30,7 +30,7 @@ jobs:
       #     # snapcraft_token: ${{ secrets.snapcraft_token }}
 
       - name: Build/release Electron app
-        uses: kpogromskiy/action-electron-builder@v1
+        uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.github_token }} # Automatically generated
           mac_certs: ${{ secrets.mac_certs }}
