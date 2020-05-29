@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.101",
+  "version": "0.12.102",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -18,7 +18,6 @@
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps",
     "install": "cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh",
-    "electron-builder-postprocess": "node ./scripts/calc-md5.js"
   },
   "repository": {
     "type": "git",
