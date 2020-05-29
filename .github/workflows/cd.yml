@@ -51,7 +51,7 @@ jobs:
 
       - id: md5file
         run: |
-          $output=(node ./scripts/calc-md5.js)
+          $output=`node ./scripts/calc-md5.js`
           Write-Output "::set-output name=md5file::$output"
       - name: Upload Release Asset
         id: upload-release-asset
