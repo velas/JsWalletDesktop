@@ -11,8 +11,9 @@ require! {
     \./header.ls
     \../round-human.ls
     \../add-coin.ls
+    \./tor.ls
 }
-# .menu-1332697486
+# .menu-333831063
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -63,6 +64,7 @@ require! {
 #             button
 #                 svg
 #                     width: 20px
+#                     cursor: pointer
 #             >.menu
 #                 position: absolute
 #                 right: 0
@@ -151,7 +153,7 @@ module.exports = ({ store, web3t })->
         color: style.app.text
         border-radius: "50px"
         border: "0"
-        background: "rgba(157, 127, 206, 0.3)"
+        background: style.app.bg-btn
         line-height: "25px"
         padding: "10px"
         width: "40px"
@@ -161,7 +163,7 @@ module.exports = ({ store, web3t })->
         color: style.app.loader
         border-radius: "50px"
         border: "0"
-        background: "rgba(157, 127, 206, 0.3)"
+        background: style.app.bg-btn
         line-height: "25px"
         padding: "10px"
         width: "40px"
@@ -174,7 +176,7 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-1332697486' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-333831063' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
@@ -189,6 +191,8 @@ module.exports = ({ store, web3t })->
                     if store.current.device is \desktop
                         react.create-element 'button', { on-click: add-coin(store), style: button-add, className: 'button lock mt-5' }, children = 
                             react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
+                    if store.current.device is \desktop
+                        tor store, web3t
             if store.current.device is \mobile    
                 your-account store, web3t
             project-links { store, web3t }

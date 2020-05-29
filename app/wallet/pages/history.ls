@@ -13,7 +13,7 @@ require! {
     \react-middle-ellipsis : { default: MiddleEllipsis }
     \../components/address-holder.ls
 }
-# .history-158682127
+# .history-2121407940
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -22,6 +22,7 @@ require! {
 #     .from-to
 #         width: 40px
 #         display: inline-block
+#         line-height: 25px
 #     .tooltip
 #         position: absolute
 #         text-transform: uppercase
@@ -33,9 +34,8 @@ require! {
 #         font-weight: 600
 #         color: #fff
 #         padding: 5px
-#         background: #210b4a
+#         background: #000
 #         visibility: hidden
-#         border: 1px solid #6b268e
 #         &:after, &:before
 #             right: 100%
 #             top: 21%
@@ -47,12 +47,11 @@ require! {
 #             pointer-events: none
 #         &:after
 #             border-color: rgba(136, 183, 213, 0)
-#             border-right-color: #210b4a
+#             border-right-color: #000
 #             border-width: 6px
 #             margin-top: 2px
 #         &:before
 #             border-color: rgba(194, 225, 245, 0)
-#             border-right-color: #6b268e
 #             border-width: 8px
 #             margin-top: 0px
 #     .icon-svg1
@@ -140,7 +139,7 @@ require! {
 #                 opacity: .8
 #         .filter
 #             width: 226px
-#             background: #321260
+#             background: inherit
 #             position: absolute
 #             top: 59px
 #             right: 0
@@ -309,9 +308,9 @@ require! {
 #             opacity: .75
 #     .table
 #         width: 100%
-#         height: calc(100vh - 80px)
 #         overflow-y: scroll
 #         margin-top: -1px
+#         height: calc(100vh - 260px)
 #         .head, .record
 #             &.record
 #                 border-radius: 0px
@@ -322,9 +321,7 @@ require! {
 #                 .tx-middle
 #                     height: 60px
 #                 &:last-child
-#                     margin-bottom: 12px
-#                 &:first-child
-#                     border-top: 1px solid rgb(107, 38, 142)
+#                     margin-bottom: 0px
 #             .cell
 #                 padding: 10px 0 10px 10px
 #                 display: inline-block
@@ -340,11 +337,11 @@ require! {
 #                     overflow-x: scroll
 #                     overflow-y: hidden
 #                 &.network
-#                     width: 10%
+#                     width: 5%
 #                     div
 #                         text-align: center
 #                 &.txhash
-#                     width: 60%
+#                     width: 65%
 #                     div:first-child
 #                         display: inline
 #                     .loader-ios
@@ -365,7 +362,7 @@ require! {
 #                 &.divider2
 #                     width: 30%
 #                 &.divider
-#                     width: 10%
+#                     width: 5%
 #                     .direction
 #                         text-align: center
 #                         line-height: 40px
@@ -423,7 +420,6 @@ require! {
 #                         background: #210b4a
 #                         opacity: 0
 #                         transition: opacity .5s
-#                         border: 1px solid #6b268e
 #                         &:after, &:before
 #                             left: 100%
 #                             top: 15%
@@ -435,25 +431,26 @@ require! {
 #                             pointer-events: none
 #                         &:after
 #                             border-color: rgba(136, 183, 213, 0)
-#                             border-left-color: #210b4a
+#                             border-left-color: #000
 #                             border-width: 6px
 #                             margin-top: 2px
 #                         &:before
 #                             border-color: rgba(194, 225, 245, 0)
-#                             border-left-color: #6b268e
 #                             border-width: 8px
 #                             margin-top: 0px
 #                 &.details-from, &.details-to
-#                     width: 40%
+#                     width: 45%
 #                     text-align: left
 #                     height: 60px
 #                     div:last-child
-#                         width: 330px
+#                         height: 36px
 #                     .action
 #                         .address-holder
 #                             text-align: left
+#                             height: 22px
+#                             width: 85%
 #                             .copy
-#                                 margin-left: -7px
+#                                 margin-left: 0px
 #                                 width: 13px
 #                                 height: 15px
 #                             >img
@@ -462,23 +459,25 @@ require! {
 #                                     top: -6px
 #                                     margin: 0 10px 0 0
 #                             .browse
-#                                 right: 0px
+#                                 right: -5px
 #                             >span a
 #                                 height: 25px
 #                                 line-height: 25px
 #                             span
 #                                 padding: 0
-#                                 width: 120px
+#                                 width: 80%
 #                                 text-align: left
+#                                 @media screen and (min-width: 1441px)
+#                                     width: 95%
 #                                 a
 #                                     img
 #                                         height: 16px
 #                                 div
-#                                     width: auto
+#                                     width: 100%
 #                                     margin-right: 0px
 #                                     a
 #                                         padding: 0
-#                                         width: 250px
+#                                         min-width: 250px
 #                                         text-align: left
 #             .gray
 #                 $gray: #8290ad
@@ -640,6 +639,8 @@ render-transaction = (store, web3t, tran)-->
         background: style.app.wallet-light
     lightText=
         color: style.app.addressText
+    tooltip=
+        background: "#000"
     { token, tx, amount, fee, time, url, type, pending, from, to, recipient-type, description } = tran
     coin = 
         coins |> find (.token is token)
@@ -679,28 +680,26 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'img', { src: "#{arrow-lg(type)}", className: 'icon-svg' }
             react.create-element 'div', { className: 'cell details-from' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
+                    react.create-element 'span', { className: 'action' }, children = 
+                        address-holder { store, wallet: wallet-from }
                     react.create-element 'span', { className: 'from-to' }, children = 
                         react.create-element 'span', { className: 'smart-contract' }, children = 
                             react.create-element 'div', { className: 'tooltip' }, ' ' + about
                             react.create-element 'img', { src: "#{about-icon}", className: 'help' }
-                        react.create-element 'span', {}, ' ' + lang.from + ':'
-                    react.create-element 'span', { className: 'action' }, children = 
-                        address-holder { store, wallet: wallet-from }
+                        react.create-element 'span', {}, ' ' + lang.from
             if no
                 react.create-element 'div', { className: 'cell arrow' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg1' }
             react.create-element 'div', { className: 'cell details-to' }, children = 
                 react.create-element 'div', { style: lightText, className: 'gray' }, children = 
+                    react.create-element 'span', { className: 'action' }, children = 
+                        address-holder { store, wallet: wallet-to }
                     react.create-element 'span', { className: 'from-to' }, children = 
                         react.create-element 'span', { className: 'smart-contract' }, children = 
                             react.create-element 'div', { className: 'tooltip' }, ' ' + about
                             react.create-element 'img', { src: "#{about-icon}", className: 'help' }
-                        react.create-element 'span', {}, ' ' + lang.to + ':'
-                    react.create-element 'span', { className: 'action' }, children = 
-                        address-holder { store, wallet: wallet-to }
+                        react.create-element 'span', {}, ' ' + lang.to
             react.create-element 'div', { className: 'cell created' }, children = 
-                react.create-element 'div', { style: lightText, className: 'gray' }, children = 
-                    react.create-element 'span', {}, ' ' + lang.created + ': '
                 react.create-element 'div', { className: 'time-ago' }, children = 
                     if pending is yes
                         react.create-element 'span', {}, children = 
@@ -711,6 +710,8 @@ render-transaction = (store, web3t, tran)-->
                             react.create-element 'span', { className: 'bold' }, children = 
                                 react.create-element 'img', { src: 'data:image/svg+xml;base64,\PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNNTA0LjUwMiw3NS40OTZjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5OC0zNi4yMDQsMEwxNjEuNTk0LDM4Mi4yMDNMNDMuNzAyLDI2NC4zMTFjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5Ny0zNi4yMDQsMCAgICBjLTkuOTk4LDkuOTk3LTkuOTk4LDI2LjIwNSwwLDM2LjIwM2wxMzUuOTk0LDEzNS45OTJjOS45OTQsOS45OTcsMjYuMjE0LDkuOTksMzYuMjA0LDBMNTA0LjUwMiwxMTEuNyAgICBDNTE0LjUsMTAxLjcwMyw1MTQuNDk5LDg1LjQ5NCw1MDQuNTAyLDc1LjQ5NnoiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzNDRDVBRiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+', className: 'icon-check' }
                     """#{ago time}"""
+                react.create-element 'div', { style: lightText, className: 'gray' }, children = 
+                    react.create-element 'span', {}, ' ' + lang.created
             react.create-element 'div', { style: menu-style, className: 'cell amount' }, children = 
                 react.create-element 'div', { title: "#{amount}", style: amount-pending }, children = 
                     react.create-element 'span', { className: 'sign direction' }, ' ' + sign(type)
@@ -720,7 +721,7 @@ render-transaction = (store, web3t, tran)-->
                     amount-beautify fee, 10
             react.create-element 'div', { on-click: tx-details, className: 'cell divider more' }, children = 
                 react.create-element 'img', { src: "#{icons.more}", style: icon-pending, className: 'icon-svg1' }
-                react.create-element 'div', { className: 'arrow_box' }, ' ' + lang.details
+                react.create-element 'div', { style: tooltip, className: 'arrow_box' }, ' ' + lang.details
         if store.history.tx-details is tx
             react.create-element 'div', { style: light-style, on-click: transaction-info(request), className: 'tx-middle' }, children = 
                 react.create-element 'div', { className: 'cell divider' }, children = 
@@ -768,6 +769,8 @@ module.exports = ({ store, web3t })->
         color: style.app.text
     border-b =
         border-bottom: "1px solid #{style.app.border}"
+    border-t =
+        border-top: "1px solid #{style.app.border}"
     filter-body =
         border: "1px solid #{style.app.border}"
         background: style.app.header
@@ -790,6 +793,8 @@ module.exports = ({ store, web3t })->
     header-table-style=
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.wallet-light
+    icon-filter=
+        filter: style.app.icon-filter
     expand-collapse = ->
         store.history.filter-open = not store.history.filter-open
     length = store.transactions.applied.length
@@ -798,14 +803,14 @@ module.exports = ({ store, web3t })->
         null
     history-width = store.current.size.width / 1.9
     history-height = store.current.size.height - 200 - 60
-    react.create-element 'div', { className: 'normalheader history history-158682127' }, children = 
+    react.create-element 'div', { className: 'normalheader history history-2121407940' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg-arrow' }
             react.create-element 'span', { className: 'head left h1' }, ' ' + lang.your-transactions
             react.create-element 'span', { on-click: expand-collapse, className: 'head right' }, children = 
-                react.create-element 'img', { src: "#{icons.filter}", className: 'icon-svg1' }
+                react.create-element 'img', { src: "#{icons.filter}", style: icon-filter, className: 'icon-svg1' }
             if store.history.filter-open
                 react.create-element 'div', { style: filter-body, className: 'filter' }, children = 
                     react.create-element 'div', { style: border-b, className: 'top' }, children = 
@@ -832,7 +837,7 @@ module.exports = ({ store, web3t })->
                             react.create-element 'button', { key: "#{coin.token}", style: filter-style, on-click: switch-filter(coin.token), className: "#{is-active(coin.token)}" }, children = 
                                 react.create-element 'img', { src: "#{coin.image}" }
         react.create-element 'div', {}, children = 
-            react.create-element 'div', { className: 'table' }, children = 
+            react.create-element 'div', { style: border-t, className: 'table' }, children = 
                 store.transactions.applied |> take 20 |> map render-transaction store, web3t
             if length is 0
                 react.create-element 'div', { style: menu-style, className: 'nothin-to-show' }, children = 

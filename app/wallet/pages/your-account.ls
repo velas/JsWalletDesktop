@@ -9,8 +9,9 @@ require! {
     \prelude-ls : { map, filter }
     \localStorage
     \../icons.ls
+    \./tor.ls
 }
-# .your-account-1162140198
+# .your-account520159012
 #     @import scheme
 #     position: relative
 #     width: auto
@@ -33,7 +34,6 @@ require! {
 #         right: -1px
 #         top: 60px
 #         width: 170px
-#         background: #321260
 #         display: inline-grid
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
@@ -74,7 +74,6 @@ require! {
 #                 min-height: 155px
 #                 overflow: scroll
 #                 background: linear-gradient(#321260 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), #321260 70%) 0 100%, radial-gradient(farthest-side at 50% 0, #594aaa, rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, #594aaa, rgba(0,0,0,0)) 0 100%
-#                 background-color: #321260
 #                 background-repeat: no-repeat
 #                 background-attachment: local, local, scroll, scroll
 #                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
@@ -207,7 +206,7 @@ module.exports = (store, web3t)->
         color: style.app.text
         border-radius: "50px"
         border: "0"
-        background: "rgba(157, 127, 206, 0.3)"
+        background: style.app.bg-btn
         line-height: "25px"
         padding: "10px"
         width: "40px"
@@ -238,7 +237,7 @@ module.exports = (store, web3t)->
         color: style.app.loader
         border-radius: "50px"
         border: "0"
-        background: "rgba(157, 127, 206, 0.3)"
+        background: style.app.bg-btn
         padding: "0px"
         width: "40px"
         height: "40px"
@@ -270,7 +269,7 @@ module.exports = (store, web3t)->
         react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + account-name
-    react.create-element 'div', { className: 'your-account your-account-1162140198' }, children = 
+    react.create-element 'div', { className: 'your-account your-account520159012' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name
@@ -285,6 +284,8 @@ module.exports = (store, web3t)->
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: add-coin(store), style: button-primary4-style, className: 'button lock mt-5' }, children = 
                     react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
+            if store.current.device is \mobile
+                tor store, web3t
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: show, style: button-primary4-style, className: "#{show-class} button lock mt-5" }, children = 
                     react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }

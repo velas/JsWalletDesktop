@@ -32,10 +32,10 @@ require! {
     \../components/button.ls
     \../components/address-holder.ls
     \./alert-txn.ls
+    \../components/amount-field.ls
 }
-# .staking1067109629
+# .staking1336044165
 #     @import scheme
-#     color: white
 #     position: relative
 #     display: block
 #     width: auto
@@ -211,17 +211,15 @@ require! {
 #                                     background: red
 #                         button
 #                             width: 100%
-#                             height: 30px
-#                             margin-top: 0
+#                             height: 36px
+#                             margin: 0
 #                     table
 #                         width: 100%
 #                         border-collapse: collapse
 #                         margin: 0px auto
 #                     tr:nth-of-type(odd)
-#                         background: rgba(107, 38, 142, 0.2)
+#                         background: rgba(gray, 0.2)
 #                     th
-#                         background: rgb(67, 32, 124)
-#                         color: white
 #                         font-weight: 400
 #                         &:first-child
 #                             text-align: center
@@ -556,11 +554,6 @@ show-validator = (store, web3t)-> (validator)->
 staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
-    input-style =
-        background: style.app.wallet
-        color: style.app.text
-        overflow-x: \auto
-        margin-top: \10px
     button-primary3-style=
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
@@ -698,21 +691,14 @@ staking-content = (store, web3t)->
             err, amount <- web3t.velas.Staking.stakeAmount item.address, staking-address
             return cb err if err?
             store.staking.stake-amount-total = amount.to-fixed!
-            err, amount <- web3t.velas.Staking.orderedWithdrawAmount store.staking.chosen-pool.address, staking-address
-            return cb err if err?
-            store.staking.withdraw-amount = amount.to-fixed!
-            err, max-withdraw-ordered <- web3t.velas.Staking.maxWithdrawOrderAllowed store.staking.chosen-pool.address, staking-address
-            return cb err if err?
-            store.staking.max-withdraw-ordered = max-withdraw-ordered.to-fixed!
-            err, max-withdraw <- web3t.velas.Staking.maxWithdrawAllowed store.staking.chosen-pool.address, staking-address
-            return cb err if err?
-            store.staking.max-withdraw = max-withdraw.to-fixed!
             err, last-epoch <- web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosen-pool.address, staking-address)
             return cb "#{err}" if err?
             err, staking-epoch <- web3t.velas.Staking.stakingEpoch
             return cb "#{err}" if err?
             res = staking-epoch `minus` last-epoch
             store.staking.wait-for-epoch-change = if +res is 0 then yes else no
+            err <- exit-stake.init { store, web3t }
+            return cb err if err?
         to-eth = ->
             item.eth = not item.eth
         cut-tx = (tx)->
@@ -741,6 +727,7 @@ staking-content = (store, web3t)->
             react.create-element 'td', { data-column: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
                 address-holder { store, wallet }
             react.create-element 'td', { data-column: 'Amount' }, ' ' + stake
+            react.create-element 'td', {}, ' n/a'
             react.create-element 'td', { data-column: "Filled", style: filled-color }, ' ' + filled
             react.create-element 'td', { data-column: 'Amount' }, ' ' + my-stake
             react.create-element 'td', { data-column: 'Stakers' }, ' ' + item.stakers
@@ -768,6 +755,9 @@ staking-content = (store, web3t)->
         width: "inherit"
     staker-pool-style =
         max-width: 200px
+        background: style.app.stats
+    stats=
+        background: style.app.stats
     react.create-element 'div', { className: 'staking-content' }, children = 
         react.create-element 'div', { className: 'form-group' }, children = 
             alert-txn { store }
@@ -783,13 +773,14 @@ staking-content = (store, web3t)->
                         react.create-element 'table', {}, children = 
                             react.create-element 'thead', {}, children = 
                                 react.create-element 'tr', {}, children = 
-                                    react.create-element 'th', { width: "3%" }, ' #'
+                                    react.create-element 'th', { width: "3%", style: stats }, ' #'
                                     react.create-element 'th', { width: "10%", style: staker-pool-style }, ' ' + lang.staker-pool
-                                    react.create-element 'th', { width: "25%" }, ' ' + lang.total-stake
-                                    react.create-element 'th', { width: "5%", title: "When more filled then less award for staker" }, ' ' + lang.filled
-                                    react.create-element 'th', { width: "25%" }, ' ' + lang.my-stake
-                                    react.create-element 'th', { width: "5%" }, ' ' + lang.stakers
-                                    react.create-element 'th', { width: "4%" }, ' ' + lang.selectPool
+                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.total-stake
+                                    react.create-element 'th', { width: "5%", title: "Vote power", style: stats }, ' ' + lang.vote-power
+                                    react.create-element 'th', { width: "5%", title: "When more filled then less award for staker", style: stats }, ' ' + lang.filled
+                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.my-stake
+                                    react.create-element 'th', { width: "5%", style: stats }, ' ' + lang.stakers
+                                    react.create-element 'th', { width: "4%", style: stats }, ' ' + lang.selectPool
                             react.create-element 'tbody', {}, children = 
                                 store.staking.pools |> map build-staker store, web3t
                 else
@@ -806,7 +797,7 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'label', {}, ' ' + lang.stake
-                            react.create-element 'input', { type: 'text', value: "#{store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
@@ -828,7 +819,7 @@ staking-content = (store, web3t)->
                                 react.create-element 'span', { className: 'color' }, ' ' + vlx-token
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' Stake More'
-                            react.create-element 'input', { type: 'text', value: "#{store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -852,6 +843,7 @@ staking = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
+        background: info.app.background
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -864,19 +856,20 @@ staking = ({ store, web3t })->
         background: info.app.wallet-light
     lightText=
         color: info.app.addressText
+    icon-color=
+        filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking1067109629' }, children = 
+    react.create-element 'div', { className: 'staking staking1336044165' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
 staking.init = ({ store, web3t }, cb)->
     #store.staking.data-generation += 1
-    store.staking.max-withdraw-ordered = 0
     store.staking.max-withdraw = 0
     random = ->
         Math.random!

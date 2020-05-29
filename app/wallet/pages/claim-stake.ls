@@ -404,6 +404,8 @@ calc-reward = (store, web3t)->
 build-claim-reward = (store, web3t)-> (item)->
     style = get-primary-info store
     lang = get-lang store
+    box-background =
+        background: style.app.addressBg
     checked = item.checked
     load-or-skip = (item, cb)->
         return cb null if item.reward isnt '..'
@@ -416,7 +418,7 @@ build-claim-reward = (store, web3t)-> (item)->
         item.checked = not item.checked
         store.staking.reward-claim = round5 get-checked-amount store
     react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', {}, children = 
+        react.create-element 'div', { style: box-background }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'input', { type: 'checkbox', checked: checked, on-change: check }
                 react.create-element 'div', { className: 'number' }, children = 

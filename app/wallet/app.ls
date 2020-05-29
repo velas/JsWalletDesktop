@@ -153,6 +153,11 @@ require! {
 #                 margin: 0
 #                 position: fixed
 #                 z-index: 11
+# use var(--background);
+define-root = (store)->
+    style = get-primary-info store
+    text = ":root { --background: #{style.app.background};--active: #{style.app.wallet};--placeholder: #{style.app.placeholder}; }"
+    react.create-element 'style', {}, ' ' + text
 module.exports = ({ store, web3t })->
     return null if not store?
     current-page =
@@ -160,12 +165,14 @@ module.exports = ({ store, web3t })->
     theme = get-primary-info(store)
     style =
         background: theme.app.background
+        color: theme.app.text
     syncing = 
         | store.current.refreshing => "syncing"
         | _ => ""
     open-menu = ->
         store.current.open-menu = not store.current.open-menu
     react.create-element 'div', {}, children = 
+        define-root store
         description store
         react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1671446404" }, children = 
             modal-control store, web3t

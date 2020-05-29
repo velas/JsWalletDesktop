@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.94",
+  "version": "0.12.95",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -85,6 +85,7 @@
     "libsodium-wrappers-sumo": "^0.7.6",
     "localStorage": "^1.0.4",
     "md5": "^2.2.1",
+    "md5-file": "^5.0.0",
     "mobx": "^4.15.4",
     "mobx-react": "^5.4.4",
     "moment": "^2.22.2",

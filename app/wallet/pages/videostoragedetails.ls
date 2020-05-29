@@ -10,6 +10,7 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
 # .videodetails-1630865977
 #     @import scheme
@@ -993,10 +994,7 @@ videodetails = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-style3 =
         color: info.app.text
         border-bottom: "0"
@@ -1039,8 +1037,7 @@ videodetails = ({ store, web3t })->
     show-class =
         if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'videodetails videodetails-1630865977' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -1055,7 +1052,7 @@ videodetails = ({ store, web3t })->
                     react.create-element 'h2', { className: 'iron' }, children = 
                         react.create-element 'span', { className: 'logo' }, children = 
                             icon \TriangleRight, 10
-                        react.create-element 'span', {}, ' Vtube'
+                        react.create-element 'span', {}, ' Vortex'
                 react.create-element 'div', { className: 'description search-field' }, children = 
                     react.create-element 'div', { className: 'left' }, children = 
                         react.create-element 'input', { type: 'text', style: input-style, value: "velas", placeholder: "velas" }

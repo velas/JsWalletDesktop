@@ -15,7 +15,8 @@ try-with-pow = (instance, data, cb)->
     return cb err if err?
     instance.set(\pow-result, result).end cb
 build-request = (method)-> (...args)->
-    original-request = superagent[method]
+    #console.log \superagent.type , superagent.type
+    original-request = superagent[superagent.type][method]
     $ = {}
     $.timeout = (timeout)->
         $._timeout = timeout

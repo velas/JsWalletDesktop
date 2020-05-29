@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .menu-788428362
+# .menu207176250
 #     width: 100%
 #     text-align: right
 #     padding: 20px 15px
@@ -102,8 +102,6 @@ require! {
 #                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                         img
 #                             filter: none
-#                 &.arrow_box
-#                     border: 1px solid #6b268e
 #         &:hover
 #             svg, img
 #                 transform: scale(1.2)
@@ -117,11 +115,10 @@ require! {
 #                 font-weight: 600
 #                 color: #fff
 #                 padding: 5px
-#                 background: #210b4a
+#                 background: #000
 #                 opacity: 1
 #                 transition: opacity .5s
 #                 &.arrow_box
-#                     border: 1px solid #6b268e
 #                     &:after, &:before
 #                         right: 100%
 #                         top: 21%
@@ -133,12 +130,11 @@ require! {
 #                         pointer-events: none
 #                     &:after
 #                         border-color: rgba(136, 183, 213, 0)
-#                         border-right-color: #210b4a
+#                         border-right-color: #000
 #                         border-width: 6px
 #                         margin-top: 2px
 #                     &:before
 #                         border-color: rgba(194, 225, 245, 0)
-#                         border-right-color: #6b268e
 #                         border-width: 8px
 #                         margin-top: 0px
 #         &.active
@@ -246,6 +242,8 @@ module.exports = (store, web3)->
     claim-active = if store.current.page is \claim then \active else \not-active
     menu-style=
         color: style.app.text
+    icon-color=
+        filter: style.app.icon-filter
     icon-style =
         color: style.app.icon
     icon-style2 =
@@ -273,15 +271,21 @@ module.exports = (store, web3)->
         background: style.app.header
     lock-icon = 
         width: "14px"
+        filter: style.app.icon-filter
     wallet-icon = 
         width: "18px"
+        filter: style.app.icon-filter
     icon-node =
         position: "inherit"
         vertical-align: "sub"
         width: "12px"
         padding-right: "10px"
+        filter: style.app.icon-filter
     text-style=
         color: style.app.text
+    background-menu=
+        background: style.app.header
+        border: "1px solid #{style.app.border}"
     wallet = ->
         navigate store, web3t, \wallets
     goto-search = ->
@@ -306,6 +310,8 @@ module.exports = (store, web3)->
         navigate store, web3t, \claim
     comming-soon =
         opacity: ".3"
+    tooltip=
+        background: "#000"
     open-submenu = ->
         store.current.submenu = not store.current.submenu
     menu-staking =
@@ -313,7 +319,7 @@ module.exports = (store, web3)->
     menu-out = ->
         store.current.submenu = no
     staking = if store.current.submenu then \active else \not-active
-    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu-788428362' }, children = 
+    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu207176250' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
         if store.preference.lock-visible is yes
@@ -322,11 +328,11 @@ module.exports = (store, web3)->
         react.create-element 'div', { className: 'menu-items' }, children = 
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: wallet, style: icon-style, className: "#{wallets} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
+                    react.create-element 'span', { style: tooltip, className: 'arrow_box' }, ' ' + lang.your-wallets
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
-                    react.create-element 'div', { className: 'menu arrow_box menu-788428362' }, children = 
+                    react.create-element 'div', { style: background-menu, className: 'menu arrow_box menu207176250' }, children = 
                         react.create-element 'ul', {}, children = 
                             react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }
@@ -341,18 +347,18 @@ module.exports = (store, web3)->
                             react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.info}", style: icon-node }
                                 """ #{lang.stats}"""
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
-                    react.create-element 'img', { src: "#{icons.staking}" }
+                    react.create-element 'span', { style: tooltip, className: 'arrow_box' }, ' ' + lang.staking
+                    react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.search
-                    react.create-element 'img', { src: "#{icons.search}" }
+                    react.create-element 'span', { style: tooltip, className: 'arrow_box' }, ' ' + lang.search
+                    react.create-element 'img', { src: "#{icons.search}", style: icon-color }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
-                    react.create-element 'img', { src: "#{icons.setting}" }
+                    react.create-element 'span', { style: tooltip, className: 'arrow_box' }, ' ' + lang.settings
+                    react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
             if no
                 if store.preference.settings-visible is yes
                     react.create-element 'div', { on-click: goto-faq, style: icon-style2, className: "#{faq} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.faq
+                        react.create-element 'span', { style: tooltip, className: 'arrow_box' }, ' ' + lang.faq
                         react.create-element 'img', { src: "#{icons.setting}" }

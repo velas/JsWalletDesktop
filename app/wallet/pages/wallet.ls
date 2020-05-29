@@ -14,7 +14,7 @@ require! {
     \../components/address-holder.ls
 }
 #
-# .wallet-1625868451
+# .wallet2121832093
 #     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
@@ -187,9 +187,6 @@ require! {
 #                 @media screen and (max-width: 800px)
 #                     width: 40px
 #                     line-height: 30px
-#                 &:hover
-#                     background: #7aa7f3
-#                     color: white
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
     { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
@@ -199,10 +196,10 @@ module.exports = (store, web3t, wallets, wallet)-->
         | store.current.refreshing => \...
         | _ => \ "#{lang.hide}"
     wallet-style=
-        color: style.app.text3
+        color: style.app.text
     border-style =
         border-bottom: "1px solid #{style.app.border}"
-        background: style.app.wallet
+        background: if active is \active then style.app.addressBg else style.app.wallet
     border =
         border-top: "1px solid #{style.app.border}"
         border-right: "1px solid #{style.app.border}"
@@ -242,7 +239,7 @@ module.exports = (store, web3t, wallets, wallet)-->
     #    #store.current.token-migration = "V123"
     receive-click = receive(wallet)
     send-click = send(wallet)
-    react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{last + ' ' + active + ' ' + big} wallet wallet-1625868451" }, children = 
+    react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{big} wallet wallet2121832093" }, children = 
         react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 

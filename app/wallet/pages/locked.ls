@@ -13,7 +13,7 @@ require! {
     \./confirmation.ls : { confirm }
     \../components/button.ls
 }
-# .locked-1518901669
+# .locked-59209490
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
@@ -107,7 +107,7 @@ require! {
 #     button
 #         width: 120px
 #         &.text-primary
-#             color: rgb(156, 65, 235) !important
+#             color: rgb(156, 65, 235)
 #             &:hover
 #                 text-decoration: underline
 #         &.setup
@@ -207,7 +207,7 @@ input = (store, web3t)->
         margin-top: "10px"
     button-primary0-style=
         border: "0"
-        color: style.app.text
+        color: style.app.text-primary
         background: "transparent"
         width: "120px"
         height: "36px"
@@ -253,7 +253,17 @@ total-trials = 8
 wrong-trials = (store)->
     return null if store.current.pin-trial is 0
     lang = get-lang store
+    style = get-primary-info store
     left-trials = total-trials - store.current.pin-trial
+    notice=
+        background: style.app.wallet
+    button-primary0-style=
+        border: "0"
+        color: style.app.text-primary
+        background: "transparent"
+        width: "120px"
+        height: "36px"
+        margin-top: "0px"
     reset-account = ->
         res <- confirm store, "#{lang.backup-info}"
         return if res is no
@@ -261,11 +271,11 @@ wrong-trials = (store)->
     wrong-pin-text = "#{left-trials}/#{total-trials} #{lang.notice-reset}."
     react.create-element 'div', {}, children = 
         react.create-element 'div', { key: "wrong-trial", className: 'wrong' }, ' ' + wrong-pin-text
-        react.create-element 'div', { className: 'notice' }, children = 
+        react.create-element 'div', { style: notice, className: 'notice' }, children = 
             react.create-element 'span', { className: 'orange' }, ' ' + lang.notice + '! '
             react.create-element 'span', {}, ' ' + lang.notice-text
         react.create-element 'div', {}, children = 
-            react.create-element 'button', { on-click: reset-account, className: 'reset setup text-primary' }, ' ' + lang.reset-account
+            react.create-element 'button', { style: button-primary0-style, on-click: reset-account, className: 'reset setup text-primary' }, ' ' + lang.reset-account
 setup-button = (store, web3t)->
     lang = get-lang store
     style = get-primary-info store
@@ -320,7 +330,7 @@ locked = ({ store, web3t })->
         background-size: "cover"
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-1518901669' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-59209490' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { className: 'title' }, ' ' + info.branding.title

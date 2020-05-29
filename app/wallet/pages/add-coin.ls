@@ -160,9 +160,11 @@ create-item = ({ store, web3t }, item)-->
     button-style =
         border: "1px solid #{style.app.text}"
         color: style.app.text
+    background = 
+        background: style.app.wallet
     menu-style=
         color: style.app.text
-    react.create-element 'div', { className: 'item' }, children = 
+    react.create-element 'div', { style: background, className: 'item' }, children = 
         react.create-element 'img', { src: "#{item.image}" }
         react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
         react.create-element 'button', { on-click: add, style: button-style }, children = 
@@ -188,10 +190,14 @@ add-by-address = (store, web3t)->
         color: style.app.text
     input-style=
         color: style.app.text
-        background: style.app.wallet
+        background: style.app.addressBg
         border: "0"
-    react.create-element 'div', { className: 'item' }, children = 
-        react.create-element 'img', { src: "#{icons.erc20-token}" }
+    erc-bg=
+        background: style.app.addressBg
+    background = 
+        background: style.app.wallet
+    react.create-element 'div', { style: background, className: 'item' }, children = 
+        react.create-element 'img', { src: "#{icons.erc20-token}", style: erc-bg }
         react.create-element 'input', { placeholder: "0x....", value: "#{store.contract-address}", on-change: coin-contract, style: input-style, className: 'search' }
         react.create-element 'button', { on-click: add, style: button-style }, children = 
             icon \Plus, 20

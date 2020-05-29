@@ -17,7 +17,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .choose-account1680820152
+# .choose-account1570729947
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -26,7 +26,7 @@ require! {
 #     height: auto
 #     box-sizing: border-box
 #     position: relative
-#     right: 40px
+#     right: 10px
 #     bottom: 30px
 #     $cards-pad: 15px
 #     z-index: 2
@@ -170,6 +170,8 @@ module.exports = (store, web3t)->
         background: style.app.wallet
         border: "1px solid #{style.app.border}"
         color: style.app.text
+    icon-color=
+        filter: style.app.icon-filter
     header-left =
         margin-left: "10px"
     border-right=
@@ -200,11 +202,11 @@ module.exports = (store, web3t)->
         react.create-element 'div', { className: "#{show-class} switch-account h1" }, children = 
             react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
             react.create-element 'span', { on-click: edit-account-name, className: 'icon' }, children = 
-                react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-edit' }
+                react.create-element 'img', { src: "#{icons.create}", style: icon-color, className: 'icon-svg-edit' }
             react.create-element 'span', { on-click: open-account, className: "#{rotate-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
+                react.create-element 'img', { src: "#{icons.arrow-down}", style: icon-color, className: 'icon-svg-create' }
             react.create-element 'span', { on-click: open-menu, className: "#{show-class} icon menus" }, children = 
-                react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-create' }
+                react.create-element 'img', { src: "#{icons.menu}", style: icon-color, className: 'icon-svg-create' }
     edit-account-template = ->
         react.create-element 'div', { className: 'switch-account h1' }, children = 
             react.create-element 'input', { value: "#{store.current.edit-account-name}", on-change: edit-account, style: input, className: 'h1' }
@@ -214,6 +216,6 @@ module.exports = (store, web3t)->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { className: 'choose-account choose-account1680820152' }, children = 
+    react.create-element 'div', { className: 'choose-account choose-account1570729947' }, children = 
         chosen-account-template
         your-account store, web3t

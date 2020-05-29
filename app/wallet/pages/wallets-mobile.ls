@@ -15,7 +15,7 @@ require! {
     \../icons.ls
     \./icon.ls
 }
-# .wallet-mobile2008033141
+# .wallet-mobile-265984567
 #     $mobile: 425px
 #     $tablet: 800px
 #     button.btn
@@ -26,6 +26,14 @@ require! {
 #         display: block
 #         max-width: 450px
 #         border: 0 !important
+#         .tor
+#             right: 0px
+#             bottom: -27px
+#             .tor-content
+#                 right: -55px
+#                 &:after, &:before
+#                     right: 33%
+#                     top: -10%
 #         .switch-menu
 #             right: -1px
 #             top: 165px
@@ -230,7 +238,7 @@ mobile = ({ store, web3t })->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile2008033141' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile-265984567' }, children = 
         menu { store, web3t }
         manage-account { store, web3t }
         token-migration { store, web3t }

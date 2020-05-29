@@ -10,8 +10,9 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
-# .filestore-547492130
+# .filestore-354395138
 #     @import scheme
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
@@ -30,7 +31,6 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
 #         position: fixed
 #         display: inline-grid
 #         z-index: 1
@@ -114,7 +114,6 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 226px
-#         background: #321260
 #         position: absolute
 #         top: 60px
 #         right: 0
@@ -449,10 +448,7 @@ filestorage = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -480,6 +476,8 @@ filestorage = ({ store, web3t })->
         color: info.app.addressText
     icon-style=
         filter: info.app.nothingIcon
+    dragarea-bg=
+        background: info.app.dragarea
     expand-collapse = ->
         store.filestore.menu-open = not store.filestore.menu-open
         store.current.dragfile = not store.current.dragfile
@@ -489,9 +487,8 @@ filestorage = ({ store, web3t })->
         if store.filestore.file-tree then \arrow-down else \ ""
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'filestore filestore-547492130' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+    react.create-element 'div', { className: 'filestore filestore-354395138' }, children = 
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' File Storage'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -553,7 +550,7 @@ filestorage = ({ store, web3t })->
                             react.create-element 'img', { src: "#{icons.file-folder}" }
                             react.create-element 'div', {}, ' Images'
             react.create-element 'div', { className: "#{dragarea} store-content" }, children = 
-                react.create-element 'div', { className: "#{dragarea} header-table dragfile" }, children = 
+                react.create-element 'div', { style: dragarea-bg, className: "#{dragarea} header-table dragfile" }, children = 
                     react.create-element 'div', { style: dashed-border, className: 'cell network' }, children = 
                         react.create-element 'img', { src: "#{icons.file-drag}", style: icon-style, className: 'bounce' }
                         """ Drag and Drop here"""

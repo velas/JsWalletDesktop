@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .faq956633232
+# .faq1676593840
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -317,7 +317,6 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
 #         position: fixed
 #         display: inline-grid
 #         z-index: 3
@@ -401,7 +400,6 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 160px
-#         background: #321260
 #         position: absolute
 #         top: 188px
 #         right: 0px
@@ -1626,7 +1624,7 @@ faq = ({ store, web3t })->
     active-item4 = active-class \item4
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'faq faq956633232' }, children = 
+    react.create-element 'div', { className: 'faq faq1676593840' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 

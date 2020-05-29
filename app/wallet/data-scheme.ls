@@ -8,6 +8,7 @@ require! {
     \./get-size.ls
     \./package.json : { version }
     \qs
+    \localStorage
 }
 saved-seed = saved!
 create-send =->
@@ -37,7 +38,7 @@ url-params =
 store =
     url-params: url-params
     root: null
-    theme: \velas
+    theme: localStorage.get-item('theme') ? \velas
     lang: \en
     langs: langs
     icons: \icons
@@ -51,6 +52,14 @@ store =
         username-visible: no
         refresh-visible: yes
         lock-visible: yes
+    tor:
+        enabled: no
+        real: 
+            ip: "n/a"
+            country: "n/a"
+        proxy:
+            ip: "n/a"
+            country: "n/a"
     wallet-tab:
         tab: 0
     search:
@@ -80,6 +89,9 @@ store =
         peers: []
     staking: 
         reward-info: []
+        maxWithdrawOrderAllowed: 0
+        maxWithdrawAllowed: 0
+        orderedWithdrawAmount: 0
         add:
             add-validator: ""
             add-validator-stake: ""
@@ -100,10 +112,8 @@ store =
         pools: []
         chosen-pool: null
         stake-amount-total: 0
-        max-withdraw-ordered: 0
         max-withdraw: 0
         delegators: 0
-        withdraw-amount: 0
         reward-loading: no
         wait-for-epoch-change: no
     filestore:
@@ -159,6 +169,7 @@ store =
         verify-seed-indexes: []
         switch-account: no
         tor: no
+        hint: yes
         open-menu: no
         current-epoch: no
         switch-currency: no

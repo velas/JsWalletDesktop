@@ -4,20 +4,26 @@ require! {
     \../get-primary-info.ls
     \../icons.ls
     \../navigate.ls
+    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent-adapter.js : network
 }
-# .tor-1866015494
+# .tor1758860262
 #     @import scheme
 #     height: auto
 #     box-sizing: border-box
 #     position: relative
 #     right: 3px
-#     bottom: 35px
 #     text-align: right
+#     bottom: -13px
+#     background: transparent
+#     border: 0
+#     color: #fff
 #     .icon
 #         cursor: pointer
-#         background: rgba(240, 248, 255, 0.18)
-#         width: 30px
-#         height: 30px
+#         background: rgba(157, 127, 206, 0.3)
+#         width: 40px
+#         height: 40px
+#         line-height: 45px
 #         display: block
 #         float: right
 #         border-radius: 50px
@@ -25,18 +31,37 @@ require! {
 #         .icon-svg-create
 #             height: 15px
 #         &.active
-#             background: transparent
 #             transition: all .5s
 #     .tor-content
 #         position: absolute
 #         text-align: left
-#         right: 0
-#         top: 44px
+#         right: -25px
+#         top: 55px
 #         width: 200px
 #         padding: 10px
 #         display: inline-block
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
+#         &:after, &:before
+#             right: 20%
+#             top: -9%
+#             border: solid transparent
+#             content: " "
+#             height: 0
+#             width: 0
+#             position: absolute
+#             pointer-events: none
+#         &:after
+#             border-color: rgba(136, 183, 213, 0)
+#             border-bottom-color: #331462
+#             border-width: 6px
+#             margin-top: 4px
+#             margin-right: 1px
+#         &:before
+#             border-color: rgba(194, 225, 245, 0)
+#             border-bottom-color: #6b268e
+#             border-width: 7px
+#             margin-top: 1px
 #         .active-tor
 #             position: relative
 #             display: block
@@ -76,12 +101,16 @@ require! {
 #                     width: 20px
 #                     height: 20px
 #                     border-radius: 50%
-#         .header
+#         .header-tor
 #             padding: 10px 0
 #             div
 #                 font-size: 12px
 #                 text-transform: uppercase
 #                 letter-spacing: 2px
+#                 -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
+#                 -webkit-mask-size: 50%
+#                 animation: shine 2s infinite
+#                 width: max-content
 #         .col
 #             padding: 10px 0
 #             display: grid
@@ -97,33 +126,59 @@ require! {
 #                 line-height: 22px
 #                 text-transform: uppercase
 #                 letter-spacing: 2px
+init = ({ store, web3t}, cb)->
+    err, data <- get "https://api.ipify.org?format=json" .end
+    #err, data <- network[network.type].get "https://api.ipify.org?format=json" .end
+    return cb err if err?
+    store.tor.proxy = data.body
+    err, data <- network.all.get "https://api.ipify.org?format=json" .end
+    return cb err if err?
+    store.tor.real = data.body
+    cb null
 module.exports = (store, web3t)->
+    return null if not store.url-params.tor?
     style = get-primary-info store
     lang = get-lang store
     filter-body =
         border: "1px solid #{style.app.border}"
         background: style.app.header
+        background-position: "160px 70px"
+        background-size: "50px"
+        background-repeat: "no-repeat"
+        background-image: "url(#{icons.tor2})"
     border-bottom=
         border-bottom: "1px solid #{style.app.border}"
+    button-add=
+        color: style.app.text
+        background: style.app.bg-btn
     open-tor = ->
         store.current.tor = not store.current.tor
+        return if store.current.tor isnt yes
+        <- init { store, web3t }
     active =
         if store.current.tor then \active else \ ""
-    react.create-element 'div', { className: 'tor tor-1866015494' }, children = 
-        react.create-element 'span', { on-click: open-tor, className: "#{active} icon" }, children = 
+    change = ->
+        store.tor.enabled = not store.tor.enabled
+        console.log \store.tor.enabled, store.tor.enabled
+        network.type = 
+            | store.tor.enabled => \tor
+            | _ => \all
+        <- init { store, web3t }
+    react.create-element 'button', { className: 'tor tor1758860262' }, children = 
+        react.create-element 'span', { on-click: open-tor, style: button-add, className: "#{active} icon" }, children = 
             react.create-element 'img', { src: "#{icons.tor}", className: 'icon-svg-create' }
         if store.current.tor
             react.create-element 'div', { style: filter-body, className: 'tor-content' }, children = 
                 react.create-element 'label', { className: 'active-tor' }, children = 
-                    react.create-element 'input', { type: 'checkbox' }
+                    react.create-element 'input', { type: 'checkbox', default-checked: store.tor.enabled, on-change: change }
                     react.create-element 'div', { className: 'track thumb' }
-                react.create-element 'div', { style: border-bottom, className: 'header' }, children = 
+                react.create-element 'div', { style: border-bottom, className: 'header-tor' }, children = 
                     react.create-element 'div', {}, ' Private mode'
                 react.create-element 'div', { className: 'col' }, children = 
-                    react.create-element 'div', {}, ' 213.110.144.59'
+                    react.create-element 'div', {}, ' ' + store.tor.proxy.ip
                     react.create-element 'span', {}, children = 
                         react.create-element 'span', {}, ' real IP'
-                        react.create-element 'span', {}, ' (Ukraine)'
                 react.create-element 'div', { className: 'col' }, children = 
-                    react.create-element 'div', {}, ' N/A'
-                    react.create-element 'span', {}, ' Country'
+                    react.create-element 'div', {}, ' ' + store.tor.real.ip
+                    react.create-element 'span', {}, children = 
+                        react.create-element 'span', {}, ' current IP'

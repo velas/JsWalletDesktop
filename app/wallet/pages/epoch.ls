@@ -20,7 +20,7 @@ require! {
     \moment
     \../navigate.ls
 }
-# .choose-account-948947335
+# .choose-account1109972203
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -29,7 +29,7 @@ require! {
 #     height: auto
 #     box-sizing: border-box
 #     position: relative
-#     right: 40px
+#     right: 10px
 #     bottom: 30px
 #     $cards-pad: 15px
 #     z-index: 2
@@ -45,7 +45,6 @@ require! {
 #         right: 180px
 #         top: 39px
 #         width: 170px
-#         background: #321260
 #         display: inline-grid
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
@@ -258,6 +257,8 @@ module.exports = (store, web3t)->
         background: style.app.primary2
         margin: "0"
         width: "100%"
+    icon-color=
+        filter: style.app.icon-filter
     open-epoch = ->
         cb = alert
         store.current.current-epoch = not store.current.current-epoch
@@ -304,11 +305,11 @@ module.exports = (store, web3t)->
     on-exit = ->
         store.current.current-epoch = no
     if store.current.device is \desktop
-        react.create-element 'div', { className: 'choose-account choose-account-948947335' }, children = 
+        react.create-element 'div', { className: 'choose-account choose-account1109972203' }, children = 
             react.create-element 'div', { className: "#{show-class} current-epoch h1" }, children = 
                 react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
                 react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 
-                    react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg-create' }
+                    react.create-element 'img', { src: "#{icons.arrow-down}", style: icon-color, className: 'icon-svg-create' }
             if store.current.current-epoch
                 react.create-element 'div', { style: filter-body, on-mouse-leave: on-exit, className: 'epoch' }, children = 
                     react.create-element 'div', { className: 'middle account' }, children = 

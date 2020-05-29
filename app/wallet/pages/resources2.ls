@@ -1,6 +1,7 @@
 require! {
     \react
     \react-dom
+    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -24,6 +25,7 @@ require! {
     \../icons.ls
     \./placeholder.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
 # .staking-res915449353
 #     @import scheme
@@ -616,10 +618,7 @@ staking = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -635,8 +634,7 @@ staking = ({ store, web3t })->
     show-class =
         if store.current.open-menu then \hide else \ ""
     react.create-element 'div', { className: 'staking-res staking-res915449353' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Resource Staking'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 

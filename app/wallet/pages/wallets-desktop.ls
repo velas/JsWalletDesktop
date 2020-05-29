@@ -1,7 +1,8 @@
 require! {
     \react
+    \./wallet-expanded.ls
     \./wallet.ls
-    \prelude-ls : { map, take, drop, filter }
+    \prelude-ls : { map, take, drop, filter, find }
     \./menu.ls
     \../seed.ls : { get }
     \../web3.ls
@@ -17,7 +18,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .wallets-container1136573482
+# .wallets-container1550101913
 #     .wallets
 #         @import scheme
 #         $real-height: 300px
@@ -54,10 +55,6 @@ require! {
 #                     transition: all .5s
 #                     background: #9c41eb !important
 #                     border-color: #9c41eb !important
-#             .wallet
-#                 &:hover
-#                     background: rgb(98, 52, 171) !important
-#                     transition: .5s !important
 #             .top-right
 #                 width: 33% !important
 #                 button
@@ -164,60 +161,9 @@ require! {
 #             width: 100%
 #             border-top: 1px solid #213040
 #             display: inline-block
-#     .show-detail
-#         overflow: hidden
-#         .wallet-top
-#             padding: 0 20px
-#             margin-bottom: 10px
-#             height: 50%
-#             @media (max-width: 920px)
-#                 display: flex
-#             .top-left
-#                 width: auto
-#                 float: left
-#                 height: auto
-#                 color: #fff
-#                 overflow: auto
-#                 text-overflow: unset
-#                 img
-#                     height: 60px !important
-#                     width: 60px !important
-#                     max-width: 60px !important
-#                 .info
-#                     display: none
-#             .top-middle
-#                 width: 35%
-#                 float: left
-#                 color: #fff
-#                 text-align: left
-#                 .title-balance
-#                     display: inline-block !important
-#                 .title
-#                     font-size: 17px
-#                     font-weight: 700
-#                 .balance
-#                     font-weight: 600
-#                     font-size: 16px
-#                 .price
-#                     opacity: .8
-#                     overflow: hidden
-#                     text-overflow: ellipsis
-#             .top-right
-#                 width: auto
-#                 float: right
-#                 color: #fff
-#                 position: relative
-#                 top: 25px
-#                 button
-#                     width: 100px
-#                     &.btn-open
-#                         display: none
-#                     span
-#                         line-height: 26px
-#                     svg
-#                         float: left
-#                 @media (max-width: 920px)
-#                     top: 0px
+#         .history-area
+#             max-height: 54vh
+#             overflow: auto
 #         .info
 #             text-align: left
 #             margin-left: 0px
@@ -239,10 +185,6 @@ require! {
 #             width: 100%
 #             height: calc(100vh - 260px)
 #             margin-top: -1px
-#         .wallet
-#             &.big
-#                 height: 200px
-#                 padding-top: 10px
 mobile = ({ store, web3t })->
     return null if not store.current.account?
     { wallets, go-up, can-up, go-down, can-down } = wallets-funcs store, web3t
@@ -254,16 +196,19 @@ mobile = ({ store, web3t })->
         display: "flex"
         height: "100vh"
         margin-left: "60px"
+        overflow: "hidden"
     left-side =
-        width: "45%"
+        width: "35%"
     right-side =
-        width: "55%"
+        width: "65%"
         border-left: "1px solid #{style.app.border}"
     header-style =
         border-top: "1px solid #{style.app.border}"
         padding: "17px 0px 20px"
         color: style.app.text
         text-align: "left"
+    icon-style=
+        filter: style.app.icon-filter
     input=
         background: style.app.wallet
         border: "1px solid #{style.app.border}"
@@ -294,9 +239,9 @@ mobile = ({ store, web3t })->
         react.create-element 'div', { className: 'switch-account h1' }, children = 
             react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
             react.create-element 'span', { on-click: edit-account-name, className: 'icon' }, children = 
-                react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg1' }
+                react.create-element 'img', { src: "#{icons.create}", style: icon-style, className: 'icon-svg1' }
             react.create-element 'span', { on-click: open-account, className: "#{rotate-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg2' }
+                react.create-element 'img', { src: "#{icons.arrow-down}", style: icon-style, className: 'icon-svg2' }
     edit-account-template = ->
         react.create-element 'div', { className: 'switch-account h1' }, children = 
             react.create-element 'input', { value: "#{store.current.edit-account-name}", on-change: edit-account, style: input, className: 'h1' }
@@ -305,8 +250,12 @@ mobile = ({ store, web3t })->
             react.create-element 'span', { on-click: cancel-edit-account-name, className: 'cancel icon' }, children = 
                 icon "X", 20
     chosen-account-template =
-        if store.current.edit-account-name is "" then view-account-template! else edit-account-template!  
-    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container1136573482' }, children = 
+        if store.current.edit-account-name is "" then view-account-template! else edit-account-template! 
+    wallet-detail =
+        wallets
+            |> find (-> wallets.index-of(it) is store.current.wallet-index)
+    return null if not wallet-detail?
+    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container1550101913' }, children = 
         react.create-element 'div', { style: row }, children = 
             react.create-element 'div', { style: left-side }, children = 
                 menu { store, web3t }
@@ -322,8 +271,7 @@ mobile = ({ store, web3t })->
                         wallets
                             |> map wallet store, web3t, wallets
             react.create-element 'div', { style: right-side, className: 'show-detail' }, children = 
-                wallets
-                    |> filter (-> wallets.index-of(it) is store.current.wallet-index)
-                    |> map wallet store, web3t, wallets
-                history { store, web3t }
+                wallet-expanded store, web3t, wallets, wallet-detail
+                react.create-element 'div', { className: 'history-area' }, children = 
+                    history { store, web3t }
 module.exports = mobile

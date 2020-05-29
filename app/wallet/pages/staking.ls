@@ -33,10 +33,10 @@ require! {
     \./epoch.ls
     \../components/button.ls
     \./alert-txn.ls
+    \../components/amount-field.ls
 }
-# .staking-1934749877
+# .staking706309563
 #     @import scheme
-#     color: white
 #     position: relative
 #     display: block
 #     width: auto
@@ -408,7 +408,6 @@ require! {
 #             list-style: none
 #             margin-left: 0
 #             font-size: 13px
-#             color: #fff
 #             font-size: 14px
 #             margin-bottom: 5px
 #             list-style-position: inside
@@ -507,7 +506,6 @@ require! {
 #                     flex: 0 0 100%
 #                     max-width: 100%
 #             > div
-#                 background: #3b1771
 #                 padding: 30px 20px
 #     .staking-reward
 #         display: block
@@ -1002,6 +1000,8 @@ staking-content = (store, web3t)->
     check-uncheck = ->
         change = not store.staking.rewards.0.checked
         store.staking.rewards |> map (-> it.checked = change)
+    box-background =
+        background: style.app.addressBg
     react.create-element 'div', { className: 'staking-content' }, children = 
         #placeholder store, web3t
         alert-txn { store }
@@ -1021,7 +1021,7 @@ staking-content = (store, web3t)->
                         if pairs.mining.keystore.length is 0
                             react.create-element 'div', {}, children = 
                                 react.create-element 'div', { className: 'btn' }, children = 
-                                    button { store, type : \secondary , on-click: show-script , icon : \generate , text: "generateScript" }
+                                    button { store, type : \primary , on-click: show-script , icon : \generate , text: "generateScript" }
                                 react.create-element 'div', {}, ' ' + lang.pls-allow
                         else 
                             react.create-element 'div', {}, children = 
@@ -1089,7 +1089,7 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'label', {}, ' ' + lang.stake
-                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -1107,7 +1107,7 @@ staking-content = (store, web3t)->
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'div', { className: 'staking-info' }, children = 
                                 react.create-element 'div', { className: 'col col-4' }, children = 
-                                    react.create-element 'div', {}, children = 
+                                    react.create-element 'div', { style: box-background }, children = 
                                         react.create-element 'div', { className: 'value' }, children = 
                                             react.create-element 'div', { className: 'number' }, children = 
                                                 react.create-element 'span', {}, ' ' + your-staking
@@ -1115,21 +1115,21 @@ staking-content = (store, web3t)->
                                         react.create-element 'div', { className: 'header' }, children = 
                                             """ #{lang.staking}"""
                                 react.create-element 'div', { className: 'col col-4' }, children = 
-                                    react.create-element 'div', {}, children = 
+                                    react.create-element 'div', { style: box-background }, children = 
                                         react.create-element 'div', { className: 'value green' }, children = 
                                             react.create-element 'div', { className: 'number' }, children = 
                                                 """ #{staker-status}"""
                                         react.create-element 'div', { className: 'header' }, children = 
                                             """ #{lang.your-status}"""
                                 react.create-element 'div', { className: 'col col-4' }, children = 
-                                    react.create-element 'div', {}, children = 
+                                    react.create-element 'div', { style: box-background }, children = 
                                         react.create-element 'div', { className: 'value' }, children = 
                                             react.create-element 'div', { className: 'number' }, children = 
                                                 """ #{store.staking.delegators}"""
                                         react.create-element 'div', { className: 'header' }, children = 
                                             """ #{lang.delegators}"""
                                 react.create-element 'div', { className: 'col col-4' }, children = 
-                                    react.create-element 'div', {}, children = 
+                                    react.create-element 'div', { style: box-background }, children = 
                                         react.create-element 'div', { className: 'value' }, children = 
                                             react.create-element 'div', { className: 'number' }, children = 
                                                 """ #{store.staking.epoch}"""
@@ -1141,29 +1141,9 @@ staking-content = (store, web3t)->
                                         react.create-element 'ol', {}, children = 
                                             react.create-element 'li', {}, ' ' + lang.your-status1
                                             react.create-element 'li', {}, ' ' + lang.your-status2
-                            if no
-                                react.create-element 'div', { className: 'table' }, children = 
-                                    react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' ' + lang.staking + ': '
-                                        react.create-element 'span', { className: 'color' }, ' ' + your-staking
-                                        react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                                    react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' ' + lang.your-status + ':'
-                                        react.create-element 'span', { className: 'color green' }, ' ' + staker-status
-                                    react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' Delegators:'
-                                        react.create-element 'span', { className: 'color' }, ' ' + store.staking.delegators
-                                    if store.staking.is-active-staker is no
-                                        react.create-element 'div', { className: 'warning' }, children = 
-                                            react.create-element 'ol', {}, children = 
-                                                react.create-element 'li', {}, ' ' + lang.your-status1
-                                                react.create-element 'li', {}, ' ' + lang.your-status2
-                                    react.create-element 'div', { className: 'balance' }, children = 
-                                        react.create-element 'span', { className: 'header' }, ' ' + lang.epoch + ':'
-                                        react.create-element 'span', { className: 'color' }, ' ' + store.staking.epoch
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' ' + lang.stake-more
-                            react.create-element 'input', { type: 'text', value: "#{round5 store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -1194,6 +1174,7 @@ staking = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
+        background: info.app.background
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -1206,13 +1187,15 @@ staking = ({ store, web3t })->
         background: info.app.wallet-light
     lightText=
         color: info.app.addressText
+    icon-color=
+        filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-1934749877' }, children = 
+    react.create-element 'div', { className: 'staking staking706309563' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.staking
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
@@ -1226,15 +1209,15 @@ staking.init = ({ store, web3t }, cb)->
     #exit for now
     #return cb null
     staking-address = store.staking.keystore.staking.address
-    err, amount <- web3t.velas.Staking.orderedWithdrawAmount staking-address, staking-address
-    return cb err if err?
+    #err, amount <- web3t.velas.Staking.orderedWithdrawAmount staking-address, staking-address
+    #return cb err if err?
     err, last-epoch <- web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosen-pool.address, staking-address)
     return cb "#{err}" if err?
     err, staking-epoch <- web3t.velas.Staking.stakingEpoch
     return cb "#{err}" if err?
     res = staking-epoch `minus` last-epoch
     store.staking.wait-for-epoch-change = if +res is 0 then yes else no
-    store.staking.withdraw-amount = amount.to-fixed!
+    #store.staking.withdraw-amount = amount.to-fixed!
     store.staking.add.add-validator-stake = 0
     store.staking.epoch = staking-epoch.to-fixed!
     err, amount <- web3t.velas.Staking.stakeAmount(staking-address, staking-address)
@@ -1245,6 +1228,8 @@ staking.init = ({ store, web3t }, cb)->
     err, delegators <- web3t.velas.Staking.poolDelegators(staking-address)
     return cb err if err?
     store.staking.delegators = delegators.length
+    err <- exit-stake.init { store, web3t }
+    return cb err if err?
     cb null
 module.exports = staking
 staking.focus = ({ store, web3t }, cb)->

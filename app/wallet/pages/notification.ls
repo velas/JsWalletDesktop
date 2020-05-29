@@ -12,7 +12,7 @@ require! {
     \./epoch.ls
     \./alert-demo.ls
 }
-# .notice1687838996
+# .notice-1472401196
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -318,7 +318,7 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
+#         background: inherit
 #         position: fixed
 #         display: inline-grid
 #         z-index: 3
@@ -402,7 +402,7 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 160px
-#         background: #321260
+#         background: inherit
 #         position: absolute
 #         top: 188px
 #         right: 0px
@@ -1457,10 +1457,7 @@ notice = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-users =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -1513,7 +1510,7 @@ notice = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     imgs=
         ava: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1588866150/velas/interface_1.png"
-    react.create-element 'div', { className: 'notice notice1687838996' }, children = 
+    react.create-element 'div', { className: 'notice notice-1472401196' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.velas-messenger
