@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.102",
+  "version": "0.12.103",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "phonegap-build": "browserify -t browserify-livescript phonegap/www/js/index.js > phonegap/www/js/bundle.js && cp ./main-bundle.css phonegap/www/css/index.css",
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps",
-    "install": "cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh",
+    "install": "cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh"
   },
   "repository": {
     "type": "git",
