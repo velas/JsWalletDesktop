@@ -16,15 +16,19 @@ require! {
     \./wallet-stats.ls
 }
 #
-# .wallet-detailed1801120048
+# .wallet-detailed932759917
 #     height: 200px
 #     box-sizing: border-box
+#     $tablet: 1200px
 #     >.wallet-part
 #         display: inline-block
+#         position: relative
 #         box-sizing: border-box
 #         vertical-align: top
 #         width: 50%
 #         padding: 20px
+#         @media screen and (max-width: $tablet)
+#             padding: 10px 20px
 #         &.left
 #             text-align: left
 #             >.buttons
@@ -35,12 +39,32 @@ require! {
 #                         margin-left: 10px
 #             >.details
 #                 display: none
+#             .uninstall
+#                 position: absolute
+#                 top: 20px
+#                 right: 20px
+#                 text-transform: uppercase
+#                 font-size: 10px
+#                 padding: 7px 10px
+#                 cursor: pointer
+#                 @media screen and (max-width: $tablet)
+#                     top: 10px
+#             >.address-holder
+#                 margin-top: 10px
+#                 @media screen and (max-width: $tablet)
+#                     margin-top: 20px
 #         &.right
 #         >.wallet-header
 #             &.chart
 #                 text-align: right
 #                 padding-top: 0px
 #                 border-left: 1px solid rgba(white, 0.2)
+#                 @media screen and (max-width: $tablet)
+#                     >.wallet-header-part
+#                         width: 100%
+#                         text-align: center
+#                         >.stats
+#                             margin: 0 auto
 #             >.wallet-header-part
 #                 display: inline-block
 #                 box-sizing: border-box
@@ -51,7 +75,7 @@ require! {
 #                 &.right
 #                     padding: 0 10px
 #                     >.title
-#                         font-size: 25px
+#                         font-size: 21px
 #                 .counts
 #                     margin-bottom: 5px
 #                     .label
@@ -66,11 +90,11 @@ require! {
 #             max-height: $size
 #             width: $size
 #             max-width: $size
-#             @media screen and (max-width: 1200px)
-#                 height: $size-tablet
-#                 max-height: $size-tablet
-#                 width: $size-tablet
-#                 max-width: $size-tablet
+#             @media screen and (max-width: $tablet)
+#                 height: $size-tablet - 10
+#                 max-height: $size-tablet - 10
+#                 width: $size-tablet - 10
+#                 max-width: $size-tablet - 10
 #             >*
 #                 height: inherit
 #                 width: inherit
@@ -111,8 +135,12 @@ module.exports = (store, web3t, wallets, wallet)-->
         color: style.app.text3
         background: style.app.wallet
         border-bottom: "1px solid #{style.app.border}"
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed1801120048' }, children = 
-        react.create-element 'div', { className: 'wallet-part left' }, children = 
+    uninstall=
+        background: style.app.bg-primary-light
+    text=
+        color: style.app.text
+    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed932759917' }, children = 
+        react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
                 react.create-element 'div', { className: 'wallet-header-part left' }, children = 
                     react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
@@ -134,13 +162,13 @@ module.exports = (store, web3t, wallets, wallet)-->
                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human usd-rate
             react.create-element 'div', {}, children = 
                 if wallet.coin.token not in <[ btc vlx vlx2 ]>
-                    react.create-element 'div', { on-click: uninstall, className: 'uninstall' }, ' ' + label-uninstall
+                    react.create-element 'div', { on-click: uninstall, style: uninstall, className: 'uninstall' }, ' ' + label-uninstall
         react.create-element 'div', { className: 'wallet-part right' }, children = 
             react.create-element 'div', { className: 'wallet-header chart' }, children = 
                 react.create-element 'div', { className: 'wallet-header-part left' }, children = 
                     react.create-element 'div', { className: 'stats' }, children = 
                         wallet-stats store, web3t
-                react.create-element 'div', { className: 'wallet-header-part right' }, children = 
+                react.create-element 'div', { style: text, className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', { className: 'counts' }, children = 
                         react.create-element 'div', {}, ' ' +  total-sent + ' ' token 
                         react.create-element 'div', { style: color1, className: 'label' }, ' Total Sent'

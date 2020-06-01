@@ -13,7 +13,7 @@ require! {
     \react-middle-ellipsis : { default: MiddleEllipsis }
     \../components/address-holder.ls
 }
-# .history-2121407940
+# .history943459170
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -311,6 +311,7 @@ require! {
 #         overflow-y: scroll
 #         margin-top: -1px
 #         height: calc(100vh - 260px)
+#         opacity: .8
 #         .head, .record
 #             &.record
 #                 border-radius: 0px
@@ -357,8 +358,10 @@ require! {
 #                         left: 3px
 #                         position: relative
 #                 &.amount
-#                     width: 24%
+#                     width: 14%
 #                     text-align: right
+#                     @media screen and (max-width: 1020px)
+#                         width: 19%
 #                 &.divider2
 #                     width: 30%
 #                 &.divider
@@ -373,8 +376,10 @@ require! {
 #                     opacity: .5
 #                     padding-left: 0
 #                 &.created
-#                     width: 20%
-#                     text-align: left
+#                     width: 30%
+#                     text-align: right
+#                     @media screen and (max-width: 1020px)
+#                         width: 25%
 #                     .syncing
 #                         svg
 #                             width: auto
@@ -382,11 +387,12 @@ require! {
 #                             margin: 0
 #                             vertical-align: middle !important
 #                     .bold
-#                         margin-right: 5px
+#                         margin-right: 0px
 #                         .icon-check
 #                             opacity: .8;
 #                             vertical-align: inherit
 #                             top: 1px
+#                             margin-right: 2px
 #                             position: relative
 #                             width: 15px
 #                             height: 13px !important
@@ -396,7 +402,7 @@ require! {
 #                         overflow: hidden
 #                         width: 100%
 #                         font-size: 14px
-#                         line-height: 25px
+#                         line-height: 22px
 #                         text-decoration: none
 #                 &.more
 #                     text-align: center
@@ -467,8 +473,10 @@ require! {
 #                                 padding: 0
 #                                 width: 80%
 #                                 text-align: left
-#                                 @media screen and (min-width: 1441px)
-#                                     width: 95%
+#                                 @media screen and (min-width: 1921px)
+#                                     width: 55%
+#                                 @media screen and (min-width: 1441px) and (max-width: 1920px)
+#                                     width: 75%
 #                                 a
 #                                     img
 #                                         height: 16px
@@ -638,7 +646,7 @@ render-transaction = (store, web3t, tran)-->
     light-style =
         background: style.app.wallet-light
     lightText=
-        color: style.app.addressText
+        color: style.app.color3
     tooltip=
         background: "#000"
     { token, tx, amount, fee, time, url, type, pending, from, to, recipient-type, description } = tran
@@ -652,7 +660,7 @@ render-transaction = (store, web3t, tran)-->
             | store.history.tx-details is tx => null
             | _ => tx
     icon-pending=
-        filter: if pending is yes then 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-370deg) saturate(790%) contrast(0.5)' else ''
+        filter: if pending is yes then 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-370deg) saturate(790%) contrast(0.5)' else style.app.icon-filter
     amount-pending=
         color: if pending is yes then 'orange' else ''
     about = 
@@ -701,6 +709,8 @@ render-transaction = (store, web3t, tran)-->
                         react.create-element 'span', {}, ' ' + lang.to
             react.create-element 'div', { className: 'cell created' }, children = 
                 react.create-element 'div', { className: 'time-ago' }, children = 
+                    """#{ago time}"""
+                react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                     if pending is yes
                         react.create-element 'span', {}, children = 
                             react.create-element 'span', { className: 'bold' }, children = 
@@ -709,8 +719,6 @@ render-transaction = (store, web3t, tran)-->
                         react.create-element 'span', {}, children = 
                             react.create-element 'span', { className: 'bold' }, children = 
                                 react.create-element 'img', { src: 'data:image/svg+xml;base64,\PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNNTA0LjUwMiw3NS40OTZjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5OC0zNi4yMDQsMEwxNjEuNTk0LDM4Mi4yMDNMNDMuNzAyLDI2NC4zMTFjLTkuOTk3LTkuOTk4LTI2LjIwNS05Ljk5Ny0zNi4yMDQsMCAgICBjLTkuOTk4LDkuOTk3LTkuOTk4LDI2LjIwNSwwLDM2LjIwM2wxMzUuOTk0LDEzNS45OTJjOS45OTQsOS45OTcsMjYuMjE0LDkuOTksMzYuMjA0LDBMNTA0LjUwMiwxMTEuNyAgICBDNTE0LjUsMTAxLjcwMyw1MTQuNDk5LDg1LjQ5NCw1MDQuNTAyLDc1LjQ5NnoiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzNDRDVBRiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+', className: 'icon-check' }
-                    """#{ago time}"""
-                react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                     react.create-element 'span', {}, ' ' + lang.created
             react.create-element 'div', { style: menu-style, className: 'cell amount' }, children = 
                 react.create-element 'div', { title: "#{amount}", style: amount-pending }, children = 
@@ -773,9 +781,9 @@ module.exports = ({ store, web3t })->
         border-top: "1px solid #{style.app.border}"
     filter-body =
         border: "1px solid #{style.app.border}"
-        background: style.app.header
+        background: style.app.filterBg
     input-style=
-        background: style.app.wallet
+        background: style.app.bg-primary-light
         border: "1px solid #{style.app.border}"
         color: style.app.text
     button-primary3-style=
@@ -787,7 +795,7 @@ module.exports = ({ store, web3t })->
         color: style.app.text
         background: style.app.primary1
     lightText=
-        color: style.app.addressText
+        color: style.app.color3
     nothing-icon=
         filter: style.app.nothingIcon
     header-table-style=
@@ -803,7 +811,7 @@ module.exports = ({ store, web3t })->
         null
     history-width = store.current.size.width / 1.9
     history-height = store.current.size.height - 200 - 60
-    react.create-element 'div', { className: 'normalheader history history-2121407940' }, children = 
+    react.create-element 'div', { className: 'normalheader history history943459170' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

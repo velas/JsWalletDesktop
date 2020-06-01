@@ -7,7 +7,7 @@ require! {
     \../icons.ls
     \./claim-stake.ls
 }
-# .claim-888427568
+# .claim1022471631
 #     @import scheme
 #     position: relative
 #     display: block
@@ -434,14 +434,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 module.exports = ({store, web3t})->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -469,8 +461,8 @@ module.exports = ({store, web3t})->
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
     lightText=
-        color: info.app.addressText
-    react.create-element 'div', { className: 'claim claim-888427568' }, children = 
+        color: info.app.color3
+    react.create-element 'div', { className: 'claim claim1022471631' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' Claim Reward'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

@@ -23,7 +23,7 @@ json-parse = (text, cb)->
         cb null, JSON.parse(text)
     catch err
         cb err
-# .videostorage-631503560
+# .videostorage32994597
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -337,14 +337,6 @@ json-parse = (text, cb)->
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -720,12 +712,12 @@ json-parse = (text, cb)->
 #                             vertical-align: middle !important
 #                     &.active
 #                         color: #c671f1
-#                         background: var(--active)
+#                         background: var(--bg-secondary)
 #                         padding-bottom: 15px
 #                         img
 #                             filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                     &:hover
-#                         background: var(--active)
+#                         background: var(--bg-secondary)
 #                         padding-bottom: 15px
 #                         transition: .5s
 #     .iron
@@ -829,7 +821,7 @@ home = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -844,7 +836,7 @@ home = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -929,7 +921,7 @@ trend = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -944,7 +936,7 @@ trend = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1022,7 +1014,7 @@ subscr = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1037,7 +1029,7 @@ subscr = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1168,7 +1160,7 @@ history = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1183,7 +1175,7 @@ history = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1382,7 +1374,7 @@ videostorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1397,7 +1389,7 @@ videostorage = ({ store, web3t })->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     activate = (tab)-> ->
@@ -1420,7 +1412,7 @@ videostorage = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     open-upload-link = ->
         store.video.upload-link = yes
-    react.create-element 'div', { className: 'videostorage videostorage-631503560' }, children = 
+    react.create-element 'div', { className: 'videostorage videostorage32994597' }, children = 
         videoupload { store, web3t }
         react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
             react.create-element 'div', { style: header-table-style, className: 'top' }, children = 

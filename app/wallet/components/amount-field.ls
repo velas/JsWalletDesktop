@@ -5,6 +5,7 @@ require! {
     \../round.ls
     \prelude-ls : { find }
     \../math.ls : { times }
+    \./keyboard.ls
 }
 # .input-area1664310996
 #     position: relative

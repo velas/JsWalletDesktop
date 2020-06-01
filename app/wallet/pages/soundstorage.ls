@@ -13,7 +13,7 @@ require! {
     \../icons.ls
     \./alert-demo.ls
 }
-# .videostorage949079563
+# .videostorage-892156854
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -414,14 +414,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -934,7 +926,7 @@ home = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -949,7 +941,7 @@ home = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1100,7 +1092,7 @@ videostorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1115,7 +1107,7 @@ videostorage = ({ store, web3t })->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     activate = (tab)-> ->
@@ -1132,7 +1124,7 @@ videostorage = ({ store, web3t })->
         store.sound.menu-open = not store.sound.menu-open
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'videostorage videostorage949079563' }, children = 
+    react.create-element 'div', { className: 'videostorage videostorage-892156854' }, children = 
         play-bar store, web3t
         react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
             react.create-element 'div', { style: header-table-style, className: 'top' }, children = 

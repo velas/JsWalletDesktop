@@ -15,7 +15,7 @@ require! {
     \../components/identicon.ls
     \./send-contract.ls
 }
-# .content1800261102
+# .content1284687149
 #     position: relative
 #     @import scheme
 #     $border-radius: $border
@@ -54,14 +54,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     .h1
 #         font-size: 17px
 #         text-transform: uppercase
@@ -385,7 +377,7 @@ send = ({ store, web3t })->
     active-eur = active-class \eur
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'content content1800261102' }, children = 
+    react.create-element 'div', { className: 'content content1284687149' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.send
             react.create-element 'div', { on-click: cancel, className: 'close' }, children = 

@@ -15,7 +15,7 @@ require! {
     \../icons.ls
     \./icon.ls
 }
-# .wallet-mobile-265984567
+# .wallet-mobile931195097
 #     $mobile: 425px
 #     $tablet: 800px
 #     button.btn
@@ -94,8 +94,11 @@ require! {
 #                 height: auto
 #                 margin-bottom: 0px
 #             .wallet
+#                 background: var(--bg-secondary)
 #                 &:last-child
 #                     margin-bottom: 0px
+#                 &.big
+#                     background: var(--bg-secondary)
 #             @media(max-width: $mobile)
 #                 border-width: 1px 0 0 0 !important
 #         .switch-account
@@ -149,8 +152,8 @@ require! {
 #         .header
 #             max-width: 450px
 #             margin: 0 auto
-#             border-left: 1px solid rgb(107, 38, 142)
-#             border-right: 1px solid rgb(107, 38, 142)
+#             border-left: 1px solid var(--border)
+#             border-right: 1px solid var(--border)
 #             @media(max-width: $mobile)
 #                 border: 0
 #     .wallet
@@ -238,7 +241,7 @@ mobile = ({ store, web3t })->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile-265984567' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile931195097' }, children = 
         menu { store, web3t }
         manage-account { store, web3t }
         token-migration { store, web3t }

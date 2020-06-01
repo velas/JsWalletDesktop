@@ -173,13 +173,15 @@ restore-words = (store, web3t, item)-->
     lang = get-lang store
     style = get-primary-info store
     seed-style=
-        border: "1px solid #{style.app.primaryOpct}"
+        border: "1px solid #{style.app.border}"
+        color: style.app.text
+    txt-style=
         color: style.app.text
     index = store.current.seed-words.index-of(item) + 1
     change-part = (it)->
         item.part = it.target.value    #.to-lower-case!.trim!.replace(/[^a-z]/, '')
     react.create-element 'div', { style: seed-style, className: 'word' }, children = 
-        react.create-element 'input', { type: 'text', value: "#{item.part}", placeholder: "#{lang.word} ##{index}", on-change: change-part }
+        react.create-element 'input', { type: 'text', value: "#{item.part}", placeholder: "#{lang.word} ##{index}", on-change: change-part, style: txt-style }
         react.create-element 'span', { className: 'effect' }, ' ' + index
 restore-words-panel = (store, web3t)->
     lang = get-lang store

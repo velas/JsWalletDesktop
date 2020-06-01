@@ -18,7 +18,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .wallets-container1550101913
+# .wallets-container2114097463
 #     .wallets
 #         @import scheme
 #         $real-height: 300px
@@ -46,8 +46,6 @@ require! {
 #             .big
 #                 height: 60px
 #             .big.active
-#                 background: rgb(98, 52, 171) !important
-#                 transition: .5s !important
 #                 .icon
 #                     transition: all .5s
 #                     filter: none !important
@@ -161,6 +159,10 @@ require! {
 #             width: 100%
 #             border-top: 1px solid #213040
 #             display: inline-block
+#             .wallet
+#                 background: var(--bg-secondary)
+#                 &.big
+#                     background: var(--bg-primary-light)
 #         .history-area
 #             max-height: 54vh
 #             overflow: auto
@@ -255,7 +257,7 @@ mobile = ({ store, web3t })->
         wallets
             |> find (-> wallets.index-of(it) is store.current.wallet-index)
     return null if not wallet-detail?
-    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container1550101913' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container2114097463' }, children = 
         react.create-element 'div', { style: row }, children = 
             react.create-element 'div', { style: left-side }, children = 
                 menu { store, web3t }

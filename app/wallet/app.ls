@@ -13,8 +13,9 @@ require! {
     \./modal.ls : { modal-control }
     \./get-primary-info.ls
     \./pages/confirmation.ls : { confirmation-control }
+    \./pages/hovered-address.ls
 }
-# .app1671446404
+# .app435449643
 #     input
 #         line-height: normal !important
 #     &::-webkit-scrollbar
@@ -59,14 +60,20 @@ require! {
 #                     font-size: 12px !important
 #         .close
 #             @media(max-width: 820px)
-#                 position: absolute !important
-#                 font-size: 20px !important
-#                 left: 0 !important
-#                 top: 0 !important
-#                 height: 60px !important
-#                 width: 60px !important
-#                 cursor: pointer !important
-#                 border-right: 1px solid #6b258e !important
+#                 position: absolute
+#                 font-size: 20px
+#                 left: 0
+#                 top: 0
+#                 height: 60px
+#                 width: 60px
+#                 cursor: pointer
+#                 border-right: 1px solid var(--border)
+#             @media(min-width: 821px)
+#                 position: absolute
+#                 font-size: 20px
+#                 left: 20px
+#                 top: 13px
+#                 cursor: pointer
 #             img
 #                 @media(max-width: 820px)
 #                     top: 16px !important
@@ -114,38 +121,20 @@ require! {
 #     .placeholder-coin
 #         display: none !important
 #     .placeholder
-#         -webkit-animation-duration: 1s
-#         animation-duration: 1s
-#         -webkit-animation-fill-mode: forwards
+#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: fb 1s infinite
 #         animation-fill-mode: forwards
-#         -webkit-animation-iteration-count: infinite
-#         animation-iteration-count: infinite
-#         -webkit-animation-name: placeload
-#         animation-name: placeload
-#         -webkit-animation-timing-function: linear
-#         animation-timing-function: linear
-#         background: #f6f7f8
-#         background: #eeeeee
-#         background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee))
-#         background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)
-#         background: linear-gradient(to right, #442080 8%, #422375 18%, #3b1b6f 33%)
-#         -webkit-background-size: 800px 104px
-#         background-size: 1200px 104px
-#         position: relative
+#         background: var(--placeholder)
 #         color: transparent !important
 #         width: 100%
 #         display: inline-block
 #         height: 16px
-#     @-webkit-keyframes placeload
+#     @keyframes fb 
 #         0%
-#             background-position: -468px 0
+#             -webkit-mask-position: left
 #         100%
-#             background-position: 468px 0
-#     @keyframes placeload
-#         0%
-#             background-position: -468px 0
-#         100%
-#             background-position: 468px 0
+#             -webkit-mask-position: right
 #     @media (max-width: 800px)
 #         .wallet-main, >.content, .history, .search, .filestore, .resources, .staking, .settings-menu, .staking-res, .stats, .monitor
 #             margin: 60px 0 0
@@ -156,7 +145,7 @@ require! {
 # use var(--background);
 define-root = (store)->
     style = get-primary-info store
-    text = ":root { --background: #{style.app.background};--active: #{style.app.wallet};--placeholder: #{style.app.placeholder}; }"
+    text = ":root { --background: #{style.app.background};--bg-secondary: #{style.app.wallet};--bg-primary-light: #{style.app.bg-primary-light};--placeholder: #{style.app.placeholder};--placeholder-menu: #{style.app.placeholder-menu};--color3: #{style.app.color3};--border: #{style.app.border}; --color1: #{style.app.color1}; --color2: #{style.app.color2}; --color-td: #{style.app.color-td};}"
     react.create-element 'style', {}, ' ' + text
 module.exports = ({ store, web3t })->
     return null if not store?
@@ -174,7 +163,7 @@ module.exports = ({ store, web3t })->
     react.create-element 'div', {}, children = 
         define-root store
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1671446404" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app435449643" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t
@@ -187,3 +176,4 @@ module.exports = ({ store, web3t })->
             if store.current.device is \desktop
                 side-menu store, web3t
             current-page { store, web3t }
+            hovered-address { store }

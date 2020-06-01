@@ -35,7 +35,7 @@ require! {
     \./alert-txn.ls
     \../components/amount-field.ls
 }
-# .staking706309563
+# .staking49433308
 #     @import scheme
 #     position: relative
 #     display: block
@@ -458,14 +458,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     .staking-info
 #         display: block
 #         overflow-y: scroll
@@ -1001,7 +993,7 @@ staking-content = (store, web3t)->
         change = not store.staking.rewards.0.checked
         store.staking.rewards |> map (-> it.checked = change)
     box-background =
-        background: style.app.addressBg
+        background: style.app.bg-primary-light
     react.create-element 'div', { className: 'staking-content' }, children = 
         #placeholder store, web3t
         alert-txn { store }
@@ -1021,7 +1013,7 @@ staking-content = (store, web3t)->
                         if pairs.mining.keystore.length is 0
                             react.create-element 'div', {}, children = 
                                 react.create-element 'div', { className: 'btn' }, children = 
-                                    button { store, type : \primary , on-click: show-script , icon : \generate , text: "generateScript" }
+                                    button { store, type : \secondary , on-click: show-script , icon : \generate , text: "generateScript" }
                                 react.create-element 'div', {}, ' ' + lang.pls-allow
                         else 
                             react.create-element 'div', {}, children = 
@@ -1186,12 +1178,12 @@ staking = ({ store, web3t })->
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-color=
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking706309563' }, children = 
+    react.create-element 'div', { className: 'staking staking49433308' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.staking
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -1200,6 +1192,7 @@ staking = ({ store, web3t })->
             switch-account store, web3t
         staking-content store, web3t
 staking.init = ({ store, web3t }, cb)->
+    err <- web3t.refresh
     store.staking.keystore = to-keystore store, no
     store.staking.chosen-pool =
         address: store.staking.keystore.staking.address

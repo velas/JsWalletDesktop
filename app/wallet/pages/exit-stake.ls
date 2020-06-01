@@ -125,7 +125,7 @@ max-withdraw-ordered = (store, web3t)->
         amount = 0
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }
     change-max = (it)->
-        store.staking.maxWithdrawOrderAllowed = it.target.value
+        store.staking.withdrawAmount = it.target.value
     react.create-element 'div', { className: 'section' }, children = 
         react.create-element 'div', { className: 'title' }, children = 
             react.create-element 'h3', {}, ' Exit'
@@ -139,7 +139,7 @@ max-withdraw-ordered = (store, web3t)->
                             if active-first is \active
                                 react.create-element 'div', {}, children = 
                                     react.create-element 'div', {}, children = 
-                                        amount-field { store, value: store.staking.maxWithdrawOrderAllowed, on-change: change-max }
+                                        amount-field { store, value: store.staking.withdrawAmount, on-change: change-max }
                                     react.create-element 'button', { style: button-primary4-style, on-click: order }, children = 
                                         react.create-element 'span', {}, children = 
                                             react.create-element 'img', { src: "#{icons.exit}", className: 'icon-svg' }
@@ -172,44 +172,56 @@ max-withdraw = (store, web3t)->
         staking-address = store.staking.keystore.staking.address
         pool-address = store.staking.chosen-pool.address
         err, max <- web3t.velas.Staking.maxWithdrawAllowed(pool-address, staking-address)
-        amount = store.staking.maxWithdrawAllowed
+        amount = store.staking.withdrawAmount
         return alert store, "max is #{max.to-fixed!}" if +amount > +max.to-fixed!
-        #console.log "web3t.velas.Staking.maxWithdrawAllowed('#{pool-address}', '#{staking-address}')"
         return alert store, "Max Withdraw Allowed is 0", cb if +amount is 0
         data = web3t.velas.Staking.withdraw.get-data(pool-address, amount)
         to = web3t.velas.Staking.address
         amount = 0
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 } 
     change-max = (it)->
-        store.staking.maxWithdrawAllowed = it.target.value
+        store.staking.withdrawAmount = it.target.value
     react.create-element 'div', { className: 'section' }, children = 
         react.create-element 'div', { className: 'title' }, children = 
             react.create-element 'h3', {}, ' Exit'
         react.create-element 'div', { className: 'description' }, children = 
             react.create-element 'div', {}, ' Withdraw the staking amount'
             react.create-element 'div', {}, children = 
-                amount-field { store, value: store.staking.maxWithdrawOrderAllowed, on-change: change-max }
+                amount-field { store, value: store.staking.withdrawAmount, on-change: change-max }
             react.create-element 'button', { style: button-primary4-style, on-click: exit }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.exit}", className: 'icon-svg' }
                     """ Withdraw"""
+not-available-right-now = ->
+    react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { className: 'title' }, children = 
+            react.create-element 'h3', {}, ' Exit'
+        react.create-element 'div', { className: 'description' }, children = 
+            react.create-element 'div', {}, ' Not available right now. Please check later'
 module.exports = (store, web3t)->
+    #console.log \test, store.staking.orderedWithdrawAmount, store.staking.maxWithdrawOrderAllowed, store.staking.maxWithdrawAllowed
     return max-withdraw-ordered store, web3t if +store.staking.orderedWithdrawAmount > 0
     return max-withdraw-ordered store, web3t if +store.staking.maxWithdrawOrderAllowed > 0
     return max-withdraw store, web3t if +store.staking.maxWithdrawAllowed > 0
+    return not-available-right-now store, web3t if +store.staking.stake-amount-total > 0
     null
 module.exports.init = ({ store, web3t}, cb)->
     store.staking.maxWithdrawAllowed = 0
     store.staking.maxWithdrawOrderAllowed = 0
     store.staking.orderedWithdrawAmount = 0
     staking-address = store.staking.keystore.staking.address
+    return cb null if not store.staking?chosen-pool?
     pool-address = store.staking.chosen-pool.address
+    #console.log \ext-stake, staking-address, pool-address
     err, max <- web3t.velas.Staking.maxWithdrawAllowed(pool-address, staking-address)
     return cb err if err?
     store.staking.maxWithdrawAllowed = max.to-fixed! `div` (10^18)
+    store.staking.withdrawAmount = store.staking.maxWithdrawAllowed if +store.staking.maxWithdrawAllowed > 0
+    #console.log \store.staking.maxWithdrawAllowed , store.staking.maxWithdrawAllowed
     err, max <- web3t.velas.Staking.maxWithdrawOrderAllowed(pool-address, staking-address)
     return cb err if err?
     store.staking.maxWithdrawOrderAllowed = max.to-fixed! `div` (10^18)
+    store.staking.withdrawAmount = store.staking.maxWithdrawOrderAllowed if +store.staking.maxWithdrawOrderAllowed > 0
     err, amount <- web3t.velas.Staking.orderedWithdrawAmount store.staking.chosen-pool.address, staking-address
     return cb err if err?
     store.staking.orderedWithdrawAmount = amount.to-fixed!

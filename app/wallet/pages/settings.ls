@@ -11,7 +11,7 @@ require! {
     \../components/button.ls
     \./choose-themes.ls
 }
-# .settings-menu474215560
+# .settings-menu1831317993
 #     @import scheme
 #     position: relative
 #     display: block
@@ -44,14 +44,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.account-body
 #         overflow: hidden
 #         background: transparent
@@ -427,7 +419,7 @@ module.exports = ({ store, web3t } )->
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.background
     lang = get-lang store
-    react.create-element 'div', { className: 'settings-menu settings-menu474215560' }, children = 
+    react.create-element 'div', { className: 'settings-menu settings-menu1831317993' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

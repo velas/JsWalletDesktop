@@ -13,7 +13,7 @@ require! {
     \../add-coin.ls
     \./tor.ls
 }
-# .menu-333831063
+# .menu1381421260
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -108,38 +108,20 @@ require! {
 #         width: auto !important
 #         height: 54px !important
 #         line-height: 34px !important
-#         -webkit-animation-duration: 1s
-#         animation-duration: 1s
-#         -webkit-animation-fill-mode: forwards
+#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: fb 1s infinite
 #         animation-fill-mode: forwards
-#         -webkit-animation-iteration-count: infinite
-#         animation-iteration-count: infinite
-#         -webkit-animation-name: placeload
-#         animation-name: placeload
-#         -webkit-animation-timing-function: linear
-#         animation-timing-function: linear
-#         background: #f6f7f8
-#         background: #eeeeee
-#         background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee))
-#         background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)
-#         background: linear-gradient(to right, #2c1059 8%, #2b1058 18%, #2e115b 33%)
-#         -webkit-background-size: 800px 104px
-#         background-size: 1200px 104px
-#         position: relative
-#         color: transparent
+#         background: var(--placeholder-menu)
+#         color: transparent !important
 #         width: 100%
 #         display: inline-block
 #         height: 16px
-#     @-webkit-keyframes placeload
+#     @keyframes fb 
 #         0%
-#             background-position: -468px 0
+#             -webkit-mask-position: left
 #         100%
-#             background-position: 468px 0
-#     @keyframes placeload
-#         0%
-#             background-position: -468px 0
-#         100%
-#             background-position: 468px 0
+#             -webkit-mask-position: right
 module.exports = ({ store, web3t })->
     return null if not store?
     { current, open-account, lock, wallet-style, info, activate-s1, activate-s2, activate-s3, switch-network, refresh, lock } = menu-funcs store, web3t
@@ -176,7 +158,7 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-333831063' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu1381421260' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 

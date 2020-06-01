@@ -25,7 +25,7 @@ create-button = (store, web3t)-> (text)->
     button-style=
         background: themes[text].primary1
     control-style=
-        background: themes[text].addressBg
+        background: themes[text].bg-primary-light
     react.create-element 'div', { className: 'theme' }, children = 
         react.create-element 'div', { className: 'pallete' }, children = 
             react.create-element 'div', { style: background-style, className: 'box' }

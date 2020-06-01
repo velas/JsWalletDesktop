@@ -7,7 +7,7 @@ require! {
     \./icon.ls
     \../navigate.ls
 }
-# .manage-account-1481575849
+# .manage-account-207821059
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -54,14 +54,6 @@ require! {
 #             background: black
 #             >.header
 #                 margin: 5px
-#             >.close
-#                 position: absolute
-#                 font-size: 20px
-#                 right: 20px
-#                 top: 13px
-#                 cursor: pointer
-#                 &:hover
-#                     color: #CCC
 #         >.settings
 #             padding-top: 60px
 #             overflow-y: auto
@@ -290,7 +282,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { className: 'manage-account manage-account-1481575849' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account-207821059' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: border-style, className: 'title' }, children = 
                 react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account

@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./tor.ls
 }
-# .your-account520159012
+# .your-account-779083902
 #     @import scheme
 #     position: relative
 #     width: auto
@@ -63,9 +63,9 @@ require! {
 #             text-align: left
 #             &:hover
 #                 cursor: pointer
-#                 background: rgba(75, 40, 136, 0.6)
+#                 background: var(--bg-primary-light)
 #             &.active
-#                 background: rgba(75, 40, 136, 0.6)
+#                 background: var(--bg-primary-light)
 #         .middle
 #             padding: 11px 10px
 #             height: 37px
@@ -73,7 +73,7 @@ require! {
 #                 padding: 10px
 #                 min-height: 155px
 #                 overflow: scroll
-#                 background: linear-gradient(#321260 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), #321260 70%) 0 100%, radial-gradient(farthest-side at 50% 0, #594aaa, rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, #594aaa, rgba(0,0,0,0)) 0 100%
+#                 background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
 #                 background-repeat: no-repeat
 #                 background-attachment: local, local, scroll, scroll
 #                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
@@ -269,7 +269,7 @@ module.exports = (store, web3t)->
         react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + account-name
-    react.create-element 'div', { className: 'your-account your-account520159012' }, children = 
+    react.create-element 'div', { className: 'your-account your-account-779083902' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name

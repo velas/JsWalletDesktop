@@ -19,9 +19,8 @@ require! {
     \./epoch.ls
     \./alert-txn.ls
 }
-# .stats190383820
+# .stats518509335
 #     @import scheme
-#     color: white
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
@@ -83,14 +82,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.wrapper
 #         max-height: calc(100vh - 100px)
 #         display: block
@@ -245,17 +236,19 @@ info = ({ store, web3t })->
         color: info.app.text
         background: info.app.primary1
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
+    icon-color=
+        filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'stats stats190383820' }, children = 
+    react.create-element 'div', { className: 'stats stats518509335' }, children = 
         alert-txn { store }
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'wrapper' }, children = 

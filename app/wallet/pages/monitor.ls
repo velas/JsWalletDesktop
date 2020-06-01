@@ -9,7 +9,7 @@ require! {
     \../get-primary-info.ls
     \../navigate.ls
 }
-# .monitor939568889
+# .monitor1795661082
 #     margin-left: 60px
 #     box-sizing: border-box
 #     .table-scroll
@@ -62,14 +62,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #         button
 #             outline: none
 #             cursor: pointer
@@ -175,7 +167,7 @@ module.exports = ({ store, web3t })->
         store.peerinfo.peers 
             |> head
             |> keys
-    react.create-element 'div', { className: 'monitor monitor939568889' }, children = 
+    react.create-element 'div', { className: 'monitor monitor1795661082' }, children = 
         header store, web3t
         react.create-element 'div', { className: 'table-scroll' }, children = 
             react.create-element 'table', {}, children = 

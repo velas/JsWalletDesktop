@@ -12,7 +12,7 @@ require! {
     \./epoch.ls
     \./alert-demo.ls
 }
-# .filestore-354395138
+# .filestore1067399100
 #     @import scheme
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
@@ -211,14 +211,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -350,7 +342,6 @@ require! {
 #                 display: inline-block
 #                 vertical-align: top
 #                 box-sizing: border-box
-#                 color: rgb(204, 204, 204)
 #                 overflow-y: hidden
 #                 text-overflow: ellipsis
 #                 white-space: nowrap
@@ -462,7 +453,7 @@ filestorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -473,7 +464,7 @@ filestorage = ({ store, web3t })->
         color: info.app.text
         background: info.app.primary1
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     dragarea-bg=
@@ -487,7 +478,7 @@ filestorage = ({ store, web3t })->
         if store.filestore.file-tree then \arrow-down else \ ""
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'filestore filestore-354395138' }, children = 
+    react.create-element 'div', { className: 'filestore filestore1067399100' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' File Storage'

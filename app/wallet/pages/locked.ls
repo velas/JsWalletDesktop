@@ -12,8 +12,9 @@ require! {
     \../icons.ls
     \./confirmation.ls : { confirm }
     \../components/button.ls
+    \../components/text-field.ls
 }
-# .locked-59209490
+# .locked530696724
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
@@ -56,6 +57,9 @@ require! {
 #         font-size: 20px
 #         margin-bottom: 1rem
 #     >.inputs
+#         max-width: 400px
+#         width: 130px
+#         display: inline-block
 #         div
 #             position: relative
 #             .division
@@ -78,18 +82,18 @@ require! {
 #                     &.r
 #                         right: 0
 #         input
-#             text-align: center
+#             text-align: left
 #             font-size: 12px
 #             display: inline-block
 #             height: 36px
 #             background: transparent
-#             border: 1px solid #549D90
+#             border: 0
 #             border-radius: $border
 #             outline: none
-#             width: 120px
+#             width: 130px
 #             margin-bottom: 5px
 #             letter-spacing: 5px
-#             padding: 7px 0
+#             padding: 7px 25px 7px 7px
 #             box-sizing: border-box
 #             &:focus
 #                 border-color: #248295
@@ -105,7 +109,8 @@ require! {
 #             color: #f0c16b
 #             text-transform: uppercase
 #     button
-#         width: 120px
+#         width: 130px
+#         margin: 5px 0
 #         &.text-primary
 #             color: rgb(156, 65, 235)
 #             &:hover
@@ -113,8 +118,8 @@ require! {
 #         &.setup
 #             font-weight: bold
 #             cursor: pointer
-#             margin-top: 15px
-#             width: 120px
+#             margin: 5px 0
+#             width: 130px
 #             height: 36px
 #             font-size: 10px
 #             text-transform: uppercase
@@ -151,12 +156,12 @@ require! {
 #         line-height: 5px
 #         margin: 5px auto
 #     ::placeholder
-#         color: #ffffff91
+#         color: var(--color3)
 #         font-size: 12px
 #         letter-spacing: 0
 #         line-height: 18px
 #     ::-ms-input-placeholder
-#         color: #ffffff91
+#         color: var(--color3)
 #         font-size: 12px !important
 #         letter-spacing: 0
 #         line-height: 22px
@@ -202,14 +207,14 @@ input = (store, web3t)->
         border: "1px solid #{style.app.primary1}"
         color: style.app.text
         background: style.app.primary1
-        width: "120px"
+        width: "130px"
         height: "36px"
         margin-top: "10px"
     button-primary0-style=
         border: "0"
         color: style.app.text-primary
         background: "transparent"
-        width: "120px"
+        width: "130px"
         height: "36px"
         margin-top: "0px"
     locked-style=
@@ -230,7 +235,7 @@ input = (store, web3t)->
     drag =
         if store.current.pin-trial is 0 then \ "" else \drag
     react.create-element 'div', {}, children = 
-        react.create-element 'input', { key: "pin", style: locked-style, type: "password", value: "#{store.current.pin}", placeholder: "#{lang.pin-placeholder}", on-change: change, on-key-down: catch-key, auto-complete: "off", className: "#{drag} password" }
+        text-field { store, type: 'password' value: store.current.pin, placeholder: lang.pin-placeholder, on-change: change , on-key-down: catch-key }
         if exists!
             react.create-element 'div', {}, children = 
                 button { store, on-click: enter, type: \primary , text: \enter }
@@ -261,7 +266,7 @@ wrong-trials = (store)->
         border: "0"
         color: style.app.text-primary
         background: "transparent"
-        width: "120px"
+        width: "130px"
         height: "36px"
         margin-top: "0px"
     reset-account = ->
@@ -328,12 +333,14 @@ locked = ({ store, web3t })->
         color: info.app.text
         background-image: info.app.background-image
         background-size: "cover"
+    txt-style=
+        color: info.app.text
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-59209490' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked530696724' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
-            react.create-element 'div', { className: 'title' }, ' ' + info.branding.title
+            react.create-element 'div', { style: txt-style, className: 'title' }, ' ' + info.branding.title
             version store, web3t
         react.create-element 'div', { key: "locked-title", className: 'title' }, ' ' + title
         react.create-element 'div', { key: "locked-inputs", className: 'inputs' }, children = 
