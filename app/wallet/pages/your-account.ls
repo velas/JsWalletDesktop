@@ -9,8 +9,9 @@ require! {
     \prelude-ls : { map, filter }
     \localStorage
     \../icons.ls
+    \./tor.ls
 }
-# .your-account-1382879681
+# .your-account-779083902
 #     @import scheme
 #     position: relative
 #     width: auto
@@ -25,14 +26,14 @@ require! {
 #     .icon-svg-plus
 #         position: relative
 #         height: 16px
+#         width: 16px
 #         top: 2px
 #         padding: 0
 #     .switch-menu
 #         position: absolute
-#         right: 60px
+#         right: -1px
 #         top: 60px
 #         width: 170px
-#         background: #321260
 #         display: inline-grid
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
@@ -62,9 +63,9 @@ require! {
 #             text-align: left
 #             &:hover
 #                 cursor: pointer
-#                 background: rgba(75, 40, 136, 0.6)
+#                 background: var(--bg-primary-light)
 #             &.active
-#                 background: rgba(75, 40, 136, 0.6)
+#                 background: var(--bg-primary-light)
 #         .middle
 #             padding: 11px 10px
 #             height: 37px
@@ -72,8 +73,7 @@ require! {
 #                 padding: 10px
 #                 min-height: 155px
 #                 overflow: scroll
-#                 background: linear-gradient(#321260 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), #321260 70%) 0 100%, radial-gradient(farthest-side at 50% 0, #594aaa, rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, #594aaa, rgba(0,0,0,0)) 0 100%
-#                 background-color: #321260
+#                 background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
 #                 background-repeat: no-repeat
 #                 background-attachment: local, local, scroll, scroll
 #                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
@@ -185,12 +185,14 @@ require! {
 #                 background: transparent
 #                 border: 1px solid white
 #                 color: white
+#                 svg
+#                     width: 20px
 background = ->
     react.create-element 'svg', { height: '128px', version: '1.1', viewbox: '0 0 128 128', width: '128px' }, children = 
         react.create-element 'g', {}, children = 
             react.create-element 'path', { d: 'M86.785,109.878   c-8.188,4.317-16.533,5.962-26.515,5.962c-24.428,0-45.133-17.879-45.133-46.479c0-30.687,21.299-57.201,54.376-57.201   c25.918,0,43.348,18.175,43.348,43.052c0,22.342-12.517,35.448-26.514,35.448c-5.968,0-11.475-4.021-11.025-13.105h-0.594   C69.514,86.342,62.66,90.66,53.721,90.66c-8.636,0-16.083-7-16.083-18.764c0-18.473,14.591-35.309,35.296-35.309   c6.403,0,12.067,1.34,15.937,3.13L83.813,66.68c-2.232,11.323-0.45,16.532,4.463,16.685c7.604,0.146,16.095-9.982,16.095-27.261   c0-21.602-12.964-37.09-36.06-37.09c-24.27,0-44.684,19.212-44.684,49.456c0,24.877,16.241,40.215,38.28,40.215   c8.491,0,16.387-1.783,22.499-5.21L86.785,109.878z M78.598,45.527c-1.493-0.449-4.027-1.043-7.446-1.043   c-13.112,0-23.689,12.366-23.689,26.812c0,6.556,3.275,11.322,9.836,11.322c8.637,0,16.532-11.025,18.169-20.256L78.598,45.527z' }
 module.exports = (store, web3t)->
-    { open-account, open-migration, current, account-name, lock } = menu-funcs store, web3t
+    { open-account, open-migration, current, account-name, refresh, lock } = menu-funcs store, web3t
     style = get-primary-info store
     button-style=
         border: "1px solid #{style.app.border}"
@@ -204,11 +206,12 @@ module.exports = (store, web3t)->
         color: style.app.text
         border-radius: "50px"
         border: "0"
-        background: "rgba(157, 127, 206, 0.3)"
+        background: style.app.bg-btn
         line-height: "25px"
         padding: "10px"
         width: "40px"
         height: "40px"
+        margin: "20px 5px 0"
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
@@ -230,18 +233,34 @@ module.exports = (store, web3t)->
         border: "1px solid #{style.app.primary1}"
         color: style.app.text
         background: style.app.primary1
+    icon-style =
+        color: style.app.loader
+        border-radius: "50px"
+        border: "0"
+        background: style.app.bg-btn
+        padding: "0px"
+        width: "40px"
+        height: "40px"
+        margin: "20px 5px 0"
     lang = get-lang store
     account-index = "#{lang.account-index ? 'Account index'}: #{current.account-index}"
     length = +(localStorage.get-item('Accounts') ? 3)
     exclude-current = ->
         it isnt store.current.account-index
+    syncing = 
+        | store.current.refreshing => \syncing
+        | _ => ""
+    show-class =
+        if store.menu.show then \show else \ ""
+    show = ->
+        store.menu.show = not store.menu.show
     create-account-position = (index)->
         #ref = react.create-ref!
         change-account = ->
             store.current.account-index = index
             store.current.switch-account = no
             <- web3t.refresh
-        default-account-name = -> "Account #{index}"
+        default-account-name = -> "#{lang.account} #{index}"
         current-account-name = ->
             local-storage.get-item(default-account-name!) ? default-account-name!
         account-name = current-account-name!
@@ -250,7 +269,7 @@ module.exports = (store, web3t)->
         react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + account-name
-    react.create-element 'div', { className: 'your-account your-account-1382879681' }, children = 
+    react.create-element 'div', { className: 'your-account your-account-779083902' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name
@@ -259,14 +278,20 @@ module.exports = (store, web3t)->
             if no
                 react.create-element 'div', { on-click: topup(store), style: button-primary1-style, className: 'button edit' }, ' ' + lang.topup
             if store.current.device is \mobile
+                if store.preference.refresh-visible is yes
+                    react.create-element 'button', { on-click: refresh, style: icon-style, className: "#{syncing} button lock mt-5" }, children = 
+                        icon \Sync, 20
+            if store.current.device is \mobile
                 react.create-element 'button', { on-click: add-coin(store), style: button-primary4-style, className: 'button lock mt-5' }, children = 
                     react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
+            if store.current.device is \mobile
+                tor store, web3t
+            if store.current.device is \mobile
+                react.create-element 'button', { on-click: show, style: button-primary4-style, className: "#{show-class} button lock mt-5" }, children = 
+                    react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }
             if no
                 if store.current.device is \mobile
                     react.create-element 'button', { on-click: open-migration, style: button-primary1-style, className: 'button lock mt-5' }, ' Migration'
-            if store.current.device is \desktop
-                react.create-element 'button', { on-click: add-coin(store), style: button-primary0-style, className: 'button lock' }, children = 
-                    react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg1' }
             if no
                 if store.current.device is \desktop
                     react.create-element 'button', { on-click: open-migration, style: button-primary0-style, className: 'button lock' }, children = 
@@ -287,4 +312,4 @@ module.exports = (store, web3t)->
                             react.create-element 'button', { style: button-primary2-style }, children = 
                                 react.create-element 'span', {}, children = 
                                     react.create-element 'img', { src: "#{icons.create-acc}", className: 'icon-svg' }
-                                    """ Create Account"""
+                                    """ #{lang.create-account}"""

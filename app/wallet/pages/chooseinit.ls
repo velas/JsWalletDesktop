@@ -181,7 +181,7 @@ newseed = ({ store, web3t })->
     react.create-element 'div', { className: 'newseed newseed593147813' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
-            react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
+            react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.welcome-wallet ? 'Welcome!'
         react.create-element 'div', { className: 'align-v' }, children = 
             react.create-element 'button', { style: button-primary2-style, on-click: new-wallet, className: 'left' }, children = 

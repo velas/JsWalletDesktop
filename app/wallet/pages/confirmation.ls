@@ -5,9 +5,9 @@ require! {
     \./icon.ls
     \../icons.ls
 }
-# .confirmation-1077810398
+# .confirmation-206690939
 #     @import scheme
-#     position: absolute
+#     position: fixed
 #     z-index: 99999999
 #     height: 100vh
 #     top: 0
@@ -93,7 +93,7 @@ alert-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-206690939' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.alert
@@ -127,7 +127,7 @@ confirmation-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-206690939' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.confirmation
@@ -171,7 +171,7 @@ prompt-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-1077810398' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-206690939' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt

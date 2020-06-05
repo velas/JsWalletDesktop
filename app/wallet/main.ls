@@ -10,15 +10,18 @@ require! {
     \./web3.ls
     \./autodetect-lang.ls
     \./get-device.ls
+    \./get-size.ls
     \./background/background-task.ls : { start-service }
+    \./render-error.ls
+    \./scam-warning.ls
 }
 state =
     timeout: null
-console.log \main
 store = observable data-scheme
 start-service store
 change-device = ->
     store.current.device = get-device!
+    store.current.size = get-size!
 lock-wallet = ->
     return if window.nolock is yes or store.current.page isnt \wallets
     store.current.page = \locked
@@ -32,8 +35,17 @@ for event in <[ mousemove click touchmove keydown ]>
     window.addEventListener event, reset-idle
 export web3t = web3 store
 export store
+safe-render = (func)->
+    state =
+        result: null
+    try 
+        state.result = func!
+    catch err
+        state.result = render-error err
+    state.result
 Main = observer ({store})->
-    app { store, web3t }
+    safe-render ->
+        app { store, web3t }
 export bootstrap = (root, options)->
     store.root = root
     render do
@@ -42,3 +54,4 @@ export bootstrap = (root, options)->
     autodetect-lang store if options?auto-lang isnt no
     web3t.set-preference options if typeof! options is \Object
 window <<<< out$
+scam-warning!

@@ -18,7 +18,13 @@ require! {
     \./velas/velas-api.ls
     \./send-funcs.ls
     \./pages.ls
+    \./themes.ls
+    \localStorage
 }
+supported-themes =
+    themes 
+        |> obj-to-pairs 
+        |> map (-> it.0)
 state =
     time: null
 titles = <[ name@email.com name.ethnamed.io domain.com ]>
@@ -56,13 +62,15 @@ build-send-transaction = (store, cweb3, coin)-> (tx, cb)->
     amount-send-fee = if network.tx-fee? then network.tx-fee else \0
     amount-send-fee-usd = \0
     propose-escrow = no
+    details = (data ? "").length is 0
     amount-send = value `div` (10 ^ network.decimals)
     wallet = store.current.account.wallets |> find (.coin.token is coin.token)
     send <<<< {
         to, data, decoded-data, network, coin, wallet, value, gas, gas-price, id, amount-send,
         amount-obtain, amount-obtain-usd, amount-send-usd,
-        amount-send-fee, amount-send-fee-usd, propose-escrow
+        amount-send-fee, amount-send-fee-usd, propose-escrow, details
     }
+    console.log { details }, send.details
     { send-anyway, change-amount } = send-funcs store, web3t
     <- change-amount store, amount-send, yes
     navigate store, cweb3, \send
@@ -192,8 +200,9 @@ module.exports = (store, config)->
         return cb err if err?
         refresh-page cb
     set-theme = (it, cb)->
-        return cb "support only dark an light" if it not in <[ dark light monochrome dark_mojave ]>
+        return cb "support only dark an light" if it not in supported-themes
         store.theme = it
+        localStorage.set-item \theme, it
         set-page-theme store, it
         cb null
     set-lang = (it, cb)->

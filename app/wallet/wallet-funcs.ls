@@ -17,6 +17,7 @@ module.exports = (store, web3t, wallets, wallet)->
     #    | _ => \middle
     return null if not store? or not wallet?
     send = (wallet, event)-->
+        #event.stop-propagation!
         return alert "Not yet loaded" if not wallet?
         return alert "Not yet loaded" if not web3t[wallet.coin.token]?
         { send-transaction } = web3t[wallet.coin.token]
@@ -25,6 +26,8 @@ module.exports = (store, web3t, wallets, wallet)->
         err <- send-transaction { to, value }
         #console.log err if err?
     receive = (wallet, event)-->
+        #console.log { event }
+        event.stop-propagation!
         store.current.send-menu-open = no
         #{ coin, network, wallet } = store.current.send
         network = wallet.coin[store.current.network]
@@ -40,7 +43,8 @@ module.exports = (store, web3t, wallets, wallet)->
         <- web3t.uninstall wallet.coin.token
         <- web3t.refresh
         store.current.wallet-index = 0
-    expand = ->
+    expand = (e)->
+        e.stop-propagation!
         return send(wallet, {}) if store.current.wallet-index is index
         store.current.wallet-index = index
         store.current.filter.length = 0

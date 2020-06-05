@@ -3,7 +3,6 @@ require! {
     \./api.ls : { get-transactions }
     \./workflow.ls : { run, task }
     \./pending-tx.ls : { get-pending-txs, remove-tx }
-    \superagent : { get }
     \./apply-transactions.ls
     \./background/background-task.ls : { add-task }
 }
@@ -55,6 +54,7 @@ check-ptxs-in-background = (store, web3, network, token, [ptx, ...rest], cb)->
 export rebuild-history = (store, web3, wallet, cb)->
     { address, network, coin, private-key } = wallet
     err, data <- get-transactions { address, network, coin.token, account: { address, private-key } }
+    #console.log \rebuild-history, coin.token, err, data
     return cb err if err?
     ids = 
         data |> map (.tx.to-upper-case!)
@@ -83,12 +83,6 @@ export rebuild-history = (store, web3, wallet, cb)->
         |> each extend { address, coin, network, pending: yes, checked: 0 }
         |> each txs~push
     cb!
-#window.load-test =->
-#    err, data <- get "https://gist.githubusercontent.com/askucher/63685e1aa495113fc848bbd112902c61/raw/08ff221d6c0a40681d6b02c53f72764bdfad5f02/test.json" .end
-#    items = JSON.parse data.text
-#    #console.log items
-#    items |> each store.transactions.all~push
-#    apply-transactions store
 build-loader = (store, web3)-> (wallet)-> task (cb)->
     err <- rebuild-history store, web3, wallet
     return cb! if err? 

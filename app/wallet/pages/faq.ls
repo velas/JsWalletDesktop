@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -12,7 +11,7 @@ require! {
     \../icons.ls
     \./epoch.ls
 }
-# .faq956633232
+# .faq1898999569
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -318,7 +317,6 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
 #         position: fixed
 #         display: inline-grid
 #         z-index: 3
@@ -402,7 +400,6 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 160px
-#         background: #321260
 #         position: absolute
 #         top: 188px
 #         right: 0px
@@ -603,14 +600,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -1029,7 +1018,7 @@ item = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1044,7 +1033,7 @@ item = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     switch-files = ->
@@ -1289,7 +1278,7 @@ item2 = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1304,7 +1293,7 @@ item2 = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     switch-files = ->
@@ -1414,7 +1403,7 @@ item3 = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1429,7 +1418,7 @@ item3 = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     switch-files = ->
@@ -1498,7 +1487,7 @@ item4 = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1513,7 +1502,7 @@ item4 = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     switch-files = ->
@@ -1595,7 +1584,7 @@ faq = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1610,7 +1599,7 @@ faq = ({ store, web3t })->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     activate = (tab)-> ->
@@ -1627,7 +1616,7 @@ faq = ({ store, web3t })->
     active-item4 = active-class \item4
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'faq faq956633232' }, children = 
+    react.create-element 'div', { className: 'faq faq1898999569' }, children = 
         react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
             react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
         react.create-element 'div', { style: border-style, className: 'title' }, children = 

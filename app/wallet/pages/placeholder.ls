@@ -5,7 +5,7 @@ require! {
     \../web3.ls
     \../get-lang.ls
 }
-# .form-group900669246
+# .form-group33428095
 #     position: absolute
 #     width: 100%
 #     background: linear-gradient(100deg, rgb(51, 20, 98) 4%, rgb(21, 6, 60) 100%)
@@ -35,7 +35,6 @@ require! {
 #                 animation-timing-function: linear
 #                 background: #f6f7f8
 #                 background: #eeeeee
-#                 background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee))
 #                 background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)
 #                 background: linear-gradient(to right, #442080 8%, #422375 18%, #3b1b6f 33%)
 #                 -webkit-background-size: 800px 104px
@@ -78,7 +77,7 @@ section = (store, web3t)->
             react.create-element 'h3', {}
         react.create-element 'div', { className: 'description' }
 module.exports = (store, web3t)->
-    react.create-element 'div', { className: 'form-group form-group900669246' }, children = 
+    react.create-element 'div', { className: 'form-group form-group33428095' }, children = 
         section store, web3t
         section store, web3t
         section store, web3t

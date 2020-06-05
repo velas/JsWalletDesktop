@@ -1,14 +1,13 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
     \../get-lang.ls
     \../history-funcs.ls
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each }
     \../math.ls : { div, times, plus, minus }
     \../velas/velas-web3.ls
     \../velas/velas-node-template.ls
@@ -17,10 +16,8 @@ require! {
     \../menu-funcs.ls
     \btoa
     \safe-buffer : { Buffer }
-    \react-copy-to-clipboard : { CopyToClipboard }
     \../copied-inform.ls
     \../copy.ls
-    \../address-link.ls : { get-address-link, get-address-title }
     \../round5.ls
     \../../web3t/addresses.js : { ethToVlx }
     \./switch-account.ls
@@ -32,10 +29,13 @@ require! {
     \../staking/can-make-staking.ls
     \./epoch.ls
     \./confirmation.ls : { alert }
+    \../components/button.ls
+    \../components/address-holder.ls
+    \./alert-txn.ls
+    \../components/amount-field.ls
 }
-# .staking-1549659374
+# .staking-352108844
 #     @import scheme
-#     color: white
 #     position: relative
 #     display: block
 #     width: auto
@@ -174,7 +174,7 @@ require! {
 #                             font-weight: 600
 #                     &.table-scroll
 #                         overflow-x: scroll
-#                         background: linear-gradient(#321260 30%, rgba(50, 18, 96, 0)), linear-gradient(rgba(50, 18, 96, 0), #321260 70%) 0 100%, radial-gradient(farthest-side at 50% 0, #594aaa, rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, #594aaa, rgba(0, 0, 0, 0)) 0 100%
+#                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
 #                         background-repeat: no-repeat
 #                         background-attachment: local, local, scroll, scroll
 #                         background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
@@ -191,7 +191,7 @@ require! {
 #                                 cursor: pointer
 #                         tr
 #                             &.active
-#                                 color: #b6efe1
+#                                 color: var(--color-td)
 #                             &.inactive
 #                                 color: orange
 #                             &.banned
@@ -211,17 +211,15 @@ require! {
 #                                     background: red
 #                         button
 #                             width: 100%
-#                             height: 30px
-#                             margin-top: 0
+#                             height: 36px
+#                             margin: 0
 #                     table
 #                         width: 100%
 #                         border-collapse: collapse
 #                         margin: 0px auto
 #                     tr:nth-of-type(odd)
-#                         background: rgba(107, 38, 142, 0.2)
+#                         background: rgba(gray, 0.2)
 #                     th
-#                         background: rgb(67, 32, 124)
-#                         color: white
 #                         font-weight: 400
 #                         &:first-child
 #                             text-align: center
@@ -234,6 +232,7 @@ require! {
 #                             margin-right: 5px
 #                     td, th
 #                         padding: 8px
+#                         max-width: 200px
 #                         border: 1px solid rgba(240, 237, 237, 0.16)
 #                         white-space: nowrap
 #                         font-size: 13px
@@ -514,14 +513,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #         &:checked + label:before
 #             background-color: #3cd5af
 #             border-color: #3cd5af
@@ -555,23 +546,10 @@ show-validator = (store, web3t)-> (validator)->
 staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
-    input-style =
-        background: style.app.wallet
-        color: style.app.text
-        overflow-x: \auto
-        margin-top: \10px
-    button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
-        color: style.app.text
-        background: style.app.primary2
     button-primary3-style=
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
-    button-primary4-style=
-        border: "1px solid #{style.app.primary4}"
-        color: style.app.text
-        background: style.app.primary4
     filter-icon=
         filter: style.app.filterIcon
     comming-soon =
@@ -683,7 +661,7 @@ staking-content = (store, web3t)->
     your-balance = " #{round-human get-balance!} "
     your-staking-amount = store.staking.stake-amount-total `div` (10^18)
     your-staking = " #{round-human your-staking-amount}"
-    vlx-token = "VLX"
+    vlx-token = "VLX2"
     #calc-reward-click = ->
     #    calc-reward store, web3t
     build-staker = (store, web3t)-> (item)->
@@ -705,21 +683,8 @@ staking-content = (store, web3t)->
             err, amount <- web3t.velas.Staking.stakeAmount item.address, staking-address
             return cb err if err?
             store.staking.stake-amount-total = amount.to-fixed!
-            err, amount <- web3t.velas.Staking.orderedWithdrawAmount store.staking.chosen-pool.address, staking-address
+            err <- exit-stake.init { store, web3t }
             return cb err if err?
-            store.staking.withdraw-amount = amount.to-fixed!
-            err, max-withdraw-ordered <- web3t.velas.Staking.maxWithdrawOrderAllowed store.staking.chosen-pool.address, staking-address
-            return cb err if err?
-            store.staking.max-withdraw-ordered = max-withdraw-ordered.to-fixed!
-            err, max-withdraw <- web3t.velas.Staking.maxWithdrawAllowed store.staking.chosen-pool.address, staking-address
-            return cb err if err?
-            store.staking.max-withdraw = max-withdraw.to-fixed!
-            err, last-epoch <- web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosen-pool.address, staking-address)
-            return cb "#{err}" if err?
-            err, staking-epoch <- web3t.velas.Staking.stakingEpoch
-            return cb "#{err}" if err?
-            res = staking-epoch `minus` last-epoch
-            store.staking.wait-for-epoch-change = if +res is 0 then yes else no
         to-eth = ->
             item.eth = not item.eth
         cut-tx = (tx)->
@@ -736,21 +701,27 @@ staking-content = (store, web3t)->
                 | reward > 75 => \orange
                 | reward > 40 => "rgb(165, 174, 81)"
                 | _ => "rgb(38, 219, 85)"
+        vlx2 =
+            store.current.account.wallets |> find (.coin.token is \vlx2)
+        wallet =
+            address: ethToVlx item.address
+            network: vlx2.network
+            coin: vlx2.coin
+        vote-power = 
+            | item.vote-power? => "#{item.vote-power}%"
+            | _ => "..."
         react.create-element 'tr', { className: "#{item.status}" }, children = 
             react.create-element 'td', {}, children = 
                 react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
             react.create-element 'td', { data-column: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
-                react.create-element CopyToClipboard, { text: "#{ethToVlx item.address}", on-copy: copied-inform(store), style: filter-icon }, children = 
-                    copy store
-                react.create-element 'span', {}, ' ' + cut-tx ethToVlx item.address
+                address-holder { store, wallet }
             react.create-element 'td', { data-column: 'Amount' }, ' ' + stake
+            react.create-element 'td', {}, ' ' + vote-power
             react.create-element 'td', { data-column: "Filled", style: filled-color }, ' ' + filled
             react.create-element 'td', { data-column: 'Amount' }, ' ' + my-stake
             react.create-element 'td', { data-column: 'Stakers' }, ' ' + item.stakers
             react.create-element 'td', {}, children = 
-                react.create-element 'button', { on-click: choose-pull, style: button-primary2-style }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-right' }
+                button { store, on-click: choose-pull , type: \secondary , icon : \arrowRight }
     cancel-pool = ->
         store.staking.chosen-pool = null
     activate = (step)-> ->
@@ -764,18 +735,28 @@ staking-content = (store, web3t)->
     active-second = active-class \second
     active-third = active-class \third
     refresh = ->
+        cb = console.log
         store.staking.pools.length = 0
         err <- staking.init { store, web3t }
+        return cb err if err?
         err <- staking.focus { store, web3t }
+        return cb err if err?
+        cb null, \done
     icon-style =
         color: style.app.loader
         margin-top: "10px"
         width: "inherit"
+    staker-pool-style =
+        max-width: 200px
+        background: style.app.stats
+    stats=
+        background: style.app.stats
     react.create-element 'div', { className: 'staking-content' }, children = 
         react.create-element 'div', { className: 'form-group' }, children = 
+            alert-txn { store }
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Select pool'
+                    react.create-element 'h3', {}, ' ' + lang.select-pool
                     if not store.staking.chosen-pool?    
                         react.create-element 'div', {}, children = 
                             react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: 'loader' }, children = 
@@ -785,13 +766,14 @@ staking-content = (store, web3t)->
                         react.create-element 'table', {}, children = 
                             react.create-element 'thead', {}, children = 
                                 react.create-element 'tr', {}, children = 
-                                    react.create-element 'th', { width: "3%" }, ' #'
-                                    react.create-element 'th', { width: "10%" }, ' Staker Pool'
-                                    react.create-element 'th', { width: "25%" }, ' Total Stake'
-                                    react.create-element 'th', { width: "5%", title: "When more filled then less award for staker" }, ' Filled %'
-                                    react.create-element 'th', { width: "25%" }, ' My Stake'
-                                    react.create-element 'th', { width: "5%" }, ' Stakers'
-                                    react.create-element 'th', { width: "4%" }, ' Select Pool'
+                                    react.create-element 'th', { width: "3%", style: stats }, ' #'
+                                    react.create-element 'th', { width: "10%", style: staker-pool-style }, ' ' + lang.staker-pool
+                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.total-stake
+                                    react.create-element 'th', { width: "5%", title: "Vote power", style: stats }, ' ' + lang.vote-power
+                                    react.create-element 'th', { width: "5%", title: "When more filled then less award for staker", style: stats }, ' ' + lang.filled
+                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.my-stake
+                                    react.create-element 'th', { width: "5%", style: stats }, ' ' + lang.stakers
+                                    react.create-element 'th', { width: "4%", style: stats }, ' ' + lang.selectPool
                             react.create-element 'tbody', {}, children = 
                                 store.staking.pools |> map build-staker store, web3t
                 else
@@ -800,10 +782,7 @@ staking-content = (store, web3t)->
                             """ #{ethToVlx store.staking.chosen-pool.address}"""
                             react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
                         react.create-element 'div', { className: 'buttons' }, children = 
-                            react.create-element 'button', { on-click: cancel-pool, style: button-primary2-style }, children = 
-                                react.create-element 'span', {}, children = 
-                                    react.create-element 'img', { src: "#{icons.choose}", className: 'icon-svg' }
-                                    """ Select"""
+                            button { store, on-click: cancel-pool , type: \secondary , icon : \choose , text: \ "#{lang.btn-select}" }
             if store.staking.chosen-pool? and +store.staking.stake-amount-total is 0
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
@@ -811,19 +790,16 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'label', {}, ' ' + lang.stake
-                            react.create-element 'input', { type: 'text', value: "#{store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' Max'
-                                react.create-element 'span', {}, ' Balance: '
+                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
+                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' ' + lang.max
+                                react.create-element 'span', {}, ' ' + lang.balance + ': '
                                 react.create-element 'span', { className: 'color' }, ' ' + your-balance
                                     react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
                                     react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                        react.create-element 'button', { style: button-primary2-style, on-click: become-validator }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg' }
-                                """ #{lang.btn-apply}"""
+                        button { store, on-click: become-validator , type: \secondary , icon : \apply , text: \btnApply }
             if store.staking.chosen-pool? and +store.staking.stake-amount-total > 0
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
@@ -836,7 +812,7 @@ staking-content = (store, web3t)->
                                 react.create-element 'span', { className: 'color' }, ' ' + vlx-token
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' Stake More'
-                            react.create-element 'input', { type: 'text', value: "#{store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "#{lang.stake}" }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -845,10 +821,7 @@ staking-content = (store, web3t)->
                                 react.create-element 'span', { className: 'color' }, ' ' + your-balance
                                     react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
                                     react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                        react.create-element 'button', { style: button-primary2-style, on-click: become-validator }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg' }
-                                """ #{lang.btn-apply}"""
+                        button { store, on-click: become-validator , type: \secondary , icon : \apply , text: \btnApply }
             claim-stake store, web3t
             exit-stake store, web3t
 staking = ({ store, web3t })->
@@ -863,6 +836,7 @@ staking = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
+        background: info.app.background
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -870,43 +844,34 @@ staking = ({ store, web3t })->
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
-    button-primary2-style=
-        border: "1px solid #{info.app.primary2}"
-        color: info.app.text
-        background: info.app.primary2
     header-table-style=
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
+    icon-color=
+        filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-1549659374' }, children = 
+    react.create-element 'div', { className: 'staking staking-352108844' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Delegate Stake'
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
 staking.init = ({ store, web3t }, cb)->
-    #store.staking.data-generation += 1
-    store.staking.max-withdraw-ordered = 0
+    err <- web3t.refresh
+    return cb err if err?
     store.staking.max-withdraw = 0
     random = ->
         Math.random!
     store.staking.withdraw-amount = 0
     store.staking.stake-amount-total = 0
-    #0x7bcec192f4147867c100ff7e5cd16c6079d6febc - pool 
-    #0x30A0AA46d734336473b75A84b962EF61255f6440 - delegatore
-    #err, reward-long <- web3t.velas.Staking.getRewardAmount([], "0x7bcec192f4147867c100ff7e5cd16c6079d6febc", "0x30A0AA46d734336473b75A84b962EF61255f6440")
-    #return cb err if err?
-    #console.log \reward-long , reward-long.to-fixed!
     store.staking.keystore = to-keystore store, no
     store.staking.reward = null
     store.staking.chosen-pool = null
-    #exit for now
-    #return cb null
     store.staking.add.add-validator-stake = 0
     return cb null if store.staking.pools.length > 0
     err, pools-inactive <- web3t.velas.Staking.getPoolsInactive
@@ -924,8 +889,7 @@ staking.init = ({ store, web3t }, cb)->
             |> map -> { address: it , checked: no, stake: '..', stakers: '..', eth: no, is-validator: '..', status: '', reward-amount: '..', validator-reward-percent: '..', my-stake: '..' }
     err, epoch <- web3t.velas.Staking.stakingEpoch
     store.staking.epoch = epoch.to-fixed!
-    #err, amount <- web3t.velas.Staking.stakeAmountTotal(store.staking.keystore.staking.address)
-    #store.staking.stake-amount-total = amount.to-fixed!
+    err <- exit-stake.init { store, web3t }
     cb null
 module.exports = staking
 human-bool = ->
@@ -959,8 +923,20 @@ fill-pools = ({ store, web3t }, [item, ...rest], cb)->
         | store.staking.pools-inactive.index-of(item.address) > -1 => \inactive
         | _ => \pending
     fill-pools { store, web3t }, rest, cb
+fill-vote-power = ({ store, web3t }, cb)->
+    total-stake =
+        store.staking.pools 
+            |> map (.stake)
+            |> foldl plus, 0
+    total-stake-percent = 100 `div` total-stake
+    fill-power = (it)->
+        it.vote-power =  round5(it.stake `times` total-stake-percent)
+    store.staking.pools |> each fill-power
+    cb null
 staking.focus = ({ store, web3t }, cb)->
     #return cb null if store.staking.pools.0.stake isnt '...'
     err <- fill-pools { store, web3t }, store.staking.pools
+    return cb err if err?
+    err <- fill-vote-power { store, web3t }
     cb null
 #V31V1kD7DpT9eoRcdXf7T1fbFqcNh

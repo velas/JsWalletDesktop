@@ -10,12 +10,21 @@ require! {
     \../icons.ls
     \./header.ls
     \../round-human.ls
+    \../add-coin.ls
+    \./tor.ls
 }
-# .menu-965638392
+# .menu1381421260
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
 #     $tablet: 800px
+#     .icon-svg-plus
+#         position: relative
+#         height: 16px
+#         top: 2px
+#         padding: 0
+#         cursor: pointer
+#         vertical-align: top
 #     &.wallet-main
 #         @media(max-width: 800px)
 #             margin: 0px 15px 0
@@ -39,8 +48,7 @@ require! {
 #         cursor: pointer
 #         color: #00ffdc
 #         svg
-#             vertical-align: sub !important
-#             width: 20px
+#             width: 25px
 #         .icon-svg
 #             vertical-align: sub !important
 #             width: 20px
@@ -53,6 +61,10 @@ require! {
 #         max-width: 450px
 #         >.balance
 #             position: relative
+#             button
+#                 svg
+#                     width: 20px
+#                     cursor: pointer
 #             >.menu
 #                 position: absolute
 #                 right: 0
@@ -96,38 +108,20 @@ require! {
 #         width: auto !important
 #         height: 54px !important
 #         line-height: 34px !important
-#         -webkit-animation-duration: 1s
-#         animation-duration: 1s
-#         -webkit-animation-fill-mode: forwards
+#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: fb 1s infinite
 #         animation-fill-mode: forwards
-#         -webkit-animation-iteration-count: infinite
-#         animation-iteration-count: infinite
-#         -webkit-animation-name: placeload
-#         animation-name: placeload
-#         -webkit-animation-timing-function: linear
-#         animation-timing-function: linear
-#         background: #f6f7f8
-#         background: #eeeeee
-#         background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee))
-#         background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)
-#         background: linear-gradient(to right, #2c1059 8%, #2b1058 18%, #2e115b 33%)
-#         -webkit-background-size: 800px 104px
-#         background-size: 1200px 104px
-#         position: relative
-#         color: transparent
+#         background: var(--placeholder-menu)
+#         color: transparent !important
 #         width: 100%
 #         display: inline-block
 #         height: 16px
-#     @-webkit-keyframes placeload
+#     @keyframes fb 
 #         0%
-#             background-position: -468px 0
+#             -webkit-mask-position: left
 #         100%
-#             background-position: 468px 0
-#     @keyframes placeload
-#         0%
-#             background-position: -468px 0
-#         100%
-#             background-position: 468px 0
+#             -webkit-mask-position: right
 module.exports = ({ store, web3t })->
     return null if not store?
     { current, open-account, lock, wallet-style, info, activate-s1, activate-s2, activate-s3, switch-network, refresh, lock } = menu-funcs store, web3t
@@ -137,6 +131,26 @@ module.exports = ({ store, web3t })->
     icon-style =
         color: style.app.loader
         margin-top: "10px"
+    button-add=
+        color: style.app.text
+        border-radius: "50px"
+        border: "0"
+        background: style.app.bg-btn
+        line-height: "25px"
+        padding: "10px"
+        width: "40px"
+        height: "40px"
+        margin: "10px 5px 0"
+    button-syncing=
+        color: style.app.loader
+        border-radius: "50px"
+        border: "0"
+        background: style.app.bg-btn
+        line-height: "25px"
+        padding: "10px"
+        width: "40px"
+        height: "40px"
+        margin: "10px 5px 0"
     lang = get-lang store
     syncing = 
         | store.current.refreshing => \syncing
@@ -144,7 +158,7 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu-965638392' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu1381421260' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
@@ -152,9 +166,15 @@ module.exports = ({ store, web3t })->
                     react.create-element 'div', { title: "#{current.balance-usd}", className: 'number' }, ' ' + round-human current.balance-usd
                 react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance ? 'Balance'
                 react.create-element 'div', {}, children = 
-                    if store.preference.refresh-visible is yes
-                        react.create-element 'div', { on-click: refresh, style: icon-style, className: "#{syncing} menu-item loader" }, children = 
-                            icon \Sync, 25
+                    if store.current.device is \desktop
+                        if store.preference.refresh-visible is yes
+                            react.create-element 'button', { on-click: refresh, style: button-syncing, className: "#{syncing} button lock mt-5" }, children = 
+                                icon \Sync, 20
+                    if store.current.device is \desktop
+                        react.create-element 'button', { on-click: add-coin(store), style: button-add, className: 'button lock mt-5' }, children = 
+                            react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
+                    if store.current.device is \desktop
+                        tor store, web3t
             if store.current.device is \mobile    
                 your-account store, web3t
             project-links { store, web3t }

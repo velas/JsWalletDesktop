@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -12,8 +11,12 @@ require! {
     \../icons.ls
     \./epoch.ls
     \./videoupload.ls
+    \./alert-demo.ls
+    \../components/upload-video.ls
+    \../components/upload-video-progress.ls
+    \../components/video-list.ls
 }
-# .videostorage1812653883
+# .videostorage32994597
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -33,7 +36,7 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
+#         background: inherit
 #         position: fixed
 #         display: inline-grid
 #         z-index: 3
@@ -117,7 +120,6 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 160px
-#         background: #321260
 #         position: absolute
 #         top: 188px
 #         right: 0px
@@ -328,14 +330,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -711,12 +705,12 @@ require! {
 #                             vertical-align: middle !important
 #                     &.active
 #                         color: #c671f1
-#                         background: rgb(67, 32, 124)
+#                         background: var(--bg-secondary)
 #                         padding-bottom: 15px
 #                         img
 #                             filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                     &:hover
-#                         background: rgb(67, 32, 124)
+#                         background: var(--bg-secondary)
 #                         padding-bottom: 15px
 #                         transition: .5s
 #     .iron
@@ -820,7 +814,7 @@ home = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -835,7 +829,7 @@ home = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -843,45 +837,9 @@ home = (store, web3t)->
     drag-file-close = ->
         store.video.drag = not store.video.drag
     react.create-element 'div', { className: "#{file-tree} panel-content dragarea" }, children = 
-        if store.video.drag
-            react.create-element 'div', { on-click: drag-file-close, className: 'header-table dragfile dragarea' }, children = 
-                react.create-element 'div', { style: dashed-border, className: 'cell network' }, children = 
-                    react.create-element 'img', { src: "#{icons.img-drag}", style: icon-style, className: 'bounce' }
-                    """ Drag and Drop here"""
-                    react.create-element 'br', {}
-                    """ or"""
-                    react.create-element 'span', {}, ' Browse files'
+        upload-video ({store})
         react.create-element 'h2', { className: 'header' }, ' Recommended'
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
-                react.create-element 'span', { className: 'play' }, children = 
-                    icon \TriangleRight, 15
-                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/USGLlp-zfhI', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
-                react.create-element 'div', { className: 'title-video' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
-                        react.create-element 'ul', { className: 'stat' }, children = 
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 2K views'
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 5 days ago'
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
-                react.create-element 'span', { className: 'play' }, children = 
-                    icon \TriangleRight, 15
-                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/2jdA5EwQV9M', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
-                react.create-element 'div', { className: 'title-video' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
-                        react.create-element 'ul', { className: 'stat' }, children = 
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 50K views'
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 1 mounth ago'
+        video-list ({store, web3t})
 trend = (store, web3t)->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -915,7 +873,7 @@ trend = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -930,7 +888,7 @@ trend = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1008,7 +966,7 @@ subscr = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1023,7 +981,7 @@ subscr = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1154,7 +1112,7 @@ history = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1169,7 +1127,7 @@ history = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1274,10 +1232,10 @@ videostorage = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
+        background: info.app.background
+    tabs-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
     border-style3 =
         color: info.app.text
         border-bottom: "0"
@@ -1295,7 +1253,7 @@ videostorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1310,7 +1268,7 @@ videostorage = ({ store, web3t })->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     activate = (tab)-> ->
@@ -1333,34 +1291,10 @@ videostorage = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     open-upload-link = ->
         store.video.upload-link = yes
-    react.create-element 'div', { className: 'videostorage videostorage1812653883' }, children = 
+    react.create-element 'div', { className: 'videostorage videostorage32994597' }, children = 
         videoupload { store, web3t }
-        react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
-            react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Uploading 1 item'
-                    react.create-element 'ul', { className: "#{active} action col" }, children = 
-                        react.create-element 'li', { on-click: switch-progress, className: "#{hide-progress}" }, children = 
-                            react.create-element 'span', {}, children = 
-                                icon "ChevronDown", 15
-                        react.create-element 'li', {}, children = 
-                            react.create-element 'span', {}, children = 
-                                icon \X, 15
-            react.create-element 'div', { style: header-table-style, className: "#{hide-progress}" }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Left 7min.'
-                    react.create-element 'span', { className: 'col cancel' }, ' Cancel'
-            react.create-element 'div', { className: "#{hide-progress}" }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'div', { className: 'col folder-menu pending' }, children = 
-                        react.create-element 'img', { src: "#{store.filestore.extension-icons.txt}" }
-                        react.create-element 'div', { className: 'file-name' }, ' File.txt'
-                    react.create-element 'div', { className: 'col folder-menu progress' }, children = 
-                        react.create-element 'progress', { value: "30", max: "100" }
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        upload-video-progress { store, web3t }
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -1379,7 +1313,7 @@ videostorage = ({ store, web3t })->
                     react.create-element 'h2', { className: 'iron' }, children = 
                         react.create-element 'span', { className: 'logo' }, children = 
                             icon \TriangleRight, 10
-                        react.create-element 'span', {}, ' Vtube'
+                        react.create-element 'span', {}, ' Vortex'
                 react.create-element 'div', { className: 'description search-field' }, children = 
                     react.create-element 'div', { className: 'left' }, children = 
                         react.create-element 'input', { type: 'text', style: input-style, value: "velas", placeholder: "velas" }
@@ -1389,7 +1323,7 @@ videostorage = ({ store, web3t })->
             react.create-element 'div', { className: "#{file-tree} menu-content" }, children = 
                 react.create-element 'div', { style: border-right, className: 'section filter' }, children = 
                     react.create-element 'div', { className: 'tabs' }, children = 
-                        react.create-element 'ul', { style: border-style }, children = 
+                        react.create-element 'ul', { style: tabs-style }, children = 
                             react.create-element 'li', { on-click: activate-home, className: "#{active-home}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.home}", className: 'icon-svg-menu' }
@@ -1402,7 +1336,7 @@ videostorage = ({ store, web3t })->
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.subscriptions}", className: 'icon-svg-menu' }
                                     """   Subscriptions"""
-                        react.create-element 'ul', { style: border-style }, children = 
+                        react.create-element 'ul', { style: tabs-style }, children = 
                             react.create-element 'li', { on-click: activate-history, className: "#{active-history}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.history}", className: 'icon-svg-menu' }

@@ -5,13 +5,16 @@ require! {
     \./langs/langs.json
     \./icons.ls
     \./get-device.ls
-    \../package.json : { version }
+    \./get-size.ls
+    \./package.json : { version }
     \qs
+    \localStorage
 }
 saved-seed = saved!
 create-send =->
     id: ""
     to: ""
+    details: yes
     propose-escrow: no
     address: ''
     value: \0
@@ -35,7 +38,7 @@ url-params =
 store =
     url-params: url-params
     root: null
-    theme: \velas
+    theme: localStorage.get-item('theme') ? \velas
     lang: \en
     langs: langs
     icons: \icons
@@ -49,6 +52,14 @@ store =
         username-visible: no
         refresh-visible: yes
         lock-visible: yes
+    tor:
+        enabled: no
+        real: 
+            ip: "n/a"
+            country: "n/a"
+        proxy:
+            ip: "n/a"
+            country: "n/a"
     wallet-tab:
         tab: 0
     search:
@@ -59,6 +70,7 @@ store =
         drag: no
         upload-link: no
         action: "upload"
+        uploading-files: []
     sound:
         tab: "home"
         menu-open: no
@@ -78,6 +90,11 @@ store =
         peers: []
     staking: 
         reward-info: []
+        exit-tab: ''
+        maxWithdrawOrderAllowed: 0
+        withdrawAmount: 0
+        maxWithdrawAllowed: 0
+        orderedWithdrawAmount: 0
         add:
             add-validator: ""
             add-validator-stake: ""
@@ -98,10 +115,8 @@ store =
         pools: []
         chosen-pool: null
         stake-amount-total: 0
-        max-withdraw-ordered: 0
         max-withdraw: 0
         delegators: 0
-        withdraw-amount: 0
         reward-loading: no
         wait-for-epoch-change: no
     filestore:
@@ -130,6 +145,7 @@ store =
     menu:
         active: 's2'
         mobile: no
+        show: no
     ask: 
         text: ''
         enabled: no
@@ -141,16 +157,23 @@ store =
         all: []
         applied: []
     current:
+        try-copy: null
+        hovered-address:
+            address: null
+            element: null
         verify-seed-index: 0
         verify-seed: ""
         verify-seed-error: no
         device: get-device!
+        size: get-size!
         list: 0
         prompt-answer: ""
         prompt: no
         step: "first"
         verify-seed-indexes: []
         switch-account: no
+        tor: no
+        hint: yes
         open-menu: no
         current-epoch: no
         switch-currency: no

@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .menu-2053005981
+# .menu1099815664
 #     width: 100%
 #     text-align: right
 #     padding: 20px 15px
@@ -27,9 +27,9 @@ require! {
 #                 transition: all .5s
 #     .logo
 #         position: absolute
-#         width: auto
-#         text-align: left
-#         left: 15px
+#         width: 100%
+#         text-align: center
+#         left: 0
 #         img
 #             width: 25px
 #             vertical-align: bottom
@@ -228,6 +228,13 @@ require! {
 #         width: 20px
 #         text-align: center
 #         z-index: 11
+#         &.locked
+#             float: left
+#             margin: 0
+#         &.menu-btn
+#             &.show
+#                 opacity: .5
+#                 transition: all .5s
 #         &.menu-btn, &.locked
 #             display: inline-block
 #         &.class
@@ -253,6 +260,11 @@ module.exports = (store, web3)->
         color: style.app.text
     icon-style =
         color: style.app.icon
+    icon-style2 =
+        color: style.app.icon
+        float: "left"
+        opacity: "0"
+        margin-left: "60px"
     lang = get-lang store
     info = get-primary-info store
     syncing = 
@@ -306,39 +318,16 @@ module.exports = (store, web3)->
         store.menu.mobile = not store.menu.mobile
     show-menu =
         if store.menu.mobile then \show else \ ""
-    react.create-element 'div', { style: border-style, className: "#{show-menu} menu menu-2053005981" }, children = 
+    show-class =
+        if store.menu.show then \show else \ ""
+    show = ->
+        store.menu.show = not store.menu.show
+    react.create-element 'div', { style: border-style, className: "#{show-menu} menu menu1099815664" }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
-        if store.preference.settings-visible is yes
-            if store.current.device is \mobile
-                react.create-element 'div', { on-click: wallet, style: icon-style, className: "#{wallets} menu-item" }, children = 
-                    react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
-        if store.preference.settings-visible is yes
-            if store.current.device is \mobile
-                react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
-                    react.create-element 'div', { className: 'menu arrow_box menu-2053005981' }, children = 
-                        react.create-element 'ul', {}, children = 
-                            react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.node}", style: icon-node }
-                                """ Node"""
-                            react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, className: "#{delegate-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
-                                """ Delegate"""
-                            react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.info}", style: icon-node }
-                                """ Stats"""
-                    react.create-element 'img', { src: "#{icons.staking}" }
-        if store.preference.settings-visible is yes
-            if store.current.device is \mobile
-                react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 
-                    react.create-element 'img', { src: "#{icons.search}" }
-        if store.preference.settings-visible is yes
-            if store.current.device is \mobile
-                react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
-                    react.create-element 'img', { src: "#{icons.setting}" }
         if store.preference.lock-visible is yes
             if store.current.device is \mobile    
-                react.create-element 'div', { on-click: hide-menu, style: icon-style, className: 'menu-item menu-btn' }, children = 
+                react.create-element 'div', { on-click: show, style: icon-style, className: "#{show-class} menu-item menu-btn" }, children = 
                     react.create-element 'img', { src: "#{icons.menu}", style: lock-icon }
         if store.preference.lock-visible is yes
             if store.current.device is \mobile    

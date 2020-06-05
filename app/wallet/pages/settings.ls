@@ -8,8 +8,10 @@ require! {
     \./icon.ls
     \../navigate.ls
     \../icons.ls
+    \../components/button.ls
+    \./choose-themes.ls
 }
-# .settings-menu474215560
+# .settings-menu1831317993
 #     @import scheme
 #     position: relative
 #     display: block
@@ -42,14 +44,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.account-body
 #         overflow: hidden
 #         background: transparent
@@ -253,6 +247,7 @@ require! {
 switch-account = (store, web3t)->
     {  account-left, account-right, change-account-index } = menu-funcs store, web3t
     style = get-primary-info store
+    lang = get-lang store
     input-style =
         background: style.app.wallet
         color: style.app.text
@@ -264,7 +259,7 @@ switch-account = (store, web3t)->
         color: style.app.text
         background: style.app.primary2
     react.create-element 'div', { style: color, className: 'switch-account' }, children = 
-        react.create-element 'div', { className: 'mb-12' }, ' Account Index:'
+        react.create-element 'div', { className: 'mb-12' }, ' ' + lang.account-index + ':'
         react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button left' }, children = 
             icon \ChevronLeft, 15
         react.create-element 'span', { className: 'bold' }, children = 
@@ -292,10 +287,6 @@ manage-account = (store, web3t)->
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
-    button-primary3-style=
-        border: "1px solid #{style.app.border}"
-        color: style.app.text2
-        background: style.app.primary3
     goto-terms = ->
         navigate store, web3t, \terms2
     set-lang = (lang)->
@@ -385,20 +376,21 @@ manage-account = (store, web3t)->
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.switch-account-index ? 'Switch Account Index'
             react.create-element 'div', { style: color, className: 'description' }, children = 
-                react.create-element 'span', { className: 'bold' }, ' ' + lang.for-advanced-users ? 'For advanced users only' + '.'
                 react.create-element 'span', {}, ' ' + lang.switch-account-info ? 'You could have a lot of unique addresses by switching account index. By default, you are given an index of 1, but you can change it in range 0 - 2,147,483,647'
             react.create-element 'div', { className: 'content' }, children = 
                 switch-account store, web3t
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.export-private-key ? 'Export PRIVATE KEY'
             react.create-element 'div', { style: color, className: 'description' }, children = 
-                react.create-element 'span', { className: 'bold' }, ' ' + lang.for-advanced-users ? 'For advanced users only'
                 react.create-element 'span', {}, ' ' + lang.export-private-key-warning ? 'Please never do it in case when you do not understand exact reason of this action and do not accept risks' + '.'
             react.create-element 'div', { className: 'content' }, children = 
-                react.create-element 'button', { on-click: export-private-key, style: button-primary2-style, className: 'btn-width' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{icons.show}", className: 'icon-svg' }
-                        """ #{lang.show-secret ? 'Show Secret'}"""
+                button { store, text: \showSecret , on-click: export-private-key, icon: \show, type: \secondary }
+        react.create-element 'div', { className: 'section' }, children = 
+            react.create-element 'div', { style: color, className: 'title' }, ' Themes'
+            react.create-element 'div', { style: color, className: 'description' }, children = 
+                react.create-element 'span', {}, ' Use custom themes (alpha)'
+            react.create-element 'div', { className: 'content' }, children = 
+                choose-themes store, web3t
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, children = 
                 react.create-element 'div', { className: 'logo' }, children = 
@@ -420,15 +412,18 @@ module.exports = ({ store, web3t } )->
     style = get-primary-info store
     account-body-style = 
         color: style.app.text
+    icon-color=
+        filter: style.app.icon-filter
     border-style =
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
+        background: style.app.background
     lang = get-lang store
-    react.create-element 'div', { className: 'settings-menu settings-menu474215560' }, children = 
+    react.create-element 'div', { className: 'settings-menu settings-menu1831317993' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { className: 'settings' }, children = 
                 manage-account store, web3t

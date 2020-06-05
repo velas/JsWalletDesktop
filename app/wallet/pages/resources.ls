@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \react-copy-to-clipboard : { CopyToClipboard }
@@ -15,8 +14,9 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
-# .resources909809931
+# .resources-1881945054
 #     @import scheme
 #     position: relative
 #     display: block
@@ -115,13 +115,10 @@ require! {
 #     .price-month
 #         width: 100%
 #         .per-price
-#             color: #6f6fe2;
-#             font-size: 14px;
+#             color: #6f6fe2
+#             font-size: 16px
 #     .entry-content
 #         padding: 20px 12px
-#         color: #323232
-#         block-li 
-#             border-bottom: 1px solid #fff
 #         ul
 #             margin: 0
 #             padding: 0
@@ -130,7 +127,6 @@ require! {
 #         li
 #             border-bottom: 1px solid #5c3f89
 #             padding: 10px 0
-#             color: #fff
 #             &:last-child
 #                 border: none
 #     button
@@ -176,18 +172,19 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     .wrapper-task
 #         margin: 0 auto
 #         padding: 0 40px
 #         max-width: 1080px
+#         .title
+#             text-align: center
+#             font-size: 17px
+#             text-transform: uppercase
+#             letter-spacing: 2px
+#             opacity: .8
+#             line-height: 30px
+#             font-weight: 400
+#             margin: 0
 #     .table-task
 #         margin: 20px 0 40px 0
 #         width: 100%
@@ -260,7 +257,6 @@ require! {
 #                     padding-right: 35px
 #     .row-task, .row-deposit
 #         display: table-row
-#         color: #fff
 #         background: rgba(98, 52, 171, 0.4)
 #         @media screen and (max-width: 580px)
 #             display: block
@@ -268,8 +264,6 @@ require! {
 #             background: #4b278769
 #         &.header
 #             text-transform: uppercase
-#             color: #ffffff
-#             background: #4b2788
 #             .cell-task
 #                 @media screen and (max-width: 580px)
 #                     display: none
@@ -311,10 +305,14 @@ resources = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
+        background: info.app.background
+    resource =
         color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        border: "1px solid #{info.app.border}"
+        background: info.app.header
+    resource-header =
+        color: info.app.text
+        background: info.app.demo
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -337,10 +335,10 @@ resources = ({ store, web3t })->
     filter-icon=
         filter: info.app.filterIcon
     address-input=
-        color: info.app.addressText
-        background: info.app.addressBg
+        color: info.app.color3
+        background: info.app.bg-primary-light
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     expand-collapse = ->
         store.filestore.menu-open = not store.filestore.menu-open
     bg-cpu=
@@ -349,11 +347,16 @@ resources = ({ store, web3t })->
         background: "url('#{icons.bg-gpu}')"
     bg-spacing=
         background: "url('#{icons.bg-spacing}')"
+    th=
+        background: info.app.th
+    tr-odd=
+        background: info.app.tr-odd
+    tr-even=
+        background: info.app.tr-even
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'resources resources909809931' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+    react.create-element 'div', { className: 'resources resources-1881945054' }, children = 
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Resources Center'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -362,9 +365,9 @@ resources = ({ store, web3t })->
             switch-account store, web3t
         react.create-element 'div', { className: 'container-price' }, children = 
             react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { className: 'plan-inner' }, children = 
+                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
                     react.create-element 'div', { className: 'entry-title cpu' }, children = 
-                        react.create-element 'h3', {}, ' CPU'
+                        react.create-element 'h3', { style: resource-header }, ' CPU'
                         react.create-element 'div', { className: 'top' }, children = 
                             react.create-element 'div', { style: bg-cpu, className: 'price' }
                             react.create-element 'div', { className: 'price-month' }, children = 
@@ -391,9 +394,9 @@ resources = ({ store, web3t })->
                                 copy store
                             react.create-element 'button', { style: button-primary2-style }, ' Deposit'
             react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { className: 'plan-inner' }, children = 
+                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
                     react.create-element 'div', { className: 'entry-title gpu' }, children = 
-                        react.create-element 'h3', {}, ' GPU'
+                        react.create-element 'h3', { style: resource-header }, ' GPU'
                         react.create-element 'div', { className: 'top' }, children = 
                             react.create-element 'div', { style: bg-gpu, className: 'price' }
                             react.create-element 'div', { className: 'price-month' }, children = 
@@ -420,9 +423,9 @@ resources = ({ store, web3t })->
                                 copy store
                             react.create-element 'button', { style: button-primary2-style }, ' Deposit'
             react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { className: 'plan-inner' }, children = 
+                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
                     react.create-element 'div', { className: 'entry-title spcng' }, children = 
-                        react.create-element 'h3', {}, ' STORAGE'
+                        react.create-element 'h3', { style: resource-header }, ' STORAGE'
                         react.create-element 'div', { className: 'top' }, children = 
                             react.create-element 'div', { style: bg-spacing, className: 'price' }
                             react.create-element 'div', { className: 'price-month' }, children = 
@@ -450,8 +453,8 @@ resources = ({ store, web3t })->
                             react.create-element 'button', { style: button-primary2-style }, ' Deposit'
         react.create-element 'div', { className: 'wrapper-task' }, children = 
             react.create-element 'div', { className: 'title' }, children = 
-                react.create-element 'div', { className: 'header' }, ' Deposit'
-            react.create-element 'div', { className: 'table-deposit' }, children = 
+                react.create-element 'div', {}, ' Deposit'
+            react.create-element 'div', { style: resource, className: 'table-deposit' }, children = 
                 react.create-element 'div', { className: 'row-deposit' }, children = 
                     react.create-element 'div', { className: 'content-deposit' }, children = 
                         """ Please deposit VLX on this address to buy all these 3 resources. Once you use RESOURCES via"""
@@ -469,14 +472,14 @@ resources = ({ store, web3t })->
                                 """ Deposit"""
         react.create-element 'div', { className: 'wrapper-task' }, children = 
             react.create-element 'div', { className: 'title' }, children = 
-                react.create-element 'div', { className: 'header' }, ' Invoices'
+                react.create-element 'div', {}, ' Invoices'
             react.create-element 'div', { className: 'table-task' }, children = 
-                react.create-element 'div', { className: 'row-task header' }, children = 
+                react.create-element 'div', { style: th, className: 'row-task header' }, children = 
                     react.create-element 'div', { className: 'cell-task' }, ' Task Name'
                     react.create-element 'div', { className: 'cell-task' }, ' Task Status'
                     react.create-element 'div', { className: 'cell-task' }, ' Date Finished'
                     react.create-element 'div', { className: 'cell-task' }, ' Budget Spent'
-                react.create-element 'div', { className: 'row-task' }, children = 
+                react.create-element 'div', { style: tr-odd, className: 'row-task' }, children = 
                     react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
                         """ CPU Usage"""
                     react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
@@ -485,7 +488,7 @@ resources = ({ store, web3t })->
                         """ 2020/03/24"""
                     react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
                         """ 200 VLX"""
-                react.create-element 'div', { className: 'row-task' }, children = 
+                react.create-element 'div', { style: tr-even, className: 'row-task' }, children = 
                     react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
                         """ GPU Usage"""
                     react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
@@ -494,7 +497,7 @@ resources = ({ store, web3t })->
                         """ 2020/03/24"""
                     react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
                         """ 400 VLX"""
-                react.create-element 'div', { className: 'row-task' }, children = 
+                react.create-element 'div', { style: tr-odd, className: 'row-task' }, children = 
                     react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
                         """ Disk Write"""
                     react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
@@ -503,7 +506,7 @@ resources = ({ store, web3t })->
                         """ 2020/03/24"""
                     react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
                         """ 500 VLX"""
-                react.create-element 'div', { className: 'row-task' }, children = 
+                react.create-element 'div', { style: tr-even, className: 'row-task' }, children = 
                     react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
                         """ Disk Keep"""
                     react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 

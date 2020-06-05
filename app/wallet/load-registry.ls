@@ -1,12 +1,12 @@
 require! {
-    \superagent : { get, post }
+    \../web3t/providers/superagent.ls : { get, post }
     \atob
     \./providers.ls
     \./json-parse.ls
 }
 root = \https://api.github.com/repos/web3space/plugin-registry/contents
 load-item = (item, cb)->
-    err, data <- get "#{root}/#{item.path}"
+    err, data <- get "#{root}/#{item.path}" .end
     return cb err if err?
     err, content <- json-parse atob data.body.content
     return cb err if err?

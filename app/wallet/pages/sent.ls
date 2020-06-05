@@ -7,6 +7,8 @@ require! {
     \../icons.ls
     \prelude-ls : { filter }
     \./confirmation.ls : { confirm }
+    \../components/button.ls
+    \moment
 }
 # .sent-1181172205
 #     .animation
@@ -173,6 +175,12 @@ module.exports = ({ store, web3t })->
         store.transactions.applied 
             |> filter (.pending) 
             |> (.length > 0)
+    now = moment!.unix!
+    no-recent =
+        store.transactions.applied
+            |> filter (.time - now < 10000)
+            |> (.length is 0)
+    console.log \time-difference , store.transactions.applied.0?time , moment!.unix!
     inacurate = (cb)->
         return cb null if has-pending is no
         agree <- confirm store, "Your still have a pending transaction. Some of the counts may be inaccurate."
@@ -181,21 +189,20 @@ module.exports = ({ store, web3t })->
         cb null
     go-home = ->
         err <- inacurate
-        return cb err if err?
+        return err if err?
         navigate store, web3t, \wallets
     lang = get-lang store
     react.create-element 'div', { className: 'sent sent-1181172205' }, children = 
         react.create-element 'div', { className: 'animation' }, children = 
-            if has-pending
+            if no-recent
+                react.create-element 'img', { style: sent-icon, src: "#{icons.sent}", className: 'icon-sent' }
+            else if has-pending
                 react.create-element 'img', { style: sent-icon, src: "#{icons.sent-plane}", className: 'icon-sent' }
             else
                 react.create-element 'img', { src: "#{icons.sent-check}", className: 'icon-sent' }
         react.create-element 'div', { style: text-style, className: 'text' }, children = 
             react.create-element 'a', { style: link-style, href: "#{store.current.last-tx-url}", target: "_blank" }, ' ' + lang.transaction ? 'transaction'
             react.create-element 'span', {}, '  ' + lang.has-been-sent ? 'has been sent'
-        react.create-element 'button', { on-click: go-home, style: button-primary3-style, className: 'button' }, children = 
-            react.create-element 'span', {}, children = 
-                react.create-element 'img', { src: "#{icons.home}", style: btn-icon, className: 'icon-svg' }
-                """ #{lang.home ? 'Home'}"""
+        button { store, on-click : go-home , type : \secondary , text: \home }
         react.create-element 'div', { className: 'limited-history' }, children = 
             history { store, web3t }

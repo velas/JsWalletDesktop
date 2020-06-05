@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -11,8 +10,9 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
-# .filestore-547492130
+# .filestore1067399100
 #     @import scheme
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
@@ -31,7 +31,6 @@ require! {
 #         bottom: 10px
 #         right: 10px
 #         width: 226px
-#         background: #321260
 #         position: fixed
 #         display: inline-grid
 #         z-index: 1
@@ -115,7 +114,6 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 226px
-#         background: #321260
 #         position: absolute
 #         top: 60px
 #         right: 0
@@ -213,14 +211,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -352,7 +342,6 @@ require! {
 #                 display: inline-block
 #                 vertical-align: top
 #                 box-sizing: border-box
-#                 color: rgb(204, 204, 204)
 #                 overflow-y: hidden
 #                 text-overflow: ellipsis
 #                 white-space: nowrap
@@ -450,10 +439,7 @@ filestorage = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -467,7 +453,7 @@ filestorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -478,9 +464,11 @@ filestorage = ({ store, web3t })->
         color: info.app.text
         background: info.app.primary1
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
+    dragarea-bg=
+        background: info.app.dragarea
     expand-collapse = ->
         store.filestore.menu-open = not store.filestore.menu-open
         store.current.dragfile = not store.current.dragfile
@@ -490,9 +478,8 @@ filestorage = ({ store, web3t })->
         if store.filestore.file-tree then \arrow-down else \ ""
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'filestore filestore-547492130' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+    react.create-element 'div', { className: 'filestore filestore1067399100' }, children = 
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' File Storage'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -554,7 +541,7 @@ filestorage = ({ store, web3t })->
                             react.create-element 'img', { src: "#{icons.file-folder}" }
                             react.create-element 'div', {}, ' Images'
             react.create-element 'div', { className: "#{dragarea} store-content" }, children = 
-                react.create-element 'div', { className: "#{dragarea} header-table dragfile" }, children = 
+                react.create-element 'div', { style: dragarea-bg, className: "#{dragarea} header-table dragfile" }, children = 
                     react.create-element 'div', { style: dashed-border, className: 'cell network' }, children = 
                         react.create-element 'img', { src: "#{icons.file-drag}", style: icon-style, className: 'bounce' }
                         """ Drag and Drop here"""

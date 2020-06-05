@@ -25,8 +25,9 @@ require! {
     \../icons.ls
     \./placeholder.ls
     \./epoch.ls
+    \./alert-demo.ls
 }
-# .staking-res915449353
+# .staking-res-130279800
 #     @import scheme
 #     position: relative
 #     display: block
@@ -325,14 +326,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 get-pair = (wallet, path, index, password, with-keystore)->
     w = wallet.derive-path(path).derive-child(index).get-wallet!
     address  = "0x" + w.get-address!.to-string(\hex)
@@ -617,10 +610,7 @@ staking = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -632,12 +622,11 @@ staking = ({ store, web3t })->
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking-res staking-res915449353' }, children = 
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+    react.create-element 'div', { className: 'staking-res staking-res-130279800' }, children = 
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Resource Staking'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 

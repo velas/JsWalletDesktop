@@ -1,7 +1,9 @@
 require! {
     \cross-fetch : fetch
+    \tor-request : tor
     \qs : { stringify }
 }
+
 
 json-parse = (text, cb)->
     try
@@ -42,8 +44,50 @@ get-type = (type)->
     | type is "json" => "application/json"
     | type is "form" => "application/x-www-form-urlencoded"
     | _ => type
-    
-make-api = (method)-> (url, data)->
+
+reset-request = (cb)-> ->
+    clear-timeout cb.timer
+    cb "Deadline was reached"
+
+get-cb-with-deadline = (timeout=10000, cb)->
+    cb.timer = set-timeout reset-request(cb), timeout
+    (err, data)->
+        return if not cb.timer?
+        clear-timeout cb.timer
+        delete cb.timer
+        cb err, data
+
+make-cross-api = (method)-> (url, data)->
+    $ = {}
+    headers = {
+        "Content-Type": "application/json"
+    }
+    $.type = (type)->
+        headers["Content-Type"] = get-type type
+    $.timeout = (timeout)->
+        $._timeout = timeout
+        $
+    $.set = (header, value)->
+        headers[header] = value
+        $
+    $.end = (fcb)->
+        real-data = data ? {}
+        cb = get-cb-with-deadline $._timeout , fcb
+        err, body <- make-body method, headers, real-data
+        return cb err if err?
+        p = fetch url, body
+        err, data <- as-callback p
+        return cb err if err?
+        return cb "expected data" if not data?
+        err, text <- as-callback data.text!
+        return cb err if err?
+        err, body <- json-parse text
+        #return cb err if err?
+        cb null, { body, text }
+        $
+    $
+
+make-tor-api = (method)-> (url, data)->
     $ = {}
     headers = {
         "Content-Type": "application/json"
@@ -60,28 +104,21 @@ make-api = (method)-> (url, data)->
         real-data = data ? {}
         err, body <- make-body method, headers, real-data
         return cb err if err?
-        p = fetch url, body
-        err, data <- as-callback p
-        return cb err if err?
-        return cb "expected data" if not data?
-        err, text <- as-callback data.text!
-        return cb err if err?
+        err, res, text <- tor.request url, body
         err, body <- json-parse text
         #return cb err if err?
         cb null, { body, text }
         $
     $
 
-post = make-api \POST
 
-get  = make-api \GET
-
-put  = make-api \PUT
-
-module.exports = { get, post, put }
-
-cb = console.log
-#
-#err, data <- post "http://web3.space:8085/wallet/VLcEHRJwhBZPRVQHV1vTGLsypcwgcaKFYVc/txs", {} .end
-#return cb err if err?
-#cb null, data
+module.exports = 
+    all:
+        post : make-cross-api \POST
+        get  : make-cross-api \GET
+        put  : make-cross-api \PUT
+    tor:
+        post : make-tor-api \POST
+        get  : make-tor-api \GET
+        put  : make-tor-api \PUT
+    type: \all

@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -18,10 +17,10 @@ require! {
     \../math.ls : { plus, div }
     \../round-human.ls
     \./epoch.ls
+    \./alert-txn.ls
 }
-# .info-1654963996
+# .stats518509335
 #     @import scheme
-#     color: white
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
@@ -83,14 +82,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.wrapper
 #         max-height: calc(100vh - 100px)
 #         display: block
@@ -137,7 +128,7 @@ require! {
 #                     width: 100% !important
 #                     height: auto !important
 #             .value
-#                 font-size: 20px
+#                 font-size: 17px
 #                 display: inline-flex
 #                 .symbol
 #                     font-size: 14px
@@ -149,48 +140,72 @@ require! {
 #                 opacity: .8
 #                 font-weight: 400
 total-pool = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', {}, children = 
+        react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'div', { className: 'symbol' }
                 react.create-element 'div', { title: '', className: 'number' }, ' ' + store.staking.pools.length
-            react.create-element 'div', { className: 'header' }, ' Total Pools'
+            react.create-element 'div', { className: 'header' }, ' ' + lang.total-pools
 total-stakers  = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     stakers =
         store.staking.pools |> map (.stakers) |> foldl plus, 0
     react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', {}, children = 
+        react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'div', { className: 'symbol' }
                 react.create-element 'div', { title: '', className: 'number' }, ' ' + stakers
-            react.create-element 'div', { className: 'header' }, ' Total Stakers'
+            react.create-element 'div', { className: 'header' }, ' ' + lang.total-stakers
 staking-amount = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     amount =
         store.staking.pools |> map (.stake) |> foldl plus, 0
     react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', {}, children = 
+        react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'div', { className: 'symbol' }
                 react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(amount)
-            react.create-element 'div', { className: 'header' }, ' Total Staking'
+            react.create-element 'div', { className: 'header' }, ' ' + lang.total-staking
 my-stake = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     amount =
         store.staking.pools |> map (.my-stake) |> foldl plus, 0
     react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', {}, children = 
+        react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'div', { className: 'symbol' }
                 react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(amount)
-            react.create-element 'div', { className: 'header' }, ' Total My Stake'
+            react.create-element 'div', { className: 'header' }, ' ' + lang.total-my-stake
 chart-amount-sizes = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     react.create-element 'div', { className: 'col-6 col' }, children = 
-        react.create-element 'div', {}, children = 
-            react.create-element 'div', { className: 'header' }, ' Pool stake sizes'
+        react.create-element 'div', { style: stats }, children = 
+            react.create-element 'div', { className: 'header' }, ' ' + lang.stake-sizes
             staker-stats store, web3t
 chart-stakers-counts = (store, web3t)->
+    lang = get-lang store
+    info = get-primary-info store
+    stats=
+        background: info.app.stats
     react.create-element 'div', { className: 'col-6 col' }, children = 
-        react.create-element 'div', {}, children = 
-            react.create-element 'div', { className: 'header' }, ' Pool Population'
+        react.create-element 'div', { style: stats }, children = 
+            react.create-element 'div', { className: 'header' }, ' ' + lang.pool-population
             staker-stats2 store, web3t
 info = ({ store, web3t })->
     lang = get-lang store
@@ -202,10 +217,7 @@ info = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
-    border-style2 =
-        color: info.app.text
-        border-bottom: "1px solid #{info.app.border}"
-        background: "#4b2888"
+        background: info.app.background
     border-style3 =
         color: info.app.text
         border-bottom: "0"
@@ -224,16 +236,19 @@ info = ({ store, web3t })->
         color: info.app.text
         background: info.app.primary1
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
+    icon-color=
+        filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'info info-1654963996' }, children = 
+    react.create-element 'div', { className: 'stats stats518509335' }, children = 
+        alert-txn { store }
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             epoch store, web3t
             switch-account store, web3t
         react.create-element 'div', { className: 'wrapper' }, children = 

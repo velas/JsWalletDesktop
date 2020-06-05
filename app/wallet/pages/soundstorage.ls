@@ -1,7 +1,6 @@
 require! {
     \react
     \react-dom
-    \superagent : { get }
     \../navigate.ls
     \../get-primary-info.ls
     \../web3.ls
@@ -10,9 +9,11 @@ require! {
     \./icon.ls
     \./switch-account.ls
     \./epoch.ls
+    \./hint.ls
     \../icons.ls
+    \./alert-demo.ls
 }
-# .videostorage1006399051
+# .videostorage-892156854
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -108,7 +109,7 @@ require! {
 #         bottom: 70px
 #         right: 10px
 #         width: 226px
-#         background: #321260
+#         background: inherit
 #         position: fixed
 #         display: inline-grid
 #         z-index: 3
@@ -192,7 +193,7 @@ require! {
 #                 margin-top: 10px
 #     .menu
 #         width: 160px
-#         background: #321260
+#         background: inherit
 #         position: absolute
 #         top: 172px
 #         right: 0px
@@ -413,14 +414,6 @@ require! {
 #             text-align: center
 #             @media(max-width:800px)
 #                 text-align: center
-#         >.close
-#             position: absolute
-#             font-size: 20px
-#             left: 20px
-#             top: 13px
-#             cursor: pointer
-#             &:hover
-#                 color: #CCC
 #     >.toolbar
 #         position: relative
 #         height: 60px
@@ -859,7 +852,10 @@ play-bar = (store, web3t)->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
     info = get-primary-info store
-    react.create-element 'div', { className: 'play-bar' }, children = 
+    play-bar=
+        background: info.app.background
+        border-top: "1px solid #{info.app.border}"
+    react.create-element 'div', { style: play-bar, className: 'play-bar' }, children = 
         react.create-element 'ul', { className: 'btn-area' }, children = 
             react.create-element 'li', {}, children = 
                 react.create-element 'img', { src: "#{icons.prev}" }
@@ -930,7 +926,7 @@ home = (store, web3t)->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -945,7 +941,7 @@ home = (store, web3t)->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     goto-details = ->
@@ -1005,6 +1001,7 @@ home = (store, web3t)->
                                         react.create-element 'span', {}, ' Mighty'
         react.create-element 'div', { style: header-style-light, className: 'block-content' }, children = 
             react.create-element 'h2', { className: 'header' }, ' Party'
+            hint store, web3t
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'source' }, children = 
                     react.create-element 'iframe', { width: '100%', height: '300', scrolling: 'no', frameborder: 'no', allow: 'autoplay', src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/51957607&color=%2343207c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true' }
@@ -1070,6 +1067,7 @@ videostorage = ({ store, web3t })->
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
+        background: info.app.background
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -1094,7 +1092,7 @@ videostorage = ({ store, web3t })->
         position: "sticky"
     dashed-border=
         border-color: "#{info.app.border}"
-        color: info.app.addressText
+        color: info.app.color3
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -1109,7 +1107,7 @@ videostorage = ({ store, web3t })->
         border: "0"
         color: info.app.text
     lightText=
-        color: info.app.addressText
+        color: info.app.color3
     icon-style=
         filter: info.app.nothingIcon
     activate = (tab)-> ->
@@ -1126,7 +1124,7 @@ videostorage = ({ store, web3t })->
         store.sound.menu-open = not store.sound.menu-open
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'videostorage videostorage1006399051' }, children = 
+    react.create-element 'div', { className: 'videostorage videostorage-892156854' }, children = 
         play-bar store, web3t
         react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
             react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
@@ -1152,8 +1150,7 @@ videostorage = ({ store, web3t })->
                         react.create-element 'div', { className: 'file-name' }, ' File.txt'
                     react.create-element 'div', { className: 'col folder-menu progress' }, children = 
                         react.create-element 'progress', { value: "30", max: "100" }
-        react.create-element 'div', { style: border-style2, className: 'title alert' }, children = 
-            react.create-element 'div', { className: 'header' }, ' This page is under development. You see this only as demo'
+        alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Sound storage'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

@@ -11,7 +11,7 @@ require! {
     \../menu-funcs.ls
     \../icons.ls
 }
-# .choose-language-76123078
+# .choose-language-1860149250
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -61,14 +61,6 @@ require! {
 #             background: black
 #             >.header
 #                 margin: 5px
-#             >.close
-#                 position: absolute
-#                 font-size: 20px
-#                 right: 20px
-#                 top: 13px
-#                 cursor: pointer
-#                 &:hover
-#                     color: #CCC
 #         >.settings
 #             padding-top: 0px
 #             overflow-y: auto
@@ -235,7 +227,7 @@ language = (store, web3t)->
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'logo' }, children = 
                 react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
-                react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
+                react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
             react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
                 react.create-element 'ul', {}, children = 
@@ -288,7 +280,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-76123078' }, children = 
+    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-1860149250' }, children = 
         react.create-element 'div', { className: 'account-body' }, children = 
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 
