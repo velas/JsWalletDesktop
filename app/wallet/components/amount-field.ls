@@ -7,7 +7,7 @@ require! {
     \../math.ls : { times }
     \./keyboard.ls
 }
-# .input-area1664310996
+# .input-area2078247576
 #     position: relative
 #     margin-top: 10px
 #     width: 100%
@@ -21,6 +21,7 @@ require! {
 #         height: inherit
 #         line-height: inherit
 #         vertical-align: top
+#         z-index: 1
 #     >input
 #         display: inline-block
 #         width: calc(100% - 70px) !important
@@ -71,8 +72,9 @@ module.exports = ({ store, value, on-change, placeholder })->
     usd = value `times` wallet.usd-rate
     eur = value `times` wallet.eur-rate
     actual-placeholder = placeholder ? ""
-    react.create-element 'div', { className: 'input-area input-area1664310996' }, children = 
-        react.create-element 'input', { type: "text", value: "#{round5 value}", style: input-style, on-change: on-change, placeholder: actual-placeholder }
+    value-vlx = value ? 0
+    react.create-element 'div', { className: 'input-area input-area2078247576' }, children = 
+        react.create-element 'input', { type: "text", value: "#{value-vlx}", style: input-style, on-change: on-change, placeholder: actual-placeholder }
         react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
             react.create-element 'img', { src: "#{wallet.coin.image}", className: 'icon' }
             react.create-element 'span', {}, ' VLX2'

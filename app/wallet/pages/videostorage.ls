@@ -12,17 +12,10 @@ require! {
     \./epoch.ls
     \./videoupload.ls
     \./alert-demo.ls
+    \../components/upload-video.ls
+    \../components/upload-video-progress.ls
+    \../components/video-list.ls
 }
-#TODO: move to utils
-as-callback = (p, cb)->
-    p.catch (err) -> cb err
-    p.then (data)->
-        cb null, data
-json-parse = (text, cb)->
-    try
-        cb null, JSON.parse(text)
-    catch err
-        cb err
 # .videostorage32994597
 #     @import scheme
 #     $border-radius: $border
@@ -843,51 +836,10 @@ home = (store, web3t)->
         navigate store, web3t, \videostoragedetails
     drag-file-close = ->
         store.video.drag = not store.video.drag
-    on-browse-files = ->
-        (document.get-element-by-id 'browse-files-video').click!
-    input-file-style= 
-        {visibility: \hidden, width: 0, height: 0}
     react.create-element 'div', { className: "#{file-tree} panel-content dragarea" }, children = 
-        if store.video.drag
-            react.create-element 'div', { on-click: drag-file-close, className: 'header-table dragfile dragarea' }, children = 
-                react.create-element 'div', { style: dashed-border, className: 'cell network' }, children = 
-                    react.create-element 'img', { src: "#{icons.img-drag}", style: icon-style, className: 'bounce' }
-                    """ Drag and Drop here"""
-                    react.create-element 'br', {}
-                    """ or"""
-                    react.create-element 'input', { id: 'browse-files-video', type: 'file', multiple: yes, on-change: upload-video-files, style: input-file-style }
-                    react.create-element 'span', { on-click: on-browse-files }, ' Browse files'
+        upload-video ({store})
         react.create-element 'h2', { className: 'header' }, ' Recommended'
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
-                react.create-element 'span', { className: 'play' }, children = 
-                    icon \TriangleRight, 15
-                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/USGLlp-zfhI', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
-                react.create-element 'div', { className: 'title-video' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
-                        react.create-element 'ul', { className: 'stat' }, children = 
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 2K views'
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 5 days ago'
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
-                react.create-element 'span', { className: 'play' }, children = 
-                    icon \TriangleRight, 15
-                react.create-element 'iframe', { on-click: goto-details, width: '560', height: '315', src: 'https://www.youtube.com/embed/2jdA5EwQV9M', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
-                react.create-element 'div', { className: 'title-video' }, children = 
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
-                    react.create-element 'span', {}, children = 
-                        react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
-                        react.create-element 'ul', { className: 'stat' }, children = 
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 50K views'
-                            react.create-element 'li', {}, children = 
-                                react.create-element 'span', {}, ' 1 mounth ago'
+        video-list ({store, web3t})
 trend = (store, web3t)->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -1248,82 +1200,9 @@ history = (store, web3t)->
                     react.create-element 'ul', { className: 'stat-text' }, children = 
                         react.create-element 'li', {}, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
-make-video-thumbnail = (file, cb) ->
-    url = URL.createObjectURL file
-    video = document.create-element 'video'
-    timeupdate = ->
-        if snap-image!
-            video.remove-event-listener 'timeupdate', timeupdate
-            video.pause!
-    video.add-event-listener 'loadeddata', ->
-        if snap-image!
-            video.remove-event-listener 'timeupdate', timeupdate
-    video.add-event-listener 'error', ->
-        if cb and not cb.is-callback-called
-            cb null
-            cb.is-callback-called = yes
-    snap-image = ->
-        canvas = document.create-element 'canvas'
-        canvas.width = video.video-width;
-        canvas.height = video.video-height;
-        (canvas.get-context '2d').draw-image video, 0, 0, canvas.width, canvas.height
-        image = canvas.to-dataURL!
-        success = image.length > 1000
-        if success
-            img = document.create-element 'img'
-            img.src = image
-            (document.get-elements-by-tag-name 'div').0.append-child img
-            URL.revoke-objectURL url
-            if cb and not cb.is-callback-called
-                cb (image.split ',').1
-                cb.is-callback-called = yes
-        else
-            if cb and not cb.is-callback-called
-                cb null
-                cb.is-callback-called = yes
-        return success
-    video.add-event-listener 'timeupdate', timeupdate
-    video.preload = 'metadata'
-    video.src = url
-    video.muted = yes
-    video.plays-inline = yes
-    video.play!
-upload-video-files-recursive = ([file, ...files], cb)->
-    data <- make-video-thumbnail file
-    console.log data
-    form-data = new Form-data
-    formData.append 'key', '3132333435363738393031323334353637383930313233343536373839303132'
-    formData.append 'video', file
-    params =
-        headers:
-            'Accept': 'application/json'
-            # 'Content-Type': 'multipart/form-data'
-        method: \POST
-        body: formData
-    url = 'http://127.0.0.1:8080/upload'
-    p = fetch url, params
-    err, data <- as-callback p
-    return cb err if err?
-    return cb "expected data" if not data?
-    err, text <- as-callback data.text!
-    return cb err if err?
-    console.log text
-    err, body <- json-parse text
-    return cb err if err?
-    cb null, { body, text }
-    return null if files.length is 0
-    return upload-video-files-recursive files,cb
-upload-video-files = (event) ->
-    files = event.target.files or event.data-transfer.files
-    return null if files.length is 0
-    err, data <- upload-video-files-recursive files
 video = (store, web3t)->
     react.create-element 'div', { className: 'panel-content' }, children = 
-        react.create-element 'p', { className: 'results' }, ' Upload your video(s)'
-        react.create-element 'input', { type: 'file', multiple: 'multiple', on-change: upload-video-files }
-# video = (store, web3t)->
-react.create-element 'div', { id: '' }, '     .pug.panel-content'
-react.create-element 'div', { id: '' }, '         p.results.pug This tab is under development'
+        react.create-element 'p', { className: 'results' }, ' This tab is under development'
 videostorage = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -1414,30 +1293,7 @@ videostorage = ({ store, web3t })->
         store.video.upload-link = yes
     react.create-element 'div', { className: 'videostorage videostorage32994597' }, children = 
         videoupload { store, web3t }
-        react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
-            react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Uploading 1 item'
-                    react.create-element 'ul', { className: "#{active} action col" }, children = 
-                        react.create-element 'li', { on-click: switch-progress, className: "#{hide-progress}" }, children = 
-                            react.create-element 'span', {}, children = 
-                                icon "ChevronDown", 15
-                        react.create-element 'li', {}, children = 
-                            react.create-element 'span', {}, children = 
-                                icon \X, 15
-            react.create-element 'div', { style: header-table-style, className: "#{hide-progress}" }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Left 7min.'
-                    react.create-element 'span', { className: 'col cancel' }, ' Cancel'
-            react.create-element 'div', { className: "#{hide-progress}" }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'div', { className: 'col folder-menu pending' }, children = 
-                        react.create-element 'img', { src: "#{store.filestore.extension-icons.txt}" }
-                        react.create-element 'div', { className: 'file-name' }, ' File.txt'
-                    react.create-element 'div', { className: 'col folder-menu progress' }, children = 
-                        react.create-element 'progress', { value: "30", max: "100" }
+        upload-video-progress { store, web3t }
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Video storage'

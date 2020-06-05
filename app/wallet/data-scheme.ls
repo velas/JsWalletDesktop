@@ -70,6 +70,7 @@ store =
         drag: no
         upload-link: no
         action: "upload"
+        uploading-files: []
     sound:
         tab: "home"
         menu-open: no
@@ -89,6 +90,7 @@ store =
         peers: []
     staking: 
         reward-info: []
+        exit-tab: ''
         maxWithdrawOrderAllowed: 0
         withdrawAmount: 0
         maxWithdrawAllowed: 0

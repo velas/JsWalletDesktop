@@ -7,7 +7,7 @@ require! {
     \./identicon.ls
     \./copy.ls
 }
-# .address-holder932823744
+# .address-holder860256135
 #     @import scheme
 #     $card-top-height: 50px
 #     width: 100%
@@ -17,6 +17,7 @@ require! {
 #     text-align: center
 #     position: relative
 #     overflow: visible
+#     z-index: 0
 #     .browse
 #         display: inline-block
 #         position: absolute
@@ -108,7 +109,7 @@ module.exports = ({ store, wallet, type })->
         #store.current.hovered-address.element = it
         #create-ref.element = it
     active = if wallet.address is store.current.hovered-address.address then 'active' else ''
-    react.create-element 'div', { on-mouse-enter: show-details, on-mouse-leave: hide-details, ref: create-ref, className: 'address-holder address-holder932823744' }, children = 
+    react.create-element 'div', { on-mouse-enter: show-details, on-mouse-leave: hide-details, ref: create-ref, className: 'address-holder address-holder860256135' }, children = 
         identicon { store, address: address-title }
         react.create-element 'span', { style: input }, children = 
             react.create-element 'a', { target: "_blank", href: "#{address-link}", className: 'browse' }, children = 

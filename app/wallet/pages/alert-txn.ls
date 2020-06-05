@@ -27,4 +27,4 @@ module.exports = ({ store, web3t } )->
             |> (.length > 0)
     return null if not has-pending
     react.create-element 'div', { className: 'title alert txn title-1096156716' }, children = 
-        react.create-element 'div', { className: 'header' }, ' You have a Velas pending transaction. Some of the counts may be inaccurate.'
+        react.create-element 'div', { className: 'header' }, ' You have a pending VLX transaction. Some of the counts may be inaccurate.'

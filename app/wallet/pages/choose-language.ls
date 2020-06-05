@@ -227,7 +227,7 @@ language = (store, web3t)->
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'logo' }, children = 
                 react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style, className: 'iron' }
-                react.create-element 'div', { className: 'title' }, ' ' + style.branding.title
+                react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
             react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
                 react.create-element 'ul', {}, children = 

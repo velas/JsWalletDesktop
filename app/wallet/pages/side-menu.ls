@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .menu207176250
+# .menu-637292961
 #     width: 100%
 #     text-align: right
 #     padding: 20px 15px
@@ -115,6 +115,7 @@ require! {
 #                 font-weight: 600
 #                 color: #fff
 #                 padding: 5px
+#                 white-space: nowrap
 #                 background: #000
 #                 opacity: 1
 #                 transition: opacity .5s
@@ -319,7 +320,7 @@ module.exports = (store, web3)->
     menu-out = ->
         store.current.submenu = no
     staking = if store.current.submenu then \active else \not-active
-    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu207176250' }, children = 
+    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu-637292961' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
         if store.preference.lock-visible is yes
@@ -332,7 +333,7 @@ module.exports = (store, web3)->
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
-                    react.create-element 'div', { style: background-menu, className: 'menu arrow_box menu207176250' }, children = 
+                    react.create-element 'div', { style: background-menu, className: 'menu arrow_box menu-637292961' }, children = 
                         react.create-element 'ul', {}, children = 
                             react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }

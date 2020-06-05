@@ -48,6 +48,8 @@ module.exports = ({ store, value, on-change, placeholder, type, on-key-down })->
         color: style.app.text
         overflow-x: \auto
         margin-bottom: \5px
+    btn-icon =
+        filter: style.app.btn-icon
     actual-placeholder = placeholder ? ""
     chosen-type = 
         | type is \password => \password
@@ -56,7 +58,7 @@ module.exports = ({ store, value, on-change, placeholder, type, on-key-down })->
         react.create-element 'input', { type: "#{chosen-type}", value: "#{value}", style: input-style, on-change: on-change, placeholder: actual-placeholder, auto-complete: "off", on-key-down: on-key-down }
         if store.current.device isnt \mobile
             react.create-element 'span', { className: 'keyboard-panel' }, children = 
-                react.create-element 'img', { src: "#{icons.keyboard}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.keyboard}", style: btn-icon, className: 'icon-svg' }
                 react.create-element 'div', { style: input-style, className: 'show-details' }, children = 
                     react.create-element 'div', { className: 'panel' }, children = 
                         keyboard { store , on-change=on-change, value }

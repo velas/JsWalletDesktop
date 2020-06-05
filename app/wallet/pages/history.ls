@@ -13,7 +13,7 @@ require! {
     \react-middle-ellipsis : { default: MiddleEllipsis }
     \../components/address-holder.ls
 }
-# .history943459170
+# .history1811884891
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -411,7 +411,7 @@ require! {
 #                     cursor: pointer
 #                     &:hover
 #                         .arrow_box
-#                             opacity: 1
+#                             display: block
 #                     .arrow_box
 #                         position: absolute
 #                         text-transform: uppercase
@@ -424,7 +424,7 @@ require! {
 #                         color: #fff
 #                         padding: 5px
 #                         background: #210b4a
-#                         opacity: 0
+#                         display: none
 #                         transition: opacity .5s
 #                         &:after, &:before
 #                             left: 100%
@@ -465,7 +465,8 @@ require! {
 #                                     top: -6px
 #                                     margin: 0 10px 0 0
 #                             .browse
-#                                 right: -5px
+#                                 right: 0px
+#                                 padding: 0
 #                             >span a
 #                                 height: 25px
 #                                 line-height: 25px
@@ -474,14 +475,14 @@ require! {
 #                                 width: 80%
 #                                 text-align: left
 #                                 @media screen and (min-width: 1921px)
-#                                     width: 55%
+#                                     width: 340px
 #                                 @media screen and (min-width: 1441px) and (max-width: 1920px)
-#                                     width: 75%
+#                                     width: 340px
 #                                 a
 #                                     img
 #                                         height: 16px
 #                                 div
-#                                     width: 100%
+#                                     width: 310px
 #                                     margin-right: 0px
 #                                     a
 #                                         padding: 0
@@ -675,8 +676,12 @@ render-transaction = (store, web3t, tran)-->
         | _ => \ "#{icons.unknown}"
     wallet-from =
         address: from
+        network: network
+        coin: coin
     wallet-to =
         address: to
+        network: network
+        coin: coin
     react.create-element 'div', { key: "#{tx + type}", style: border-style, className: "#{type} record" }, children = 
         react.create-element 'div', { style: line-style, className: 'tx-top' }, children = 
             react.create-element 'div', { className: 'cell text-center network' }, children = 
@@ -811,7 +816,7 @@ module.exports = ({ store, web3t })->
         null
     history-width = store.current.size.width / 1.9
     history-height = store.current.size.height - 200 - 60
-    react.create-element 'div', { className: 'normalheader history history943459170' }, children = 
+    react.create-element 'div', { className: 'normalheader history history1811884891' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

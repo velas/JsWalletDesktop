@@ -260,7 +260,7 @@ module.exports = (store, web3t)->
             store.current.account-index = index
             store.current.switch-account = no
             <- web3t.refresh
-        default-account-name = -> "Account #{index}"
+        default-account-name = -> "#{lang.account} #{index}"
         current-account-name = ->
             local-storage.get-item(default-account-name!) ? default-account-name!
         account-name = current-account-name!

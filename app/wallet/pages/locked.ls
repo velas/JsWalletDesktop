@@ -14,7 +14,7 @@ require! {
     \../components/button.ls
     \../components/text-field.ls
 }
-# .locked530696724
+# .locked1599929095
 #     @import scheme
 #     padding-top: 70px
 #     height: $height
@@ -99,6 +99,9 @@ require! {
 #                 border-color: #248295
 #             &:placeholder
 #                 color: $primary + 40
+#             @media screen and (max-width: 800px)
+#                 padding: 7px 0
+#                 text-align: center
 #     >div>.wrong
 #         color: red
 #         font-size: 15px
@@ -337,7 +340,7 @@ locked = ({ store, web3t })->
         color: info.app.text
     logo-style =
         filter: info.app.filterLogo
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked530696724' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked1599929095' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { style: logo-style, src: "#{info.branding.logo}", className: 'iron' }
             react.create-element 'div', { style: txt-style, className: 'title' }, ' ' + info.branding.title

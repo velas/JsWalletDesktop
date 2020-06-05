@@ -683,12 +683,6 @@ staking-content = (store, web3t)->
             err, amount <- web3t.velas.Staking.stakeAmount item.address, staking-address
             return cb err if err?
             store.staking.stake-amount-total = amount.to-fixed!
-            err, last-epoch <- web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosen-pool.address, staking-address)
-            return cb "#{err}" if err?
-            err, staking-epoch <- web3t.velas.Staking.stakingEpoch
-            return cb "#{err}" if err?
-            res = staking-epoch `minus` last-epoch
-            store.staking.wait-for-epoch-change = if +res is 0 then yes else no
             err <- exit-stake.init { store, web3t }
             return cb err if err?
         to-eth = ->
@@ -741,9 +735,13 @@ staking-content = (store, web3t)->
     active-second = active-class \second
     active-third = active-class \third
     refresh = ->
+        cb = console.log
         store.staking.pools.length = 0
         err <- staking.init { store, web3t }
+        return cb err if err?
         err <- staking.focus { store, web3t }
+        return cb err if err?
+        cb null, \done
     icon-style =
         color: style.app.loader
         margin-top: "10px"
@@ -865,6 +863,7 @@ staking = ({ store, web3t })->
         staking-content store, web3t
 staking.init = ({ store, web3t }, cb)->
     err <- web3t.refresh
+    return cb err if err?
     store.staking.max-withdraw = 0
     random = ->
         Math.random!
