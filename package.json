@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.12.79",
+  "version": "0.12.108",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -14,9 +14,10 @@
     "dist-win": "electron-builder --win portable",
     "dist-mac": "electron-builder --mac",
     "release": "electron-builder --windows --linux --mac --publish always",
+    "phonegap-build": "browserify -t browserify-livescript phonegap/www/js/index.js > phonegap/www/js/bundle.js && cp ./main-bundle.css phonegap/www/css/index.css",
     "rebuild": "electron-rebuild -f -w web3-wallet",
     "postinstall": "electron-builder install-app-deps",
-    "install": "pwd && cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh"
+    "install": "cp scripts/pre-commit .git/hooks/ && cp scripts/pre-push .git/hooks/ && chmod u+x .git/hooks/pre-commit && chmod u+x .git/hooks/pre-push && chmod u+x scripts/bump-version.sh"
   },
   "repository": {
     "type": "git",
@@ -61,7 +62,8 @@
       ],
       "category": "Utility",
       "publish": "github"
-    }
+    },
+    "afterAllArtifactBuild": "scripts/calc-md5.js"
   },
   "dependencies": {
     "@primer/octicons-react": "^9.6.0",
@@ -70,6 +72,7 @@
     "bignumber.js": "^6.0.0",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^3.3.2",
+    "browserify-livescript": "^0.2.4",
     "bs58": "^4.0.1",
     "btoa": "^1.2.1",
     "chart.js": "^2.9.3",
@@ -83,6 +86,7 @@
     "libsodium-wrappers-sumo": "^0.7.6",
     "localStorage": "^1.0.4",
     "md5": "^2.2.1",
+    "md5-file": "^5.0.0",
     "mobx": "^4.15.4",
     "mobx-react": "^5.4.4",
     "moment": "^2.22.2",
@@ -95,6 +99,7 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-middle-ellipsis": "^1.1.0",
+    "react-virtualized": "^9.21.2",
     "require-ls": "0.0.8",
     "scryptsy": "^1.2.1",
     "secp256k1": "^4.0.0",
