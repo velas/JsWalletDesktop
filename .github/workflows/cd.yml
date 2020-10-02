@@ -19,8 +19,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10
-      - name: Remove app/package.json
-        run: rm app/package.json
 
       # - name: Install Snapcraft
       #   # uses: samuelmeuli/action-snapcraft@v1
