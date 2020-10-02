@@ -142,6 +142,9 @@
                 return cb(err);
               }
               return jsonParse(text, function(err, body){
+                if (err != null) {
+                  return cb(err);
+                }
                 cb(null, {
                   body: body,
                   text: text
@@ -185,6 +188,9 @@
           tor.setTorAddress("localhost", "9050");
           return tor.request(url, body, function(err, res, text){
             return jsonParse(text, function(err, body){
+              if (err != null) {
+                return cb(err);
+              }
               console.log('make-tor-request', method, url, err, body);
               cb(null, {
                 body: body,

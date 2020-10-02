@@ -1,9 +1,10 @@
 require! {
-    #\bitgo-utxo-lib : BitcoinLib
-    \bitcoinjs-lib : BitcoinLib
+    \bitgo-utxo-lib : BitcoinLib
+    #\bitcoinjs-lib : BitcoinLib
     \web3 : \Web3
     \../node_modules_embed/ethereumjs-tx/index.js : Tx
-    \bignumber.js : BN
+    #\bignumber.js : BN
+    \ethereumjs-util : { BN }
     \../node_modules_embed/ethereumjs-wallet/hdkey.js
     \bip39
 }

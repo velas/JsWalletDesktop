@@ -2,14 +2,14 @@ export mainnet =
     decimals: 8
     tx-fee: \0.0000004
     tx-fee-auto-mode: \per-byte
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.000001
         cheap: \0.0000004
-        fee-per-byte: \0.000001
+        fee-per-byte: \0.0000005
     mask: '1000000000000000000000000000000000'
-    api: 
-        provider: \insight
-        url: \https://insight.bitpay.com
+    api:
+        provider: \bitcore
+        url: \https://api.bitcore.io
         decimal: 8
         alternative:
             balance: \https://blockchain.info/q/addressbalance/:address
@@ -23,11 +23,13 @@ export mainnet =
     wif: 0x80
 export testnet =
     tx-fee: 0.0001
+    tx-fee-auto-mode: \per-byte
     decimals: 8
     mask: '1000000000000000000000000000000000'
     api:
-        provider: \insight
-        url: \https://testnet.blockexplorer.com
+        api-name: \testnet/api
+        provider: \blockstream
+        url: \https://blockstream.info
         decimal: 8
     messagePrefix: '\x18Bitcoin Signed Message:\n'
     topup: \https://testnet.manu.backend.hamburg/faucet

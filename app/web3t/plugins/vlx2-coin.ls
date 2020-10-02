@@ -1,21 +1,39 @@
 mainnet-config =
     decimals: 18
     tx-fee: \0.0014
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.0020
         cheap: \0.00014
     message-prefix: 'Ethereum'
     mask: \0x0000000000000000000000000000000000000000
     api:
         provider: \velas2
+        #web3Provider : \https://mainnet.yopta.net/rpc
         web3Provider : \https://explorer.velas.com/rpc
         #web3Provider: \https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
         url : \https://explorer.velas.com
         apiUrl : \https://explorer.velas.com/api
+        #apiUrl : \https://mainnet.yopta.net/api
 testnet-config =
+    #because it unavailable frequently
+    # disabled: yes
+    decimals: 18
+    tx-fee: \0.0020
+    tx-fee-options:
+        auto: \0.0020
+        cheap: \0.0020
+    message-prefix: 'Ethereum'
+    mask: \0x0000000000000000000000000000000000000000
+    api:
+        provider: \velas2
+        web3Provider : \https://tn.yopta.net/rpc
+        url : \https://xtn.yopta.net
+        apiUrl : \https://tn.yopta.net/api
+testnet2-config =
+    disabled: yes
     decimals: 18
     tx-fee: \0.0014
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.0020
         cheap: \0.00014
     message-prefix: 'Ethereum'
@@ -25,11 +43,11 @@ testnet-config =
         web3Provider : \https://testnet-v2.velas.com/rpc
         #web3Provider: \https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
         url : \https://testnet-v2.velas.com
-        apiUrl : \https://testnet-v2.velas.com/api
-export mainnet =  if window?location.href.index-of('testnet') > -1 then testnet-config else mainnet-config
-export testnet = testnet-config
+        apiUrl : "http://139.59.138.137"
+export mainnet =  mainnet-config
+export testnet = if window?location.href.index-of('testnet2') > -1 then testnet2-config else testnet-config
 export color = \#9E4FEB
-export type = \coin  
+export type = \coin
 export enabled = yes
 export name = 'Velas Alpha'
 export token = \vlx2

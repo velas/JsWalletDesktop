@@ -10,7 +10,15 @@
         return '..';
       }
       try {
-        return new bignumber(x)[$](y).toFixed();
+        if (window.location.origin !== 'https://wallet.velas.com') {
+          if (typeof x === 'number') {
+            console.warn("Bignumber operation with number argument. It is dangerous as number->bignumber convertion causes exception sometimes");
+          }
+          if (typeof y === 'number') {
+            console.warn("Bignumber operation with number argument. It is dangerous as number->bignumber convertion causes exception sometimes");
+          }
+        }
+        return new bignumber(x + '')[$](y + '').toFixed();
       } catch (e$) {
         err = e$;
         throw x + " " + $ + " " + y + " = " + err;
@@ -23,6 +31,6 @@
   })(
   ['plus', 'minus', 'times', 'div']));
   module.exports.fromHex = function(hex){
-    return new bignumber(hex, 16).toFixed();
+    return new bignumber(hex + '', 16).toFixed();
   };
 }).call(this);
