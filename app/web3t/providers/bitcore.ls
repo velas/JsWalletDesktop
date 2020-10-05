@@ -135,7 +135,7 @@ add-value = (network, it)-->
 #mock = [{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"2b598e790c06e106709ea230b4553e9b867f234aa6e84ad700f81efe68bb563e","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275994,"confirmations":598},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"e815481a072b33390e0a2dad5df7ff1726c39d3542558e933f0aa475613c4145","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275988,"confirmations":604},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"f9897905e569aed3067c532d5a1e11bd018a4b60231caf62c66db4e7ec9234c5","vout":1,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":0.00001,"satoshis":1000,"height":275987,"confirmations":605}]
 get-outputs = ({ network, address} , cb)-->
     { url } = network.api
-    err, data <- get "#{get-api-url network}/addr/#{address}/utxo" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}" .timeout { deadline } .end
     return cb "cannot get outputs - err #{err.message ? err}" if err?
     #mock
     data.body
@@ -260,7 +260,9 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
     return cb err if err? or data.text.length is 0
     try
         json = JSON.parse(data.text)
-        return cb null, json.unconfirmed
+        dec = get-dec network
+        num = json.unconfirmed `div` dec
+        return cb null, num
     catch e
         return cb e.message
     dec = get-dec network
@@ -269,12 +271,13 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
 export get-balance = ({ address, network } , cb)->
     return cb "Url is not defined" if not network?api?url?
     err, data <- get "#{get-api-url network}/address/#{address}/balance" .timeout { deadline } .end
-    debugger
     return cb err if err? or data.text.length is 0
     #check that data.text has number
     try
         json = JSON.parse(data.text)
-        return cb null, json.balance
+        dec = get-dec network
+        num = json.balance `div` dec
+        return cb null, num
     catch e
         return cb e.message
     dec = get-dec network
@@ -291,47 +294,28 @@ outcoming-vouts = (address, vout)-->
     return { vout.value, address: addresses.join(",") } if addresses.index-of(address) is -1
     null
 transform-in = ({ net, address }, t)->
-    network = net.token
-    tx = t.txid
-    time = t.time
-    fee = t.fees ? 0
-    vout = t.vout ? []
+    tx = t.mintTxid
     pending = t.confirmations is 0
-    unspend =
-        vout |> filter incoming-vout address
-            |> head
-    amount = unspend?value
+    dec = get-dec net
+    amount = t.value `div` dec
     to = address
-    from =
-        | typeof! t.vin is \Array => t.vin.map(-> it.addr).0
-        | _ => t.vin.addr
+    from = t.address
     url = "#{net.api.url}/tx/#{tx}"
     #console.log(\insight-in, t)
-    { network, tx, amount, fee, time, url, to, from, pending }
+    { tx, amount, url, to, from, pending }
 transform-out = ({ net, address }, t)->
-    network = net.token
-    tx = t.txid
+    tx = t.mintTxid
     time = t.time
-    fee = t.fees ? 0
-    vout = t.vout ? []
     pending = t.confirmations is 0
-    outcoming =
-        vout
-            |> map outcoming-vouts address
-            |> filter (?)
-    amount =
-        outcoming
-            |> map (.value)
-            |> foldl plus, 0
-    to = outcoming.map(-> it.address).join(",")
+    dec = get-dec net
+    amount = t.value `div` dec
+    to = t.address
     from = address
     url = "#{net.api.url}/tx/#{tx}"
     #console.log(\insight-out, t)
-    { network, tx, amount, fee, time, url, to, pending, from }
+    { tx, amount, url, to, pending, from }
 transform-tx = (config, t)-->
-    self-sender =
-        t.vin ? []
-            |> find -> it.addr is config.address
+    self-sender = find -> it.address is config.address
     return transform-in config, t if not self-sender?
     transform-out config, t
 get-api-url = (network)->
@@ -345,9 +329,9 @@ export get-transactions = ({ network, address}, cb)->
     return cb err if err?
     err, result <- json-parse data.text
     return cb err if err?
-    return cb "Unexpected result" if typeof! result?txs isnt \Array
+    return cb "Unexpected result" if typeof! result isnt \Array
     txs =
-        result.txs
+        result
             |> map transform-tx { net: network, address }
             |> filter (?)
     cb null, txs

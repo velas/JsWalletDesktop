@@ -17,7 +17,7 @@ require! {
     \./pages/hovered-address.ls
     \react-detect-offline : { Offline, Online }
 }
-# .app-1284944884
+# .app-792240082
 #     input
 #         line-height: normal !important
 #     &::-webkit-scrollbar
@@ -28,6 +28,28 @@ require! {
 #         outline: none
 #     ::-webkit-scrollbar
 #         display: none
+#     .table-scroll
+#         scrollbar-width: thin
+#         display: block !important
+#         -ms-overflow-style: block !important
+#         scrollbar-width: thin !important
+#         outline: block !important
+#         scrollbar-color: var(--ligh-text) #f8f5f60d
+#     .table-scroll::-webkit-scrollbar
+#         width: 4px
+#         height: 4px
+#         display: block
+#     .table-scroll::-webkit-scrollbar-track
+#         background: #f8f5f60d
+#         border-radius: 10px
+#     .table-scroll::-webkit-scrollbar-thumb
+#         border-radius: 10px
+#         background: #71748f 
+#     .table-scroll::-webkit-scrollbar-thumb:hover
+#         background: #ffffff
+#         border-radius: 10px
+#     .table-scroll::-webkit-scrollbar-corner
+#         background: #f8f5f60d
 #     user-select: none
 #     overflow-y: scroll
 #     @import scheme
@@ -185,7 +207,7 @@ module.exports = ({ store, web3t })->
     react.create-element 'div', {}, children = 
         define-root store
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app-1284944884" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app-792240082" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

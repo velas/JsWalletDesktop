@@ -124,12 +124,14 @@ module.exports = (store, web3t)->
         if store.menu.show then \show else \ ""
     show = ->
         store.menu.show = not store.menu.show
+    search-on-change = (event) ->
+        store.current.search = event.target.value
     react.create-element 'div', { style: header, className: 'header header162830242' }, children = 
         react.create-element 'div', { className: 'left-side' }, children = 
             react.create-element 'button', { style: button-add, on-click: show, className: "#{show-class} button menu" }, children = 
                 react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }
             react.create-element 'div', { className: 'search-area' }, children = 
-                react.create-element 'input', { type: 'text', style: input-style, placeholder: "Search" }
+                react.create-element 'input', { type: 'text', style: input-style, placeholder: "Search", value: store.current.search, on-change: search-on-change }
                 react.create-element 'img', { src: "#{icons.search}", style: icon-color }
             add-wallet { store, web3t }
         react.create-element 'div', { style: right-side, className: 'right-side' }, children = 

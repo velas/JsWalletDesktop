@@ -143,7 +143,9 @@
               }
               return jsonParse(text, function(err, body){
                 if (err != null) {
-                  return cb(err);
+                  return cb(err, {
+                    text: text
+                  });
                 }
                 cb(null, {
                   body: body,
@@ -189,7 +191,9 @@
           return tor.request(url, body, function(err, res, text){
             return jsonParse(text, function(err, body){
               if (err != null) {
-                return cb(err);
+                return cb(err, {
+                  text: text
+                });
               }
               console.log('make-tor-request', method, url, err, body);
               cb(null, {

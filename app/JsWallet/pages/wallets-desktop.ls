@@ -207,7 +207,7 @@ mobile = ({ store, web3t })->
     lang = get-lang store
     row =
         display: "flex"
-        height: "calc( 100vh - 60px )"
+        height: "calc( 100vh - 61px )"
         overflow: "hidden"
     left-side =
         min-width: "200px"
@@ -287,6 +287,7 @@ mobile = ({ store, web3t })->
                             your-account store, web3t
                     react.create-element 'div', { key: "wallets-viewport", className: 'wallet-container' }, children = 
                         wallets
+                            |> filter ({coin}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1
                             |> map wallet store, web3t, wallets
             react.create-element 'div', { style: right-side, className: 'show-detail' }, children = 
                 wallet-expanded store, web3t, wallets, wallet-detail

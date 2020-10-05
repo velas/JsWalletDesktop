@@ -755,6 +755,9 @@ render-transaction = (store, web3t, tran)-->
         return \none if not tx?
         t = tx.to-string!
         r = t.substr(0, 15) + \.. + t.substr(t.length - 15, 15)
+    time-ago =
+        | time => ago time
+        | _ => ""
     react.create-element 'div', { key: "#{tx + type}", style: border-style, className: "#{type} record" }, children = 
         react.create-element 'div', { style: line-style, className: 'tx-top' }, children = 
             react.create-element 'div', { className: 'cell text-center network' }, children = 
@@ -781,8 +784,7 @@ render-transaction = (store, web3t, tran)-->
                                 react.create-element 'img', { src: "#{about-icon}", className: 'help' }
                             react.create-element 'span', {}, ' ' + lang.to
             react.create-element 'div', { className: 'cell created' }, children = 
-                react.create-element 'div', { className: 'time-ago' }, children = 
-                    """#{ago time}"""
+                react.create-element 'div', { className: 'time-ago' }, ' ' + time-ago
             react.create-element 'div', { style: menu-style, className: 'cell amount' }, children = 
                 react.create-element 'div', { title: "#{amount}", style: amount-pending }, children = 
                     react.create-element 'span', { className: 'sign direction' }, ' ' + sign(type)
