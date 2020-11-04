@@ -14,7 +14,7 @@ require! {
     \../components/address-holder.ls
 }
 #
-# .wallet91254075
+# .wallet-1038230902
 #     @import scheme
 #     $cards-height: 324px
 #     $pad: 20px
@@ -96,23 +96,29 @@ require! {
 #             vertical-align: top
 #             padding-top: 12px
 #             height: $card-top-height
+#             line-height: 16px
 #         >.top-left
 #             width: 30%
 #             text-align: left
 #             overflow: hidden
 #             text-overflow: ellipsis
+#             @media screen and (min-width: 801px)
+#                 padding-top: 5px
 #             >*
 #                 display: inline-block
 #             >.img
 #                 line-height: $card-top-height
 #                 vertical-align: top
-#                 margin-right: 5px
+#                 margin-right: 10px
+#                 width: 40px
 #                 >img
 #                     vertical-align: top
 #                     max-width: 50px
 #                     $s: 35px
 #                     border-radius: 0
 #                     height: $s
+#                     @media screen and (min-width: 801px)
+#                         padding-top: 4px
 #             >.info
 #                 text-align: left
 #                 margin-left: 0px
@@ -124,11 +130,16 @@ require! {
 #                 >.name
 #                     padding-left: 3px
 #                 >.price
-#                     font-size: 12px
+#                     font-size: 11px
 #                     font-weight: bold
 #                     overflow: hidden
 #                     text-overflow: ellipsis
 #                     opacity: .5
+#                     padding: 0
+#                     letter-spacing: .4px
+#                     &.token
+#                         opacity: 1
+#                         font-size: 12px
 #         >.top-middle
 #             width: 30%
 #             text-align: center
@@ -211,6 +222,7 @@ module.exports = (store, web3t, wallets, wallet)-->
         border: "0"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     address-input=
         color: style.app.color3
         background: style.app.bg-primary-light
@@ -245,13 +257,17 @@ module.exports = (store, web3t, wallets, wallet)-->
     #    #store.current.token-migration = "V123"
     receive-click = receive(wallet)
     send-click = send(wallet)
-    react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{big} wallet wallet91254075" }, children = 
+    react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{big} wallet wallet-1038230902" }, children = 
         react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
                     react.create-element 'img', { src: "#{wallet.coin.image}" }
                 react.create-element 'div', { className: 'info' }, children = 
                     react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
+                    if store.current.device is \desktop
+                        react.create-element 'div', { title: "#{wallet.balance}", className: "#{placeholder} price token" }, children = 
+                            react.create-element 'span', {}, ' ' +  round-human wallet.balance 
+                            react.create-element 'span', {}, ' ' +  wallet.coin.token.to-upper-case! 
                     react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
                         react.create-element 'span', {}, ' ' +  round-human balance-usd
                         react.create-element 'span', {}, ' USD'
@@ -266,7 +282,6 @@ module.exports = (store, web3t, wallets, wallet)-->
                         if +wallet.pending-sent >0
                             react.create-element 'div', { className: 'pending' }, children = 
                                 react.create-element 'span', {}, ' -' +  pending 
-                    react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, ' $' +  round-human balance-usd 
             react.create-element 'div', { className: 'top-right' }, children = 
                 if store.current.device is \desktop
                     if no

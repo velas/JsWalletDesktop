@@ -203,6 +203,35 @@ add-by-address = (store, web3t)->
         react.create-element 'input', { placeholder: "0x....", value: "#{store.contract-address}", on-change: coin-contract, style: input-style, className: 'search' }
         react.create-element 'button', { on-click: add, style: button-style }, children = 
             icon \Plus, 20
+add-by-vlxaddress = (store, web3t)->
+    coin-contract = (e)->
+        store.contract-vlxaddress = e.target.value
+    not-found = ->
+        store.contract-vlxaddress = "Not Found"
+        <- set-timeout _, 1000
+        store.contract-vlxaddress = ""
+    add = ->
+        err, data <- get "https://registry.web3.space/token/#{store.contract-vlxaddress}" .end
+        return not-found! if err? or not data.body?token?
+        <- web3t.install-quick data.body
+        store.current.add-vlxcoin = no
+    style = get-primary-info store
+    button-style =
+        border: "1px solid #{style.app.text}"
+        color: style.app.text
+    input-style=
+        color: style.app.text
+        background: style.app.bg-primary-light
+        border: "0"
+    erc-bg=
+        background: style.app.bg-primary-light
+    background =
+        background: style.app.input
+    react.create-element 'div', { style: background, className: 'item' }, children = 
+        react.create-element 'img', { src: "#{icons.vlx-icon}", style: erc-bg }
+        react.create-element 'input', { placeholder: "V....", value: "#{store.contract-vlxaddress}", on-change: coin-contract, style: input-style, className: 'search' }
+        react.create-element 'button', { on-click: add, style: button-style }, children = 
+            icon \Plus, 20
 module.exports = ({ store, web3t } )->
     return null if store.current.add-coin isnt yes
     close = ->
@@ -212,6 +241,7 @@ module.exports = ({ store, web3t } )->
     style = get-primary-info store
     account-body-style =
         background: style.app.background
+        background-color: style.app.bgspare
         color: style.app.text
     color =
         color: style.app.text
@@ -220,6 +250,8 @@ module.exports = ({ store, web3t } )->
         color: style.app.text
         background: style.app.input
         border: "0"
+#    add-by-address store, web3t
+#    add-by-vlxaddress store, web3t
     react.create-element 'div', { className: 'manage-account manage-account366755008' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, children = 
@@ -234,9 +266,8 @@ module.exports = ({ store, web3t } )->
             react.create-element 'div', { className: 'settings' }, children = 
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'list' }, children = 
-                        add-by-address store, web3t
-                        if store.registry.length > 0
-                            store.registry 
+                        if store.registry.length > -1
+                            store.registry
                                 |> filter filter-item store
                                 |> map create-item { store, web3t }
                         else

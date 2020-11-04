@@ -9,7 +9,7 @@ require! {
     \../../web3t/providers/deps.ls : { bip39 }
     \../components/typeahead.ls
 }
-# .newseed-13093675
+# .newseed2001585109
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -151,7 +151,7 @@ require! {
 #                     line-height: 11px
 #                     @media(max-width: 500px)
 #                         margin-right: 5px
-#                 &.effect    
+#                 &.effect
 #                     &:last-child
 #                         background: #7651ae
 #                         color: #fff
@@ -188,8 +188,13 @@ restore-words = (store, web3t, next, item)-->
     on-key-down = ->
         next! if it.key-code is 13
     react.create-element 'div', { style: seed-style, className: 'word' }, children = 
-        typeahead { store, value: item.part, placeholder: "#{lang.word} ##{index}", on-change: change-part, on-key-down, list }
-        react.create-element 'span', { className: 'effect' }, ' ' + index
+        if store.current.seed-words.length is 1
+            react.create-element 'textarea', { value: "#{item.part}", placeholder: "Enter your custom seed phrase here. Please check your addresses and balances before use.", on-change: change-part }
+        else
+            [
+                typeahead { store, value: item.part, placeholder: "#{lang.word} ##{index}", on-change: change-part, on-key-down, list }
+                react.create-element 'span', { className: 'effect' }, ' ' + index
+            ]
 restore-words-panel = (store, web3t)->
     lang = get-lang store
     { save } = newseed-funcs store, web3t
@@ -198,10 +203,12 @@ restore-words-panel = (store, web3t)->
         border: "0"
         color: style.app.text
         background: style.app.primary1
+        background-color: style.app.primary1-spare
     button-primary3-style=
         border: "0"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     btn-icon =
         filter: style.app.btn-icon
     text-style =
@@ -211,7 +218,7 @@ restore-words-panel = (store, web3t)->
     next = ->
         max = store.current.seed-words.length - 1
         word = (store.current.seed-words |> sort-by (.index))[store.current.verify-seed-index].part
-        if word not in bip39.wordlists.EN
+        if word not in bip39.wordlists.EN and store.current.seed-words.length isnt 1
             return store.current.alert = lang.wordIncorrect
         return store.current.verify-seed-index += 1 if store.current.verify-seed-index < max
         save!
@@ -220,8 +227,8 @@ restore-words-panel = (store, web3t)->
         no
     react.create-element 'div', {}, children = 
         react.create-element 'div', { className: 'words' }, children = 
-            store.current.seed-words 
-                |> sort-by (.index) 
+            store.current.seed-words
+                |> sort-by (.index)
                 |> filter current-word store.current.verify-seed-index
                 |> map restore-words store, web3t, next
         react.create-element 'div', {}, children = 
@@ -243,7 +250,7 @@ newseed = ({ store, web3t })->
     newseed-style=
         margin-bottom: "10px"
         width: "120px"
-    react.create-element 'div', { className: 'newseed newseed-13093675' }, children = 
+    react.create-element 'div', { className: 'newseed newseed2001585109' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.newseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.your-seed-phrase
         restore-words-panel store, web3t

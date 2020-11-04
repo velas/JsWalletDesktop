@@ -9,3 +9,4 @@ rm -rf ./app
 #cd ../
 
 cp -r ../JsWallet/.compiled-ssr ./app
+cp -r ../JsWallet/.compiled/main-bundle.css ./

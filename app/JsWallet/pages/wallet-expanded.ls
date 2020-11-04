@@ -192,8 +192,10 @@ module.exports = (store, web3t, wallets, wallet)-->
         color: style.app.text
     color-label=
         background: style.app.primary1
+        background-color: style.app.primary1-spare
     color-label2=
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed399861167' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 

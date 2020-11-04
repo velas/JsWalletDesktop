@@ -9,11 +9,12 @@ require! {
     \./icon.ls
     \../icons.ls
     \./header.ls
+    \../navigate.ls
     \../round-human.ls
     \../add-coin.ls
     \./tor.ls
 }
-# .menu275908657
+# .menu38900718
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -59,6 +60,12 @@ require! {
 #         vertical-align: -webkit-baseline-middle
 #         width: 100%
 #         max-width: 450px
+#         >.branding
+#             margin-top: 35px
+#             text-align: center
+#             img
+#                 width: 35px
+#                 cursor: pointer
 #         >.balance
 #             position: relative
 #             button
@@ -97,12 +104,14 @@ require! {
 #                     letter-spacing: 2px
 #                     line-height: 24px
 #                     opacity: .8
-#                     margin-top: 20px
+#                     margin-top: 5px
 #             >.amount
 #                 font-size: 25px
 #                 .symbol
 #                     font-size: 15px
 #                     vertical-align: unset
+#                     opacity: .5
+#                     margin-right: 2px
 #                 >*
 #                     display: inline-block
 #     .placeholder
@@ -132,6 +141,8 @@ module.exports = ({ store, web3t })->
     icon-style =
         color: style.app.loader
         margin-top: "10px"
+    goto-wallet = ->
+        navigate store, web3t, \wallets
     button-add=
         color: style.app.text
         border-radius: "50px"
@@ -152,6 +163,8 @@ module.exports = ({ store, web3t })->
         width: "40px"
         height: "40px"
         margin: "0px 5px 0"
+    logo-style =
+        filter: style.app.filterLogo
     lang = get-lang store
     syncing =
         | store.current.refreshing => \syncing
@@ -159,8 +172,10 @@ module.exports = ({ store, web3t })->
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu275908657' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu38900718' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
+            react.create-element 'div', { className: 'branding' }, children = 
+                react.create-element 'img', { src: "#{info.branding.logo-sm}", on-click: goto-wallet }
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 

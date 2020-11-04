@@ -1,8 +1,8 @@
 {
-  "name": "ethnamed",
-  "version": "0.13.2",
-  "description": "This dapp helps register names in Ethnamed Registry",
-  "main": "ethnamed.js",
+  "name": "velas-wallet",
+  "version": "0.13.02",
+  "description": "",
+  "main": "",
   "dependencies": {
     "@primer/octicons-react": "9.1.1",
     "atob": "2.1.2",
@@ -15,7 +15,6 @@
     "identicon": "3.0.1",
     "image-data-uri": "2.0.0",
     "localStorage": "1.0.4",
-    "lsxc": "0.0.316",
     "md5": "2.2.1",
     "mobx": "4.0.0",
     "mobx-react": "5.0.0",
@@ -38,6 +37,8 @@
     "wallet": "lsxc wallet -t index.html -wsfkibh -c main.ls",
     "wallet-fast": "lsxc wallet -t index.html -wsfkibh -c main.ls",
     "wallet-start": "lsxc wallet -t index.html -wsfkibnh -c main.ls",
+    "start": "lsxc wallet -t index.html -wsfkibnh -c main.ls",
+    "wallet-build": "lsxc wallet -t index.html -sfkibh -c main.ls",
     "sync-languages": "lsc langs/index.ls --sync"
   }
 }

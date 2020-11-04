@@ -10,7 +10,7 @@ require! {
     \../navigate.ls
     \../components/burger.ls
 }
-# .monitor-866954257
+# .monitor1137829075
 #     @import scheme
 #     margin-left: $left-margin
 #     box-sizing: border-box
@@ -48,7 +48,7 @@ require! {
 #     >.title
 #         position: sticky
 #         position: -webkit-sticky
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -156,6 +156,7 @@ header = (store, web3t)->
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
+        background-color: info.app.bgspare
     go-back = ->
         navigate store, web3t, \wallets
     show-class =
@@ -172,7 +173,7 @@ module.exports = ({ store, web3t })->
         store.peerinfo.peers 
             |> head
             |> keys
-    react.create-element 'div', { className: 'monitor monitor-866954257' }, children = 
+    react.create-element 'div', { className: 'monitor monitor1137829075' }, children = 
         header store, web3t
         react.create-element 'div', { className: 'table-scroll' }, children = 
             react.create-element 'table', {}, children = 

@@ -90,7 +90,8 @@ module.exports = (store, web3t)->
         # If cancel was pressed
         return null if not data?
         notify-form-result send.id, null, data
-        store.current.last-tx-url = "#{send.network.api.url}/tx/#{data}"
+        store.current.last-tx-url = | send.network.api.linktx => send.network.api.linktx.replace \:hash, data
+            | send.network.api.url => "#{send.network.api.url}/tx/#{data}"
         navigate store, web3t, \sent
         <- web3t.refresh
     send-escrow = ->
@@ -172,11 +173,11 @@ module.exports = (store, web3t)->
         <- change-amount store, send.amount-send, no
     choose-custom = (amount)->
         send.fee-type = \custom
-        send.fee-custom-amount = amount
+        send.amount-send-fee = send.fee-custom-amount = amount
         <- change-amount store, send.amount-send, no
-    chosen-cheap =  if send.fee-type is \cheap then \chosen else ""
-    chosen-auto  =  if send.fee-type is \auto then \chosen else ""
-    chosen-custom  =  if send.fee-type is \custom then \chosen else ""
+    chosen-cheap = if send.fee-type is \cheap then \chosen else ""
+    chosen-auto  = if send.fee-type is \auto then \chosen else ""
+    chosen-custom  = if send.fee-type is \custom then \chosen else ""
     send-options = send.coin.tx-types ? []
     pending = wallet.pending-sent + ' ' + token
     calc-amount-and-fee = (amount-send, trials, cb)->
@@ -184,6 +185,8 @@ module.exports = (store, web3t)->
         return cb "Balance is not enough to send tx" if +amount-send is 0
         account = { wallet.address, wallet.private-key }
         err, amount-send-fee <- calc-fee { token, send.network, amount: amount-send, send.fee-type, send.tx-type, send.to, send.data, account }
+        if send.fee-type is \custom
+            amount-send-fee = send.amount-send-fee
         #console.log amount-send, err
         return cb null, { amount-send, amount-send-fee } if not err?
         return cb err if err? and err isnt "Balance is not enough to send tx"
@@ -202,10 +205,10 @@ module.exports = (store, web3t)->
         #console.log { amount, wallet.balance, send.amount-send-fee }
         return cb "#{err}" if err?
         return cb "Amount is 0" if +info.amount-send is 0
-        send.amount-send = wallet.balance `minus` (wallet.pending-sent ? 0) `minus` info.amount-send-fee
+        send.amount-send = wallet.balance `minus` (wallet.pending-sent ? 0) `minus` (info.amount-send-fee ? 0)
         send.amount-send-fee = info.amount-send-fee
         <- change-amount store, send.amount-send, no
-        send.amount-send = wallet.balance `minus` (wallet.pending-sent ? 0) `minus` send.amount-send-fee
+        send.amount-send = wallet.balance `minus` (wallet.pending-sent ? 0) `minus` (send.amount-send-fee ? 0)
         cb null
     use-max-try-catch = (cb)->
         try

@@ -291,6 +291,6 @@ mobile = ({ store, web3t })->
                             |> map wallet store, web3t, wallets
             react.create-element 'div', { style: right-side, className: 'show-detail' }, children = 
                 wallet-expanded store, web3t, wallets, wallet-detail
-                react.create-element 'div', { className: 'history-area' }, children = 
+                react.create-element 'div', { key: "#{store.current.wallet-index}", className: 'history-area' }, children = 
                     history { store, web3t }
 module.exports = mobile

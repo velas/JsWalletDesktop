@@ -550,11 +550,17 @@
     return post(getApiUrl(network) + "/tx/" + sendType, {
       rawtx: rawtx
     }).end(function(err, res){
-      var ref$;
+      var ref$, ref1$;
       if (err != null) {
         return cb(err + ": " + (res != null ? res.text : void 8));
       }
-      return cb(null, (ref$ = res.body) != null ? ref$.txid : void 8);
+      if (res != null && res.error) {
+        return cb("Error: " + (res != null ? res.error : void 8));
+      }
+      if ((res != null ? (ref$ = res.body) != null ? ref$.txid : void 8 : void 8) == null) {
+        return cb("Error: " + (res != null ? res.text : void 8));
+      }
+      return cb(null, (ref1$ = res.body) != null ? ref1$.txid : void 8);
     });
   });
   out$.getTotalReceived = getTotalReceived = function(arg$, cb){

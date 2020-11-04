@@ -8,7 +8,7 @@ require! {
     \./claim-stake.ls
     \../components/burger.ls
 }
-# .claim-878661905
+# .claim-1259137236
 #     @import scheme
 #     position: relative
 #     display: block
@@ -422,7 +422,7 @@ require! {
 #     >.title
 #         position: sticky
 #         z-index: 1
-#         background: linear-gradient(100deg, rgb(51, 20, 98) 4%, rgb(21, 6, 60) 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -458,12 +458,13 @@ module.exports = ({store, web3t})->
         border: "1px solid #{info.app.primary2}"
         color: info.app.text
         background: info.app.primary2
+        background-color: info.app.primary2-spare
     header-table-style=
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
     lightText=
         color: info.app.color3
-    react.create-element 'div', { className: 'claim claim-878661905' }, children = 
+    react.create-element 'div', { className: 'claim claim-1259137236' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' Claim Reward'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

@@ -8,56 +8,97 @@ require! {
     \./deps.js : { BitcoinLib, bip39 }
 }
 get-bitcoin-fullpair-by-index = (mnemonic, index, network)->
-    seed = bip39.mnemonic-to-seed-hex mnemonic 
+    seed = bip39.mnemonic-to-seed-hex mnemonic
     hdnode = BitcoinLib.HDNode.from-seed-hex(seed, network).derive(index)
     address = hdnode.get-address!
     private-key = hdnode.key-pair.toWIF!
     public-key = hdnode.get-public-key-buffer!.to-string(\hex)
     { address, private-key, public-key }
 # https://api.omniexplorer.info/#request-v1-address-addr
-export calc-fee = ({ network, tx, tx-type, account, fee-type }, cb)->
+calc-fee-per-byte = (config, cb)->
+    { network, fee-type, account } = config
     o = network?tx-fee-options
     tx-fee = o?[fee-type] ? network.tx-fee ? 0
     return cb null, tx-fee if fee-type isnt \auto
-    err, data <- get "#{get-api-url network}/utils/estimatefee?nbBlocks=6" .timeout { deadline } .end
+    fee-type = \cheap
+    amount-fee = o.cheap
+    recipient = config.account.address
+    #console.log { config.amount, amount-fee }
+    err, data <- create-transaction { fee-type, amount-fee , recipient, ...config }
+    return cb null, o.cheap if "#{err}".index-of("Not Enough Funds (Unspent Outputs)") > -1
+    #console.log { err }
+    return cb err, o.cheap if err?
+    return cb "rawtx is expected" if typeof! data.rawtx isnt \String
+    #console.log data.rawtx
+    #bytes = decode(data.raw-tx).to-string(\hex).length / 2
+    bytes = data.rawtx.length / 2
+    infelicity = 1
+    calc-fee = (bytes + infelicity) `times` o.fee-per-byte
+    final-price =
+        | calc-fee > +o.cheap => calc-fee
+        | _ => o.cheap
+    cb null, final-price
+calc-dynamic-fee = ({ network, tx, tx-type, account, fee-type }, cb)->
+    o = network?tx-fee-options
+    tx-fee = o?[fee-type] ? network.tx-fee ? 0
+    return cb null, tx-fee if fee-type isnt \auto
+    network-name = global.store?.current?.network || \mainnet
+    err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline } .end
     return cb err if err?
     vals = values data.body
     exists = vals.0 ? -1
-    calced-fee = 
+    calced-fee =
         | vals.0 is -1 => network.tx-fee
         | _ => vals.0
     cb null, calced-fee
+get-calc-fee-func = (network)->
+    | network?tx-fee-auto-mode is \per-byte => calc-fee-per-byte
+    | _ => calc-dynamic-fee
+calc-fee-private = (config, cb)->
+    { network, tx, tx-type, account, fee-type } = config
+    return cb "address cannot be empty" if (account?address ? "") is ""
+    o = network?tx-fee-options
+    calc-fee = get-calc-fee-func network
+    err, tx-fee <- calc-fee config
+    return cb err if err?
+    err, outputs <- get-outputs { network, account.address }
+    return cb err if err?
+    number-of-inputs = if outputs.length > 0 then outputs.length else 1
+    return cb "private-per-input is missing" if not o.private-per-input?
+    fee =
+        (tx-fee `times` 2) `plus` (number-of-inputs `times` o.private-per-input)
+    cb null, fee
+calc-fee-instantx = ({ network, tx, tx-type, account, fee-type }, cb)->
+    return cb "address cannot be empty" if (account?address ? "") is ""
+    o = network?tx-fee-options
+    calc-fee = get-calc-fee-func network
+    err, tx-fee <- calc-fee { network, tx, tx-type, account, fee-type }
+    return cb err if err?
+    err, outputs <- get-outputs { network, account.address }
+    return cb err if err?
+    number-of-inputs = if outputs.length > 0 then outputs.length else 1
+    return cb "instant-per-input is missing" if not o.instant-per-input?
+    fee =
+        (number-of-inputs `times` o.instant-per-input)
+    cb null, fee
+export calc-fee = (config, cb)->
+    { network, tx, tx-type, account } = config
+    return calc-fee-private config, cb if tx-type is \private
+    return calc-fee-instantx config, cb if tx-type is \instant
+    calc-fee = get-calc-fee-func network
+    calc-fee config, cb
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-bitcoin-fullpair-by-index mnemonic, index, network
     cb null, result
-#const simple_send = [
-#    "6f6d6e69", // omni
-#    "0000",     // version
-#    "00000000001f", // 31 for Tether
-#    "000000003B9ACA00" // amount = 10 * 100 000 000 in HEX
-#  ].join('')
-#
-#  const data = Buffer.from(simple_send, "hex")
-#  const omniOutput = bitcoin.script.compile([
-#    bitcoin.opcodes.OP_RETURN,
-#    // payload for OMNI PROTOCOL:
-#    data
-#  ])
-#
-#  tx.addOutput(recipient_address, fundValue) // should be first!
-#  tx.addOutput(omniOutput, 0)
-#
-#  tx.addOutput(alice_address, skipValue)
-#get-outputs = ({ network, address} , cb)-->
-#    { btc-api-url } = network.api
-#    body <- get "#{btc-api-url}/api/addr/#{address}/utxo" .then
-#    err, result <- json-parse body.text
-#    return cb err if err?
-#    return cb "Result is not an array" if typeof! result isnt \Array
-#    result
-#        |> each add-value network
-#        |> map extend { network, address }
-#        |> -> cb null, it
+extend = (add, json)--> json <<< add
+get-dec = (network)->
+    { decimals } = network
+    10^decimals
+add-amount = (network, it)-->
+    dec = get-dec network
+    it.amount =
+        | it.value? => it.value `div` dec
+        | _ => 0
 extend-num = (str, fixed)->
     return str if str.length >= fixed
     extend-num "0#{str}", fixed
@@ -67,22 +108,34 @@ to-hex = (num, fixed)->
     extend-num n, fixed
 get-api-url = (network)->
     api-name = network.api.api-name ? \api
-    "#{network.api.api-url-btc}/#{api-name}"
+    network-name = global.store?.current?.network || \mainnet
+    "#{network.api.api-url-btc}/#{api-name}/BTC/#{network-name}"
+get-outputs = ({ network, address} , cb)-->
+    { url } = network.api
+    err, data <- get "#{get-api-url network}/address/#{address}/?unspent=true" .timeout { deadline } .end
+    return cb "cannot get outputs - err #{err.message ? err}" if err?
+    #mock
+    data.body
+        |> each add-amount network
+        |> filter (.value?)
+        |> map extend { network, address}
+        |> -> cb null, it
 add-value = (network, it)-->
     dec = get-dec network
     it.value =
         | it.satoshis? => it.satoshis
         | it.amount? => it.amount `times` dec
         | _ => 0
-get-outputs = ({ network, address} , cb)-->
-    { url } = network.api
-    err, data <- get "#{get-api-url network}/addr/#{address}/utxo" .timeout { deadline } .end
-    return cb err if err?
-    return cb "Result is not an array" if typeof! data.body isnt \Array
-    data.body
-        |> each add-value network
-        |> map extend { network, address }
-        |> -> cb null, it
+add-outputs = (config, cb)->
+    { tx-type, total, value, fee, tx, recipient, account } = config
+    return cb "fee, value, total are required" if not fee? or not value? or not total?
+    return add-outputs-private config, cb if tx-type is \private
+    rest = total `minus` value `minus` fee
+    tx.add-output recipient, +value
+    #console.log { rest }
+    if +rest isnt 0
+        tx.add-output account.address, +rest
+    cb null
 export create-transaction = ({ network, account, recipient, amount, amount-fee, fee-type, tx-type, spender }, cb)->
     err, outputs <- get-outputs { network, account.address }
     return cb err if err?
@@ -94,7 +147,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     value = amount `times` dec
     fee = amount-fee `times` dec
     dust = 546
-    total = 
+    total =
         outputs
             |> map (.value)
             |> sum
@@ -117,18 +170,17 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     if +rest isnt 0
         tx.add-output account.address, +rest
     apply = (output, i)->
-        tx.add-input output.txid, output.vout, 0xfffffffe
+        tx.add-input output.mint-txid, output.mint-index
     sign = (output, i)->
         key = BitcoinLib.ECPair.fromWIF account.private-key, network
-        tx.sign i, key  
+        tx.sign i, key
     outputs.for-each apply
     outputs.for-each sign
     rawtx = tx.build!.to-hex!
-    #console.log 5
     cb null, { rawtx }
 transform-tx = ({ network, address }, t)-->
     { url } = network.api
-    network = \usdt 
+    network = \usdt
     dec = get-dec network
     tx = t.txid
     amount = t.amount
@@ -158,7 +210,7 @@ get-dec = (network)->
 export check-decoded-data = (decoded-data, data)->
     cb null, ''
 export push-tx = ({ network, rawtx } , cb)-->
-    err, res <- post "#{get-api-url network}/tx/send", { rawtx } .end
+    err, res <- post "#{get-api-url network}/tx/send", { raw-tx: rawtx } .end
     return cb err if err?
     cb null, res.body?txid
 #export push-tx = ({ network, rawtx } , cb)-->
@@ -185,7 +237,7 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
     cb "Not Implemented"
 get-data = (data, cb)->
     #return cb null, data.body if typeof! data.body is \Object
-    try 
+    try
         res = JSON.parse data.text
         cb null, res
     catch err

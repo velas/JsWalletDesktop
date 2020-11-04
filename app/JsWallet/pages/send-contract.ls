@@ -16,7 +16,7 @@ require! {
     \./send.ls
     \../get-tx-details.ls
 }
-# .content152784265
+# .content-824167059
 #     position: relative
 #     @import scheme
 #     $border-radius: $border
@@ -34,7 +34,7 @@ require! {
 #     >.title
 #         position: sticky
 #         position: -webkit-sticky
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -169,6 +169,7 @@ send-contract = ({ store, web3t })->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.background
+        background-color: style.app.bgspare
     lang = get-lang store
     wallet-title = "#{name + network} #{lang.wallet ? 'wallet'}"
     show-class =
@@ -176,7 +177,7 @@ send-contract = ({ store, web3t })->
     text-parts = get-tx-details store, web3t
     see-details = ->
         send.details = yes
-    react.create-element 'div', { className: 'content content152784265' }, children = 
+    react.create-element 'div', { className: 'content content-824167059' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.send
             react.create-element 'div', { on-click: cancel, className: 'close' }, children = 

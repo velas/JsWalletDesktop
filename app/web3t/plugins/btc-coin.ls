@@ -10,6 +10,7 @@ export mainnet =
     api:
         provider: \bitcore
         url: \https://api.bitcore.io
+        linktx: \https://bitpay.com/insight/#/BTC/mainnet/tx/:hash
         decimal: 8
         alternative:
             balance: \https://blockchain.info/q/addressbalance/:address
@@ -27,10 +28,15 @@ export testnet =
     decimals: 8
     mask: '1000000000000000000000000000000000'
     api:
-        api-name: \testnet/api
-        provider: \blockstream
-        url: \https://blockstream.info
+        #api-name: \testnet/api
+        provider: \bitcore
+        url: \https://api.bitcore.io
+        linktx: \https://bitpay.com/insight/#/BTC/testnet/tx/:hash
         decimal: 8
+    tx-fee-options:
+        auto: \0.000001
+        cheap: \0.0000004
+        fee-per-byte: \0.0000005
     messagePrefix: '\x18Bitcoin Signed Message:\n'
     topup: \https://testnet.manu.backend.hamburg/faucet
     bech32: 'tb'

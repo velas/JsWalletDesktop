@@ -9,7 +9,7 @@ require! {
     \../icons.ls
     \../history-funcs.ls
 }
-# .convert1552559170
+# .convert-710266440
 #     @import scheme
 #     position: relative
 #     display: block
@@ -29,7 +29,6 @@ require! {
 #     >.title
 #         position: sticky
 #         position: -webkit-sticky
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -122,9 +121,10 @@ convert = ({ store, web3t })->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.background
+        background-color: style.app.bgspare
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'convert convert1552559170' }, children = 
+    react.create-element 'div', { className: 'convert convert-710266440' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Convert'

@@ -171,7 +171,9 @@ get-internal-transactions = ({ network, address }, cb)->
     endblock = 99999999
     sort = \asc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
-    query = stringify { module, action, apikey, address, sort, startblock, endblock }
+    page = 1
+    offset = 100
+    query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text
@@ -188,9 +190,11 @@ get-external-transactions = ({ network, address }, cb)->
     action = \txlist
     startblock = 0
     endblock = 99999999
+    page = 1
+    offset = 100
     sort = \asc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
-    query = stringify { module, action, apikey, address, sort, startblock, endblock }
+    query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text
@@ -201,9 +205,11 @@ get-external-transactions = ({ network, address }, cb)->
     #console.log api-url, result.result, txs
     cb null, txs
 export get-transactions = ({ network, address }, cb)->
-    err, external <- get-external-transactions { network, address }
+    page = 1
+    offset = 100
+    err, external <- get-external-transactions { network, address, page, offset }
     return cb err if err?
-    err, internal <- get-internal-transactions { network, address }
+    err, internal <- get-internal-transactions { network, address, page, offset }
     return cb err if err?
     all = external ++ internal
     ordered =

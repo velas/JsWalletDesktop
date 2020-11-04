@@ -185,6 +185,7 @@ switch-account = (store, web3t)->
         border: "1px solid #{style.app.wallet}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     react.create-element 'div', { style: color, className: 'switch-account' }, children = 
         react.create-element 'div', { className: 'mb-12' }, ' Account Index:'
         react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button left' }, children = 
@@ -214,10 +215,12 @@ manage-account = (store, web3t)->
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     button-primary3-style=
         border: "1px solid #{style.app.border}"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     goto-terms = ->
         navigate store, web3t, \terms2
     goto-privacy = ->
@@ -256,6 +259,7 @@ module.exports = ({ store, web3t } )->
     style = get-primary-info store
     account-body-style =
         background: style.app.background
+        background-color: style.app.bgspare
         color: style.app.text
     border-style =
         background: style.app.header

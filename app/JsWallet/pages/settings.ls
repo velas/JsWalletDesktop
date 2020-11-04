@@ -13,7 +13,7 @@ require! {
     \./choose-themes.ls
     \prelude-ls : { obj-to-pairs, pairs-to-obj, map }
 }
-# .settings-menu1515647675
+# .settings-menu1222193239
 #     @import scheme
 #     position: relative
 #     display: block
@@ -33,7 +33,7 @@ require! {
 #         position: sticky
 #         position: -webkit-sticky
 #         z-index: 1
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -436,6 +436,7 @@ switch-account = (store, web3t)->
         border: "1px solid #{style.app.wallet}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     react.create-element 'div', { style: color, className: 'switch-account' }, children = 
         react.create-element 'div', { className: 'mb-12' }, ' ' + lang.account-index + ':'
         react.create-element 'span', { on-click: account-left, style: button-primary2-style, className: 'button left' }, children = 
@@ -483,6 +484,7 @@ manage-account = (store, web3t)->
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     goto-terms = ->
         navigate store, web3t, \terms2
     goto-privacy = ->
@@ -550,8 +552,9 @@ module.exports = ({ store, web3t } )->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.background
+        background-color: style.app.bgspare
     lang = get-lang store
-    react.create-element 'div', { className: 'settings-menu settings-menu1515647675' }, children = 
+    react.create-element 'div', { className: 'settings-menu settings-menu1222193239' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

@@ -3,16 +3,18 @@
   var mainnet, testnet, type, enabled, token, name, color, image, usdInfo, out$ = typeof exports != 'undefined' && exports || this;
   out$.mainnet = mainnet = {
     decimals: 8,
-    txFee: '0.0001',
+    txFee: '0.0000004',
+    txFeeAutoMode: 'per-byte',
     txFeeOptions: {
-      cheap: '0.00005546',
-      auto: '0.0002'
+      cheap: '0.0000004',
+      auto: '0.000001',
+      feePerByte: '0.0000005'
     },
     txFeeIn: 'btc',
     mask: '1000000000000000000000000000000000',
     api: {
       apiUrl: 'https://api.omniwallet.org',
-      apiUrlBtc: 'https://insight.bitpay.com',
+      apiUrlBtc: 'https://api.bitcore.io',
       provider: 'omni',
       url: 'https://omniexplorer.info',
       decimal: 8

@@ -374,6 +374,9 @@ module.exports = (store, web3)->
     lock = ->
         navigate store, web3t, \locked
         store.menu.show = no
+    goto-support = ->
+        store.menu.show = no
+        window.open(store.menu.support)
     open-submenu = ->
         store.current.submenu = not store.current.submenu
     menu-staking =
@@ -424,6 +427,11 @@ module.exports = (store, web3)->
                     react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
                         react.create-element 'img', { src: "#{icons.setting}" }
                         react.create-element 'label', {}, ' ' + lang.settings
+            if store.preference.settings-visible is yes
+                if store.current.device is \mobile
+                    react.create-element 'div', { on-click: goto-support, style: icon-style, className: 'menu-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.support}" }
+                        react.create-element 'label', {}, ' ' + lang.support
             if store.preference.lock-visible is yes
                 if store.current.device is \mobile    
                     react.create-element 'div', { on-click: lock, style: lock-style, className: 'menu-item' }, children = 

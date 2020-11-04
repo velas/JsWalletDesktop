@@ -7,14 +7,14 @@ require! {
     \../icons.ls
     \prelude-ls : { map, each, sort-by }
 }
-# .newseed-restore241161488
+# .newseed-restore-873991282
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
 #     height: $height
 #     box-sizing: border-box
 #     height: 100%
-#     >.logo 
+#     >.logo
 #         margin: 3rem 0
 #         >img
 #             height: 80px
@@ -148,14 +148,17 @@ newseed = ({ store, web3t })->
         border: "0"
         color: style.app.text
         background: style.app.primary1
+        background-color: style.app.primary1-spare
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     button-primary3-style=
         border: "0"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     logo-style =
         filter: style.app.filterLogo
     expand-collapse = ->
@@ -171,6 +174,7 @@ newseed = ({ store, web3t })->
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     new-wallet = ->
         generate-seed!
         next!
@@ -187,9 +191,10 @@ newseed = ({ store, web3t })->
         next!
     restore12 = restore-wallet 12
     restore24 = restore-wallet 24
+    restorecustom = restore-wallet 1
     back = ->
         store.current.page = 'chooseinit'
-    react.create-element 'div', { className: 'newseed-restore newseed-restore241161488' }, children = 
+    react.create-element 'div', { className: 'newseed-restore newseed-restore-873991282' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}" }
             react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
@@ -203,6 +208,10 @@ newseed = ({ store, web3t })->
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ 24 #{lang.restore-words24}"""
+            react.create-element 'button', { style: button-primary1-style, on-click: restorecustom, className: 'right' }, children = 
+                react.create-element 'span', {}, children = 
+                    react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
+                    """ Custom"""
             react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.back}"""

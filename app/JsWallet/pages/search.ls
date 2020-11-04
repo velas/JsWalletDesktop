@@ -13,7 +13,7 @@ require! {
     \./alert-demo.ls
     \../components/burger.ls
 }
-# .search387197721
+# .search-1018737767
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -31,7 +31,7 @@ require! {
 #     background: transparent
 #     .search-input
 #         position: fixed
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         z-index: 1
 #         width: 100%
 #     @media(max-width:$ipad)
@@ -136,7 +136,7 @@ require! {
 #     >.title
 #         position: sticky
 #         position: -webkit-sticky
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -275,6 +275,7 @@ dapps = (store, web3t)->
         border: "1px solid #{info.app.primary2}"
         color: info.app.text
         background: info.app.primary2
+        background-color: info.app.primary2-spare
     header-table-style=
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
@@ -291,6 +292,7 @@ dapps = (store, web3t)->
         border: "1px solid #{info.app.primary1}"
         color: info.app.text
         background: info.app.primary1
+        background-color: info.app.primary1-spare
     input-style=
         background: info.app.input
         border: "0"
@@ -437,10 +439,12 @@ search = ({ store, web3t })->
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
+        background-color: info.app.bgspare
     border-style3 =
         color: info.app.text
         border-bottom: "0"
         background: info.app.background
+        background-color: info.app.bgspare
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -448,6 +452,7 @@ search = ({ store, web3t })->
         border: "1px solid #{info.app.primary2}"
         color: info.app.text
         background: info.app.primary2
+        background-color: info.app.primary2-spare
     header-table-style=
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
@@ -464,6 +469,7 @@ search = ({ store, web3t })->
         border: "1px solid #{info.app.primary1}"
         color: info.app.text
         background: info.app.primary1
+        background-color: info.app.primary1-spare
     input-style=
         background: info.app.input
         border: "0"
@@ -488,7 +494,7 @@ search = ({ store, web3t })->
     active-files = active-class \files
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'search search387197721' }, children = 
+    react.create-element 'div', { className: 'search search-1018737767' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.search

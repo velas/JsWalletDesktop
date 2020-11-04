@@ -37,7 +37,7 @@ require! {
     \../seed.ls : seedmem
     \../components/burger.ls
 }
-# .staking-632843422
+# .staking-1597922539
 #     @import scheme
 #     position: relative
 #     display: block
@@ -520,7 +520,7 @@ require! {
 #         position: sticky
 #         position: -webkit-sticky
 #         z-index: 1
-#         background: linear-gradient(100deg, rgb(51, 20, 98) 4%, rgb(21, 6, 60) 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -571,6 +571,7 @@ staking-content = (store, web3t)->
         border: "1px solid #{style.app.primary3}"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     filter-icon=
         filter: style.app.filterIcon
     comming-soon =
@@ -869,6 +870,7 @@ staking = ({ store, web3t })->
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
+        background-color: info.app.bgspare
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -885,7 +887,7 @@ staking = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-632843422' }, children = 
+    react.create-element 'div', { className: 'staking staking-1597922539' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

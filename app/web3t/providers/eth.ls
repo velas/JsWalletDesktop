@@ -38,7 +38,7 @@ export calc-fee = ({ network, fee-type, account, amount, to, data }, cb)->
         | _ => 0
     #err, nonce <- get-nonce { account, network }
     #return cb err if err?
-    data-parsed = 
+    data-parsed =
         | data? => data
         | _ => '0x'
     from = account.address
@@ -81,7 +81,7 @@ export get-transactions = ({ network, address }, cb)->
     err, result <- json-parse resp.text
     return cb "cannot parse json: #{err.message ? err}" if err?
     return cb "Unexpected result" if typeof! result?result isnt \Array
-    txs = 
+    txs =
         result.result |> map transform-tx network
     #console.log api-url, result.result, txs
     cb null, txs
@@ -105,7 +105,7 @@ try-get-lateest = ({ network, account }, cb)->
     next = +from-hex(nonce)
     cb null, next
 get-nonce = ({ network, account }, cb)->
-    #err, nonce <- web3.eth.get-transaction-count 
+    #err, nonce <- web3.eth.get-transaction-count
     err, nonce <- make-query network, \eth_getTransactionCount , [ account.address, \pending ]
     return try-get-lateest { network, account }, cb if err? and "#{err.message ? err}".index-of('not implemented') > -1
     return cb "cannot get nonce (pending) - err: #{err.message ? err}" if err?
@@ -145,7 +145,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas: to-hex gas-estimate
         to: recipient
         from: account.address
-        data: data ? ""
+        data: data ? \0x
         #chainId: 1
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex

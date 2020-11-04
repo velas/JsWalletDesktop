@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./menu.ls
 }
-# .menu1863352157
+# .menu1864322263
 #     @import scheme
 #     width: 100%
 #     text-align: right
@@ -25,10 +25,6 @@ require! {
 #         padding: 0
 #         padding-top: 0px
 #         z-index: 11
-#         background-image: $logo-op
-#         background-repeat: no-repeat
-#         background-position: 50% 120px
-#         background-size: 130px
 #         transition: all .5s
 #         .closed
 #             display: none
@@ -59,7 +55,7 @@ require! {
 #             position: absolute
 #             top: calc(4*60px)
 #             width: 100%
-#         .logo
+#         .info
 #             position: absolute
 #             width: 100%
 #             text-align: center
@@ -317,6 +313,9 @@ module.exports = (store, web3t)->
     goto-settings = ->
         navigate store, web3t, \settings
         store.menu.show = no
+    goto-support = ->
+        store.menu.show = no
+        window.open(store.menu.support)
     goto-file-storage = ->
         navigate store, web3t, \filestorage
     goto-staking = ->
@@ -359,11 +358,10 @@ module.exports = (store, web3t)->
         if store.menu.show then \active else \ ""
     close = ->
         store.menu.show = no
-    react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu1863352157" }, children = 
+    react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu1864322263" }, children = 
         react.create-element 'div', { on-click: close, className: "#{show-mobile} closed" }, children = 
             icon \X, 20
-        react.create-element 'div', { className: 'logo' }, children = 
-            react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style, on-click: goto-wallet }
+        react.create-element 'div', { className: 'info' }, children = 
             version store, web3t
         menu { store, web3t }
         react.create-element 'div', { className: 'menu-items' }, children = 
@@ -376,7 +374,7 @@ module.exports = (store, web3t)->
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
                     react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
                     react.create-element 'img', { src: "#{icons.arrow-down}", className: 'more' }
-                    react.create-element 'div', { className: 'menu arrow_box menu1863352157' }, children = 
+                    react.create-element 'div', { className: 'menu arrow_box menu1864322263' }, children = 
                         react.create-element 'ul', {}, children = 
                             react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }
@@ -399,6 +397,10 @@ module.exports = (store, web3t)->
                 react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
                     react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
+            if store.preference.settings-visible is yes
+                react.create-element 'div', { on-click: goto-support, style: icon-style, className: 'menu-item' }, children = 
+                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
+                    react.create-element 'img', { src: "#{icons.support}", style: icon-color }
             if store.current.network is \testnet
                 react.create-element 'div', { on-click: goto-mainnet, style: icon-style, className: "#{settings} menu-item testnet" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' Testnet'

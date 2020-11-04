@@ -26,7 +26,7 @@ require! {
     \../seed.ls : seedmem
     \../components/burger.ls
 }
-# .staking-res-1500573266
+# .staking-res-76570990
 #     @import scheme
 #     position: relative
 #     display: block
@@ -313,7 +313,7 @@ require! {
 #         position: sticky
 #         position: -webkit-sticky
 #         z-index: 1
-#         background: linear-gradient(100deg, #331462 4%, #15063c 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -360,6 +360,7 @@ staking-content = (store, web3t)->
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
         background: style.app.primary2
+        background-color: style.app.primary2-spare
     button-primary4-style=
         border: "1px solid #{style.app.primary4}"
         color: style.app.text
@@ -610,6 +611,7 @@ staking = ({ store, web3t })->
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
+        background-color: info.app.bgspare
     border-right =
         color: info.app.text
         border-right: "1px solid #{info.app.border}"
@@ -617,6 +619,7 @@ staking = ({ store, web3t })->
         border: "1px solid #{info.app.primary2}"
         color: info.app.text
         background: info.app.primary2
+        background-color: info.app.primary2-spare
     header-table-style=
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.wallet-light
@@ -624,7 +627,7 @@ staking = ({ store, web3t })->
         color: info.app.color3
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking-res staking-res-1500573266' }, children = 
+    react.create-element 'div', { className: 'staking-res staking-res-76570990' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Resource Staking'

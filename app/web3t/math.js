@@ -10,14 +10,6 @@
         return '..';
       }
       try {
-        if (window.location.origin !== 'https://wallet.velas.com') {
-          if (typeof x === 'number') {
-            console.warn("Bignumber operation with number argument. It is dangerous as number->bignumber convertion causes exception sometimes");
-          }
-          if (typeof y === 'number') {
-            console.warn("Bignumber operation with number argument. It is dangerous as number->bignumber convertion causes exception sometimes");
-          }
-        }
         return new bignumber(x + '')[$](y + '').toFixed();
       } catch (e$) {
         err = e$;

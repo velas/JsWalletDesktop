@@ -35,7 +35,7 @@ require! {
     \../seed.ls : seedmem
     \../components/burger.ls
 }
-# .staking-1375742063
+# .staking326569540
 #     @import scheme
 #     position: relative
 #     display: block
@@ -458,7 +458,7 @@ require! {
 #     >.title
 #         position: sticky
 #         z-index: 1
-#         background: linear-gradient(100deg, rgb(51, 20, 98) 4%, rgb(21, 6, 60) 100%)
+#         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
 #         width: 100%
@@ -873,11 +873,6 @@ to-keystore = (store, with-keystore)->
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
     react.create-element 'li', {}, ' ' + validator
-query-is-mining-claim-call-allowed = ->
-    store.current.allow-mining-claim-call = null
-    staking-address = store.staking.keystore.staking.address
-    err, result <- web3t.velas.Staking.isMiningClaimCallAllowed staking-address
-    store.current.allow-mining-claim-call = result
 staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -890,6 +885,7 @@ staking-content = (store, web3t)->
         border: "0"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     button-primary4-style=
         border: "0"
         color: style.app.text
@@ -899,43 +895,6 @@ staking-content = (store, web3t)->
     comming-soon =
         opacity: ".3"
     pairs = store.staking.keystore
-    enable-autoclaim = (cb) ->
-        store.current.allow-mining-claim-call = null
-        data = web3t.velas.Staking.allowMiningClaimCall.get-data!
-        to = web3t.velas.Staking.address
-        amount = 0
-        err <- web3t.vlx2.send-transaction { to, amount, data, gas: 4600000, gas-price: 1000000 }
-        if err?
-            store.current.allow-mining-claim-call = false
-            console.err err
-            cb err
-            return
-        store.current.allow-mining-claim-call = true
-        console.log \allowMiningClaimCall: , err
-        cb!
-    disable-autoclaim = (cb) ->
-        store.current.allow-mining-claim-call = null
-        data = web3t.velas.Staking.disallowMiningClaimCall.get-data!
-        to = web3t.velas.Staking.address
-        amount = 0
-        err <- web3t.vlx2.send-transaction { to, amount, data, gas: 4600000, gas-price: 1000000 }
-        if err?
-            store.current.allow-mining-claim-call = false
-            console.err err
-            cb err
-            return
-        store.current.allow-mining-claim-call = true
-        console.log \allowMiningClaimCall: , err
-        cb!
-    change-allow-mining-claim-call = ->
-        if store.current.allow-mining-claim-call is null
-            return
-        if !store.current.allow-mining-claim-call
-            <- enable-autoclaim!
-            return
-        if  store.current.allow-mining-claim-call
-            <- disable-autoclaim!
-            return
     become-or-extend-validator = (stake, pairs, cb)->
         err, pool <- web3t.velas.Staking.getStakerPools(pairs.staking.address)
         return cb err if err?
@@ -1046,23 +1005,16 @@ staking-content = (store, web3t)->
     your-staking = " #{round-human your-staking-amount}"
     vlx-token = "VLX2"
     staker-status = if store.staking.is-active-staker then \Active else \Inactive
-    is-autoclaim-disabled = store.current.allow-mining-claim-call is null
     check-uncheck = ->
         change = not store.staking.rewards.0.checked
         store.staking.rewards |> map (-> it.checked = change)
     box-background =
         background: style.app.bg-primary-light
-    autoclaim-checkbox = ->
-        if window.location.origin is \https://wallet.velas.com
-            return null
-        \Autoclaim
-        react.create-element 'input', { type: \checkbox, on-change: change-allow-mining-claim-call, checked: !!store.current.allow-mining-claim-call, disabled: is-autoclaim-disabled }
     react.create-element 'div', { className: 'staking-content' }, children = 
         #placeholder store, web3t
         alert-txn { store }
         react.create-element 'div', { className: 'form-group' }, children = 
             react.create-element 'label', { className: 'active-network' }, children = 
-                autoclaim-checkbox!
                 react.create-element 'div', { className: 'track thumb' }
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
@@ -1233,6 +1185,7 @@ staking = ({ store, web3t })->
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
+        background-color: info.app.bgspare
     border-style2 =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -1249,7 +1202,7 @@ staking = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-1375742063' }, children = 
+    react.create-element 'div', { className: 'staking staking326569540' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.staking
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -1284,7 +1237,6 @@ staking.init = ({ store, web3t }, cb)->
     cb null
 module.exports = staking
 staking.focus = ({ store, web3t }, cb)->
-    <- query-is-mining-claim-call-allowed!
     claim-stake.calc-reward store, web3t
     cb null
 #V31V1kD7DpT9eoRcdXf7T1fbFqcNh

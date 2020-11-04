@@ -821,7 +821,7 @@ render-transaction = (store, web3t, tran)-->
                         copy store
                     react.create-element 'div', { style: lightText, className: 'gray' }, children = 
                         react.create-element 'span', {}, ' ' + lang.created + ':'
-                            """ #{ago time}"""
+                            """ #{time-ago}"""
                         if pending is yes
                             react.create-element 'span', {}, children = 
                                 react.create-element 'span', { on-click: delete-pending-tx(tran), className: 'bold delete' }, ' ' + lang.delete
@@ -873,10 +873,12 @@ module.exports = ({ store, web3t })->
         border: "0"
         color: style.app.text2
         background: style.app.primary3
+        background-color: style.app.primary3-spare
     button-primary1-style=
         border: "0"
         color: style.app.text
         background: style.app.primary1
+        background-color: style.app.primary1-spare
     lightText=
         color: style.app.color3
     nothing-icon=

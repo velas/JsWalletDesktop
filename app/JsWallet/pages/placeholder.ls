@@ -5,10 +5,10 @@ require! {
     \../web3.ls
     \../get-lang.ls
 }
-# .form-group33428095
+# .form-group182007954
 #     position: absolute
 #     width: 100%
-#     background: linear-gradient(100deg, rgb(51, 20, 98) 4%, rgb(21, 6, 60) 100%)
+#     background: var(--background)
 #     z-index: 1
 #     height: 100%
 #     .section
@@ -77,7 +77,7 @@ section = (store, web3t)->
             react.create-element 'h3', {}
         react.create-element 'div', { className: 'description' }
 module.exports = (store, web3t)->
-    react.create-element 'div', { className: 'form-group form-group33428095' }, children = 
+    react.create-element 'div', { className: 'form-group form-group182007954' }, children = 
         section store, web3t
         section store, web3t
         section store, web3t

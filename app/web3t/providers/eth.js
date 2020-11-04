@@ -278,7 +278,7 @@
             gas: toHex(gasEstimate),
             to: recipient,
             from: account.address,
-            data: data != null ? data : ""
+            data: data != null ? data : '0x'
           });
           tx.sign(privateKey);
           rawtx = '0x' + tx.serialize().toString('hex');

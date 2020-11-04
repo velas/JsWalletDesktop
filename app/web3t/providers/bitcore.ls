@@ -60,10 +60,10 @@ calc-fee-per-byte = (config, cb)->
     return cb null, o.cheap if "#{err}".index-of("Not Enough Funds (Unspent Outputs)") > -1
     #console.log { err }
     return cb err, o.cheap if err?
-    return cb "rawtx is expected" if typeof! data.rawtx isnt \String
-    #console.log data.rawtx
-    #bytes = decode(data.rawtx).to-string(\hex).length / 2
-    bytes = data.rawtx.length / 2
+    return cb "raw-tx is expected" if typeof! data.raw-tx isnt \String
+    #console.log data.raw-tx
+    #bytes = decode(data.raw-tx).to-string(\hex).length / 2
+    bytes = data.raw-tx.length / 2
     infelicity = 1
     calc-fee = (bytes + infelicity) `times` o.fee-per-byte
     final-price =
@@ -74,7 +74,8 @@ calc-dynamic-fee = ({ network, tx, tx-type, account, fee-type }, cb)->
     o = network?tx-fee-options
     tx-fee = o?[fee-type] ? network.tx-fee ? 0
     return cb null, tx-fee if fee-type isnt \auto
-    err, data <- get "#{get-api-url network}/BTC/mainnet/fee/6" .timeout { deadline } .end
+    network = global.store?.current?.network || \mainnet
+    err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline } .end
     return cb err if err?
     vals = values data.body
     exists = vals.0 ? -1
@@ -125,23 +126,22 @@ extend = (add, json)--> json <<< add
 get-dec = (network)->
     { decimals } = network
     10^decimals
-add-value = (network, it)-->
+add-amount = (network, it)-->
     dec = get-dec network
-    it.value =
-        | it.satoshis? => it.satoshis
-        | it.amount? => it.amount `times` dec
+    it.amount =
+        | it.value? => it.value `div` dec
         | _ => 0
 #DEBUG
 #mock = [{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"2b598e790c06e106709ea230b4553e9b867f234aa6e84ad700f81efe68bb563e","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275994,"confirmations":598},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"e815481a072b33390e0a2dad5df7ff1726c39d3542558e933f0aa475613c4145","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275988,"confirmations":604},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"f9897905e569aed3067c532d5a1e11bd018a4b60231caf62c66db4e7ec9234c5","vout":1,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":0.00001,"satoshis":1000,"height":275987,"confirmations":605}]
 get-outputs = ({ network, address} , cb)-->
     { url } = network.api
-    err, data <- get "#{get-api-url network}/address/#{address}" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/?unspent=true" .timeout { deadline } .end
     return cb "cannot get outputs - err #{err.message ? err}" if err?
     #mock
     data.body
-        |> each add-value network
-        |> filter (.amount?)
-        |> map extend { network, address }
+        |> each add-amount network
+        |> filter (.value?)
+        |> map extend { network, address}
         |> -> cb null, it
 parse-rate-string = (usd-info)->
     [_, url, extract] = usd-info.match(/url\(([^)]+)\)(.+)?/)
@@ -230,19 +230,19 @@ export create-transaction = (config, cb)->
     err <- add-outputs { tx-type, total, value, fee, tx, recipient, network, account }
     return cb err if err?
     apply = (output, i)->
-        tx.add-input output.txid, output.vout
+        tx.add-input output.mint-txid, output.mint-index
     sign = (output, i)->
         key = BitcoinLib.ECPair.fromWIF(account.private-key, network)
         tx.sign i, key
     outputs.for-each apply
     outputs.for-each sign
-    rawtx = tx.build!.to-hex!
-    cb null, { rawtx }
-export push-tx = ({ network, rawtx, tx-type } , cb)-->
+    raw-tx = tx.build!.to-hex!
+    cb null, { raw-tx }
+export push-tx = ({ network, raw-tx, tx-type } , cb)-->
     send-type =
         | tx-type is \instant => \sendix
         | _ => \send
-    err, res <- post "#{get-api-url network}/tx/#{send-type}", { rawtx } .end
+    err, res <- post "#{get-api-url network}/tx/#{send-type}", { raw-tx } .end
     return cb "#{err}: #{res?text}" if err?
     return cb "Error: #{res?error}" if res?error
     return cb "Error: #{res?text}" if not res?body?txid?
@@ -284,23 +284,16 @@ export get-balance = ({ address, network } , cb)->
     num = data.text `div` dec
     #return cb null, "2.00001"
     cb null, num
-incoming-vout = (address, vout)-->
-    addrs = vout.script-pub-key?addresses
-    return no if typeof! addrs isnt \Array
-    addrs.index-of(address) > -1
-outcoming-vouts = (address, vout)-->
-    addresses = vout.script-pub-key?addresses
-    return null if typeof! addresses isnt \Array
-    return { vout.value, address: addresses.join(",") } if addresses.index-of(address) is -1
-    null
 transform-in = ({ net, address }, t)->
+    tr = BitcoinLib.Transaction.fromHex(t.script)
     tx = t.mintTxid
     pending = t.confirmations is 0
     dec = get-dec net
     amount = t.value `div` dec
     to = address
     from = t.address
-    url = "#{net.api.url}/tx/#{tx}"
+    url = | net.api.linktx => net.api.linktx.replace \:hash, tx
+        | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-in, t)
     { tx, amount, url, to, from, pending }
 transform-out = ({ net, address }, t)->
@@ -311,7 +304,8 @@ transform-out = ({ net, address }, t)->
     amount = t.value `div` dec
     to = t.address
     from = address
-    url = "#{net.api.url}/tx/#{tx}"
+    url = | net.api.linktx => net.api.linktx.replace \:hash, tx
+        | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-out, t)
     { tx, amount, url, to, pending, from }
 transform-tx = (config, t)-->
@@ -320,7 +314,8 @@ transform-tx = (config, t)-->
     transform-out config, t
 get-api-url = (network)->
     api-name = network.api.api-name ? \api
-    "#{network.api.url}/#{api-name}/BTC/mainnet"
+    network-name = global.store?.current?.network || \mainnet
+    "#{network.api.url}/#{api-name}/BTC/#{network-name}"
 export check-tx-status = ({ network, tx }, cb)->
     cb "Not Implemented"
 export get-transactions = ({ network, address}, cb)->
