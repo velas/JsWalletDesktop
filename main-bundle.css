@@ -13160,10 +13160,10 @@
 
 
 @media (max-width: 800px) {
-  .steps691576041 {
+  .steps2030851689 {
     text-align: center; } }
 
-.steps691576041 .step {
+.steps2030851689 .step {
   display: inline-block;
   vertical-align: text-top;
   text-align: center;
@@ -13176,14 +13176,14 @@
   cursor: pointer;
   transition: all .5s; }
   @media (max-width: 800px) {
-    .steps691576041 .step {
+    .steps2030851689 .step {
       padding: 0 10px;
       width: auto;
       margin: 0 auto 30px;
       display: block; } }
-  .steps691576041 .step:last-child:after {
+  .steps2030851689 .step:last-child:after {
     content: none !important; }
-  .steps691576041 .step:after {
+  .steps2030851689 .step:after {
     display: block;
     left: 150px;
     top: 18px;
@@ -13192,29 +13192,29 @@
     width: 20%;
     content: ""; }
     @media (max-width: 800px) {
-      .steps691576041 .step:after {
+      .steps2030851689 .step:after {
         content: none; } }
-  .steps691576041 .step .step-content {
+  .steps2030851689 .step .step-content {
     font-size: 13px; }
-    .steps691576041 .step .step-content button {
+    .steps2030851689 .step .step-content button {
       width: 125px; }
-  .steps691576041 .step button {
+  .steps2030851689 .step button {
     width: auto;
     display: block;
     margin: 15px auto 0; }
-  .steps691576041 .step .step-count {
+  .steps2030851689 .step .step-count {
     display: inline-block;
     background: grey;
     padding: 10px 15px;
     border-radius: 50px;
     margin-bottom: 20px; }
-  .steps691576041 .step.active {
+  .steps2030851689 .step.active {
     opacity: 1; }
-    .steps691576041 .step.active .step-count {
+    .steps2030851689 .step.active .step-count {
       background: #39dcb4;
       animation: pulse_step 1s linear;
       transform-origin: 50% 50%; }
-    .steps691576041 .step.active:after {
+    .steps2030851689 .step.active:after {
       display: block;
       left: 150px;
       top: 18px;
@@ -13223,7 +13223,7 @@
       width: 20%;
       content: ""; }
       @media (max-width: 800px) {
-        .steps691576041 .step.active:after {
+        .steps2030851689 .step.active:after {
           content: none; } }
 
 @keyframes pulse_step {

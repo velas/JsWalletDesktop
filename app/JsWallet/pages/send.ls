@@ -410,6 +410,8 @@ send = ({ store, web3t })->
     active-eur = active-class \eur
     show-class =
         if store.current.open-menu then \hide else \ ""
+    token-display = if token == \VLX2 then \VLX else token
+    fee-token-display = if fee-token == \VLX2 then \VLX else fee-token
     react.create-element 'div', { className: 'content content934132681' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.send
@@ -456,7 +458,7 @@ send = ({ store, web3t })->
                             react.create-element 'div', { className: 'input-wrapper' }, children = 
                                 react.create-element 'div', { style: crypto-background, className: 'label crypto' }, children = 
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                    """ #{token}"""
+                                    """ #{token-display}"""
                                 react.create-element 'input', { type: 'text', style: input-style, on-change: amount-change, placeholder: "0", title: "#{send.amount-send}", value: "#{round5edit send.amount-send}", className: 'amount' }
                             if active-usd is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
@@ -472,7 +474,7 @@ send = ({ store, web3t })->
                             react.create-element 'span', { className: 'balance' }, children = 
                                 react.create-element 'span', { title: "#{wallet.balance}" }, ' ' + round-human wallet.balance
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                    react.create-element 'span', {}, ' ' + token
+                                    react.create-element 'span', {}, ' ' + token-display
                                 if +wallet.pending-sent >0
                                     react.create-element 'span', { className: 'pending' }, ' ' + '(' + pending + ' ' + lang.pending + ')'
                             react.create-element 'button', { on-click: activate-eur, style: use-max-style, type: "button", className: "#{active-eur} send-all switch-currency" }, ' eur'
@@ -489,14 +491,14 @@ send = ({ store, web3t })->
                             react.create-element 'td', {}, children = 
                                 react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + round5(send.amount-charged)
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                    react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + token
+                                    react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + token-display
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-charged-usd
                         react.create-element 'tr', { className: 'orange' }, children = 
                             react.create-element 'td', {}, ' ' + lang.fee
                             react.create-element 'td', {}, children = 
                                 react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + round5 send.amount-send-fee
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                    react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token
+                                    react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token-display
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-send-fee-usd
             react.create-element 'div', { className: 'button-container' }, children = 
                 react.create-element 'div', { className: 'buttons' }, children = 

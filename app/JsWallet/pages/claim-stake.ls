@@ -462,14 +462,14 @@ module.exports = (store, web3t)->
                         react.create-element 'span', {}, ' ' + lang.available-reward + ':'
                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.reward
                         react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                        react.create-element 'span', { className: 'color' }, '  VLX2'
+                        react.create-element 'span', { className: 'color' }, '  VLX'
                     react.create-element 'div', { className: 'staking-reward' }, children = 
                         store.staking.rewards |> map build-claim-reward store, web3t
                     react.create-element 'div', { className: 'balance' }, children = 
                         react.create-element 'span', {}, ' ' + lang.claim-reward + ':'
                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.reward-claim
                         react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                        react.create-element 'span', { className: 'color' }, '  VLX2'
+                        react.create-element 'span', { className: 'color' }, '  VLX'
                     button { store, on-click: claim , icon : \reward , text : \claimReward , type : \secondary }
             else if store.staking.reward-loading is yes
                 react.create-element 'div', { className: 'placeholder' }, ' Loading... Please wait'

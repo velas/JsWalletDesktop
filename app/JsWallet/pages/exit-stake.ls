@@ -11,7 +11,7 @@ require! {
     \../components/button.ls
     \./confirmation.ls : { alert }
 }
-# .steps691576041
+# .steps2030851689
 #     @media(max-width:800px)
 #         text-align: center
 #     .step
@@ -34,7 +34,7 @@ require! {
 #         &:last-child
 #             &:after
 #                 content: none !important
-#         &:after    
+#         &:after
 #             display: block
 #             left: 150px
 #             top: 18px
@@ -64,7 +64,7 @@ require! {
 #                 background: #39dcb4
 #                 animation: pulse_step 1s linear
 #                 transform-origin: 50% 50%
-#             &:after    
+#             &:after
 #                 display: block
 #                 left: 150px
 #                 top: 18px
@@ -87,7 +87,7 @@ cb = console~log
 order-withdraw-process = (store, web3t)->
     lang = get-lang store
     activate = (step)-> ->
-        store.staking.exit-tab = step 
+        store.staking.exit-tab = step
     activate-first = activate \exit_order
     activate-second = activate \exit_wait
     activate-third = activate \exit_ordered
@@ -104,12 +104,12 @@ order-withdraw-process = (store, web3t)->
         pool-address = store.staking.chosen-pool.address
         err, max <- web3t.velas.Staking.maxWithdrawOrderAllowed(pool-address, staking-address)
         amount = store.staking.withdrawAmount `times` (10^18)
-        return alert store, "#{lang.max} #{max.to-fixed!}" if +amount > +max.to-fixed!
+        return alert store, "#{lang.max} #{max.to-fixed! `div` (10^18)}" if +amount > +max.to-fixed!
         return alert store, lang.actionProhibited, cb if +amount is 0
         data = web3t.velas.Staking.order-withdraw.get-data(pool-address, amount)
         to = web3t.velas.Staking.address
         amount = 0
-        err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }        
+        err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }
     exit = ->
         return alert store, lang.actionProhibited, cb if +store.staking.orderedWithdrawAmount is 0
         pool-address = store.staking.chosen-pool.address
@@ -125,7 +125,7 @@ order-withdraw-process = (store, web3t)->
             react.create-element 'h3', {}, ' ' + lang.exit
         react.create-element 'div', { className: 'description' }, children = 
             react.create-element 'div', { className: 'left' }, children = 
-                react.create-element 'div', { className: 'steps steps691576041' }, children = 
+                react.create-element 'div', { className: 'steps steps2030851689' }, children = 
                     react.create-element 'div', { on-click-commented: activate-first, className: "#{active-first} step" }, children = 
                         react.create-element 'div', { className: 'step-count' }, ' 1'
                         react.create-element 'div', { className: 'step-content' }, children = 
@@ -158,7 +158,7 @@ fast-withdraw-process = (store, web3t)->
         data = web3t.velas.Staking.withdraw.get-data(pool-address, amount)
         to = web3t.velas.Staking.address
         amount = 0
-        err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 } 
+        err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }
     change-max = (it)->
         store.staking.withdrawAmount = it.target.value
     react.create-element 'div', { className: 'section' }, children = 

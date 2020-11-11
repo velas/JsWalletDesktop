@@ -196,6 +196,7 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary2
         background-color: style.app.primary2-spare
+    token-display = if token == \VLX2 then \VLX else token
     react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed399861167' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
@@ -210,7 +211,7 @@ module.exports = (store, web3t, wallets, wallet)-->
                     react.create-element 'div', { className: "#{placeholder} balance" }, children = 
                         react.create-element 'div', { title: "#{wallet.balance}", className: 'token-balance' }, children = 
                             react.create-element 'span', {}, ' ' +  round-human wallet.balance 
-                            react.create-element 'span', {}, ' ' +  token 
+                            react.create-element 'span', {}, ' ' +  token-display 
                         react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
                             react.create-element 'span', {}, ' ' +  round-human balance-usd 
                             react.create-element 'span', {}, ' USD'
@@ -231,17 +232,17 @@ module.exports = (store, web3t, wallets, wallet)-->
                         react.create-element 'span', { className: 'stats-style' }, children = 
                             react.create-element 'div', { style: text, className: 'coin' }, children = 
                                 react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
-                                react.create-element 'span', { className: "#{placeholder}" }, ' ' +  token 
+                                react.create-element 'span', { className: "#{placeholder}" }, ' ' +  token-display 
                                 react.create-element 'span', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
                         wallet-stats store, web3t
                 react.create-element 'div', { style: text, className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', { className: 'counts' }, children = 
                         react.create-element 'div', { style: color-label, className: 'label-icon' }, children = 
                             react.create-element 'img', { src: "#{icons.send}", className: 'icon-svg' }
-                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-sent + ' ' token 
+                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-sent + ' ' token-display 
                         react.create-element 'div', { style: color1, className: 'label' }, ' ' + lang.totalSent
                     react.create-element 'div', { className: 'counts' }, children = 
                         react.create-element 'div', { style: color-label2, className: 'label-icon' }, children = 
                             react.create-element 'img', { src: "#{icons.get}", className: 'icon-svg' }
-                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-received + ' ' token 
+                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-received + ' ' token-display 
                         react.create-element 'div', { style: color2, className: 'label' }, ' ' + lang.totalReceived

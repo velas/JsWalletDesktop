@@ -257,6 +257,8 @@ module.exports = (store, web3t, wallets, wallet)-->
     #    #store.current.token-migration = "V123"
     receive-click = receive(wallet)
     send-click = send(wallet)
+    token = wallet.coin.token.to-upper-case!
+    token-display = if token == \VLX2 then \VLX else token
     react.create-element 'div', { key: "#{wallet.coin.token}", style: border-style, className: "#{big} wallet wallet-1038230902" }, children = 
         react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
@@ -267,7 +269,7 @@ module.exports = (store, web3t, wallets, wallet)-->
                     if store.current.device is \desktop
                         react.create-element 'div', { title: "#{wallet.balance}", className: "#{placeholder} price token" }, children = 
                             react.create-element 'span', {}, ' ' +  round-human wallet.balance 
-                            react.create-element 'span', {}, ' ' +  wallet.coin.token.to-upper-case! 
+                            react.create-element 'span', {}, ' ' +  token-display 
                     react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
                         react.create-element 'span', {}, ' ' +  round-human balance-usd
                         react.create-element 'span', {}, ' USD'

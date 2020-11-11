@@ -90,6 +90,7 @@ trx-fee = ({ store, web3t, wallet })->
             value = "0" + value
         choose-custom value
     fee-currency = wallet.network.tx-fee-in ? send.coin.token
+    token-display = if fee-currency == \vlx2 then \vlx else fee-currency
     border-style = border: "1px solid #{style.app.border}"
     text = color: "#{style.app.icon}"
     input-style=
@@ -105,15 +106,15 @@ trx-fee = ({ store, web3t, wallet })->
         return null if send.amount-send-fee-options.cheap > send.amount-send-fee-options.auto
         react.create-element 'td', { on-click: choose-cheap, className: "#{active-class \cheap}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.cheap
-            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.cheap then send.amount-send-fee-options.cheap + " " + fee-currency else ""
+            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.cheap then send.amount-send-fee-options.cheap + " " + token-display else ""
     custom-option = ->
         react.create-element 'td', { on-click: select-custom, className: "#{active-class \custom}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.custom
-            react.create-element 'div', { className: 'field coin' }, ' ' + custom-fee-value! + " " + fee-currency
+            react.create-element 'div', { className: 'field coin' }, ' ' + custom-fee-value! + " " + token-display
     auto-option = ->
         react.create-element 'td', { on-click: choose-auto, className: "#{active-class \auto}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
-            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + fee-currency else ""
+            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""
     react.create-element 'div', { className: 'trx-fee trx-fee1751710292' }, children = 
         react.create-element 'label', { style: text }, ' Transaction Fee'
         react.create-element 'table', { style: border-style, className: 'fee' }, children = 

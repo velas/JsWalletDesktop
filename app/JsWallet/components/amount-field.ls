@@ -97,7 +97,7 @@ module.exports = ({ store, value, on-change, placeholder })->
         react.create-element 'input', { type: "text", value: "#{value-vlx}", style: input-style, on-change: on-change-internal, placeholder: actual-placeholder }
         react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
             react.create-element 'img', { src: "#{wallet.coin.image}", className: 'icon' }
-            react.create-element 'span', {}, ' VLX2'
+            react.create-element 'span', {}, ' VLX'
         react.create-element 'div', { className: 'show-details' }, children = 
             react.create-element 'div', { className: 'panel' }, children = 
                 react.create-element 'div', {}, ' USD: ' + round usd
