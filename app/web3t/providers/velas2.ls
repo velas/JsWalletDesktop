@@ -172,7 +172,7 @@ get-internal-transactions = ({ network, address }, cb)->
     sort = \asc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
     page = 1
-    offset = 100
+    offset = 20
     query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
@@ -191,7 +191,7 @@ get-external-transactions = ({ network, address }, cb)->
     startblock = 0
     endblock = 99999999
     page = 1
-    offset = 100
+    offset = 20
     sort = \asc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
     query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
@@ -206,7 +206,7 @@ get-external-transactions = ({ network, address }, cb)->
     cb null, txs
 export get-transactions = ({ network, address }, cb)->
     page = 1
-    offset = 100
+    offset = 20
     err, external <- get-external-transactions { network, address, page, offset }
     return cb err if err?
     err, internal <- get-internal-transactions { network, address, page, offset }
@@ -300,7 +300,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas: to-hex gas-estimate
         to: recipient
         from: address
-        data: data ? "0x"
+        data: data || "0x"
     }
     tx = new Tx tx-obj, { common }
     tx.sign private-key

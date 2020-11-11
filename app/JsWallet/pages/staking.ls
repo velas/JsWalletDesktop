@@ -1225,6 +1225,7 @@ staking.init = ({ store, web3t }, cb)->
     store.staking.add.add-validator-stake = 0
     store.staking.epoch = staking-epoch.to-fixed!
     err, amount <- web3t.velas.Staking.stakeAmount(staking-address, staking-address)
+    debugger
     store.staking.stake-amount-total = amount.to-fixed!
     err, is-active <- web3t.velas.Staking.isPoolActive(staking-address)
     return cb err if err?

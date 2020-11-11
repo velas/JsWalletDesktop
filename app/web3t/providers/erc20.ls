@@ -46,7 +46,7 @@ to-hex = ->
 transform-tx = (network, t)-->
     { url } = network.api
     dec = get-dec network
-    network = \eth 
+    network = \eth
     tx = t.hash
     amount = t.value `div` dec
     time = t.time-stamp
@@ -69,8 +69,8 @@ export get-transactions = ({ network, address }, cb)->
     err, result <- json-parse resp.text
     return cb err if err?
     return cb "Unexpected result" if typeof! result?result isnt \Array
-    txs = 
-        result.result 
+    txs =
+        result.result
             |> filter -> up(it.contract-address) is up(network.address)
             |> map transform-tx network
     cb null, txs
@@ -113,7 +113,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, erc-balance <- get-balance { network, account.address }
     return cb err if err?
     return cb "Balance is not enough to send this amount" if +erc-balance < +amount
-    data = 
+    data =
         | contract.methods? => contract.methods.transfer(recipient, value).encodeABI!
         | _ => contract.transfer.get-data recipient, value
     #console.log \tx-build, { nonce, gas-price, gas-estimate, to: network.address, account.address, data }
@@ -124,7 +124,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas: to-hex gas-estimate
         to: network.address
         from: account.address
-        data: data
+        data: data || \0x
     #console.log \sign
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex

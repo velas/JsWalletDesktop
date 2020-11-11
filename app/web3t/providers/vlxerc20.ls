@@ -135,7 +135,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas: to-hex gas-estimate
         to: network.address
         from: from
-        data: data
+        data: data || \0x
     #console.log \sign
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex
