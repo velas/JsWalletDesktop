@@ -448,7 +448,7 @@
               gas: toHex(gasEstimate),
               to: network.address,
               from: from,
-              data: data
+              data: data || '0x'
             });
             tx.sign(privateKey);
             rawtx = '0x' + tx.serialize().toString('hex');

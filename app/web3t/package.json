@@ -11,6 +11,7 @@
     "big-integer": "1.6.45",
     "bip39": "2.5.0",
     "bitcoinjs-lib": "3.3.2",
+    "bitgo-utxo-lib": "^1.8.0",
     "bs58": "4.0.1",
     "bs58check": "^2.1.2",
     "cross-fetch": "3.0.4",

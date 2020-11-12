@@ -129,7 +129,7 @@
       return cb(null, txFee);
     }
     network = ((ref$ = global.store) != null ? (ref1$ = ref$.current) != null ? ref1$.network : void 8 : void 8) || 'mainnet';
-    return get(getApiUrl(network) + "/BTC/" + network + "/fee/6").timeout({
+    return get(getApiUrl(network) + "/fee/6").timeout({
       deadline: deadline
     }).end(function(err, data){
       var vals, exists, ref$, calcedFee;
@@ -268,7 +268,6 @@
     return get(getApiUrl(network) + "/address/" + address + "/?unspent=true").timeout({
       deadline: deadline
     }).end(function(err, data){
-      debugger;
       var ref$;
       if (err != null) {
         return cb("cannot get outputs - err " + ((ref$ = err.message) != null ? ref$ : err));

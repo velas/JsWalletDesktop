@@ -1,13 +1,13 @@
-export mainnet = 
+export mainnet =
     decimals: 8
     tx-fee: \0.0001
     tx-fee-options:
         auto: \0.0001
         cheap: \0.000014
     mask: 'L000000000000000000000000000000000'
-    api: 
+    api:
         provider: \insight
-        url: \https://insight.litecore.io
+        url: \https://insight-litecore.velas.com
         decimal: 8
     message-prefix: '\x19Litecoin Signed Message:\n'
     bip32:
@@ -16,15 +16,15 @@ export mainnet =
     pub-key-hash: 0x30
     script-hash: 0x32
     wif: 0xb0
-export testnet = 
+export testnet =
     decimals: 8
     tx-fee: \0.0001
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.0001
         cheap: \0.000014
     topup: \https://litecoin-faucet.com/
     mask: 'n000000000000000000000000000000000'
-    api: 
+    api:
         provider: \insight
         url: \https://testnet.litecore.io
         decimal: 8
@@ -36,7 +36,7 @@ export testnet =
     script-hash: 0xc4
     wif: 0xef
 export color = \#a04b55
-export type = \coin    
+export type = \coin
 export enabled = yes
 export name = 'Litecoin'
 export token = \ltc

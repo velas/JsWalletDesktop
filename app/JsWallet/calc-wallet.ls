@@ -39,28 +39,28 @@ calc-wallet = (store, cb)->
             | _ => round5 (usd-rate `times` btc-rate)
         err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
         return cb err if err?
-        pending-sent =
-            store.transactions.all
-                |> filter (.token is token)
-                |> filter (.pending is yes)
-                |> map (.amount)
-                |> foldl plus, 0
-        #err, pending-sent <- get-pending-amount { store, token, wallet.network }
-        #console.log { err, pending-sent }
-        wallet.pending-sent = pending-sent
-        wallet.balance = balance
-        wallet.balance-usd =
-            | usd-rate is \.. => 0
-            | _ => balance `times` usd-rate
-        balance-usd-current =
-            | wallet.balance-usd is \.. => 0
-            | _ => wallet.balance-usd
-        state-before = state.balance-usd
-        #convert state.balance-usd to string as bignumber can throw exception for numbers
-        state.balance-usd = state.balance-usd + ''
-        state.balance-usd =
-            | usd-rate is \.. => 0
-            | _ => state.balance-usd `plus` balance-usd-current
+        pending-sent = 0
+#            store.transactions.all
+#                |> filter (.token is token)
+#                |> filter (.pending is yes)
+#                |> map (.amount)
+#                |> foldl plus, 0
+    #err, pending-sent <- get-pending-amount { store, token, wallet.network }
+    #console.log { err, pending-sent }
+    wallet.pending-sent = pending-sent
+    wallet.balance = balance
+    wallet.balance-usd =
+        | usd-rate is \.. => 0
+        | _ => balance `times` usd-rate
+    balance-usd-current =
+        | wallet.balance-usd is \.. => 0
+        | _ => wallet.balance-usd
+    state-before = state.balance-usd
+    #convert state.balance-usd to string as bignumber can throw exception for numbers
+    state.balance-usd = state.balance-usd + ''
+    state.balance-usd =
+        | usd-rate is \.. => 0
+        | _ => state.balance-usd `plus` balance-usd-current
         #console.log { state-before, state.balance-usd, balance-usd-current }
         cb!
     loaders =

@@ -10,3 +10,4 @@ rm -rf ./app
 
 cp -r ../JsWallet/.compiled-ssr ./app
 cp -r ../JsWallet/.compiled/main-bundle.css ./
+rsync -av --progress ../web3t ./app --exclude ".git"

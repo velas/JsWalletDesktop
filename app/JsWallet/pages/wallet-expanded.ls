@@ -215,7 +215,7 @@ module.exports = (store, web3t, wallets, wallet)-->
                         react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
                             react.create-element 'span', {}, ' ' +  round-human balance-usd 
                             react.create-element 'span', {}, ' USD'
-                        if +wallet.pending-sent >0
+                        if +wallet.pending-sent >0 and no
                             react.create-element 'div', { className: 'pending' }, children = 
                                 react.create-element 'span', {}, ' -' +  pending 
             address-holder { store, wallet, type: \bg }

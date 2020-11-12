@@ -19,7 +19,7 @@ export testnet =
         url: \https://testnet.velas.website
         historyUrl : \https://api.velas.website/api/testnet/history_pg/:address?limit=289&offset=0
 export color = \#9E4FEB
-export type = \coin  
+export type = \coin
 export enabled = yes
 export name = 'Velas Pre-Alpha'
 export token = \vlx

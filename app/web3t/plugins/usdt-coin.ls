@@ -1,14 +1,16 @@
 export mainnet =
     decimals: 8
-    tx-fee: \0.0001
-    tx-fee-options: 
-        cheap: \0.00005546
-        auto: \0.0002
+    tx-fee: \0.0000004
+    tx-fee-auto-mode: \per-byte
+    tx-fee-options:
+        cheap: \0.0000004
+        auto: \0.000001
+        fee-per-byte: \0.0000005
     tx-fee-in: \btc
     mask: '1000000000000000000000000000000000'
-    api: 
+    api:
         api-url: \https://api.omniwallet.org
-        api-url-btc: \https://insight.bitpay.com
+        api-url-btc: \https://api.bitcore.io
         provider: \omni
         url: \https://omniexplorer.info
         decimal: 8
@@ -23,7 +25,7 @@ export mainnet =
     wif: 0x80
 export testnet =
     tx-fee: \0.0001
-    tx-fee-options: 
+    tx-fee-options:
         cheap: \0.00005546
         auto: \0.0002
     tx-fee-in: \btc

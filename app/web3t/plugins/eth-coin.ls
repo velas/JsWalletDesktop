@@ -1,14 +1,14 @@
 export mainnet =
     decimals: 18
     tx-fee: \0.0014
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.0014
         cheap: \0.00014
     message-prefix: 'Ethereum'
     mask: \0x0000000000000000000000000000000000000000
     api:
         provider: \eth
-        web3Provider : \https://mainnet.infura.io/UoCkF4efTrbEGU8Qpcs0
+        web3Provider : \https://mainnet.infura.io/v3/843d2e25655c47c7851744f65ce95837
         #web3Provider: \https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
         url : \https://etherscan.io
         apiUrl : \https://api.etherscan.io/api
@@ -28,19 +28,19 @@ export ethnamed =
 export ropsten =
     decimals: 18
     tx-fee: \0.0014
-    tx-fee-options: 
+    tx-fee-options:
         auto: \0.0014
         cheap: \0.00014
     message-prefix: 'Ethereum'
     mask: \0x0000000000000000000000000000000000000000
     api:
         provider: \eth
-        web3Provider : \https://ropsten.infura.io/UoCkF4efTrbEGU8Qpcs0
+        web3Provider : \https://ropsten.infura.io/v3/843d2e25655c47c7851744f65ce95837
         url : \https://ropsten.etherscan.io
         apiUrl : \https://api-ropsten.etherscan.io/api
 export color = \#5838B8
 export testnet = ropsten
-export type = \coin    
+export type = \coin
 export enabled = yes
 export name = 'Ethereum'
 export token = \eth

@@ -475,7 +475,7 @@ send = ({ store, web3t })->
                                 react.create-element 'span', { title: "#{wallet.balance}" }, ' ' + round-human wallet.balance
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     react.create-element 'span', {}, ' ' + token-display
-                                if +wallet.pending-sent >0
+                                if +wallet.pending-sent >0 and no
                                     react.create-element 'span', { className: 'pending' }, ' ' + '(' + pending + ' ' + lang.pending + ')'
                             react.create-element 'button', { on-click: activate-eur, style: use-max-style, type: "button", className: "#{active-eur} send-all switch-currency" }, ' eur'
                             react.create-element 'button', { on-click: activate-usd, style: use-max-style, type: "button", className: "#{active-usd} send-all switch-currency" }, ' usd'
