@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.13.13",
+  "version": "0.13.14",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -54,7 +54,7 @@
       "icon": false
     },
     "win": {
-      "icon": "./icon.ico"
+      "icon": "./icon.icns"
     },
     "linux": {
       "target": [
