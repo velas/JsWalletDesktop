@@ -3,7 +3,8 @@ require! {
     \../components/qrcode.ls
     \../get-primary-info.ls
 }
-# .hovered-address-113041651
+# .hovered-address1504134547
+#     @import scheme
 #     position: fixed
 #     bottom: 10px
 #     left: 10px
@@ -12,7 +13,7 @@ require! {
 #     width: 300px
 #     background: transparent
 #     background: #31335f
-#     border-radius: 10px
+#     border-radius: calc(var(--border-btn) * 2)
 #     padding: 10px 10px 15px
 #     box-shadow: 14px 7px 13px #0000001f, -16px 20px 13px #00000024
 #     canvas
@@ -28,9 +29,8 @@ module.exports = ({ store })->
     style = get-primary-info store
     copy-style=
         color: style.app.text
-        background: "rgb(255 255 255 / 10%)"
-        backdrop-filter: "blur(5px)"
+        background: style.app.bg-primary-light
         border: "1px solid #{style.app.border}"
-    react.create-element 'div', { style: copy-style, className: 'hovered-address hovered-address-113041651' }, children = 
+    react.create-element 'div', { style: copy-style, className: 'hovered-address hovered-address1504134547' }, children = 
         react.create-element 'div', { className: 'text' }, ' ' + store.current.try-copy
         qrcode { store, address: store.current.try-copy } 

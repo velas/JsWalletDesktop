@@ -9,14 +9,16 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./epoch.ls
-    \./alert-demo.ls
     \prelude-ls : { map }
     \../math.ls : { minus }
     \../components/text-field.ls
     \../components/button.ls
     \../components/burger.ls
+    \../../web3t/providers/deps.js : { hdkey, bip39 }
+    \md5
+    \../seed.ls : seedmem
 }
-# .vote-1379191436
+# .vote1153270868
 #     @import scheme
 #     $border-radius: $border
 #     $smooth: opacity .15s ease-in-out
@@ -60,8 +62,13 @@ require! {
 #         padding: 0
 #         .side
 #             display: inline-grid
-#             margin: 0 auto
+#             margin: 60px auto 0
 #             width: 70%
+#             .notice
+#                 text-align: left
+#                 margin: 0px 20px 10px 20px
+#                 .danger
+#                     color: orange
 #             @media(max-width:800px)
 #                 width: 100%
 #             .filter
@@ -127,6 +134,15 @@ require! {
 #                     text-align: left
 #                     position: relative
 #                     transition: all .5s
+#                     &.active
+#                         background: var(--bg-primary-light)
+#                         box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
+#                         z-index: 1
+#                         .rate
+#                             button
+#                                 opacity: 1
+#                         .label
+#                             background: var(--dark-theme)
 #                     &.compact
 #                         padding: 10px
 #                         .screen
@@ -145,6 +161,12 @@ require! {
 #                         background: var(--bg-primary-light)
 #                         transition: all .5s
 #                         cursor: pointer
+#                         .rate
+#                             button
+#                                 opacity: 1
+#                         .label
+#                             transition: all .5s
+#                             background: var(--dark-theme)
 #                     .label
 #                         position: absolute
 #                         background: var(--bg-primary-light)
@@ -156,11 +178,17 @@ require! {
 #                         border-bottom-right-radius: 3px
 #                         border-bottom-left-radius: 3px
 #                         right: 15px
+#                         transition: all .5s
 #                         box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
 #                     .rate
 #                         margin-right: 15px
 #                         padding: 3px 0
-#                         width: 50px
+#                         width: 90px
+#                         text-align: center
+#                         button
+#                             opacity: .55
+#                         .votes
+#                             text-align: center
 #                         ul
 #                             padding: 0
 #                             margin: 0
@@ -172,8 +200,6 @@ require! {
 #                                 padding: 5px
 #                                 &:nth-child(2)
 #                                     opacity: 1
-#                                 &:last-child
-#                                     transform: rotate(180deg)
 #                                 &.active
 #                                     opacity: 1
 #                     .screen
@@ -249,44 +275,65 @@ require! {
 #                         margin-top: 0px
 #                 @media(max-width:800px)
 #                     margin: 20px
+get-pair = (wallet, path, index, password, with-keystore)->
+    w = wallet.derive-path(path).derive-child(index).get-wallet!
+    address  = "0x" + w.get-address!.to-string(\hex)
+    salt = Buffer.from('dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6', 'hex')
+    iv = Buffer.from('cecacd85e9cb89788b5aab2f93361233', 'hex')
+    uuid = Buffer.from('7e59dc028d42d09db29aa8a0f862cc81', 'hex')
+    kdf = 'pbkdf2'
+    #console.log \keystore, with-keystore
+    keystore =
+        | with-keystore => w.toV3String(password, { salt, iv, uuid, kdf })
+        | _ => ""
+    { address, keystore }
+to-keystore = (store, with-keystore)->
+    seed = bip39.mnemonic-to-seed(seedmem.mnemonic)
+    wallet = hdkey.from-master-seed(seed)
+    index = store.current.account-index
+    password = md5 wallet.derive-path("m1").derive-child(index).get-wallet!.get-address!.to-string(\hex)
+    staking = get-pair wallet, \m0 , index, password, no
+    mining  = get-pair wallet, \m0/2 , index, password, with-keystore
+    { staking, mining, password }
 item = (store, web3t)-> (vote)->
     lang = get-lang store
     info = get-primary-info store
-    [description, url, progress, votesUpWeight, votesDownWeight] = vote
-    vote = votesUpWeight `minus` votesDownWeight
+    #[description, name, progress, votesUpWeight, votesDownWeight] = vote
+    #vote = votesUpWeight `minus` votesDownWeight
     border=border-bottom: "1px solid #{info.app.border}"
     background=background: "#{info.app.primary}"
     add-class = ->
         store.current.rate = not store.current.rate
     raise =
-        if store.current.rate then \ "" else \active
-    lower =
-        if store.current.rate then \active else \ ""
+        if not vote.voted then \ "" else \active
     view =
-        if store.current.view then \compact else \ ""
+        if store.current.vote-index is vote.index then \active else ""
+    vote-on-click = ->
+        store.current.vote-index = vote.index
+    vote-for = ->
+        return alert "You already voted for this" if vote.voted
+        err, pool <- web3t.velas.Staking.getStakerPools(store.staking.keystore.staking.address)
+        return alert err if err?
+        return alert "You should stake before you can vote" if pool.length < 1
+        data = web3t.velas.Development.vote.get-data +vote.index
+        return cb err if err?
+        to = web3t.velas.Development.address
+        amount = 0
+        err <- web3t.vlx2.send-transaction { to, data, amount, gas: 9600000, gas-price: 1000000 }
     update-progress = ->
         newp = store.development.new-proposal
         newp.update-progress = progress
-    react.create-element 'div', { style: border, className: "#{view} item" }, children = 
-        react.create-element 'span', { style: background, className: 'label' }, ' Sphere'
+    react.create-element 'div', { style: border, on-click: vote-on-click, className: "#{view} item" }, children = 
         react.create-element 'div', { className: 'rate' }, children = 
-            react.create-element 'ul', {}, children = 
-                react.create-element 'li', { on-click: add-class, className: "#{raise}" }, children = 
-                    react.create-element 'img', { src: "#{icons.rate}" }
-                react.create-element 'li', {}, ' ' + vote
-                react.create-element 'li', { on-click: add-class, className: "#{lower}" }, children = 
-                    react.create-element 'img', { src: "#{icons.rate}" }
-        react.create-element 'div', { className: 'screen' }, children = 
-            react.create-element 'a', { href: "#" }, children = 
-                react.create-element 'img', { src: "https://res.cloudinary.com/dfbhd7liw/image/upload/v1586441544/velas/Bitmap.png" }
+            react.create-element 'div', { className: 'votes' }, ' ' + vote.votes.toString()
+            button { store, on-click=vote-for, text: \vote, icon: \rate  , type : \primary }
         react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', { className: 'header' }, ' ' + description
-            react.create-element 'div', { className: 'sub-header' }, ' ' + url
+            react.create-element 'div', { className: 'header' }, ' ' + vote.name
+            react.create-element 'div', { className: 'sub-header' }, ' ' + vote.description
             react.create-element 'div', { className: 'progress' }, children = 
-                react.create-element 'progress', { value: "#{progress}", max: "100" }
+                react.create-element 'progress', { value: "#{vote.progress}", max: "100" }
                 react.create-element 'span', {}, ' Start'
                 react.create-element 'span', {}, ' End'
-urlR = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/
 content = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
@@ -305,58 +352,57 @@ content = (store, web3t)->
         if store.current.view then \compact else \ ""
     newp = store.development.new-proposal
     create-new-vote = ->
-        newp.opened = yes
+        #newp.opened = yes
     change-description = ->
         newp.description = it.target.value
-    change-url = ->
-        newp.url = it.target.value
-    change-progress = ->
-        newp.progress = it.target.value
+    change-name = ->
+        newp.name = it.target.value
     apply-new-vote = ->
         cb = alert
-        return cb "description should be longer" if newp.description.length < 10
-        return cb "url must be defined" if not newp.url.match(urlR)?
-        return cb "progress must be defined" if not newp.progress.match(/[0-9]+/)?
-        data = web3t.velas.Development.add-proposal.get-data newp.description, newp.url, newp.progress
+        return cb "description should be at least 10 characters" if newp.description.length < 10
+        return cb "name should be at least 3 characters" if newp.name.length < 3
+        data = web3t.velas.Development.add-proposal.get-data newp.description, newp.name
         return cb err if err?
         to = web3t.velas.Development.address
         amount = 0
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 9600000, gas-price: 1000000 }
-        #newp.description, newp.url
+        newp.opened = no
     cancel-new-vote = ->
         newp.description = ""
-        newp.url = ""
-        newp.progress = \0
+        newp.name = ""
         newp.opened = no
     react.create-element 'div', { className: 'side' }, children = 
-        react.create-element 'div', { style: style, className: 'filter' }, children = 
-            react.create-element 'ul', {}, children = 
-                react.create-element 'li', {}, children = 
-                    react.create-element 'img', { src: "#{icons.best}" }
-                    """ Best"""
-                react.create-element 'li', { className: 'active' }, children = 
-                    react.create-element 'img', { src: "#{icons.hot}" }
-                    """ Hot"""
-                react.create-element 'li', {}, children = 
-                    react.create-element 'img', { src: "#{icons.new}" }
-                    """ New"""
-                react.create-element 'li', {}, children = 
-                    react.create-element 'img', { src: "#{icons.top}" }
-                    """ Top"""
-            react.create-element 'ul', { className: 'view' }, children = 
-                react.create-element 'li', { on-click: add-class, className: "#{view}" }, children = 
-                    react.create-element 'img', { src: "#{icons.compact}" }
-                    react.create-element 'img', { src: "#{icons.classic}" }
-                react.create-element 'li', { on-click: create-new-vote }, children = 
-                    react.create-element 'img', { src: "#{icons.create}" }
-                    react.create-element 'img', { src: "#{icons.create}" }
+        if no
+            react.create-element 'div', { style: style, className: 'filter' }, children = 
+                react.create-element 'ul', {}, children = 
+                    react.create-element 'li', {}, children = 
+                        react.create-element 'img', { src: "#{icons.best}" }
+                        """ Best"""
+                    react.create-element 'li', { className: 'active' }, children = 
+                        react.create-element 'img', { src: "#{icons.hot}" }
+                        """ Hot"""
+                    react.create-element 'li', {}, children = 
+                        react.create-element 'img', { src: "#{icons.new}" }
+                        """ New"""
+                    react.create-element 'li', {}, children = 
+                        react.create-element 'img', { src: "#{icons.top}" }
+                        """ Top"""
+                react.create-element 'ul', { className: 'view' }, children = 
+                    react.create-element 'li', { on-click: add-class, className: "#{view}" }, children = 
+                        react.create-element 'img', { src: "#{icons.compact}" }
+                        react.create-element 'img', { src: "#{icons.classic}" }
+                    react.create-element 'li', { on-click: create-new-vote }, children = 
+                        react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
+                        react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
+        react.create-element 'div', { className: 'notice' }, children = 
+            react.create-element 'span', { className: 'danger' }, ' Important.'
+            react.create-element 'span', {}, ' A requirement for voting is active participation in Velas staking.'
         if newp.update-progress
             react.create-element 'div', { style: border-style, className: 'create-new-proposal main-content' }, ' Please make upgrade process here'
         if newp.opened is yes
             react.create-element 'div', { style: border-style, className: 'create-new-proposal main-content' }, children = 
                 text-field { store, value: newp.description , on-change: change-description , placeholder: "description" }
-                text-field { store, value: newp.url , on-change: change-url , placeholder: "url" }
-                text-field { store, value: newp.progress , on-change: change-progress , placeholder: "progress" }
+                text-field { store, value: newp.name , on-change: change-name , placeholder: "name" }
                 button { store, on-click: apply-new-vote , type: \primary , icon : \apply , text: \btnApply }
                 button { store, on-click: cancel-new-vote , icon : \close2 , text: \cancel }
         react.create-element 'div', { style: style, className: 'main-content' }, children = 
@@ -373,8 +419,7 @@ vote = ({ store, web3t })->
         background-color: info.app.bgspare
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'vote vote-1379191436' }, children = 
-        alert-demo store, web3t
+    react.create-element 'div', { className: 'vote vote1153270868' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Vote'
             react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
@@ -385,21 +430,33 @@ vote = ({ store, web3t })->
         react.create-element 'div', { className: 'wrapper' }, children = 
             content store, web3t
 module.exports = vote
-build-proposal-view = ({ web3t, store }, index, cb)->
-    err, proposal <- web3t.velas.Development.getProposalByIndex index
+build-proposal-view = ({ web3t, store }, index, cb) ->
+    err, proposal <- web3t.velas.Development.getProposalByIndex index+1, store.staking.keystore.staking.address
     return cb err if err?
     cb null, proposal
 build-proposal-views = ({ web3t, store }, length, cb)->
     return cb null, [] if length is 0
     <- set-immediate
     next-length = length - 1
-    err, proposal-view <- build-proposal-view { web3t, store }, next-length
-    return cb err if err?
     err, rest <- build-proposal-views { web3t, store }, next-length
     return cb err if err?
-    cb null
+    err, proposal-view <- build-proposal-view { web3t, store }, next-length
+    return cb err if err?
+    proposal-view = {
+        name: proposal-view.0
+        description: proposal-view.1,
+        votes: proposal-view.2,
+        weight: proposal-view.3,
+        progress: proposal-view.4,
+        voted: proposal-view.5,
+        index: next-length+1,
+    }
+    cb null, [...rest, proposal-view]
 module.exports.init = ({ web3t, store }, cb)->
-    err, length <- web3t.velas.Development.proposal-length!
+    store.staking.keystore = to-keystore store, no
+    if store?url-hash-params?vote
+        store.current.vote-index = parse-int store?url-hash-params?vote
+    err, length <- web3t.velas.Development.get-proposals-count!
     return cb err if err?
     err, proposals <- build-proposal-views { web3t, store }, +length
     return cb err if err?

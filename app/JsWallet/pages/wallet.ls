@@ -291,8 +291,8 @@ module.exports = (store, web3t, wallets, wallet)-->
                             react.create-element 'img', { src: "#{icons.open}", style: btn-icon, className: 'icon' }
                     react.create-element 'span', { on-click: expand, className: 'icon' }, children = 
                         react.create-element 'img', { src: "#{icons.arrow-down}", style: icon-color, className: 'icon-svg-create' }
-                button { store, on-click=send-click, text: \send , icon: \send , type: \primary }
-                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \secondary }
+                button { store, on-click=send-click, text: \send , icon: \send , type: \secondary }
+                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary }
         react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
             address-holder { store, wallet, type: \bg }
             if wallet.coin.token not in <[ btc vlx2 ]>

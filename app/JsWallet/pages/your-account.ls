@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./tor.ls
 }
-# .your-account-239165891
+# .your-account1391599159
 #     @import scheme
 #     position: relative
 #     width: auto
@@ -37,7 +37,7 @@ require! {
 #         display: inline-grid
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
-#         border-radius: 0 0 $border $border
+#         border-radius: 0 0 var(--border-btn) var(--border-btn)
 #         .folder-menu
 #             width: 130px
 #             div
@@ -280,7 +280,7 @@ module.exports = (store, web3t)->
         react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + account-name
-    react.create-element 'div', { className: 'your-account your-account-239165891' }, children = 
+    react.create-element 'div', { className: 'your-account your-account1391599159' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name

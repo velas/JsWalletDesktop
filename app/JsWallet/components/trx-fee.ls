@@ -6,9 +6,9 @@ require! {
     \../icons.ls
     \../send-funcs.ls
 }
-# .trx-fee1751710292
+# .trx-fee-738142505
 #     @import scheme
-#     $border-radius: $border
+#     $border-radius: var(--border-btn)
 #     table
 #         margin-bottom: -1px
 #         border-radius: $border-radius $border-radius 0 0
@@ -115,7 +115,7 @@ trx-fee = ({ store, web3t, wallet })->
         react.create-element 'td', { on-click: choose-auto, className: "#{active-class \auto}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
             react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""
-    react.create-element 'div', { className: 'trx-fee trx-fee1751710292' }, children = 
+    react.create-element 'div', { className: 'trx-fee trx-fee-738142505' }, children = 
         react.create-element 'label', { style: text }, ' Transaction Fee'
         react.create-element 'table', { style: border-style, className: 'fee' }, children = 
             react.create-element 'tbody', {}, children = 

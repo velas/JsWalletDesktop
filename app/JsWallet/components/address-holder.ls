@@ -1,13 +1,13 @@
 require! {
     \react
-    \../address-link.ls : { get-address-link, get-address-title }
+    \../address-link.ls : { get-address-link, get-address-title, get-address-display }
     \./middle-ellipsis : MiddleEllipsis
     \../get-primary-info.ls
     \../icons.ls
     \./identicon.ls
     \./copy.ls
 }
-# .address-holder-168277421
+# .address-holder84202264
 #     @import scheme
 #     $card-top-height: 50px
 #     width: 100%
@@ -44,7 +44,7 @@ require! {
 #         left: 4px
 #         top: 3px
 #         height: 30px
-#         border-radius: 5px
+#         border-radius: var(--border-btn)
 #         margin: 0px
 #         z-index: 2
 #     >span
@@ -66,6 +66,7 @@ require! {
 #         overflow: hidden
 #         user-select: text !important
 #         cursor: auto
+#         border-radius: var(--border-btn) !important
 #         @media screen and (max-width: 390px)
 #             padding-right: 25px
 #         a
@@ -109,6 +110,9 @@ module.exports = ({ store, wallet, type })->
     address-title =
         | store.current.refreshing is no => get-address-title wallet, address-suffix
         | _ => "..."
+    address-display =
+        | store.current.refreshing is no => get-address-display wallet, address-suffix
+        | _ => "..."
     show-details = ->
         store.current.hovered-address.address = wallet.address
     hide-details = ->
@@ -119,7 +123,7 @@ module.exports = ({ store, wallet, type })->
             | store.current.address-suffix is '' and wallet.address2  => "2"
             | store.current.address-suffix is '2' and wallet.address3 => '3'
             | _ => ""
-    react.create-element 'div', { on-mouse-enter: show-details, on-mouse-leave: hide-details, className: 'address-holder address-holder-168277421' }, children = 
+    react.create-element 'div', { on-mouse-enter: show-details, on-mouse-leave: hide-details, className: 'address-holder address-holder84202264' }, children = 
         identicon { store, address: address-title }
         react.create-element 'span', { style: input }, children = 
             if store.url-params.internal?
@@ -128,6 +132,9 @@ module.exports = ({ store, wallet, type })->
             else
                 react.create-element 'a', { target: "_blank", href: "#{address-link}", className: 'browse' }, children = 
                     react.create-element 'img', { src: "#{icons.browse-open}", style: icon1 }
-            react.create-element MiddleEllipsis, { key: address-title }, children = 
-                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-title
+            if address-display.length < 12
+                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display
+            else
+                react.create-element MiddleEllipsis, { key: address-title }, children = 
+                    react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display
         copy { store, text: address-title }

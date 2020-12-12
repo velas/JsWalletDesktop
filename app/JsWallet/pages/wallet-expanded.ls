@@ -16,7 +16,8 @@ require! {
     \./wallet-stats.ls
 }
 #
-# .wallet-detailed399861167
+# .wallet-detailed-2132860546
+#     @import scheme
 #     height: 200px
 #     box-sizing: border-box
 #     $tablet: 1200px
@@ -49,7 +50,7 @@ require! {
 #                 margin-left: 5px
 #                 letter-spacing: 2px
 #                 cursor: pointer
-#                 border-radius: 5px
+#                 border-radius: var(--border-btn)
 #             >.address-holder
 #                 margin-top: 10px
 #                 width: calc((130px * 2) + 10px)
@@ -88,7 +89,7 @@ require! {
 #                     position: absolute
 #                     border-radius: 100px
 #                     .coin
-#                         margin: 20% 28%
+#                         margin: 20% auto
 #                         text-align: center
 #                         .course
 #                             font-size: 12px
@@ -105,6 +106,7 @@ require! {
 #                         letter-spacing: 2px
 #                     .token-balance
 #                         font-size: 24px
+#                         font-weight: bold
 #                     .usd-balance
 #                         font-size: 14px
 #                         opacity: .5
@@ -114,13 +116,12 @@ require! {
 #                 .counts
 #                     margin-bottom: 5px
 #                     .label
-#                         font-weight: bold
 #                         font-size: 12px
 #                     .label-icon
 #                         width: 25px
 #                         height: 25px
 #                         background: #f7618a
-#                         border-radius: 6px
+#                         border-radius: var(--border-btn)
 #                         text-align: center
 #                         margin-bottom: 6px
 #                         .icon-svg
@@ -191,13 +192,13 @@ module.exports = (store, web3t, wallets, wallet)-->
     text=
         color: style.app.text
     color-label=
-        background: style.app.primary1
-        background-color: style.app.primary1-spare
-    color-label2=
         background: style.app.primary2
         background-color: style.app.primary2-spare
+    color-label2=
+        background: style.app.primary1
+        background-color: style.app.primary1-spare
     token-display = if token == \VLX2 then \VLX else token
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed399861167' }, children = 
+    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed-2132860546' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
                 if no
@@ -220,8 +221,8 @@ module.exports = (store, web3t, wallets, wallet)-->
                                 react.create-element 'span', {}, ' -' +  pending 
             address-holder { store, wallet, type: \bg }
             react.create-element 'div', { className: 'buttons' }, children = 
-                button { store, on-click=send-click, text: \send , icon: \send , type: \primary }
-                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \secondary }
+                button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send" }
+                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive" }
             react.create-element 'div', { className: 'details' }, children = 
                 react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, ' $' +  round-human balance-usd 
                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human usd-rate
@@ -232,8 +233,8 @@ module.exports = (store, web3t, wallets, wallet)-->
                         react.create-element 'span', { className: 'stats-style' }, children = 
                             react.create-element 'div', { style: text, className: 'coin' }, children = 
                                 react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
-                                react.create-element 'span', { className: "#{placeholder}" }, ' ' +  token-display 
-                                react.create-element 'span', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
+                                react.create-element 'div', { className: "#{placeholder}" }, ' ' +  token-display 
+                                react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
                         wallet-stats store, web3t
                 react.create-element 'div', { style: text, className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', { className: 'counts' }, children = 

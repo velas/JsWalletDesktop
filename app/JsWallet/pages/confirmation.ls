@@ -5,7 +5,7 @@ require! {
     \./icon.ls
     \../icons.ls
 }
-# .confirmation1976106112
+# .confirmation-761623689
 #     @import scheme
 #     position: fixed
 #     z-index: 99999999
@@ -33,11 +33,11 @@ require! {
 #         position: fixed
 #         width: 100%
 #         margin: 10px
-#         border-radius: 10px
+#         border-radius: var(--border-btn)
 #         width: calc(100% - 20px)
 #         box-shadow: 7px 10px 13px #0000001f, -16px 20px 13px #00000024
 #         input
-#             border-radius: $border
+#             border-radius: var(--border-btn)
 #             height: 36px
 #             width: 90px
 #             line-height: 36px
@@ -53,7 +53,7 @@ require! {
 #         >.text
 #             padding: 10px
 #             input
-#                 border-radius: $border
+#                 border-radius: var(--border-btn)
 #         >.buttons
 #             text-align: center
 #             >.button
@@ -64,7 +64,7 @@ require! {
 #                 font-weight: bold
 #                 font-size: 10px
 #                 text-transform: uppercase
-#                 border-radius: $border
+#                 border-radius: var(--border-btn)
 #                 border: 1px solid #CCC
 #                 margin: 15px 5px
 #                 padding: 0px 6px
@@ -100,12 +100,12 @@ alert-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation1976106112' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-761623689' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.alert
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                react.create-element 'button', { on-click: cancel, style: button-style, id: "alert-close", className: 'button' }, children = 
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""
@@ -136,16 +136,16 @@ confirmation-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation1976106112' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-761623689' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.confirmation
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, children = 
+                react.create-element 'button', { on-click: confirm, style: button-style, id: "confirmation-confirm", className: 'button' }, children = 
                     react.create-element 'span', { className: 'apply' }, children = 
                         react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-apply' }
                         """ #{lang.confirm}"""
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                react.create-element 'button', { on-click: cancel, style: button-style, id: "confirmation-close", className: 'button' }, children = 
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""
@@ -172,7 +172,7 @@ prompt-modal = (store)->
         background-color: style.app.bgspare
         color: style.app.text
     input-style =
-        background: style.app.wallet
+        background: style.app.input
         color: style.app.text
         border: "0"
     button-style=
@@ -183,18 +183,18 @@ prompt-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation1976106112' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-761623689' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt
             react.create-element 'div', {}, children = 
-                react.create-element 'input', { on-change: change-input, value: "#{store.current.prompt-answer}", style: input-style }
+                react.create-element 'input', { on-change: change-input, value: "#{store.current.prompt-answer}", style: input-style, id: "prompt-input" }
             react.create-element 'div', { className: 'buttons' }, children = 
-                react.create-element 'button', { on-click: confirm, style: button-style, className: 'button' }, children = 
+                react.create-element 'button', { on-click: confirm, style: button-style, id: "prompt-confirm", className: 'button' }, children = 
                     react.create-element 'span', { className: 'apply' }, children = 
                         react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-apply' }
                         """ #{lang.confirm}"""
-                react.create-element 'button', { on-click: cancel, style: button-style, className: 'button' }, children = 
+                react.create-element 'button', { on-click: cancel, style: button-style, id: "prompt-close", className: 'button' }, children = 
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""

@@ -7,7 +7,7 @@ require! {
     \../navigate.ls
     \../icons.ls
 }
-# .newseed-1613741453
+# .newseed131391059
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -105,8 +105,9 @@ require! {
 #             padding: 10px
 #             margin: 5px
 #             font-size: 14px
+#             font-weight: 400
 #             min-width: 25%
-#             border-radius: 40px
+#             border-radius: calc(var(--border-btn) * 10)
 #             -ms-user-select: none
 #             cursor: default
 #             @media(max-width: 500px)
@@ -142,7 +143,7 @@ require! {
 #                     display: inline-block
 #                     padding: 4px
 #                     float: left
-#                     border-radius: 50px
+#                     border-radius: var(--border-btn)
 #                     width: 11px
 #                     height: 10px
 #                     font-size: 10px
@@ -156,7 +157,7 @@ require! {
 #                         display: inline-block
 #                         padding: 4px
 #                         float: left
-#                         border-radius: 50px
+#                         border-radius: var(--border-btn)
 #                         width: 11px
 #                         height: 10px
 #                         font-size: 10px
@@ -229,7 +230,7 @@ reviewwords = ({ store, web3t })->
     newseed-style=
         margin-bottom: "10px"
         width: "120px"
-    react.create-element 'div', { className: 'newseed newseed-1613741453' }, children = 
+    react.create-element 'div', { className: 'newseed newseed131391059' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.newseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.new-seed-phrase
         review-words-panel store, web3t

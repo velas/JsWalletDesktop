@@ -9,7 +9,7 @@ require! {
     \../round-human.ls
     \../components/button.ls
 }
-# .section-reward-699086726
+# .section-reward634743247
 #     @import scheme
 #     border-bottom: 1px solid rgba(240, 237, 237, 0.16)
 #     padding: 30px 20px
@@ -138,6 +138,11 @@ require! {
 #         font-size: 14px
 #         width: 70%
 #         text-align: left
+#         .alert
+#             background: #ee5c43
+#             padding: 10px
+#             border-radius: 6px
+#             margin-bottom: 20px
 #         .table
 #             width: 240px
 #             height: 240px
@@ -452,12 +457,13 @@ module.exports = (store, web3t)->
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 9600000, gas-price: 1000000 }
     bg=
         background-image: if store.staking.reward-loading is yes then 'none' else ' '
-    react.create-element 'div', { style: bg, className: 'section-reward reward section-reward-699086726' }, children = 
+    react.create-element 'div', { style: bg, className: 'section-reward reward section-reward634743247' }, children = 
         react.create-element 'div', { className: 'title' }, children = 
             react.create-element 'h3', {}, ' ' + lang.u-rewards
         react.create-element 'div', { className: 'description' }, children = 
             if store.staking.reward?
                 react.create-element 'div', {}, children = 
+                    react.create-element 'div', { className: 'alert' }, ' ' + lang.reward-alert
                     react.create-element 'div', { className: 'balance' }, children = 
                         react.create-element 'span', {}, ' ' + lang.available-reward + ':'
                         react.create-element 'span', { className: 'color' }, ' ' + store.staking.reward

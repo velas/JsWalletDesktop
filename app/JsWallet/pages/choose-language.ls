@@ -1,6 +1,6 @@
 require! {
     \react
-    \../menu-funcs.ls 
+    \../menu-funcs.ls
     \./naming.ls
     \../get-primary-info.ls
     \../get-lang.ls
@@ -209,7 +209,7 @@ language = (store, web3t)->
         store.lang = lang
         store.current.choose-language = no
     change-lang-en = ->
-        return set-lang \en 
+        return set-lang \en
     change-lang-ru = ->
         return set-lang \ru
     change-lang-ua = ->
@@ -233,50 +233,50 @@ language = (store, web3t)->
             react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { style: comming-soon, id: "lang-gr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-gr}" }
                         react.create-element 'div', {}, ' Deutsch'
-                    react.create-element 'li', { on-click: change-lang-fr, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-fr, style: color, id: "lang-fr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-fr}" }
                         react.create-element 'div', {}, ' Français'
-                    react.create-element 'li', { on-click: change-lang-en, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-en, style: color, id: "lang-en", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-en}" }
                         react.create-element 'div', {}, ' English'
-                    react.create-element 'li', { on-click: change-lang-kr, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-kr, style: color, id: "lang-kr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-cn}" }
                         react.create-element 'div', {}, ' 한국어'
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { on-click: change-lang-cn, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-cn, style: color, id: "lang-cn", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kr}" }
                         react.create-element 'div', {}, ' 中文語言'
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { style: comming-soon, id: "lang-jp", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-jp}" }
                         react.create-element 'div', {}, ' 日本語'
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { style: comming-soon, id: "lang-hn", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-hn}" }
                         react.create-element 'div', {}, ' हिंदी'
-                    react.create-element 'li', { on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-es, style: color, id: "lang-sp", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-sp}" }
                         react.create-element 'div', {}, ' Español'
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { on-click: change-lang-ua, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-ua, style: color, id: "lang-ua", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-ua}" }
                         react.create-element 'div', {}, ' Українська'
-                    react.create-element 'li', { on-click: change-lang-ru, style: color, className: 'lang-item' }, children = 
+                    react.create-element 'li', { on-click: change-lang-ru, style: color, id: "lang-ru", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-ru}" }
                         react.create-element 'div', {}, ' Русский'
-                    react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+                    react.create-element 'li', { style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
                         react.create-element 'div', {}, ' Қазақ'
 module.exports = ({ store, web3t } )->
     return null if store.current.choose-language isnt yes
     { close-language } = menu-funcs store, web3t
     style = get-primary-info store
-    account-body-style = 
+    account-body-style =
         background: style.app.background
         color: style.app.text
         background-color: style.app.bgspare
-    body-style = 
+    body-style =
         background: "transparent"
         color: style.app.text
     border-style =
@@ -288,7 +288,7 @@ module.exports = ({ store, web3t } )->
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 
                     react.create-element 'div', { className: 'header' }, ' ' + lang.choose-language
-                    if no    
+                    if no
                         react.create-element 'div', { on-click: close-language, className: 'close' }, children = 
                             icon \X, 20
             react.create-element 'div', { className: 'settings' }, children = 

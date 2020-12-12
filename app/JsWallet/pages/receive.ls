@@ -4,7 +4,7 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
 }
-# .receive408703176
+# .receive173047909
 #     @import scheme
 #     text-align: center
 #     .receive-body
@@ -45,14 +45,14 @@ require! {
 #             height: auto
 #             padding: 10px
 #             background: #fff
-#             border-radius: $border
+#             border-radius: var(--border-btn)
 qrcode = (store, wallet)->
     info = get-primary-info store
     return null if not wallet?address?
     bgColor = info.background
-    fgColor = "rgb(158, 79, 235)"
+    fgColor = \#0b0c27
     react.create-element QRCode, { value: "#{wallet.address}", size: "256", bgColor: bgColor, fgColor: fgColor }
 module.exports = (store, wallet)->
-    react.create-element 'div', { className: 'receive receive408703176' }, children = 
+    react.create-element 'div', { className: 'receive receive173047909' }, children = 
         react.create-element 'div', { className: 'receive-body' }, children = 
             qrcode store, wallet

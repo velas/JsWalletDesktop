@@ -8,12 +8,12 @@ require! {
     \../navigate.ls
     \../components/burger.ls
 }
-# .wallets-1770015941
+# .wallets1622211621
 #     @import scheme
 #     @media(max-width:$ipad)
 #         width: 100%
 #         margin: 0
-#     margin-left: $left-margin
+#     margin-left: 0
 #     >.title
 #         position: sticky
 #         position: -webkit-sticky
@@ -125,7 +125,7 @@ build-version = (store, release)-->
         react.create-element 'div', { className: 'source' }, children = 
             react.create-element 'a', { href: "#{source}", style: button-primary3-style, target: "_blank" }, ' Source Code'
         react.create-element 'div', { className: 'download' }, children = 
-            react.create-element 'a', { href: "#{release.browser_download_url}", style: button-primary1-style, target: "_blank" }, ' Download'
+            react.create-element 'a', { href: "#{release.browser_download_url}", style: button-primary1-style, target: "_blank" }, ' Install'
         react.create-element 'div', { className: 'source link' }, children = 
             react.create-element 'a', { href: "#{md5-file?browser_download_url}", style: button-link, target: "_blank" }, ' MD5'
 only-version = (item)->
@@ -141,17 +141,14 @@ header = (store, web3t)->
         border-bottom: "1px solid #{info.app.border}"
         background: info.app.background
         background-color: info.app.bgspare
-    goto-search = ->
-        navigate store, web3t, \search
-    show-class =
-        if store.current.open-menu then \hide else \ ""
+    lock = ->
+        navigate store, web3t, \locked
     react.create-element 'div', { style: border-style, className: 'title' }, children = 
-        react.create-element 'div', { className: "#{show-class} header" }, ' Download Wallets'
-        react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
+        react.create-element 'div', { className: 'header' }, ' Install Wallets'
+        react.create-element 'div', { on-click: lock, className: 'close' }, children = 
             react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
-        burger store, web3t
 module.exports = ({ store, web3t })->
-    react.create-element 'div', { className: 'wallets wallets-1770015941' }, children = 
+    react.create-element 'div', { className: 'wallets wallets1622211621' }, children = 
         header store, web3t
         react.create-element 'div', { className: 'platforms' }, children = 
             store.releases |> filter only-version |> map build-version store

@@ -99,6 +99,7 @@ export get-transaction-info = (config, cb)->
     return cb err if err?
     status =
         | typeof! tx isnt \Object => \pending
+        | tx.status is \0x0 => \reverted
         | tx.status is \0x1 => \confirmed
         | _ => \pending
     result = { tx?from, tx?to, status, info: tx }
@@ -117,9 +118,11 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
+    console.log \calc-fee, 2
     data-parsed =
         | data? => data
         | _ => '0x'
+    console.log \calc-fee, 3
     err, from <- to-eth-address account.address
     console.error "calc-fee from address #{err}" if err?
     return cb "Given address is not valid Velas address" if err?
@@ -169,7 +172,7 @@ get-internal-transactions = ({ network, address }, cb)->
     action = \txlistinternal
     startblock = 0
     endblock = 99999999
-    sort = \asc
+    sort = \desc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
     page = 1
     offset = 20
@@ -192,7 +195,7 @@ get-external-transactions = ({ network, address }, cb)->
     endblock = 99999999
     page = 1
     offset = 20
-    sort = \asc
+    sort = \desc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
     query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
@@ -233,7 +236,7 @@ calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     #console.log \price, price
     return cb null, 22000 if +price < 22000
     cb null, price
-try-get-lateest = ({ network, account }, cb)->
+try-get-latest = ({ network, account }, cb)->
     err, address <- to-eth-address account.address
     return cb err if err?
     err, nonce <- make-query network, \eth_getTransactionCount , [ address, "latest" ]
@@ -245,7 +248,7 @@ get-nonce = ({ network, account }, cb)->
     err, address <- to-eth-address account.address
     return cb err if err?
     err, nonce <- make-query network, \eth_getTransactionCount , [ address, \pending ]
-    return try-get-lateest { network, account }, cb if err? and "#{err.message ? err}".index-of('not implemented') > -1
+    return try-get-latest { network, account }, cb if err? and "#{err.message ? err}".index-of('not implemented') > -1
     return cb "cannot get nonce (pending) - err: #{err.message ? err}" if err?
     cb null, from-hex(nonce)
 is-address = (address) ->

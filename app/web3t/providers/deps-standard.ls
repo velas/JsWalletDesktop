@@ -14,7 +14,7 @@ mnemonic-to-seed = bip39.mnemonic-to-seed
 cache = {}
 bip39.mnemonic-to-seed = (mnemonic)->
     cache[mnemonic] = mnemonic-to-seed mnemonic if not cache[mnemonic]?
-    cache[mnemonic] 
+    cache[mnemonic]
 # performance optimization end
-    
+
 module.exports = { BitcoinLib, Web3, Tx, BN, hdkey, bip39 }

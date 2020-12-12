@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .menu-1073220114
+# .menu1682449790
 #     width: 100%
 #     text-align: right
 #     padding: 20px 15px
@@ -35,7 +35,7 @@ require! {
 #             vertical-align: bottom
 #     >.menu-item
 #         &.active
-#             color: #9264b6 !important
+#             color: #0bffb7 !important
 #             transition: $smooth
 #             -webkit-transition: $smooth
 #             -moz-transition: $smooth
@@ -141,7 +141,7 @@ require! {
 #                     margin: 0
 #                     li
 #                         &:hover
-#                             color: #9264b6 !important
+#                             color: #0bffb7 !important
 #                             transition: .5s
 #                             img
 #                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
@@ -151,7 +151,7 @@ require! {
 #                         &:last-child
 #                             margin-bottom: 0
 #                         &.active
-#                             color: #9264b6 !important
+#                             color: #0bffb7 !important
 #                             img
 #                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                         img
@@ -196,7 +196,7 @@ require! {
 #                         border-width: 8px
 #                         margin-top: 0px
 #         &.active
-#             color: #9264b6 !important
+#             color: #0bffb7 !important
 #             transition: $smooth
 #             -webkit-transition: $smooth
 #             -moz-transition: $smooth
@@ -322,7 +322,7 @@ module.exports = (store, web3)->
         if store.menu.show then \show else \ ""
     show = ->
         store.menu.show = not store.menu.show
-    react.create-element 'div', { style: border-style, className: "#{show-menu} menu menu-1073220114" }, children = 
+    react.create-element 'div', { style: border-style, className: "#{show-menu} menu menu1682449790" }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style }
         if store.preference.lock-visible is yes

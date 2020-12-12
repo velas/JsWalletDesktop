@@ -17,7 +17,9 @@ require! {
     \./pages/hovered-address.ls
     \react-detect-offline : { Offline, Online }
 }
-# .app13460764
+# .app-1830253507
+#     button
+#         border-radius: var(--border-btn) !important
 #     input
 #         line-height: normal !important
 #     &::-webkit-scrollbar
@@ -160,7 +162,7 @@ require! {
 #         width: 100%
 #         display: inline-block
 #         height: 10px
-#         border-radius: 15px
+#         border-radius: calc(var(--border-btn) * 3)
 #     @keyframes fb
 #         0%
 #             -webkit-mask-position: left
@@ -190,7 +192,7 @@ require! {
 # use var(--background);
 define-root = (store)->
     style = get-primary-info store
-    text = ":root { --background: #{style.app.background};--bgspare: #{style.app.bgspare};--bg-secondary: #{style.app.wallet};--bg-primary-light: #{style.app.bg-primary-light};--placeholder: #{style.app.placeholder};--placeholder-menu: #{style.app.placeholder-menu};--color3: #{style.app.color3};--border: #{style.app.border}; --color1: #{style.app.color1}; --color2: #{style.app.color2}; --color-td: #{style.app.color-td};--drag-bg: #{style.app.drag-bg};--td-hover: #{style.app.th};--border-color: #{style.app.border-color};--waves: #{style.app.waves};--primary1: #{style.app.primary1};--primary2: #{style.app.primary2};--primary3: #{style.app.primary3};--primary1-spare: #{style.app.primary1-spare};--primary2-spare: #{style.app.primary2-spare};--primary3-spare: #{style.app.primary3-spare};--input: #{style.app.input};--dark-theme: #{style.app.menu};--border: #{style.app.border};--ligh-text: #{style.app.icon};--alert-spare: #{style.app.alert-spare}}"
+    text = ":root { --background: #{style.app.background};--bgspare: #{style.app.bgspare};--bg-secondary: #{style.app.wallet};--bg-primary-light: #{style.app.bg-primary-light};--placeholder: #{style.app.placeholder};--placeholder-menu: #{style.app.placeholder-menu};--color3: #{style.app.color3};--border: #{style.app.border}; --color1: #{style.app.color1}; --color2: #{style.app.color2}; --color-td: #{style.app.color-td};--drag-bg: #{style.app.drag-bg};--td-hover: #{style.app.th};--border-color: #{style.app.border-color};--waves: #{style.app.waves};--primary1: #{style.app.primary1};--primary2: #{style.app.primary2};--primary3: #{style.app.primary3};--primary1-spare: #{style.app.primary1-spare};--primary2-spare: #{style.app.primary2-spare};--primary3-spare: #{style.app.primary3-spare};--input: #{style.app.input};--dark-theme: #{style.app.menu};--border: #{style.app.border};--ligh-text: #{style.app.icon};--alert-spare: #{style.app.alert-spare}; --btn-clip: #{style.app.clip}; --border-btn: #{style.app.border-btn}; --filter: #{style.app.filter}; --confirm: #{style.app.confirm}}"
     react.create-element 'style', {}, ' ' + text
 module.exports = ({ store, web3t })->
     return null if not store?
@@ -209,7 +211,7 @@ module.exports = ({ store, web3t })->
     react.create-element 'div', {}, children = 
         define-root store
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app13460764" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app-1830253507" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

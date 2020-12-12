@@ -16,7 +16,7 @@ require! {
     \moment
     \../navigate.ls
 }
-# .choose-account-746562784
+# .choose-account-1977626109
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -44,7 +44,7 @@ require! {
 #         display: inline-grid
 #         z-index: 3
 #         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
-#         border-radius: 0 0 $border $border
+#         border-radius: 0 0 var(--border-btn) var(--border-btn)
 #         .folder-menu
 #             width: 100%
 #             span
@@ -89,7 +89,7 @@ require! {
 #                     border: 1px solid
 #                     padding: 0
 #                     box-sizing: border-box
-#                     border-radius: $border
+#                     border-radius: var(--border-btn)
 #                     font-size: 10px
 #                     padding: 0 6px
 #                     height: 36px
@@ -303,8 +303,8 @@ module.exports = (store, web3t)->
     on-exit = ->
         store.current.current-epoch = no
     if store.current.device is \desktop
-        react.create-element 'div', { className: 'choose-account choose-account-746562784' }, children = 
-            react.create-element 'div', { className: "#{show-class} current-epoch h1" }, children = 
+        react.create-element 'div', { className: 'choose-account choose-account-1977626109' }, children = 
+            react.create-element 'div', { on-mouse-leave: on-exit, className: "#{show-class} current-epoch h1" }, children = 
                 react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
                 react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-down}", style: icon-color, className: 'icon-svg-create' }

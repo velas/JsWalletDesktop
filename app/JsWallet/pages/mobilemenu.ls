@@ -10,7 +10,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .mobile-menu1893277218
+# .mobile-menu1180085679
 #     &.active
 #         width: 100%
 #         height: 100vh
@@ -67,14 +67,12 @@ require! {
 #                 vertical-align: bottom
 #         >.menu-item
 #             &.active
-#                 color: #9264b6 !important
+#                 color: #0bffb7 !important
 #                 transition: $smooth
 #                 -webkit-transition: $smooth
 #                 -moz-transition: $smooth
 #                 -ms-transition: $smooth
 #                 -o-transition: $smooth
-#                 img
-#                     filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #             &.syncing
 #                 @keyframes spin
 #                     from
@@ -197,19 +195,16 @@ require! {
 #                         margin: 0
 #                         li
 #                             &:hover
-#                                 color: #9264b6 !important
+#                                 color: #0bffb7 !important
 #                                 transition: .5s
 #                                 img
-#                                     filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                                     transition: .5s
 #                             margin-bottom: 25px
 #                             font-size: 12px
 #                             &:last-child
 #                                 margin-bottom: 0
 #                             &.active
-#                                 color: #9264b6 !important
-#                                 img
-#                                     filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+#                                 color: #0bffb7 !important
 #                             img
 #                                 filter: none
 #                     &.arrow_box
@@ -253,14 +248,12 @@ require! {
 #                             border-width: 8px
 #                             margin-top: 0px
 #             &.active
-#                 color: #9264b6 !important
+#                 color: #0bffb7 !important
 #                 transition: $smooth
 #                 -webkit-transition: $smooth
 #                 -moz-transition: $smooth
 #                 -ms-transition: $smooth
 #                 -o-transition: $smooth
-#                 img
-#                     filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #             &.syncing
 #                 @keyframes spin
 #                     from
@@ -388,7 +381,7 @@ module.exports = (store, web3)->
         if store.menu.show then \active else \ ""
     close = ->
         store.menu.show = no
-    react.create-element 'div', { className: "#{show-mobile} mobile-menu mobile-menu1893277218" }, children = 
+    react.create-element 'div', { className: "#{show-mobile} mobile-menu mobile-menu1180085679" }, children = 
         react.create-element 'div', { style: border-style, className: "#{show-mobile} content" }, children = 
             react.create-element 'div', { on-click: close, className: 'closed' }, children = 
                 icon \X, 20

@@ -9,14 +9,14 @@ require! {
     \./choose-language.ls
 }
 # ss
-# .newseed332852373
+# .newseed2064620563
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
 #     height: $height
 #     box-sizing: border-box
 #     height: 100%
-#     >.logo 
+#     >.logo
 #         margin: 3rem 0
 #         >img
 #             height: 80px
@@ -147,7 +147,7 @@ newseed = ({ store, web3t })->
         color: style.app.text
         background: style.app.wallet
     button-primary2-style=
-        border: "1px solid #{style.app.primary2}"
+        border: "0"
         color: style.app.text
         background: style.app.primary2
         background-color: style.app.primary2-spare
@@ -180,17 +180,17 @@ newseed = ({ store, web3t })->
         store.current.seed-words.length = 0
         navigate store, web3t, \:init
         #store.current.page = 'newseedrestore'
-    react.create-element 'div', { className: 'newseed newseed332852373' }, children = 
+    react.create-element 'div', { className: 'newseed newseed2064620563' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}" }
             react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.welcome-wallet
         react.create-element 'div', { className: 'align-v' }, children = 
-            react.create-element 'button', { style: button-primary2-style, on-click: new-wallet, className: 'left' }, children = 
+            react.create-element 'button', { style: button-primary2-style, on-click: new-wallet, id: "btn-create", className: 'left' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.create-wallet}", className: 'icon-svg' }
                     """ #{lang.new-wallet}"""
-            react.create-element 'button', { style: button-primary3-style, on-click: restore-option, className: 'right' }, children = 
+            react.create-element 'button', { style: button-primary3-style, on-click: restore-option, id: "btn-restore", className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", style: btn-icon, className: 'icon-svg' }
                     """ #{lang.restore-wallet}"""

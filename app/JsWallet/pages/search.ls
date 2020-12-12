@@ -13,9 +13,9 @@ require! {
     \./alert-demo.ls
     \../components/burger.ls
 }
-# .search-1018737767
+# .search974474038
 #     @import scheme
-#     $border-radius: $border
+#     $border-radius: var(--border-btn)
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
 #     display: block
@@ -494,7 +494,7 @@ search = ({ store, web3t })->
     active-files = active-class \files
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'search search-1018737767' }, children = 
+    react.create-element 'div', { className: 'search search974474038' }, children = 
         alert-demo store, web3t
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.search

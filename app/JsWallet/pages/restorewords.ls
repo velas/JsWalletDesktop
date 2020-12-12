@@ -9,7 +9,7 @@ require! {
     \../../web3t/providers/deps.ls : { bip39 }
     \../components/typeahead.ls
 }
-# .newseed2001585109
+# .newseed-1527643649
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -107,8 +107,9 @@ require! {
 #             padding: 0 3px
 #             margin: 5px
 #             font-size: 14px
+#             font-weight: 400
 #             min-width: 25%
-#             border-radius: 40px
+#             border-radius: calc(var(--border-btn) * 10)
 #             -ms-user-select: none
 #             cursor: default
 #             @media(max-width: 500px)
@@ -144,7 +145,7 @@ require! {
 #                     display: inline-block
 #                     padding: 4px
 #                     float: left
-#                     border-radius: 50px
+#                     border-radius: var(--border-btn)
 #                     width: 11px
 #                     height: 10px
 #                     font-size: 10px
@@ -157,7 +158,7 @@ require! {
 #                         color: #fff
 #                         display: inline-block
 #                         padding: 4px
-#                         border-radius: 50px
+#                         border-radius: var(--border-btn)
 #                         width: 11px
 #                         height: 10px
 #                         font-size: 10px
@@ -189,10 +190,10 @@ restore-words = (store, web3t, next, item)-->
         next! if it.key-code is 13
     react.create-element 'div', { style: seed-style, className: 'word' }, children = 
         if store.current.seed-words.length is 1
-            react.create-element 'textarea', { value: "#{item.part}", placeholder: "Enter your custom seed phrase here. Please check your addresses and balances before use.", on-change: change-part }
+            react.create-element 'textarea', { value: "#{item.part}", placeholder: "Enter your custom seed phrase here. Please check your addresses and balances before use.", on-change: change-part, id: "seedphrase-custom" }
         else
             [
-                typeahead { store, value: item.part, placeholder: "#{lang.word} ##{index}", on-change: change-part, on-key-down, list }
+                typeahead { store, value: item.part, placeholder: "#{lang.word} ##{index}", on-change: change-part, on-key-down, list, id: "seed-phrase-word"}
                 react.create-element 'span', { className: 'effect' }, ' ' + index
             ]
 restore-words-panel = (store, web3t)->
@@ -232,10 +233,10 @@ restore-words-panel = (store, web3t)->
                 |> filter current-word store.current.verify-seed-index
                 |> map restore-words store, web3t, next
         react.create-element 'div', {}, children = 
-            react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
+            react.create-element 'button', { on-click: back, style: button-primary3-style, id: "seed-phrase-back", className: 'right' }, children = 
                 react.create-element 'img', { src: "#{icons.close2}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.cancel }"""
-            react.create-element 'button', { on-click: next, style: button-primary1-style, className: 'right' }, children = 
+            react.create-element 'button', { on-click: next, style: button-primary1-style, id: "seed-phrase-next", className: 'right' }, children = 
                 react.create-element 'img', { src: "#{icons.right}", className: 'icon-svg' }
                 """ #{lang.next }"""
         react.create-element 'div', { style: text-style, className: 'hint' }, ' ' + lang.new-seed-warning-restore
@@ -250,7 +251,7 @@ newseed = ({ store, web3t })->
     newseed-style=
         margin-bottom: "10px"
         width: "120px"
-    react.create-element 'div', { className: 'newseed newseed2001585109' }, children = 
+    react.create-element 'div', { className: 'newseed newseed-1527643649' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.newseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.your-seed-phrase
         restore-words-panel store, web3t

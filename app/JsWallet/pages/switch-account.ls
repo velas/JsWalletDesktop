@@ -16,7 +16,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .choose-account-2062889240
+# .choose-account-2129320115
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -57,7 +57,7 @@ require! {
 #         text-align: right
 #         display: block
 #         z-index: 2
-#         border-radius: 0 0 $border $border
+#         border-radius: 0 0 var(--border-btn) var(--border-btn)
 #         @media(max-width: 620px)
 #             .name, .icon
 #                 visibility: hidden
@@ -77,7 +77,7 @@ require! {
 #             width: 90px
 #             text-align: right
 #             cursor: default
-#             display: inline-block
+#             display: contents
 #             vertical-align: middle
 #         input
 #             outline: none
@@ -220,6 +220,6 @@ module.exports = (store, web3t)->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { className: 'choose-account choose-account-2062889240' }, children = 
+    react.create-element 'div', { className: 'choose-account choose-account-2129320115' }, children = 
         chosen-account-template
         your-account store, web3t

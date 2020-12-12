@@ -7,7 +7,7 @@ require! {
     \../navigate.ls
     \../pages/add-wallet.ls
 }
-# .header162830242
+# .header1840047076
 #     @import scheme
 #     height: 60px
 #     margin-left: $menu
@@ -17,13 +17,13 @@ require! {
 #     >.left-side, >.right-side
 #         position: relative
 #     >.left-side
-#         width: 25%
+#         width: 30%
 #         min-width: 200px
 #         .search-area
 #             width: 80%
 #             input
 #                 float: left
-#                 border-radius: $border
+#                 border-radius: var(--border-btn)
 #                 margin-top: 11px
 #                 margin-left: 12px
 #                 height: 36px
@@ -76,7 +76,7 @@ require! {
 #                 cursor: pointer
 #                 vertical-align: top
 #     >.right-side
-#         width: 75%
+#         width: 70%
 #         .choose-account
 #             top: 20px
 #             margin-right: 60px
@@ -126,7 +126,7 @@ module.exports = (store, web3t)->
         store.menu.show = not store.menu.show
     search-on-change = (event) ->
         store.current.search = event.target.value
-    react.create-element 'div', { style: header, className: 'header header162830242' }, children = 
+    react.create-element 'div', { style: header, className: 'header header1840047076' }, children = 
         react.create-element 'div', { className: 'left-side' }, children = 
             react.create-element 'button', { style: button-add, on-click: show, className: "#{show-class} button menu" }, children = 
                 react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }

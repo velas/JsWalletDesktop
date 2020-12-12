@@ -101,4 +101,3 @@ module.exports = ({ store, value, on-change, placeholder })->
         react.create-element 'div', { className: 'show-details' }, children = 
             react.create-element 'div', { className: 'panel' }, children = 
                 react.create-element 'div', {}, ' USD: ' + round usd
-                react.create-element 'div', {}, ' EUR: ' + round eur

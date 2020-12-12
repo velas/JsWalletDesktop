@@ -166,7 +166,7 @@ require! {
 #             position: relative
 success-icon = (store)->
     style = get-primary-info store
-    icon-style = 
+    icon-style =
         fill: style.app.icon
     react.create-element 'svg', { version: '1.1', xmlns: 'http://www.w3.org/2000/svg', x: '0px', y: '0px', viewbox: '0 0 52 52', style: icon-style }, children = 
         react.create-element 'g', {}, children = 
@@ -203,8 +203,8 @@ module.exports = ({ store, web3t })->
     btn-icon =
         filter: style.app.btn-icon
     has-pending =
-        store.transactions.applied 
-            |> filter (.pending) 
+        store.transactions.applied
+            |> filter (.pending)
             |> (.length > 0)
     now = moment!.unix!
     no-recent =
@@ -239,6 +239,6 @@ module.exports = ({ store, web3t })->
                 react.create-element 'span', {}, '  ' + lang.inProgress + '..'
             else
                 react.create-element 'span', {}, '  ' + lang.has-been-sent
-        button { store, on-click : go-home , type : \secondary , text: \home }
+        button { store, on-click : go-home , type : \secondary , text: \home, id="sent-home" }
         react.create-element 'div', { className: 'limited-history' }, children = 
             history { store, web3t }

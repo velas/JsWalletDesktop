@@ -18,10 +18,10 @@ require! {
     \../history-funcs.ls
     \../components/burger.ls
 }
-# .content934132681
+# .content649763333
 #     position: relative
 #     @import scheme
-#     $border-radius: $border
+#     $border-radius: var(--border-btn)
 #     $label-padding: 3px
 #     $label-font: 13px
 #     width: calc(100% - 0px) !important
@@ -75,7 +75,7 @@ require! {
 #         right: 0
 #         width: 150px
 #         box-shadow: 0px 0px 2px black
-#         border-radius: $border
+#         border-radius: var(--border-btn)
 #         text-align: left
 #         padding-bottom: 3px
 #         >.more
@@ -103,7 +103,7 @@ require! {
 #         >form
 #             >table
 #                 background: transparent
-#                 border-radius: 0 0 $border $border
+#                 border-radius: 0 0 var(--border-btn) var(--border-btn)
 #                 width: 100%
 #                 border-spacing: 0
 #                 tr
@@ -139,7 +139,7 @@ require! {
 #                             left: 4px
 #                             top: 3px
 #                             height: 30px
-#                             border-radius: 5px
+#                             border-radius: var(--border-btn)
 #                             margin: 0px
 #                         input
 #                             text-align: center
@@ -176,6 +176,7 @@ require! {
 #                     >.input-wrapper
 #                         position: relative
 #                         width: 65%
+#                         border-radius: var(--border-btn) 0 0 var(--border-btn)
 #                         &.choose-currency
 #                             display: inline-flex
 #                             width: 45% !important
@@ -200,6 +201,7 @@ require! {
 #                             margin-left: -1px
 #                         &.small
 #                             width: 35%
+#                             border-radius: 0 var(--border-btn) var(--border-btn) 0
 #                         display: inline-block
 #                         box-sizing: border-box
 #                         margin: 0
@@ -377,7 +379,9 @@ send = ({ store, web3t })->
     border-style=
         border: "1px solid #{style.app.border}"
     amount-style=
-        border: "1px solid #{style.app.background}"
+        background: style.app.input
+        border: "1px solid #{style.app.border}"
+        color: style.app.text
     icon-style =
         color: style.app.icon
     use-max-style =
@@ -389,6 +393,7 @@ send = ({ store, web3t })->
         background-color: style.app.primary3-spare
     crypto-background =
         background: style.app.wallet
+        width: "50%"
     more-text=
         color: style.app.text
     border-header =
@@ -412,7 +417,7 @@ send = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     token-display = if token == \VLX2 then \VLX else token
     fee-token-display = if fee-token == \VLX2 then \VLX else fee-token
-    react.create-element 'div', { className: 'content content934132681' }, children = 
+    react.create-element 'div', { className: 'content content649763333' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.send
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -451,25 +456,25 @@ send = ({ store, web3t })->
                 form-group lang.to, icon-style, ->
                     react.create-element 'div', {}, children = 
                         identicon { store, address: send.to }
-                        react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}" }
+                        react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}", id: "send-recipient" }
                 form-group lang.amount, icon-style, ->
                     react.create-element 'div', {}, children = 
                         react.create-element 'div', { className: 'amount-field' }, children = 
-                            react.create-element 'div', { className: 'input-wrapper' }, children = 
-                                react.create-element 'div', { style: crypto-background, className: 'label crypto' }, children = 
+                            react.create-element 'div', { style: input-style, className: 'input-wrapper' }, children = 
+                                react.create-element 'div', { className: 'label crypto' }, children = 
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     """ #{token-display}"""
-                                react.create-element 'input', { type: 'text', style: input-style, on-change: amount-change, placeholder: "0", title: "#{send.amount-send}", value: "#{round5edit send.amount-send}", className: 'amount' }
+                                react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-change, placeholder: "0", title: "#{send.amount-send}", value: "#{round5edit send.amount-send}", id: "send-amount", className: 'amount' }
                             if active-usd is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' $'
-                                    react.create-element 'input', { type: 'text', style: input-style, on-change: amount-usd-change, placeholder: "0", title: "#{send.amount-send-usd}", value: "#{round-money send.amount-send-usd}", className: 'amount-usd' }
+                                    react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-usd-change, placeholder: "0", title: "#{send.amount-send-usd}", value: "#{round-money send.amount-send-usd}", id: "send-amount-usd", className: 'amount-usd' }
                             if active-eur is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' €'
-                                    react.create-element 'input', { type: 'text', style: input-style, on-change: amount-eur-change, placeholder: "0", title: "#{send.amount-send-eur}", value: "#{round-money send.amount-send-eur}", className: 'amount-eur' }
+                                    react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-eur-change, placeholder: "0", title: "#{send.amount-send-eur}", value: "#{round-money send.amount-send-eur}", id: "send-amount-eur", className: 'amount-eur' }
                         react.create-element 'div', { className: 'usd' }, children = 
-                            react.create-element 'button', { on-click: use-max-amount, style: button-primary3-style, type: "button", className: 'send-all' }, ' ' + lang.use-max
+                            react.create-element 'button', { on-click: use-max-amount, style: button-primary3-style, type: "button", id: "send-max", className: 'send-all' }, ' ' + lang.use-max
                             react.create-element 'span', {}, ' ' + lang.balance
                             react.create-element 'span', { className: 'balance' }, children = 
                                 react.create-element 'span', { title: "#{wallet.balance}" }, ' ' + round-human wallet.balance
@@ -477,8 +482,6 @@ send = ({ store, web3t })->
                                     react.create-element 'span', {}, ' ' + token-display
                                 if +wallet.pending-sent >0 and no
                                     react.create-element 'span', { className: 'pending' }, ' ' + '(' + pending + ' ' + lang.pending + ')'
-                            react.create-element 'button', { on-click: activate-eur, style: use-max-style, type: "button", className: "#{active-eur} send-all switch-currency" }, ' eur'
-                            react.create-element 'button', { on-click: activate-usd, style: use-max-style, type: "button", className: "#{active-usd} send-all switch-currency" }, ' usd'
                         react.create-element 'div', { title: "#{send.error}", className: 'control-label not-enough text-left' }, ' ' + send.error
                 if is-data
                     form-group 'Data', icon-style, ->
@@ -502,8 +505,8 @@ send = ({ store, web3t })->
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-send-fee-usd
             react.create-element 'div', { className: 'button-container' }, children = 
                 react.create-element 'div', { className: 'buttons' }, children = 
-                    button { store, text: \send , on-click: send-anyway , loading: send.sending, type: \primary, error: send.error }
-                    button { store, text: \cancel , on-click: cancel, icon: \close2 }
+                    button { store, text: \send , on-click: send-anyway , loading: send.sending, type: \primary, error: send.error, id: "send-confirm" }
+                    button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
 module.exports = send
 module.exports.init = ({ store, web3t }, cb)->
     { wallet } = send-funcs store, web3t

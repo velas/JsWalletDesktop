@@ -8,7 +8,7 @@ require! {
     \./confirmation.ls : { confirm }
 }
 # verification seed
-# .newseed-1353730657
+# .newseed-1830801947
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -25,8 +25,9 @@ require! {
 #             padding: 10px
 #             margin: 5px
 #             font-size: 14px
+#             font-weight: 400
 #             min-width: 25%
-#             border-radius: 40px
+#             border-radius: calc(var(--border-btn) * 10)
 #             -ms-user-select: none
 #             cursor: default
 #             @media(max-width: 500px)
@@ -55,7 +56,7 @@ require! {
 #                     display: inline-block
 #                     padding: 4px
 #                     float: left
-#                     border-radius: 50px
+#                     border-radius: var(--border-btn)
 #                     width: 11px
 #                     height: 10px
 #                     font-size: 10px
@@ -69,7 +70,7 @@ require! {
 #                         display: inline-block
 #                         padding: 4px
 #                         float: left
-#                         border-radius: 50px
+#                         border-radius: var(--border-btn)
 #                         width: 11px
 #                         height: 10px
 #                         font-size: 10px
@@ -174,7 +175,7 @@ newseed = ({ store, web3t })->
             item.part = it.target.value
         react.create-element 'div', { style: seed-style, className: 'word' }, children = 
             react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "#{lang.word} ##{item.index + 1}", on-key-down: on-key-down }
-    react.create-element 'div', { className: 'newseed newseed-1353730657' }, children = 
+    react.create-element 'div', { className: 'newseed newseed-1830801947' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase
         react.create-element 'div', { className: 'words' }, children = 

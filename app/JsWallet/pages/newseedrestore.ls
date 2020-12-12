@@ -200,19 +200,19 @@ newseed = ({ store, web3t })->
             react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.restore-from
         react.create-element 'div', { className: 'align-v' }, children = 
-            react.create-element 'button', { style: button-primary1-style, on-click: restore12, className: 'left' }, children = 
+            react.create-element 'button', { style: button-primary1-style, on-click: restore12, id: "restore-12", className: 'left' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ 12 #{lang.restore-words12}"""
-            react.create-element 'button', { style: button-primary1-style, on-click: restore24, className: 'right' }, children = 
+            react.create-element 'button', { style: button-primary1-style, on-click: restore24, id: "restore-24", className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ 24 #{lang.restore-words24}"""
-            react.create-element 'button', { style: button-primary1-style, on-click: restorecustom, className: 'right' }, children = 
+            react.create-element 'button', { style: button-primary1-style, on-click: restorecustom, id: "restore-custom", className: 'right' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.restore}", className: 'icon-svg' }
                     """ Custom"""
-            react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
+            react.create-element 'button', { on-click: back, style: button-primary3-style, id: "restore-back", className: 'right' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.back}"""
 focus = ({ store }, cb)->

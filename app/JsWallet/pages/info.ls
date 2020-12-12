@@ -20,9 +20,9 @@ require! {
     \./alert-txn.ls
     \../components/burger.ls
 }
-# .stats1628272092
+# .stats-1905078497
 #     @import scheme
-#     $border-radius: $border
+#     $border-radius: var(--border-btn)
 #     $smooth: opacity .15s ease-in-out
 #     position: relative
 #     display: block
@@ -251,7 +251,7 @@ info = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'stats stats1628272092' }, children = 
+    react.create-element 'div', { className: 'stats stats-1905078497' }, children = 
         alert-txn { store }
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics

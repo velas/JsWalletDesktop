@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./menu.ls
 }
-# .menu1864322263
+# .menu855995223
 #     @import scheme
 #     width: 100%
 #     text-align: right
@@ -138,7 +138,7 @@ require! {
 #                     margin: 0
 #                     li
 #                         &:hover
-#                             color: #9264b6 !important
+#                             color: #0bffb7 !important
 #                             transition: .5s
 #                             img
 #                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
@@ -150,7 +150,7 @@ require! {
 #                         &:last-child
 #                             margin-bottom: 0
 #                         &.active
-#                             color: #9264b6 !important
+#                             color: #0bffb7 !important
 #                             img
 #                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
 #                         img
@@ -358,7 +358,7 @@ module.exports = (store, web3t)->
         if store.menu.show then \active else \ ""
     close = ->
         store.menu.show = no
-    react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu1864322263" }, children = 
+    react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu855995223" }, children = 
         react.create-element 'div', { on-click: close, className: "#{show-mobile} closed" }, children = 
             icon \X, 20
         react.create-element 'div', { className: 'info' }, children = 
@@ -366,42 +366,42 @@ module.exports = (store, web3t)->
         menu { store, web3t }
         react.create-element 'div', { className: 'menu-items' }, children = 
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: wallet, style: icon-style, className: "#{wallets} menu-item" }, children = 
+                react.create-element 'div', { on-click: wallet, style: icon-style, id: "menu-wallets", className: "#{wallets} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: open-submenu, style: icon-style, on-mouse-leave: menu-out, className: "#{staking + ' ' + menu-staking + ' ' + info-active + ' ' + staking-active + ' ' + delegate-active} menu-item" }, children = 
+                react.create-element 'div', { on-click: open-submenu, style: icon-style, on-mouse-leave: menu-out, id: "menu-staking", className: "#{staking + ' ' + menu-staking + ' ' + info-active + ' ' + staking-active + ' ' + delegate-active} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
                     react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
                     react.create-element 'img', { src: "#{icons.arrow-down}", className: 'more' }
-                    react.create-element 'div', { className: 'menu arrow_box menu1864322263' }, children = 
+                    react.create-element 'div', { className: 'menu arrow_box menu855995223' }, children = 
                         react.create-element 'ul', {}, children = 
-                            react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
+                            react.create-element 'li', { on-click: goto-staking, style: icon-style, id: "menu-node", className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }
                                 """ #{lang.install-node}"""
-                            react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, className: "#{delegate-active}" }, children = 
+                            react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{delegate-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
                                 """ #{lang.delegate-stake}"""
                             if no
                                 react.create-element 'li', { on-click: goto-claim, style: icon-style, className: "#{claim-active}" }, children = 
                                     react.create-element 'img', { src: "#{icons.claim}", style: icon-node }
                                     """ #{lang.claim-reward}"""
-                            react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
+                            react.create-element 'li', { on-click: goto-info, style: icon-style, id: "menu-stats", className: "#{info-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.info}", style: icon-node }
                                 """ #{lang.stats}"""
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 
+                react.create-element 'div', { on-click: goto-search, style: icon-style, id: "menu-search", className: "#{search} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.search
                     react.create-element 'img', { src: "#{icons.search}", style: icon-color }
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 
+                react.create-element 'div', { on-click: goto-settings, style: icon-style, id: "menu-settings", className: "#{settings} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
                     react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-support, style: icon-style, className: 'menu-item' }, children = 
+                react.create-element 'div', { on-click: goto-support, style: icon-style, id: "menu-support", className: 'menu-item' }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
                     react.create-element 'img', { src: "#{icons.support}", style: icon-color }
             if store.current.network is \testnet
-                react.create-element 'div', { on-click: goto-mainnet, style: icon-style, className: "#{settings} menu-item testnet" }, children = 
+                react.create-element 'div', { on-click: goto-mainnet, style: icon-style, id: "menu-testnet", className: "#{settings} menu-item testnet" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' Testnet'
                     react.create-element 'img', { src: "#{icons.test}", style: icon-color }

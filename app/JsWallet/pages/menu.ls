@@ -14,7 +14,7 @@ require! {
     \../add-coin.ls
     \./tor.ls
 }
-# .menu38900718
+# .menu750465975
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -107,6 +107,7 @@ require! {
 #                     margin-top: 5px
 #             >.amount
 #                 font-size: 25px
+#                 font-weight: bold
 #                 .symbol
 #                     font-size: 15px
 #                     vertical-align: unset
@@ -172,7 +173,7 @@ module.exports = ({ store, web3t })->
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu38900718' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu750465975' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'branding' }, children = 
                 react.create-element 'img', { src: "#{info.branding.logo-sm}", on-click: goto-wallet }

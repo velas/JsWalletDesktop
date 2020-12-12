@@ -5,7 +5,7 @@ require! {
     \prelude-ls : { obj-to-pairs, map }
 }
 #monochrome dark_mojave
-# .choose-theme-1047863594
+# .choose-theme-1045472592
 #     @import scheme
 #     >.theme
 #         margin-bottom: 40px
@@ -19,11 +19,11 @@ require! {
 #                 text-align: top
 #                 box-sizing: border-box
 #                 &:first-child
-#                     border-top-left-radius: $border
-#                     border-bottom-left-radius: $border
+#                     border-top-left-radius: var(--border-btn)
+#                     border-bottom-left-radius: var(--border-btn)
 #                 &:last-child
-#                     border-top-right-radius: $border
-#                     border-bottom-right-radius: $border
+#                     border-top-right-radius: var(--border-btn)
+#                     border-bottom-right-radius: var(--border-btn)
 create-button = (store, web3t)-> (text)->
     use = ->
         web3t.set-theme text
@@ -42,5 +42,5 @@ create-button = (store, web3t)-> (text)->
             react.create-element 'div', { style: control-style, className: 'box' }
         button { store, text , on-click: use, icon: \show, type: \secondary }
 module.exports = (store, web3t)->
-    react.create-element 'div', { className: 'choose-theme choose-theme-1047863594' }, children = 
+    react.create-element 'div', { className: 'choose-theme choose-theme-1045472592' }, children = 
         themes |> obj-to-pairs |> map (-> it.0) |> map create-button store, web3t
