@@ -203,7 +203,7 @@ check-pin = (store, web3t)->
     store.current.pin = ""
     store.current.loading = yes
     if store.current.page-pin?
-        <- navigate store, web3t, \:init, no
+#        <- navigate store, web3t, \:init, no
         navigate store, web3t, store.current.page-pin
         store.current.page-pin = null
     else
@@ -376,8 +376,9 @@ locked = ({ store, web3t })->
             input store, web3t
         export-import-seed store
         footer store, web3t
-        react.create-element 'div', { className: 'downloadwallet' }, children = 
-            button { store, on-click=download, text: \install , icon: \download  , type : \primary }
+        if not process?versions?electron?
+            react.create-element 'div', { className: 'downloadwallet' }, children = 
+                button { store, on-click=download, text: \install , icon: \download  , type : \primary }
 focus = ({ store }, cb)->
     cb null
 locked.focus = focus
