@@ -234,6 +234,7 @@ add-by-vlxaddress = (store, web3t)->
             icon \Plus, 20
 module.exports = ({ store, web3t } )->
     return null if store.current.add-coin isnt yes
+    network = store.current.network   
     close = ->
         store.current.add-coin = no
     filter-registery = (event)->
@@ -268,6 +269,8 @@ module.exports = ({ store, web3t } )->
                     react.create-element 'div', { className: 'list' }, children = 
                         if store.registry.length > -1
                             store.registry
+                                |> filter (it)->
+                                    (it[network].disabled is no) or (not it[network].disabled?)  
                                 |> filter filter-item store
                                 |> map create-item { store, web3t }
                         else

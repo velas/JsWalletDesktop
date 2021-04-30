@@ -6,6 +6,7 @@ require! {
     \../icons.ls
     \./identicon.ls
     \./copy.ls
+    \../contracts.ls
 }
 # .address-holder84202264
 #     @import scheme
@@ -89,7 +90,7 @@ require! {
 #             user-select: text !important
 #             &.active
 #                 color: orange
-module.exports = ({ store, wallet, type })->
+module.exports = ({ store, wallet, type, text })->
     style = get-primary-info store
     address-suffix = store.current.address-suffix
     address-input=
@@ -111,29 +112,36 @@ module.exports = ({ store, wallet, type })->
         | store.current.refreshing is no => get-address-title wallet, address-suffix
         | _ => "..."
     address-display =
-        | store.current.refreshing is no => get-address-display wallet, address-suffix
+        | store.current.refreshing is no => get-address-display store, wallet, address-suffix
         | _ => "..."
     show-details = ->
         store.current.hovered-address.address = wallet.address
     hide-details = ->
         store.current.hovered-address.address = null
-    active = if wallet.address is store.current.hovered-address.address then 'active' else ''
+    active = if wallet.address is store.current.hovered-address.address then '' else ''
     rotate-address-suffix = ->
         store.current.address-suffix =
             | store.current.address-suffix is '' and wallet.address2  => "2"
             | store.current.address-suffix is '2' and wallet.address3 => '3'
             | _ => ""
-    react.create-element 'div', { on-mouse-enter: show-details, on-mouse-leave: hide-details, className: 'address-holder address-holder84202264' }, children = 
+    get-address = (wallet, address-suffix="")->
+        wallet["address#{address-suffix}"]
+    address = get-address(wallet, address-suffix)
+    is-contract = contracts.is-contract(store, address)
+    react.create-element 'div', { className: 'address-holder address-holder84202264' }, children = 
         identicon { store, address: address-title }
-        react.create-element 'span', { style: input }, children = 
+        react.create-element 'span', { style: input, className: 'inner-address-holder' }, children = 
             if store.url-params.internal?
                 react.create-element 'a', { on-click: rotate-address-suffix, className: 'browse' }, children = 
                     react.create-element 'img', { src: "#{icons.choose}", style: filter-icon }
             else
                 react.create-element 'a', { target: "_blank", href: "#{address-link}", className: 'browse' }, children = 
                     react.create-element 'img', { src: "#{icons.browse-open}", style: icon1 }
-            if address-display.length < 12
-                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display
+            if is-contract and no
+                address-display = contracts.get-contract-name(store, address)
+                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display + '     '
+            else if text?
+                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + text
             else
                 react.create-element MiddleEllipsis, { key: address-title }, children = 
                     react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display

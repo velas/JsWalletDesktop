@@ -1,1 +1,1 @@
-module.exports = 25000
+module.exports = 15000

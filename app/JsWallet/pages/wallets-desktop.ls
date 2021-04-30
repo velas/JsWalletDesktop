@@ -18,7 +18,7 @@ require! {
     \../icons.ls
     \../components/header.ls
 }
-# .wallets-container1186533268
+# .wallets-container-378698936
 #     @import scheme
 #     >.left-side
 #         margin-left: $menu
@@ -29,7 +29,7 @@ require! {
 #         background-size: cover
 #         background-repeat: no-repeat
 #         background-position: top right
-#         padding: 30px
+#         padding: 20px
 #         box-sizing: border-box
 #     .wallets
 #         @import scheme
@@ -73,7 +73,7 @@ require! {
 #                         float: right !important
 #                     display: none
 #             .top-left
-#                 width: 80% !important
+#                 width: 100% !important
 #             .top-middle
 #                 width: 32% !important
 #                 text-align: center !important
@@ -269,7 +269,7 @@ mobile = ({ store, web3t })->
         wallets
             |> find (-> wallets.index-of(it) is store.current.wallet-index)
     return null if not wallet-detail?
-    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container1186533268' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container-378698936' }, children = 
         header store, web3t
         react.create-element 'div', { style: row, className: 'left-side' }, children = 
             react.create-element 'div', { style: left-side }, children = 

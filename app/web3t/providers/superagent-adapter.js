@@ -77,7 +77,7 @@
   resetRequest = function(cb){
     return function(){
       if (cb.timer == null) {
-        return console.log('ignored reset');
+        return console.log('');
       }
       clearTimer(cb);
       return cb("Deadline was reached");
@@ -90,7 +90,7 @@
     cb.timer = setTimeout(resetRequest(cb), timeout.deadline);
     return function(err, data){
       if (cb.timer == null) {
-        return console.log('ignored response');
+        return console.log('');
       }
       clearTimer(cb);
       return cb(err, data);

@@ -14,6 +14,8 @@ saved-seed = seedmem.saved!
 create-send =->
     id: ""
     to: ""
+    chosen-network: null 
+    contract-address: null  
     details: yes
     propose-escrow: no
     address: ''
@@ -30,6 +32,7 @@ create-send =->
     amount-send-fee-usd: \0
     amount-obtain: \0
     data: ""
+    is-swap: no 
     decoded-data: ""
     show-data-mode: \encoded
     error: ''
@@ -107,13 +110,53 @@ store =
     interop:
         is-address-queried: no
         origin: no
+    HomeBridgeNativeToErc: {}
+    ForeignBridgeNativeToErc: {}   
+    lockups:
+        currentTimelock: null    
+        stake-amount-total: 0  
+        exit-tab: '' 
+        wait-for-epoch-change: no   
+        maxWithdrawAllowed: 0   
+        orderedWithdrawAmount: 0  
+        maxWithdrawOrderAllowed: 0
+        withdraw-amount: 0 
+        unstake-amount: 0 
+        current-pool: null    
+        lockup-was-choosed: no
+        chosen-lockup: null 
+        chosen-lockup-action: ''   
+        lockupStaking: {}
+        lockupContracts: []
+        success-cb: null  
+        error: ""    
+        stake: 
+            step: "" 
+        add:
+            move-stake: 0
+            add-validator-stake: "" 
+            add-validator-topup: "" 
     staking:
+        accounts: []
+        myStakeMaxPart: null 
         reward-info: []
+        rent: 0    
         exit-tab: ''
         maxWithdrawOrderAllowed: 0
         withdrawAmount: 0
         maxWithdrawAllowed: 0
         orderedWithdrawAmount: 0
+        poolsAreLoading: no
+        loadingAccountIndex: 0
+        totalOwnStakingAccounts: 0
+        totalValidators: 0
+        loadingValidatorIndex: 0
+        get-accounts-last-time: null
+        cachedAccounts: null
+        cachedValidators: null
+        getAccountsFromCashe: yes
+        parsedProgramAccounts: []
+        accountsCached: {}
         add:
             add-validator: ""
             add-validator-stake: ""
@@ -134,12 +177,19 @@ store =
         data-generation: 1
         tab: "line"
         pools: []
+        pool-was-choosed: no  
         chosen-pool: null
+        chosen-account: null    
         stake-amount-total: 0
         max-withdraw: 0
         delegators: 0
         reward-loading: no
         wait-for-epoch-change: no
+        lockups: [] 
+        current_validators_page: 1
+        validators-per-page: 5  
+        accounts-per-page: 3 
+        current_accounts_page: 1   
     filestore:
         menu-open: no
         file-tree: no
@@ -181,6 +231,7 @@ store =
         applied: []
     releases: []
     current:
+        transactions-are-loading: no
         address-suffix: ''
         page-pin: null
         try-copy: null
@@ -193,8 +244,12 @@ store =
         device: get-device!
         size: get-size!
         list: 0
+        prompt-type: "" 
         prompt-answer: ""
         prompt: no
+        prompt2: no 
+        prompt-password: no 
+        prompt-password-answer: ""
         step: "first"
         verify-seed-indexes: []
         switch-account: no
@@ -229,6 +284,7 @@ store =
         manage-account: no
         filter-plugins: ""
         confirmation: null
+        notification: null    
         alert: null
         demo: location.href.index-of('web3.space/wallet') > -1
         network: \mainnet

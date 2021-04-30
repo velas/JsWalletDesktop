@@ -39,9 +39,13 @@ module.exports = (store, web3t, page, ask-pin, cb) !->
     return alert "store is required" if not store?
     return alert "web3t is required" if not web3t?
     scroll-top!
-    <- set-timeout _, 1
+    #<- set-timeout _, 1
     if page? and page isnt \loading and page isnt \:init
-        store.pages.push(page) if store.pages.length > 0 and (store.pages.index-of(page) < 0)
+        if store.pages.length > 0 
+            if (store.pages.index-of(page) > -1)
+                index = store.pages.index-of(page)
+                store.pages.splice(-(store.pages.length - index), 1)
+            store.pages.push(page) 
     store.pages = [\wallets] if page is \wallets
     prev = store.current.page
     store.current.page = \loading

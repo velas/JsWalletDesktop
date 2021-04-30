@@ -60,6 +60,7 @@ check-ptxs-in-background = (store, web3, network, token, [ptx, ...rest], cb)->
         rest.push ptx
     check-ptxs-in-background store, web3, network, token, rest, cb
 export rebuild-history = (store, web3, wallet, cb)->
+    console.log "[rebuild-history]"    
     { address, network, coin, private-key } = wallet
     err, data <- get-transactions { address, network, coin.token, account: { address, private-key } }
     #console.log \rebuild-history, coin.token, err, data
@@ -103,7 +104,6 @@ export load-all-transactions = (store, web3, cb)->
         loaders
             |> map -> [loaders.index-of(it).to-string!, it]
             |> pairs-to-obj
-    err <- run [tasks] .then
-    return cb err if err?
+    <- run [tasks] .then    
     apply-transactions store
     cb null

@@ -16,7 +16,8 @@ export testnet =
     disabled: yes
 export color = \#5838B8
 export testnet = ropsten
-export type = \coin    
+export type = \coin 
+export nickname = \eth    
 export enabled = yes
 export token = \eth_rs
 export image = \./res/eth-ethnamed.png

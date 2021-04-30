@@ -7,6 +7,7 @@ require! {
     \../json-parse.js
     \../deadline.js
     \bs58 : { decode }
+    #\multicoin-address-validator : \WAValidator
 }
 segwit-address = (public-key)->
     witnessScript = BitcoinLib.script.witnessPubKeyHash.output.encode(BitcoinLib.crypto.hash160(public-key))
@@ -353,3 +354,8 @@ export get-transactions = ({ network, address}, cb)->
             |> map transform-tx { net: network, address }
             |> filter (?)
     cb null, txs
+#export isValidAddress = ({ address, network, token }, cb)-> 
+#    token = token.to-upper-case! if token?    
+#    addressIsValid = WAValidator.validate(address, token, 'both')    
+#    return cb "Address is not valid" if not addressIsValid   
+#    return cb null, address

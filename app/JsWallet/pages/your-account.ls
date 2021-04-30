@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./tor.ls
 }
-# .your-account1391599159
+# .your-account15090199
 #     @import scheme
 #     position: relative
 #     width: auto
@@ -62,6 +62,9 @@ require! {
 #                     margin-right: 10px
 #         .table-row-menu
 #             text-align: left
+#             &.disabled
+#                 opacity: 0.4
+#                 cursor: not-allowed
 #             &:hover
 #                 cursor: pointer
 #                 background: var(--bg-primary-light)
@@ -119,6 +122,9 @@ require! {
 #                 padding: 0
 #                 width: 100%
 #                 button
+#                     &.disabled
+#                         opacity: 0.4
+#                         cursor: not-allowed
 #                     outline: none
 #                     cursor: pointer
 #                     border: 0
@@ -195,6 +201,7 @@ background = ->
 module.exports = (store, web3t)->
     { open-account, open-migration, current, account-name, refresh, lock } = menu-funcs store, web3t
     create-account = ->
+        return if store.current.refreshing is yes
         new-length = 1 + length
         store.current.account-index = new-length
         localStorage.set-item('Accounts', new-length)
@@ -265,11 +272,16 @@ module.exports = (store, web3t)->
         if store.menu.show then \show else \ ""
     show = ->
         store.menu.show = not store.menu.show
-    create-account-position = (index)->
-        #ref = react.create-ref!
+    disabled-class = if store.current.refreshing is yes then "disabled" else ""
+    create-account-position = (index)->        
         change-account = ->
+            return if store.current.refreshing is yes
+            if store.current.account-index is index 
+                store.current.switch-account = no
+                return
             store.current.account-index = index
             store.current.switch-account = no
+            store.staking.getAccountsFromCashe = no
             <- web3t.refresh
         default-account-name = -> "#{lang.account} #{index}"
         current-account-name = ->
@@ -277,10 +289,10 @@ module.exports = (store, web3t)->
         account-name = current-account-name!
         position-style =
             color: if store.current.account-index is index then '#3cd5af' else ''
-        react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: 'table-row-menu' }, children = 
+        react.create-element 'div', { on-click: change-account, key: "account#{index}", style: position-style, className: "#{disabled-class} table-row-menu" }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + account-name
-    react.create-element 'div', { className: 'your-account your-account1391599159' }, children = 
+    react.create-element 'div', { className: 'your-account your-account15090199' }, children = 
         if store.preference.username-visible is yes
             react.create-element 'div', { className: 'username' }, children = 
                 react.create-element 'div', { className: 'nick' }, ' ' + current.account.account-name
@@ -298,7 +310,7 @@ module.exports = (store, web3t)->
             if store.current.device is \mobile
                 tor store, web3t
             if store.current.device is \mobile
-                react.create-element 'button', { on-click: show, style: button-primary4-style, className: "#{show-class} button lock mt-5" }, children = 
+                react.create-element 'button', { on-click: show, style: button-primary4-style, id: "menu-hamb-mobile", className: "#{show-class} button lock mt-5" }, children = 
                     react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }
             if no
                 if store.current.device is \mobile
@@ -314,7 +326,7 @@ module.exports = (store, web3t)->
                 react.create-element 'div', { style: border-top, className: 'middle' }, children = 
                     react.create-element 'div', { className: 'table-row-menu' }, children = 
                         react.create-element 'div', { on-click: create-account, className: 'col buttons folder-menu' }, children = 
-                            react.create-element 'button', { style: button-primary2-style }, children = 
+                            react.create-element 'button', { style: button-primary2-style, className: "#{disabled-class}" }, children = 
                                 react.create-element 'span', {}, children = 
                                     react.create-element 'img', { src: "#{icons.create-acc}", className: 'icon-svg' }
                                     """ #{lang.create-account}"""

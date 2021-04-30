@@ -149,11 +149,20 @@ fast-withdraw-process = (store, web3t)->
     exit = ->
         err <- can-make-staking store, web3t
         return alert store, err, cb if err?
+        my-stake = if store.staking.chosen-pool.my-stake then store.staking.chosen-pool.my-stake `div` (10^18) else 0
         staking-address = store.staking.keystore.staking.address
         pool-address = store.staking.chosen-pool.address
         err, max <- web3t.velas.Staking.maxWithdrawAllowed(pool-address, staking-address)
+        if !my-stake
+            my-stake = max
         amount = store.staking.withdrawAmount `times` (10^18)
-        return alert store, "#{lang.max} #{max.to-fixed!}" if +amount > +max.to-fixed!
+        if +amount > +max.to-fixed!
+            return alert store, "Max amount to withdraw is #{max `div` (10^18)}"
+        # If try to move NOT FULL stake
+        if (+my-stake - +store.staking.withdrawAmount) isnt 0 then
+            # if after withdraw stake amount, pool FROM amount become LESS then 10k
+            if (+my-stake - +store.staking.withdrawAmount) < 10000 then
+                return alert store, "The pool stake amount after withdraw #{store.staking.withdrawAmount} VLX must be at least 10000 VLX or no stake at all.", cb
         return alert store, lang.actionProhibited, cb if +amount is 0
         data = web3t.velas.Staking.withdraw.get-data(pool-address, amount)
         to = web3t.velas.Staking.address
@@ -207,7 +216,6 @@ module.exports.init = ({ store, web3t}, cb)->
     return cb err if err?
     store.staking.orderedWithdrawAmount = amount.to-fixed!
     err, last-epoch <- web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosen-pool.address, staking-address)
-    console.log "web3t.velas.Staking.orderWithdrawEpoch('#{store.staking.chosen-pool.address}', '#{staking-address}')"
     return cb "#{err}" if err?
     err, staking-epoch <- web3t.velas.Staking.stakingEpoch
     return cb "#{err}" if err?

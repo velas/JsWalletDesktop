@@ -28,12 +28,13 @@ create-task = ([url, items])->
         cb { err, data, items }
     [url, exec]
 extract-val = (data, [head, ...tail])->
-    return data if not head?
+    return data if data? and not head? and (tail.length is 0 or not tail?) 
+    return ".." if not data? and (tail.length is 0 or not tail?)  
     extract-val data[head], tail
 modify-item = (data, item)-->
     res = 
         | data?body? => extract-val data.body, item.extract.split('.').splice(1)
-        | _ => ""
+        | _ => ".."
     val =
         | item.div is "1/" => 1 `div` res 
         | _ => res

@@ -902,6 +902,7 @@ staking-content = (store, web3t)->
             return cb null, web3t.velas.Staking.add-pool.get-data(stake, pairs.mining.address)
         return cb null, web3t.velas.Staking.stake.get-data(pairs.staking.address, stake)
     become-validator = ->
+        console.log "[become-validator]"
         err <- can-make-staking store, web3t
         return alert err if err?
         err <- get-options
@@ -919,8 +920,6 @@ staking-content = (store, web3t)->
         return store.staking.add.result = "#{err}" if err?
         #store.staking.add.result = "success"
         <- staking.init { store, web3t }
-    change-address = ->
-        store.staking.add.add-validator = it.target.value
     change-stake = ->
         store.staking.add.add-validator-stake = it.target.value
     velas-node-applied-template =
@@ -977,12 +976,11 @@ staking-content = (store, web3t)->
         err, data <- web3t.velas.Staking.candidateMinStake
         return cb err if err?
         min =
-            | +store.staking.add.add-validator-stake >= 1000000 => 1
+            | +(store.staking.add.add-validator-stake `plus` store.staking.stake-amount-total) >= 1000000 => 1
             | _ => data `div` (10^18)
         max = get-balance! `minus` 0.1
-        return cb lang.balanceLessStaking if +min > + max
-        return cb lang.balanceLessStaking if +max < 1000000
-        return cb lang.balanceLessStaking if +store.staking.add.add-validator-stake < 1000000
+        return cb lang.balanceLessStaking if +store.staking.add.add-validator-stake > +max
+        return cb lang.amountLessStaking if +store.staking.add.add-validator-stake < +min 
         cb null, { min, max }
     use-min = ->
         #err, options <- get-options
@@ -1100,7 +1098,7 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'label', {}, ' ' + lang.stake
-                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake, show-details: yes, id:"vlx-stake-input", token:"vlx2" }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' Min'
@@ -1154,7 +1152,7 @@ staking-content = (store, web3t)->
                                             react.create-element 'li', {}, ' ' + lang.your-status2
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' ' + lang.stake-more
-                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
+                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake, show-details: yes, id: "vlx-stake-input", token:"vlx2" }
                             react.create-element 'div', { className: 'balance' }, children = 
                                 react.create-element 'span', { className: 'small-btns' }, children = 
                                     react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
@@ -1212,8 +1210,13 @@ staking = ({ store, web3t })->
             epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
-staking.init = ({ store, web3t }, cb)->
+call-refresh = ({web3t, call-again}, cb) ->
+    return cb null if not call-again? or call-again is no
     err <- web3t.refresh
+    cb err if err?
+    cb null
+staking.init = ({ store, web3t, call-again }, cb)->
+    err <- call-refresh {web3t, call-again}
     store.staking.keystore = to-keystore store, no
     store.staking.chosen-pool =
         address: store.staking.keystore.staking.address

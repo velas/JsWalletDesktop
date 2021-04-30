@@ -33,7 +33,18 @@ module.exports = (store, web3t, wallets, wallet)->
         network = wallet.coin[store.current.network]
         store.current.invoice <<<< { wallet.coin, wallet, network }
         navigate store, web3t, \invoice
-    usd-rate = wallet?usd-rate ? 0
+    swap = (store, wallet, event)-->
+        cb = console.log
+        store.current.send.contract-address = null
+        store.current.send.is-swap = yes
+        return alert "Not yet loaded" if not wallet?
+        return alert "Not yet loaded" if not web3t[wallet.coin.token]?
+        { send-transaction } = web3t[wallet.coin.token]
+        config = { to: "", value: 0, swap: yes, gas: 1000000 }
+        err <- send-transaction config  
+        store.current.send.error = err if err?
+        return cb err if err?
+    usd-rate = wallet?usd-rate ? ".."
     uninstall = (e)->
         e.stop-propagation!
         wallet-index = 
@@ -45,6 +56,9 @@ module.exports = (store, web3t, wallets, wallet)->
         store.current.wallet-index = 0
     expand = (e)->
         e.stop-propagation!
+        wallet-is-disabled = isNaN(wallet.balance)
+        is-loading = store.current.refreshing is yes
+        return if wallet-is-disabled or is-loading 
         return send(wallet, {}) if store.current.wallet-index is index
         store.current.wallet-index = index
         store.current.filter.length = 0
@@ -66,4 +80,4 @@ module.exports = (store, web3t, wallets, wallet)->
     last = 
         | wallets.length < 4 and index + 1 is wallets.length => \last
         | _ => ""
-    { button-style, wallet, active, big, balance, balance-usd, pending, send, expand, usd-rate, last, receive, uninstall }
+    { button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }

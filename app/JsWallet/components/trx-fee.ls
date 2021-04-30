@@ -6,9 +6,11 @@ require! {
     \../icons.ls
     \../send-funcs.ls
 }
-# .trx-fee-738142505
+# .trx-fee125099688
 #     @import scheme
 #     $border-radius: var(--border-btn)
+#     &.disabled
+#         opacity:.2
 #     table
 #         margin-bottom: -1px
 #         border-radius: $border-radius $border-radius 0 0
@@ -71,10 +73,10 @@ trx-fee = ({ store, web3t, wallet })->
     active-class= (fee-type) ->
         return null if fee-type isnt send.fee-type
         return \active
-    { choose-cheap, choose-custom, choose-auto} = send-funcs store, web3t
+    { choose-cheap, choose-custom, choose-auto, has-send-error} = send-funcs store, web3t
+    disabled-class = if has-send-error! then "disabled" else ""
     select-custom = ->
-        # send.fee-custom-amount = send.amount-send-fee
-        # send.fee-type = \custom
+        return if has-send-error!
         choose-custom send.amount-send-fee
     on-fee-change = (ev) ->
         {value} = ev.target
@@ -89,7 +91,7 @@ trx-fee = ({ store, web3t, wallet })->
         if value.starts-with \.
             value = "0" + value
         choose-custom value
-    fee-currency = wallet.network.tx-fee-in ? send.coin.token
+    fee-currency = wallet.network.tx-fee-in ? (wallet.coin.nickname ? "").to-upper-case!
     token-display = if fee-currency == \vlx2 then \vlx else fee-currency
     border-style = border: "1px solid #{style.app.border}"
     text = color: "#{style.app.icon}"
@@ -115,7 +117,7 @@ trx-fee = ({ store, web3t, wallet })->
         react.create-element 'td', { on-click: choose-auto, className: "#{active-class \auto}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
             react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""
-    react.create-element 'div', { className: 'trx-fee trx-fee-738142505' }, children = 
+    react.create-element 'div', { className: "#{disabled-class} trx-fee trx-fee125099688" }, children = 
         react.create-element 'label', { style: text }, ' Transaction Fee'
         react.create-element 'table', { style: border-style, className: 'fee' }, children = 
             react.create-element 'tbody', {}, children = 

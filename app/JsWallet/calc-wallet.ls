@@ -13,7 +13,6 @@ calc-wallet = (store, cb)->
     { rates } = store
     state =
         balance-usd: 0
-    return cb err if err?
     build-loader = (wallet)-> task (cb)->
         { token } = wallet.coin
         #wallet.balance = \..
@@ -27,7 +26,7 @@ calc-wallet = (store, cb)->
         #return cb "Coin Not Found" if not coin?
         #coin.wallet = wallet
         wallet.usd-rate =
-            | usd-rate is \.. => 0
+            | usd-rate is \.. => \..
             | _ => round5 usd-rate
         eur-rate = \0.893191
         btc-rate = \0
@@ -38,7 +37,8 @@ calc-wallet = (store, cb)->
             | usd-rate is \.. => \..
             | _ => round5 (usd-rate `times` btc-rate)
         err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
-        return cb err if err?
+        console.error "#{token} get-balance error:" err if err?
+        balance = "0" if err?
         pending-sent = 0
         #    store.transactions.all
         #        |> filter (.token is token)
@@ -58,9 +58,7 @@ calc-wallet = (store, cb)->
         state-before = state.balance-usd
         #convert state.balance-usd to string as bignumber can throw exception for numbers
         state.balance-usd = state.balance-usd + ''
-        state.balance-usd =
-            | usd-rate is \.. => 0
-            | _ => state.balance-usd `plus` balance-usd-current
+        state.balance-usd = state.balance-usd `plus` balance-usd-current
         #console.log { state-before, state.balance-usd, balance-usd-current }
         cb!
     loaders =
@@ -70,7 +68,6 @@ calc-wallet = (store, cb)->
             |> map -> [loaders.index-of(it).to-string!, it]
             |> pairs-to-obj
     <- run [tasks] .then
-    return cb err if err?
     store.current.balance-usd = state.balance-usd
     cb null
 module.exports = calc-wallet

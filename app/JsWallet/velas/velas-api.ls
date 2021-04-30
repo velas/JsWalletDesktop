@@ -1,23 +1,50 @@
 require! {
     \./velas-web3.ls
     \./addresses.ls
+    \./velas-solana-web3.ls
+    \./velas-staking.js : \NStaking
+    \prelude-ls : {find}
 }
 abis =
-    Staking      : require("./contracts/StakingAuRa.json").abi
-    ValidatorSet : require("./contracts/ValidatorSetAuRa.json").abi
-    BlockReward  : require("./contracts/BlockRewardAuRa.json").abi
-    Development  : require("./contracts/VelasDevelopment.json").abi
+    Staking      : require("../../web3t/contracts/StakingAuRa.json").abi
+    ValidatorSet : require("../../web3t/contracts/ValidatorSetAuRa.json").abi
+    BlockReward  : require("../../web3t/contracts/BlockRewardAuRa.json").abi
+    Development  : require("../../web3t/contracts/VelasDevelopment.json").abi
+    Resolver     : require("../../web3t/contracts/LockupResolver.json").abi
+    Timelock     : require("../../web3t/contracts/LockupTimelock.json").abi
+    EvmToNativeBridge: require("../../web3t/contracts/EvmToNativeBridge.json").abi 
+    HomeBridgeNativeToErc  : require("../../web3t/contracts/HomeBridgeNativeToErc.json").abi 
+    ForeignBridgeNativeToErc : require("../../web3t/contracts/ForeignBridgeNativeToErc.json").abi 
+    ERC20BridgeToken: require("../../web3t/contracts/ERC20BridgeToken.json").abi    
 module.exports = (store)->
     web3 = velas-web3 store
-    Development-contract-address =
-        if store.current.network is \testnet
-            addresses.DevelopmentTest
-        else
-            addresses.Development
+    network = store.current.network
+    staking-address = addresses[network].Staking
+    validatorSet-address = addresses[network].ValidatorSet
+    blockReward-address = addresses[network].BlockReward
+    development-contract-address = addresses[network].Development
+    resolver-contract-address = addresses[network].ResolverAuRa 
+    homeBridgeAddress = addresses[network].HomeBridge  
+    foreignBridgeAddress = addresses[network].ForeignBridge
+    ERC20BridgeToken = addresses[network].ERC20BridgeToken
+    EvmToNativeBridgeAddress = addresses[network].EvmToNative
+    web3Solana = velas-solana-web3 store
+    networks =
+        mainnet: \https://api.velas.com
+        testnet: \https://explorer.testnet.velas.com/rpc
     api =
-        Staking      : web3.eth.contract(abis.Staking).at(addresses.Staking)
-        ValidatorSet : web3.eth.contract(abis.ValidatorSet).at(addresses.ValidatorSet)
-        BlockReward  : web3.eth.contract(abis.BlockReward).at(addresses.BlockReward)
-        Development  : web3.eth.contract(abis.Development).at(Development-contract-address)
+        Staking      : web3.eth.contract(abis.Staking).at(staking-address)
+        NativeStaking: new NStaking({NODE_HOST: networks[network]})
+        Connection   : new web3Solana.Connection(web3Solana._rpcEndpoint)  
+        StakingLockup: web3.eth.contract(abis.Staking)
+        ValidatorSet : web3.eth.contract(abis.ValidatorSet).at(validatorSet-address)
+        BlockReward  : web3.eth.contract(abis.BlockReward).at(blockReward-address)
+        Development  : web3.eth.contract(abis.Development).at(development-contract-address)
+        Resolver     : web3.eth.contract(abis.Resolver).at(resolver-contract-address)
+        Timelock     : web3.eth.contract(abis.Timelock) 
         web3         : web3.eth
+        EvmToNativeBridge : web3.eth.contract(abis.EvmToNativeBridge).at(EvmToNativeBridgeAddress)     
+        HomeBridgeNativeToErc : web3.eth.contract(abis.HomeBridgeNativeToErc).at(homeBridgeAddress)
+        ForeignBridgeNativeToErc : web3.eth.contract(abis.ForeignBridgeNativeToErc).at(foreignBridgeAddress)
+        ERC20BridgeToken : web3.eth.contract(abis.ERC20BridgeToken).at(ERC20BridgeToken) 
     api

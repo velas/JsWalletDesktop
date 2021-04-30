@@ -254,7 +254,7 @@ module.exports = (store, web3)->
     staking = if store.current.page is \staking then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
     staking-active = if store.current.page is \staking then \active else \not-active
-    delegate-active = if store.current.page is \choosestaker then \active else \not-active
+    delegate-active = if store.current.page is \validators then \active else \not-active
     info-active = if store.current.page is \info then \active else \not-active
     menu-style=
         color: style.app.text
@@ -304,7 +304,7 @@ module.exports = (store, web3)->
     goto-staking = ->
         navigate store, web3t, \staking
     goto-choose-staker = ->
-        navigate store, web3t, \choosestaker
+        navigate store, web3t, \validators
     goto-info = ->
         navigate store, web3t, \info
     open-submenu = ->

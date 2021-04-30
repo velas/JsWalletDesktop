@@ -128,7 +128,7 @@ module.exports = (store, web3t)->
         store.current.search = event.target.value
     react.create-element 'div', { style: header, className: 'header header1840047076' }, children = 
         react.create-element 'div', { className: 'left-side' }, children = 
-            react.create-element 'button', { style: button-add, on-click: show, className: "#{show-class} button menu" }, children = 
+            react.create-element 'button', { style: button-add, on-click: show, id: "menu-hamb-tablet", className: "#{show-class} button menu" }, children = 
                 react.create-element 'img', { src: "#{icons.menu}", className: 'icon-svg-plus' }
             react.create-element 'div', { className: 'search-area' }, children = 
                 react.create-element 'input', { type: 'text', style: input-style, placeholder: "Search", value: store.current.search, on-change: search-on-change }

@@ -19,6 +19,7 @@ lsc -c plugins/doge-coin.ls
 lsc -c plugins/eos-coin.ls
 lsc -c plugins/etc-coin.ls
 lsc -c plugins/symblox.ls
+lsc -c plugins/symblox-v2.ls
 lsc -c plugins/eth-coin.ls
 lsc -c plugins/eth-rs.ls
 lsc -c plugins/gobyte-coin.ls

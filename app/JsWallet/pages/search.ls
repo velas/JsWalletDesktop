@@ -309,11 +309,11 @@ dapps = (store, web3t)->
     goto-file-storage = ->
         navigate store, web3t, \filestorage
     goto-staking = ->
-        navigate store, web3t, \staking
+        navigate store, web3t, \validators
     goto-resources2 = ->
         navigate store, web3t, \resources2
     goto-choose-staker = ->
-        navigate store, web3t, \choosestaker
+        navigate store, web3t, \validators
     goto-videostorage = ->
         navigate store, web3t, \videostorage
     goto-soundstorage = ->

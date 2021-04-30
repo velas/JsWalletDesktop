@@ -359,7 +359,7 @@ module.exports = (store, web3)->
         navigate store, web3t, \staking
         store.menu.show = no
     goto-choose-staker = ->
-        navigate store, web3t, \choosestaker
+        navigate store, web3t, \validators
         store.menu.show = no
     goto-info = ->
         navigate store, web3t, \info
@@ -392,24 +392,9 @@ module.exports = (store, web3)->
                         react.create-element 'label', {}, ' ' + lang.your-wallets
             if store.preference.settings-visible is yes
                 if store.current.device is \mobile
-                    react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking + ' ' + info-active + ' ' + staking-active + ' ' + delegate-active} menu-item" }, children = 
-                        react.create-element 'div', { className: 'plus' }, children = 
-                            icon \X, 20
-                        react.create-element 'div', { className: 'dash' }, children = 
-                            icon \Dash, 20
+                    react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, className: "#{staking} menu-item" }, children = 
                         react.create-element 'img', { src: "#{icons.staking}" }
                         react.create-element 'label', {}, ' ' + lang.staking
-                        react.create-element 'div', { className: 'menu arrow_box' }, children = 
-                            react.create-element 'ul', {}, children = 
-                                react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
-                                    react.create-element 'img', { src: "#{icons.node}", style: icon-node }
-                                    """ #{lang.install-node}"""
-                                react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, className: "#{delegate-active}" }, children = 
-                                    react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
-                                    """ #{lang.delegate-stake}"""
-                                react.create-element 'li', { on-click: goto-info, style: icon-style, className: "#{info-active}" }, children = 
-                                    react.create-element 'img', { src: "#{icons.info}", style: icon-node }
-                                    """ #{lang.stats}"""
             if store.preference.settings-visible is yes
                 if store.current.device is \mobile
                     react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 

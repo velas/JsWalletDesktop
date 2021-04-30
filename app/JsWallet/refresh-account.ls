@@ -7,15 +7,11 @@ require! {
     \./apply-transactions.ls
     \./scam-warning.ls
     \./seed.ls : seedmem
+    \./refresh-txs.ls : \refreshWaletTxs
 }
 export set-account = (web3, store, cb)->
     err, account <- new-account store, seedmem.mnemonic
     return cb err if err?
-    #vlx =
-    #    account.wallets 
-    #        |> find -> it.coin.token is 'vlx'
-    #vlx.address = 'VLZXHUUZYToqjvSJgT61DrULHy2mmxkSgxd'
-    #console.log account
     store.current.account = account
     mirror.account-addresses =
         account.wallets 
@@ -35,6 +31,8 @@ export refresh-account = (web3, store, cb)-->
     store.current.nickname = "" if account-name isnt "Anonymous"
     store.current.nicknamefull = account-name if account-name isnt "Anonymous"
     refresh-wallet web3, store, cb
+refresh-txs = (web3, store, cb)-->
+    <- refresh-walet-txs web3, store
 export background-refresh-account = (web3, store, cb)->
     store.current.refreshing = yes
     bg-store = toJS store
@@ -54,6 +52,7 @@ export background-refresh-account = (web3, store, cb)->
         store.current.filter.push \OUT
         store.current.filter.push wallet.coin.token
         store.current.balance-usd = bg-store.current.balance-usd
+        <- refresh-txs(web3, store)
         store.transactions = bg-store.transactions
         apply-transactions store
     cb null

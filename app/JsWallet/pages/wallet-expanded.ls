@@ -15,10 +15,9 @@ require! {
     \../components/address-holder.ls
     \./wallet-stats.ls
 }
-#
-# .wallet-detailed-2132860546
+# .wallet-detailed-1057132066
 #     @import scheme
-#     height: 200px
+#     height: 240px
 #     box-sizing: border-box
 #     $tablet: 1200px
 #     >.wallet-part
@@ -29,17 +28,28 @@ require! {
 #         width: 50%
 #         @media screen and (max-width: $tablet)
 #             padding: 0
+#         .with-swap
+#             display: flex
+#             button
+#                 flex: 1
+#                 margin: 0 5px 0 !important
+#                 &:first-child
+#                     margin-left: 0 !important
+#             .wallet-swap img
+#                 filter: invert(1)
 #         &.left
 #             text-align: left
 #             @media screen and (max-width: $tablet)
 #                 width: 60%
 #             >.buttons
 #                 margin-top: 15px
+#                 width: calc((130px * 2) + 10px)
 #                 .btn
 #                     margin: 0
 #                     width: 130px
 #                     &:last-child
 #                         margin-left: 10px
+#                         margin: 0 0 5px !important
 #             >.details
 #                 display: none
 #             .uninstall
@@ -146,7 +156,7 @@ require! {
 #                 width: inherit
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
-    { uninstall, wallet, balance, balance-usd, pending, send, receive, usd-rate } = wallet-funcs store, web3t, wallets, wallet
+    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
     style = get-primary-info store
     label-uninstall =
@@ -163,7 +173,9 @@ module.exports = (store, web3t, wallets, wallet)-->
     name = wallet.coin.name ? wallet.coin.token
     receive-click = receive(wallet)
     send-click = send(wallet)
+    swap-click = swap(store, wallet)
     token = wallet.coin.token.to-upper-case!
+    tokenDisplay = (wallet.coin.nickname ? "").to-upper-case!
     style = get-primary-info store
     color1 =
         color: style.app.text
@@ -174,10 +186,8 @@ module.exports = (store, web3t, wallets, wallet)-->
     get-total = (type, address)->
         transactions = ^^store.transactions.applied
         transactions
-            |> filter (it)-> it.type is type and not it.pending?
-            |> map (it)->
-                return it.amount if it.from isnt it.to
-                (-+it.fee) + ''
+            |> filter (it)-> it.type is type and (not it.pending? or it.pending isnt yes)
+            |> map (it)-> it.amount
             |> foldl plus, \0
             |> round-human
     total-sent = get-total \OUT, wallet.address
@@ -197,8 +207,8 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    token-display = if token == \VLX2 then \VLX else token
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed-2132860546' }, children = 
+    makeDisabled = store.current.refreshing
+    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed-1057132066' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
                 if no
@@ -207,12 +217,12 @@ module.exports = (store, web3t, wallets, wallet)-->
                 react.create-element 'div', { className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', {}, children = 
                         react.create-element 'span', { className: "#{placeholder} title" }, ' ' + name
-                        if wallet.coin.token not in <[ btc vlx2 ]>
+                        if wallet.coin.token not in <[ btc vlx vlx_native vlx2 ]>
                             react.create-element 'span', { on-click: uninstall, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
                     react.create-element 'div', { className: "#{placeholder} balance" }, children = 
                         react.create-element 'div', { title: "#{wallet.balance}", className: 'token-balance' }, children = 
                             react.create-element 'span', {}, ' ' +  round-human wallet.balance 
-                            react.create-element 'span', {}, ' ' +  token-display 
+                            react.create-element 'span', {}, ' ' +  tokenDisplay 
                         react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
                             react.create-element 'span', {}, ' ' +  round-human balance-usd 
                             react.create-element 'span', {}, ' USD'
@@ -220,9 +230,18 @@ module.exports = (store, web3t, wallets, wallet)-->
                             react.create-element 'div', { className: 'pending' }, children = 
                                 react.create-element 'span', {}, ' -' +  pending 
             address-holder { store, wallet, type: \bg }
-            react.create-element 'div', { className: 'buttons' }, children = 
-                button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send" }
-                button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive" }
+            if (wallet.network.networks? and Object.keys(wallet.network.networks).length > 0) then
+                react.create-element 'div', { className: 'buttons' }, children = 
+                    react.create-element 'div', { className: 'with-swap' }, children = 
+                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=no }
+                        button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
+                    react.create-element 'div', { className: 'with-swap' }, children = 
+                        button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", makeDisabled=no, classes="wallet-swap" }                       
+            else
+                react.create-element 'div', { className: 'buttons' }, children = 
+                    react.create-element 'div', { className: 'with-swap' }, children = 
+                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=no }
+                        button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
             react.create-element 'div', { className: 'details' }, children = 
                 react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, ' $' +  round-human balance-usd 
                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human usd-rate

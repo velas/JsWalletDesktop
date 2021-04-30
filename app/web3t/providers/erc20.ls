@@ -6,6 +6,7 @@ require! {
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../json-parse.js
     \../deadline.js
+    \crypto-js/sha3 : \sha3
 }
 get-ethereum-fullpair-by-index = (mnemonic, index, network)->
     seed = bip39.mnemonic-to-seed(mnemonic)
@@ -99,12 +100,10 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-eth = -> it `div` (10^18)
     value = to-wei amount
     err, gas-price-bn <- calc-gas-price { web3, fee-type }
-    #gas-price = round (gas-price-bn `plus` ( gas-price-bn `div` 100 ))
-    gas-price = gas-price-bn.to-fixed!
     return cb err if err?
+    gas-price = gas-price-bn.to-fixed!
     gas-minimal = to-wei-eth(amount-fee) `div` gas-price
     gas-estimate = round ( gas-minimal `times` 5 )
-    #console.log { gas-estimate, amount-fee }, gas-price.to-fixed!
     return cb "getBalance is not a function" if typeof! web3.eth.get-balance isnt \Function
     err, balance <- web3.eth.get-balance account.address
     return cb err if err?
@@ -161,3 +160,18 @@ export get-balance = ({ network, address} , cb)->
     dec = get-dec network
     balance = number `div` dec
     cb null, balance
+export isValidAddress = ({ address, network }, cb)->   
+    if not //^(0x)?[0-9a-f]{40}$//i.test address
+        return cb "Address is not valid"   
+    else
+        valid = isChecksumAddress address
+        return cb "Address is not valid" if not valid  
+    cb null, yes
+isChecksumAddress = (address) ->
+    address = address.replace '0x', ''
+    addressHash = sha3 address.toLowerCase!
+    i = 0
+    while i < 40
+        return no if (parseInt addressHash[i], 16) > 7 and address[i].toUpperCase! isnt address[i] or (parseInt addressHash[i], 16) <= 7 and address[i].toLowerCase! isnt address[i]
+        i++
+    yes  

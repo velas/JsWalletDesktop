@@ -7,8 +7,10 @@ require! {
     \bignumber.js
     \../get-lang.ls
     \../history-funcs.ls
+    #\../staking/funcs.ls : { query-pools }
+    \../staking-funcs.ls : { query-pools, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model }
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs }
     \../math.ls : { div, times, plus, minus }
     \../velas/velas-node-template.ls
     \../../web3t/providers/deps.js : { hdkey, bip39 }
@@ -19,7 +21,7 @@ require! {
     \../copied-inform.ls
     \../copy.ls
     \../round5.ls
-    \../../web3t/addresses.js : { ethToVlx }
+    \../../web3t/addresses.js : { ethToVlx, vlxToEth }
     \./switch-account.ls
     \../round-human.ls
     \./exit-stake.ls
@@ -31,13 +33,15 @@ require! {
     \./confirmation.ls : { alert }
     \../components/button.ls
     \../components/address-holder.ls
+    \../components/address-holder-popup.ls
     \./alert-txn.ls
     \../components/amount-field.ls
     \./move-stake.ls
     \../seed.ls : seedmem
     \../components/burger.ls
+    \./stake/accounts.ls : \stake-accounts
 }
-# .staking-1597922539
+# .staking-683313427
 #     @import scheme
 #     position: relative
 #     display: block
@@ -50,10 +54,31 @@ require! {
 #     box-sizing: border-box
 #     padding: 0px
 #     background: transparent
+#     .stake-item
+#         background: #628881
+#         color: white
+#         font-weight: bold
+#         text-align: center
+#         margin-bottom: 5px
+#         cursor: pointer
+#         &:last-child
+#             margin-bottom: 0
 #     .loader
 #         svg
 #             width: 12px
 #             cursor: pointer
+#         &.spin > svg
+#             @keyframes spin
+#                 from
+#                     transform: rotate(0deg)
+#                 to
+#                     transform: rotate(360deg)
+#             animation-name: spin
+#             animation-duration: 4000ms
+#             animation-iteration-count: infinite
+#             animation-timing-function: linear
+#         &.disabled
+#             opacity: 0.3
 #     .icon-right
 #         height: 12px
 #         top: 2px
@@ -180,30 +205,48 @@ require! {
 #                         .color
 #                             color: orange
 #                             font-weight: 600
+#                     &.min-height
+#                         max-height: 300px
+#                         overflow: scroll
+#                         table
+#                             td,td
+#                                 padding: 0 3px
+#                         .choose-pool
+#                             max-width: 50px
 #                     &.table-scroll
 #                         overflow-x: scroll
-#                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+#                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, rgba(77,78,88,0), rgba(0,0,0,0)) 0 100%
 #                         background-repeat: no-repeat
 #                         background-attachment: local, local, scroll, scroll
 #                         background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
 #                         animation: breathe 3s ease-in infinite
 #                         -moz-transition: breathe 3s ease-in infinite
 #                         -web-kit-transition: breathe 3s ease-in infinite
-#                         height: calc(100vh - 105px)
+#                         .stake-pointer
+#                             background: rgb(37, 87, 127)
+#                         &.lockup
+#                             height: auto
 #                         .address-holder
 #                             a
 #                                 padding-left: 30px !important
 #                             .browse
 #                                 right: 30px !important
 #                         thead
+#                             td
+#                                 cursor: pointer
+#                                 &:hover
+#                                     color: #dde6ff
 #                             th
 #                                 @media(min-width:800px) and (max-width: 900px)
 #                                     font-size: 11px !important
 #                         td
 #                             &:nth-child(2)
 #                                 cursor: pointer
+#                             &.with-stake
+#                                 filter: saturate(6.5)
 #                         tr
-#                             &.active
+#                             animation: appear .1s ease-in
+#                             &.activating, &.active
 #                                 color: var(--color-td)
 #                             &.inactive
 #                                 color: orange
@@ -218,7 +261,7 @@ require! {
 #                                 line-height: 1.6
 #                                 border-radius: 4px
 #                                 background: gray
-#                                 &.active
+#                                 &.active, &.activating
 #                                     background: rgb(38, 219, 85)
 #                                 &.inactive
 #                                     background: orange
@@ -248,9 +291,11 @@ require! {
 #                     td, th
 #                         padding: 8px
 #                         max-width: 200px
-#                         border: 1px solid rgba(240, 237, 237, 0.16)
+#                         border: none
 #                         white-space: nowrap
 #                         font-size: 13px
+#                         overflow: scroll
+#                         text-align: center
 #                         @media(max-width:800px)
 #                             text-align: left
 #                     .left
@@ -538,29 +583,10 @@ require! {
 #             border-color: #3cd5af
 #             color: #fff
 cb = console.log
-get-pair = (wallet, path, index, password, with-keystore)->
-    w = wallet.derive-path(path).derive-child(index).get-wallet!
-    address  = "0x" + w.get-address!.to-string(\hex)
-    salt = Buffer.from('dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6', 'hex')
-    iv = Buffer.from('cecacd85e9cb89788b5aab2f93361233', 'hex')
-    uuid = Buffer.from('7e59dc028d42d09db29aa8a0f862cc81', 'hex')
-    kdf = 'pbkdf2'
-    #console.log \keystore, with-keystore
-    keystore =
-        | with-keystore => w.toV3String(password, { salt, iv, uuid, kdf })
-        | _ => ""
-    { address, keystore }
-to-keystore = (store, with-keystore)->
-    mnemonic = seedmem.mnemonic
-    seed = bip39.mnemonic-to-seed(mnemonic)
-    wallet = hdkey.from-master-seed(seed)
-    index = store.current.account-index
-    password = md5 wallet.derive-path("m1").derive-child(index).get-wallet!.get-address!.to-string(\hex)
-    staking =
-        | store.url-params.anotheracc? => { address: window.toEthAddress(store.url-params.anotheracc) }
-        | _ => get-pair wallet, \m0 , index, password, no
-    mining  = get-pair wallet, \m0/2 , index, password, with-keystore
-    { staking, mining, password }
+as-callback = (p, cb)->
+    p.catch (err) -> cb err
+    p.then (data)->
+        cb null, data
 show-validator = (store, web3t)-> (validator)->
     react.create-element 'li', {}, ' ' + validator
 staking-content = (store, web3t)->
@@ -576,91 +602,18 @@ staking-content = (store, web3t)->
         filter: style.app.filterIcon
     comming-soon =
         opacity: ".3"
-    pairs = store.staking.keystore
     i-stake-choosen-pool = ->
         pool = store.staking.chosenPool
         myStake = +pool.myStake
         myStake >= 10000
-    become-validator = ->
-        err, options <- get-options
-        return alert store, err, cb if err?
-        err <- can-make-staking store, web3t
-        return alert store, err, cb if err?
-        return alert store, "please choose the pool", cb if not store.staking.chosen-pool?
-        type = typeof! store.staking.add.add-validator-stake
-        #console.log \correct_amount , type, store.staking.add.add-validator-stake
-        return alert store, "please enter correct amount, got #{type}", cb if type not in <[ String Number ]>
-        stake = store.staking.add.add-validator-stake `times` (10^18)
-        #console.log { stake }
-        #console.log stake, pairs.mining.address
-        #data = web3t.velas.Staking.stake.get-data pairs.staking.address, stake
-        #console.log "Staking.getData('#{store.staking.chosen-pool}', '#{stake}')"
-        data = web3t.velas.Staking.stake.get-data store.staking.chosen-pool.address, stake
-        #console.log \after-stake
-        to = web3t.velas.Staking.address
-        #console.log \to, { to, data, amount }
-        amount = store.staking.add.add-validator-stake
-        #console.log \after-stake, to, amount
-        err <- web3t.vlx2.send-transaction { to, data, amount }
-        #return cb err if err?
-        return store.staking.add.result = "#{err}" if err?
-        #store.staking.add.result = "success"
-        <- staking.init { store, web3t }
-    change-address = ->
-        store.staking.add.add-validator = it.target.value
-    change-stake = !->
-        try
-            value = new bignumber(it.target.value).toFixed!.to-string!
-            store.staking.add.add-validator-stake = value
-        catch err
-            console.log "[Change-stake]: #{err}"
-    velas-node-applied-template =
-        pairs
-            |> velas-node-template
-            |> split "\n"
-    velas-node-applied-template-line =
-        pairs
-            |> velas-node-template
-            |> btoa
-            |> -> "echo '#{it}' | base64 --decode | sh"
-    return null if not pairs.mining?
-    show-script = ->
-        store.staking.keystore = to-keystore store, yes
     {  account-left, account-right, change-account-index } = menu-funcs store, web3t
-    update-current = (func)-> (data)->
-        func data
-        <- staking.init { store, web3t }
-        store.staking.keystore = to-keystore store, no
-    account-left-proxy   = update-current account-left
-    account-right-proxy  = update-current account-right
-    change-account-index-proxy = update-current change-account-index
-    build-template-line = ->
-        index = velas-node-applied-template.index-of(it)
-        line-style =
-            padding: "10px"
-            width: \100%
-            margin-bottom: \2px
-            background: if index % 2 then 'rgba(255, 255, 255, 0.04)' else ''
-        react.create-element 'div', { style: line-style }, ' ' + it
     line-style =
         padding: "10px"
         width: \100%
-    activate = (tab)-> ->
-        store.staking.tab = tab
-    activate-line = activate \line
-    activate-string = activate \string
-    activate-ssh = activate \ssh
-    activate-do = activate \do
-    active-class = (tab)->
-        if store.staking.tab is tab then 'active' else ''
-    active-line = active-class \line
-    active-string = active-class \string
-    active-ssh = active-class \ssh
-    active-do = active-class \do
     get-balance = ->
         wallet =
             store.current.account.wallets
-                |> find -> it.coin.token is \vlx2
+                |> find -> it.coin.token is \vlx_native
         wallet.balance
     get-options = (cb)->
         i-am-staker = i-stake-choosen-pool!
@@ -672,7 +625,7 @@ staking-content = (store, web3t)->
             | _ => data `div` (10^18)
         balance = get-balance! `minus` 0.1
         stake = store.staking.add.add-validator-stake
-        return cb lang.balanceLessStaking if 10000 > +stake
+        return cb lang.amountLessStaking if 10000 > +stake
         return cb lang.balanceLessStaking if +balance < +stake
         max = +balance
         cb null, { min, max }
@@ -683,49 +636,30 @@ staking-content = (store, web3t)->
     use-max = ->
         #err, options <- get-options
         #return alert store, err, cb if err?
-        store.staking.add.add-validator-stake = get-balance! `minus` 0.1
-    vote-for-change = ->
-        err, can <- web3t.velas.ValidatorSet.emitInitiateChangeCallable
-        return alert store, err, cb if err?
-        return alert store, lang.actionProhibited, cb if can isnt yes
-        data = web3t.velas.ValidatorSet.emitInitiateChange.get-data!
-        #console.log { data }
-        to = web3t.velas.ValidatorSet.address
-        amount = 0
-        err <- web3t.vlx2.send-transaction { to, data, amount }
-        store.current.page = \staking
+        store.staking.add.add-validator-stake = Math.max (get-balance! `minus` 0.1), 0
     your-balance = " #{round-human get-balance!} "
-    your-staking-amount = store.staking.add.add-validator-stake `div` (10^18)
+    your-staking-amount = store.staking.stakeAmountTotal `div` (10^18)
     your-staking = " #{round-human your-staking-amount}"
     vlx-token = "VLX"
-    #calc-reward-click = ->
-    #    calc-reward store, web3t
+    isSpinned = if ((store.staking.all-pools-loaded is no or !store.staking.all-pools-loaded?) and store.staking.pools-are-loading is yes) then "spin disabled" else ""
     build-staker = (store, web3t)-> (item)->
         checked = item.checked
-        stake = round-human item.stake
+        stake = item.stake
         my-stake =
-            | +item.my-stake is 0 => round-human item.withdraw-amount
-            | _ => round-human item.my-stake
+            | +item.my-stake.length is 0 => []
+            | _ => item.my-stake
+        build-my-stake = (stake)->
+            show-details = ->
+                account = store.staking.accounts |> find (-> it.seed is stake.seed)
+                return null if not account?
+                store.staking.chosen-account = account
+                navigate store, web3t, \account_details
+            react.create-element 'div', { on-click: show-details, className: "stake-item" }, children = 
+                react.create-element 'div', { className: 'name' }, children = 
+                    react.create-element 'span', {}, ' ' + stake.seed
+        fee = item.commission
+        lastVote = item.lastVote
         index = store.staking.pools.index-of(item) + 1
-        choose-pull = ->
-            page = \choosestaker
-            store.pages.push(page) if store.pages.length > 0 and page isnt store.pages[store.pages.length - 1]
-            cb = (err, data)->
-                alert store, err, console~log if err?
-            #store.staking.data-generation += 1
-            store.staking.pools |> map (-> it.checked = no)
-            item.checked = yes
-            store.staking.chosen-pool = item
-            store.staking.add.new-address = ""
-            claim-stake.calc-reward store, web3t
-            staking-address = store.staking.keystore.staking.address
-            err, amount <- web3t.velas.Staking.stakeAmount item.address, staking-address
-            return cb err if err?
-            store.staking.stake-amount-total = amount.to-fixed!
-            err <- exit-stake.init { store, web3t }
-            return cb err if err?
-        to-eth = ->
-            item.eth = not item.eth
         reward =
             | item.validator-reward-percent is ".." => ".."
             | _ => (100 - +item.validator-reward-percent) * 1.4285714286
@@ -736,46 +670,55 @@ staking-content = (store, web3t)->
                 | reward > 75 => \orange
                 | reward > 40 => "rgb(165, 174, 81)"
                 | _ => "rgb(38, 219, 85)"
-        vlx2 =
-            store.current.account.wallets |> find (.coin.token is \vlx2)
+        vlx_native =
+            store.current.account.wallets |> find (.coin.token is \vlx_native)
+        return null if not vlx_native?
         wallet =
-            address: ethToVlx item.address
-            network: vlx2.network
-            coin: vlx2.coin
+            address: item.address
+            network: vlx_native.network
+            coin: vlx_native.coin
         vote-power =
             | item.vote-power? => "#{item.vote-power}%"
             | _ => "..."
+        mystake-class = if my-stake isnt 0 then "with-stake" else ""
         react.create-element 'tr', { className: "#{item.status}" }, children = 
             react.create-element 'td', {}, children = 
                 react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
-            react.create-element 'td', { data-column: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
-                address-holder { store, wallet }
-            react.create-element 'td', { data-column: 'Amount' }, ' ' + stake
-            react.create-element 'td', {}, ' ' + vote-power
-            react.create-element 'td', { data-column: 'Amount' }, ' ' + my-stake
-            react.create-element 'td', { data-column: 'Stakers' }, ' ' + item.stakers
-            react.create-element 'td', {}, children = 
-                button { store, on-click: choose-pull , type: \secondary , icon : \arrowRight }
+            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{item.address}" }, children = 
+                address-holder-popup { store, wallet }
+            react.create-element 'td', {}, ' ' + stake
+            react.create-element 'td', {}, ' ' + fee + '%'
+            react.create-element 'td', {}, ' ' + lastVote
+            react.create-element 'td', { className: "#{mystake-class}" }, children = 
+                my-stake |> map build-my-stake
+            react.create-element 'td', {}, ' ' + item.stakers
     cancel-pool = ->
-        go-back!
         store.staking.chosen-pool = null
-    activate = (step)-> ->
-        store.current.step = step
-    activate-first = activate \first
-    activate-second = activate \second
-    activate-third = activate \third
-    active-class = (step)->
-        if store.current.step is step then 'active' else ''
-    active-first = active-class \first
-    active-second = active-class \second
-    active-third = active-class \third
+    update-just-pools = (cb)->
+        return cb null if store.staking.accounts.length is 0
+        on-progress = ->
+            store.staking.pools = convert-pools-to-view-model [...it]
+        err, pools <- query-pools store, web3t, on-progress
+        return cb err if err?
+        #store.staking.pools = convert-pools-to-view-model pools
+    update-pools-and-accounts = (cb)->
+        return if store.staking.accounts.length > 0
+        store.staking.all-accounts-loaded = no
+        store.staking.accounts-are-loading = yes
+        store.staking.accounts = []
+        err <- validators.init { store, web3t }
+        return cb err if err?
+        cb null
     refresh = ->
+        store.staking.all-pools-loaded = no
+        if ((store.staking.all-pools-loaded is no or !store.staking.all-pools-loaded?) and store.staking.pools-are-loading is yes)
+            return no
+        store.staking.pools-are-loading = yes
         cb = console.log
-        store.staking.pools.length = 0
-        err <- staking.init { store, web3t }
-        return cb err if err?
-        err <- staking.focus { store, web3t }
-        return cb err if err?
+        store.staking.pools = []
+        store.staking.delegators = {}
+        <- update-just-pools!
+        <- update-pools-and-accounts!    
         cb null, \done
     icon-style =
         color: style.app.loader
@@ -787,81 +730,36 @@ staking-content = (store, web3t)->
     stats=
         background: style.app.stats
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
-        react.create-element 'div', { className: 'form-group' }, children = 
-            alert-txn { store }
+        react.create-element 'div', { className: 'main-sections' }, children = 
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.select-pool
-                    if not store.staking.chosen-pool?
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: 'loader' }, children = 
-                                icon \Sync, 25
-                if not store.staking.chosen-pool?
+                    react.create-element 'h2', {}, ' ' + lang.balance
+                react.create-element 'div', { className: 'description' }, children = 
+                    react.create-element 'span', {}, ' ' + your-balance + ' VLX'
+            stake-accounts {store, web3t}
+            react.create-element 'div', { id: "pools", className: 'form-group' }, children = 
+                alert-txn { store }
+                react.create-element 'div', { className: 'section' }, children = 
+                    react.create-element 'div', { className: 'title' }, children = 
+                        react.create-element 'h3', {}, ' ' + lang.validators
                     react.create-element 'div', { className: 'description table-scroll' }, children = 
                         react.create-element 'table', {}, children = 
                             react.create-element 'thead', {}, children = 
                                 react.create-element 'tr', {}, children = 
-                                    react.create-element 'th', { width: "3%", style: stats }, ' #'
-                                    react.create-element 'th', { width: "10%", style: staker-pool-style }, ' ' + lang.staker-pool
-                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.total-stake
-                                    react.create-element 'th', { width: "5%", style: stats }, ' ' + lang.vote-power
-                                    react.create-element 'th', { width: "25%", style: stats }, ' ' + lang.my-stake
-                                    react.create-element 'th', { width: "5%", style: stats }, ' ' + lang.stakers
-                                    react.create-element 'th', { width: "4%", style: stats }, ' ' + lang.selectPool
+                                    react.create-element 'td', { width: "3%", style: stats }, ' #'
+                                    react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?) '
+                                    react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-stake + ' (?)'
+                                    react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
+                                    react.create-element 'td', { width: "10%", style: stats, title: "Last Staking Amount" }, ' ' + lang.lastVote + ' (?)'
+                                    react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
+                                    react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
                             react.create-element 'tbody', {}, children = 
                                 store.staking.pools |> map build-staker store, web3t
-                else
-                    react.create-element 'div', { title: "#{store.staking.chosen-pool}", className: 'chosen-pool' }, children = 
-                        react.create-element 'span', {}, children = 
-                            """ #{ethToVlx store.staking.chosen-pool.address}"""
-                            react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
-                        react.create-element 'div', { className: 'buttons' }, children = 
-                            button { store, on-click: cancel-pool , type: \secondary , icon : \choose , text: "#{lang.btn-select}" }
-            if store.staking.chosen-pool? and +store.staking.stake-amount-total is 0
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.validator
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { className: 'left' }, children = 
-                            react.create-element 'label', {}, ' ' + lang.stake
-                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' ' + lang.max
-                                react.create-element 'span', {}, ' ' + lang.balance + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + your-balance
-                                    react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                        button { store, on-click: become-validator , type: \secondary , icon : \apply , text: \btnApply }
-            if store.staking.chosen-pool? and +store.staking.stake-amount-total > 0
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.staking
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { className: 'left' }, children = 
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' ' + lang.yourStaking + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + your-staking
-                                react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                            react.create-element 'hr', {}
-                            react.create-element 'label', {}, ' ' + lang.stakeMore
-                            amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake }
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' ' + lang.max
-                                react.create-element 'span', {}, ' ' + lang.balance + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + your-balance
-                                    react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { className: 'color' }, ' ' + vlx-token
-                        button { store, on-click: become-validator , type: \secondary , icon : \apply , text: \btnApply }
-            claim-stake store, web3t
-            exit-stake store, web3t
-            move-stake store, web3t
-staking = ({ store, web3t })->
+validators = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
+    wallet = store.current.account.wallets |> find (-> it.coin.token is \vlx_native)
+    return cb null if not wallet?
     goto-search = ->
         navigate store, web3t, \search
     info = get-primary-info store
@@ -889,7 +787,7 @@ staking = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-1597922539' }, children = 
+    react.create-element 'div', { className: 'staking staking-683313427' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -898,91 +796,65 @@ staking = ({ store, web3t })->
             epoch store, web3t
             switch-account store, web3t
         staking-content store, web3t
-staking.init = ({ store, web3t }, cb)->
-    # err <- web3t.refresh
-    # return cb err if err?
+stringify = (value) ->
+    if value? then
+        round-human(parse-float value `div` (10^18))
+    else
+        '..'
+validators.init = ({ store, web3t }, cb)!->
+    console.log "validators.init"
+    #return cb null if store.staking.pools-are-loading is yes
     store.staking.max-withdraw = 0
     random = ->
         Math.random!
+    store.current.page = "validators"
+    store.staking.pools = []
+    store.staking.accounts = []
+    store.staking.delegators = {}
     store.staking.withdraw-amount = 0
     store.staking.stake-amount-total = 0
-    store.staking.keystore = to-keystore store, no
     store.staking.reward = null
+    store.staking.all-pools-loaded = no
+    store.staking.pools-are-loading = yes
+    store.staking.all-accounts-loaded = no
+    store.staking.accounts-are-loading = yes
     store.staking.chosen-pool = null
     store.staking.add.add-validator-stake = 0
-    return cb null if store.staking.pools.length > 0
-    err, pools-inactive <- web3t.velas.Staking.getPoolsInactive
+    index-is-different = store.current.accountIndex isnt store.staking.accountIndex
+    if store.staking.pools-network is store.current.network then
+        if (store.staking.all-pools-loaded? and store.staking.all-pools-loaded is yes and not index-is-different)
+            return cb null
+    else
+        store.staking.pools-network = store.current.network
+    store.staking.pools = []
+    err, rent <- as-callback web3t.velas.NativeStaking.connection.getMinimumBalanceForRentExemption(200)
+    rent = 2282880 if err?
+    rent = rent `div` (10^9)
+    store.staking.rent = rent   
+    wallet = store.current.account.wallets |> find (-> it.coin.token is \vlx_native)
+    return cb null if not wallet?
+    web3t.velas.NativeStaking.setAccountPublicKey(wallet.publicKey)
+    web3t.velas.NativeStaking.setAccountSecretKey(wallet.secretKey)
+    err, parsedProgramAccounts <- as-callback web3t.velas.NativeStaking.getParsedProgramAccounts()
+    parsedProgramAccounts = [] if err?
+    store.staking.parsedProgramAccounts = parsedProgramAccounts 
+    # get validators array
+    on-progress = ->
+        store.staking.accounts = convert-accounts-to-view-model [...it]
+    err, result <- query-accounts store, web3t, on-progress
     return cb err if err?
-    err, pools <- web3t.velas.Staking.getPools
+    on-progress = ->
+        store.staking.pools = convert-pools-to-view-model [...it]
+    err, pools <- query-pools store, web3t, on-progress
     return cb err if err?
-    err, active-pools <- web3t.velas.Staking.getPoolsToBeElected
-    return cb err if err?
-    store.staking.pools-inactive = pools-inactive
-    store.staking.pools-active = active-pools
-    all-pools = pools ++ pools-inactive
-    store.staking.pools =
-        all-pools
-            |> unique
-            |> map -> { address: it , checked: no, stake: '..', stakers: '..', eth: no, is-validator: '..', status: '', reward-amount: '..', validator-reward-percent: '..', my-stake: '..' }
-    err, epoch <- web3t.velas.Staking.stakingEpoch
-    store.staking.epoch = epoch.to-fixed!
-    err <- exit-stake.init { store, web3t }
-    cb null
-module.exports = staking
-fill-pools = ({ store, web3t }, [item, ...rest], cb)->
-    staking-address = store.staking.keystore.staking.address
-    return cb null if not item?
-    err, data <- web3t.velas.Staking.stakeAmountTotal item.address
-    return cb err if err?
-    item.stake = data `div` (10^18)
-    err, delegators <- web3t.velas.Staking.poolDelegators(item.address)
-    return cb err if err?
-    item.stakers = delegators.length + 1
-    err, mining-address <- web3t.velas.ValidatorSet.miningByStakingAddress(item.address)
-    return cb err if err?
-    item.mining-address = mining-address
-    err, validator-reward-percent <- web3t.velas.BlockReward.validatorRewardPercent item.address
-    return cb err if err?
-    item.validator-reward-percent = validator-reward-percent `div` 10000
-    err, is-validator-banned <- web3t.velas.ValidatorSet.isValidatorBanned(mining-address)
-    return cb err if err?
-    err, amount <- web3t.velas.Staking.stakeAmount item.address, staking-address
-    return cb err if err?
-    err, withdraw-amount <- web3t.velas.Staking.orderedWithdrawAmount item.address, staking-address
-    return cb err if err?
-    item.withdraw-amount = withdraw-amount `div` (10^18)
-    item.my-stake = amount `div` (10^18)
-    item.status =
-        | is-validator-banned => \banned
-        | store.staking.pools-active.index-of(item.address) > -1 => \active
-        | store.staking.pools-inactive.index-of(item.address) > -1 => \inactive
-        | _ => \pending
-    fill-pools { store, web3t }, rest, cb
-fill-vote-power = ({ store, web3t }, cb)->
-    total-stake =
-        store.staking.pools
-            |> map (.stake)
-            |> foldl plus, 0
-    total-stake-percent = 100 `div` total-stake
-    fill-power = (it)->
-        it.vote-power =  round5(it.stake `times` total-stake-percent)
-    store.staking.pools |> each fill-power
-    cb null
-fill-pools-in-parallel = ({ store, web3t}, cb)->
-    create-promise = (pool)->
-        new Promise (resolve, reject)->
-            cb = (err, value)->
-                resolve value
-            fill-pools { store, web3t }, [pool], cb
-    promises =
-        store.staking.pools |> map create-promise
-    values <- Promise.all promises .then
-    cb null
-staking.focus = ({ store, web3t }, cb)->
-    #return cb null if store.staking.pools.0.stake isnt '...'
-    console.log \Filling
-    err <- fill-pools { store, web3t }, store.staking.pools
-    return cb err if err?
-    err <- fill-vote-power { store, web3t }
-    cb null
-#V31V1kD7DpT9eoRcdXf7T1fbFqcNh
+    store.staking.pools = convert-pools-to-view-model pools
+    # end validators array
+    #store.staking.accounts = accounts
+    ###
+    ###
+#    on-progress = ->
+#        store.staking.accounts = convert-accounts-to-view-model [...it]
+#    err, result <- query-accounts store, web3t, on-progress
+#    return cb err if err?
+    store.staking.accounts = convert-accounts-to-view-model result
+module.exports = validators

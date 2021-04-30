@@ -251,8 +251,10 @@ input = (store, web3t)->
         reset-wallet store
     drag =
         if store.current.pin-trial is 0 then \ "" else \drag
+    focus-input = (ref)!->
+        ref.focus! if ref?
     react.create-element 'div', {}, children = 
-        text-field { store, type: 'password' value: store.current.pin, placeholder: lang.pin-placeholder, on-change: change , on-key-down: catch-key, id="locked-password" }
+        text-field { ref:(c)->{ a = focus-input(c)}, store, type: 'password' value: store.current.pin, placeholder: lang.pin-placeholder, on-change: change , on-key-down: catch-key, id="locked-password" }
         if exists!
             react.create-element 'div', {}, children = 
                 button { store, on-click: enter, type: \primary , text: \enter }
@@ -378,7 +380,7 @@ locked = ({ store, web3t })->
         footer store, web3t
         if not process?versions?electron?
             react.create-element 'div', { className: 'downloadwallet' }, children = 
-                button { store, on-click=download, text: \install , icon: \download  , type : \primary }
+                button { store, on-click=download, text: \apps , icon: \download  , type : \secondary, id: \install-app }
 focus = ({ store }, cb)->
     cb null
 locked.focus = focus

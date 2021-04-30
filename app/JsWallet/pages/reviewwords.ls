@@ -7,7 +7,7 @@ require! {
     \../navigate.ls
     \../icons.ls
 }
-# .newseed131391059
+# .newseed1158038099
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -150,7 +150,7 @@ require! {
 #                     line-height: 11px
 #                     @media(max-width: 500px)
 #                         margin-right: 5px
-#                 &.effect    
+#                 &.effect
 #                     &:last-child
 #                         background: #7651ae
 #                         color: #fff
@@ -209,16 +209,16 @@ review-words-panel = (store, web3t)->
         window.open('https://drive.google.com/file/d/1mE53JDe2722D0BY2Mi7qIcXUFtwqSZFx/view')
     react.create-element 'div', {}, children = 
         react.create-element 'div', { className: 'words' }, children = 
-            store.current.seed-words.map((word, index) -> create-word store, index, word ) 
+            store.current.seed-words.map((word, index) -> create-word store, index, word )
         react.create-element 'div', {}, children = 
             react.create-element 'div', { className: 'button-container' }, children = 
-                react.create-element 'button', { on-click: back, style: button-primary3-style, className: 'right' }, children = 
+                react.create-element 'button', { on-click: back, style: button-primary3-style, id: 'seed-back', className: 'right' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-left}", style: btn-icon, className: 'icon-svg' }
                     """ #{lang.back}"""
-                react.create-element 'button', { on-click: print, style: button-primary2-style, className: 'right doc' }, children = 
+                react.create-element 'button', { on-click: print, style: button-primary2-style, id: 'seed-print', className: 'right doc' }, children = 
                     react.create-element 'img', { src: "#{icons.print}", className: 'icon-svg' }
                     """ #{lang.print }"""
-                react.create-element 'button', { on-click: next, style: button-primary1-style, className: 'right save' }, children = 
+                react.create-element 'button', { on-click: next, style: button-primary1-style, id: 'seed-next', className: 'right save' }, children = 
                     react.create-element 'img', { src: "#{icons.right}", className: 'icon-svg' }
                     """ #{lang.next }"""
         react.create-element 'div', { style: text-style, className: 'hint' }, ' ' + lang.new-seed-warning
@@ -230,7 +230,7 @@ reviewwords = ({ store, web3t })->
     newseed-style=
         margin-bottom: "10px"
         width: "120px"
-    react.create-element 'div', { className: 'newseed newseed131391059' }, children = 
+    react.create-element 'div', { className: 'newseed newseed1158038099' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.newseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.new-seed-phrase
         review-words-panel store, web3t

@@ -46,7 +46,7 @@ build-unlock = (store, cweb3)-> (cb)->
 build-send-transaction = (store, cweb3, coin)-> (tx, cb)->
     network = coin[store.current.network]
     return cb "Transaction is required" if typeof! tx isnt \Object
-    { to, data, decoded-data, value, gas, amount, gas-price } = tx
+    { to, data, decoded-data, value, gas, amount, gas-price, swap } = tx
     return cb "Recipient (to) is required" if typeof! tx.to isnt \String
     value :=
         | value? => value
@@ -68,16 +68,18 @@ build-send-transaction = (store, cweb3, coin)-> (tx, cb)->
     send <<<< {
         to, data, decoded-data, network, coin, wallet, value, gas, gas-price, id, amount-send,
         amount-obtain, amount-obtain-usd, amount-send-usd,
-        amount-send-fee, amount-send-fee-usd, propose-escrow, details
+        amount-send-fee, amount-send-fee-usd, propose-escrow, details,
+        swap
     }
     #console.log { details }, send.details
     { send-anyway, change-amount, choose-auto } = send-funcs store, web3t
     choose-auto!
     <- change-amount store, amount-send, yes
     navigate store, cweb3, \send, no
-    send-anyway! if tx.to isnt ""
+    send-anyway! if (tx.to isnt "") and (tx.swap? and tx.value isnt 0)
     helps = titles ++ [network.mask]
     err, data <- wait-form-result id
+    # before cb was fired 'send-money' function is beeing executed.
     return cb err if err?
     cb null, data
 get-contract-instance = (web3, abi, addr)->
@@ -192,7 +194,7 @@ module.exports = (store, config)->
         page = pages[store.current.page]
         return cb null if not page?
         return cb null if typeof! page.init isnt \Function
-        <- page.init { store, web3t }
+        <- page.init { store, web3t, call-again: no }
         return cb null if typeof! page.focus isnt \Function
         <- page.focus { store, web3t }
     refresh = (cb)->
@@ -202,12 +204,11 @@ module.exports = (store, config)->
         err <- refresh-balances
         return cb err if err?
         refresh-page cb
-    set-theme = (it, cb)->
-        return cb "support only dark an light" if it not in supported-themes
+    set-theme = (it)!->
+        return if it not in supported-themes
         store.theme = it
         localStorage.set-item \theme, it
         set-page-theme store, it
-        cb null
     set-lang = (it, cb)->
         return cb "support only en, ru" if it not in <[ en ru uk ]>
         store.lang = it

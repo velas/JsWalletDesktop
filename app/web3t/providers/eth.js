@@ -84,6 +84,7 @@
         if (err != null) {
           return cb("estimate gas err: " + ((ref$ = err.message) != null ? ref$ : err));
         }
+        estimate = 36000;
         res = times(gasPrice, fromHex(estimate));
         val = div(res, dec);
         return cb(null, val);
@@ -223,8 +224,8 @@
     }
   };
   out$.createTransaction = createTransaction = curry$(function(arg$, cb){
-    var network, account, recipient, amount, amountFee, data, feeType, txType, dec, privateKey;
-    network = arg$.network, account = arg$.account, recipient = arg$.recipient, amount = arg$.amount, amountFee = arg$.amountFee, data = arg$.data, feeType = arg$.feeType, txType = arg$.txType;
+    var network, account, recipient, amount, amountFee, data, feeType, txType, chainId, dec, privateKey;
+    network = arg$.network, account = arg$.account, recipient = arg$.recipient, amount = arg$.amount, amountFee = arg$.amountFee, data = arg$.data, feeType = arg$.feeType, txType = arg$.txType, chainId = arg$.chainId;
     dec = getDec(network);
     if (!isAddress(recipient)) {
       return cb("address in not correct ethereum address");
@@ -278,7 +279,8 @@
             gas: toHex(gasEstimate),
             to: recipient,
             from: account.address,
-            data: data || '0x'
+            data: data || '0x',
+            chainId: chainId
           });
           tx.sign(privateKey);
           rawtx = '0x' + tx.serialize().toString('hex');

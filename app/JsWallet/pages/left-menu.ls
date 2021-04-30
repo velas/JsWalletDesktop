@@ -324,7 +324,7 @@ module.exports = (store, web3t)->
     goto-resources = ->
         navigate store, web3t, \resources
     goto-choose-staker = ->
-        navigate store, web3t, \choosestaker
+        navigate store, web3t, \validators
         store.menu.show = no
     goto-info = ->
         navigate store, web3t, \info
@@ -370,25 +370,9 @@ module.exports = (store, web3t)->
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: open-submenu, style: icon-style, on-mouse-leave: menu-out, id: "menu-staking", className: "#{staking + ' ' + menu-staking + ' ' + info-active + ' ' + staking-active + ' ' + delegate-active} menu-item" }, children = 
+                react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{delegate-active} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
                     react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
-                    react.create-element 'img', { src: "#{icons.arrow-down}", className: 'more' }
-                    react.create-element 'div', { className: 'menu arrow_box menu855995223' }, children = 
-                        react.create-element 'ul', {}, children = 
-                            react.create-element 'li', { on-click: goto-staking, style: icon-style, id: "menu-node", className: "#{staking-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.node}", style: icon-node }
-                                """ #{lang.install-node}"""
-                            react.create-element 'li', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{delegate-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.delegate}", style: icon-node }
-                                """ #{lang.delegate-stake}"""
-                            if no
-                                react.create-element 'li', { on-click: goto-claim, style: icon-style, className: "#{claim-active}" }, children = 
-                                    react.create-element 'img', { src: "#{icons.claim}", style: icon-node }
-                                    """ #{lang.claim-reward}"""
-                            react.create-element 'li', { on-click: goto-info, style: icon-style, id: "menu-stats", className: "#{info-active}" }, children = 
-                                react.create-element 'img', { src: "#{icons.info}", style: icon-node }
-                                """ #{lang.stats}"""
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: goto-search, style: icon-style, id: "menu-search", className: "#{search} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.search

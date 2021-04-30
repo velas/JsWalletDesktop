@@ -14,7 +14,7 @@ require! {
     \../add-coin.ls
     \./tor.ls
 }
-# .menu750465975
+# .menu369227581
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -38,7 +38,7 @@ require! {
 #         @keyframes spin
 #             from
 #                 transform: rotate(0deg)
-#             to 
+#             to
 #                 transform: rotate(360deg)
 #         animation-name: spin
 #         animation-duration: 4000ms
@@ -82,7 +82,7 @@ require! {
 #                         @keyframes spin
 #                             from
 #                                 transform: rotate(0deg)
-#                             to 
+#                             to
 #                                 transform: rotate(360deg)
 #                         animation-name: spin
 #                         animation-duration: 4000ms
@@ -173,7 +173,7 @@ module.exports = ({ store, web3t })->
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu750465975' }, children = 
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu369227581' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'branding' }, children = 
                 react.create-element 'img', { src: "#{info.branding.logo-sm}", on-click: goto-wallet }
@@ -181,7 +181,7 @@ module.exports = ({ store, web3t })->
                 react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
                     react.create-element 'div', { className: 'symbol' }, ' $'
-                    react.create-element 'div', { title: "#{current.balance-usd}", className: 'number' }, ' ' + round-human current.balance-usd
+                    react.create-element 'div', { title: "#{current.balance-usd}", id: 'balance-total', className: 'number' }, ' ' + round-human current.balance-usd
                 react.create-element 'div', {}, children = 
                     if store.current.device is \desktop
                         if store.preference.refresh-visible is yes
@@ -193,6 +193,6 @@ module.exports = ({ store, web3t })->
                                 react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
                     if store.current.device is \desktop
                         tor store, web3t
-            if store.current.device is \mobile    
+            if store.current.device is \mobile
                 your-account store, web3t
             project-links { store, web3t }

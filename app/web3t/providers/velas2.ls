@@ -9,6 +9,7 @@ require! {
     \bs58 : { decode, encode }
     \ethereumjs-common : { default: Common }
     \../addresses.js : { vlxToEth, ethToVlx }
+    \crypto-js/sha3 : \sha3
 }
 isChecksumAddress = (address) ->
     address = address.replace '0x', ''
@@ -51,6 +52,7 @@ to-eth-address = (velas-address, cb)->
 window?to-eth-address = vlxToEth if window?
 window?to-velas-address = ethToVlx if window?
 export isValidAddress =  ({ address }, cb)->
+    return cb "Given address is not valid Velas address" if address.0 isnt \V
     err <- to-eth-address address
     return cb "Given address is not valid Velas address" if err?
     cb null, yes
@@ -118,11 +120,9 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
-    console.log \calc-fee, 2
     data-parsed =
         | data? => data
         | _ => '0x'
-    console.log \calc-fee, 3
     err, from <- to-eth-address account.address
     console.error "calc-fee from address #{err}" if err?
     return cb "Given address is not valid Velas address" if err?
@@ -132,12 +132,8 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     query = { from, to, data: data-parsed }
     err, estimate <- get-gas-estimate { network, query, gas }
     return cb err if err?
-    #return cb "estimate gas err: #{err.message ? err}" if err?
-    #console.log \calc-fee, 2
     res = gas-price `times` estimate
-    #res = if +res1 is 0 then 21000 * 8 else res1
     val = res `div` dec
-    #console.log { gas-price, res, val }
     #min = 0.002
     #return cb null, min if +val < min
     cb null, val
@@ -159,15 +155,27 @@ transform-tx = (network, description, t)-->
     amount = t.value `div` dec
     time = t.time-stamp
     url = "#{url}/tx/#{tx}"
-    cumulative-gas-used = t.cumulative-gas-used ? 0
-    gas-price = t.gas-price ? 0
-    fee = cumulative-gas-used `times` gas-price `div` dec
+    gas-used = 
+        | t.gas-used? => t.gas-used
+        | t.gas-used + "".length is 0 => "0" 
+        | _ => "0"          
+    gas-price = 
+        | t.gas-price? => t.gas-price
+        | t.gas-price + "".length is 0 => "0"
+        | _ => "0"
+    fee = (gas-used `times` (gas-price + "")) `div` dec
     recipient-type = if (t.input ? "").length > 3 then \contract else \regular
-    { network, tx, amount, fee, time, url, t.from, t.to, recipient-type, description }
-get-internal-transactions = ({ network, address }, cb)->
-    err, address <- to-eth-address address
+    tx-type =
+        | t.to is "V8sA8Q5jR44E4q6S59eUhhSJQiRBBFdZA8" or t.to is "0x56454c41532d434841494e000000000053574150"
+            => "Swap EVM to Native"
+        | _ => null
+    res = { network, tx, amount, fee, time, url, t.from, t.to, recipient-type, description, tx-type }
+    res    
+get-internal-transactions = (config, cb)->
+    { network, address } = config   
+    err, address <- to-eth-address config.address
     return cb err if err?
-    { api-url } = network.api
+    { api-url } = config.network.api
     module = \account
     action = \txlistinternal
     startblock = 0
@@ -211,18 +219,17 @@ export get-transactions = ({ network, address }, cb)->
     page = 1
     offset = 20
     err, external <- get-external-transactions { network, address, page, offset }
-    return cb err if err?
+    console.log err if err?
+    external = [] if err?  
     err, internal <- get-internal-transactions { network, address, page, offset }
-    return cb err if err?
+    console.log err if err?
+    internal = [] if err? 
     all = external ++ internal
     ordered =
         all
             |> sort-by (.time)
             |> reverse
     cb null, ordered
-#get-web3 = (network)->
-#    { web3-provider } = network.api
-#    new Web3(new Web3.providers.HttpProvider(web3-provider))
 get-dec = (network)->
     { decimals } = network
     10^decimals
@@ -258,11 +265,10 @@ is-address = (address) ->
         true
 export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas } , cb)-->
     #console.log \tx, { network, account, recipient, amount, amount-fee, data, fee-type, tx-type}
-    #console.log \tx, gas, gas-price
     dec = get-dec network
-    err, recipient <- to-eth-address recipient
+    err, $recipient <- to-eth-address recipient
     return cb err if err?
-    return cb "address in not correct ethereum address" if not is-address recipient
+    return cb "address is not correct ethereum address" if not is-address $recipient
     private-key = new Buffer account.private-key.replace(/^0x/,''), \hex
     err, nonce <- get-nonce { account, network }
     return cb err if err?
@@ -287,8 +293,10 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     data-parsed =
         | data? => data
         | _ => '0x'
-    query = { from: address, to: recipient, data: data-parsed }
+    query = { from: address, to: $recipient, data: data-parsed }
     err, gas-estimate <- get-gas-estimate { network, query, gas }
+    return cb err if err?
+    err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
     err, networkId <- make-query network, \net_version , []
     return cb err if err?
@@ -301,10 +309,12 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas-price: to-hex gas-price
         value: to-hex value
         gas: to-hex gas-estimate
-        to: recipient
+        to: $recipient
         from: address
         data: data || "0x"
+        chainId: chainId     
     }
+    console.log "tx before parse" tx-obj    
     tx = new Tx tx-obj, { common }
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex
@@ -340,15 +350,10 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
     balance = number `div` dec
     cb null, balance
 export get-balance = ({ network, address} , cb)->
-    #return cb null, 0
-    #console.log \address, address
     err, address <- to-eth-address address
-    #console.log \address, address, err
     return cb err if err?
     err, number <- make-query network, \eth_getBalance , [ address, \latest ]
     return cb err if err?
-    #err, number <- web3.eth.get-balance address
-    #return cb "cannot get balance - err: #{err.message ? err}" if err?
     dec = get-dec network
     balance = number `div` dec
     cb null, balance

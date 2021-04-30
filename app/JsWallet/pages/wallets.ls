@@ -15,6 +15,8 @@ wallets = ({ store, web3t })->
 wallets.init = ({ store, web3t }, cb)->
     delete store.current.send?wallet
     store.current.send?tx-type = \regular
+    store.current.send.is-swap = no
+    store.current.send.chosen-network = null
     return cb null if store.current.account?
     #TODO: fix this seedmem.get! but before need to ask users to make backup wallets
     seedmem.mnemonic = seedmem.get!

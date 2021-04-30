@@ -462,8 +462,9 @@ switch-network = (store, web3t)->
         value = it.target.value is \true
         web3t.use networks-reverted[not value]
     value= networks[store.current.network]
+    isChecked = store.current.network is "testnet"
     react.create-element 'label', { className: 'active-network' }, children = 
-        react.create-element 'input', { type: 'checkbox', on-change: change-network, value: value, id: "settings-testnet" }
+        react.create-element 'input', { type: 'checkbox', on-change: change-network, value: value, id: "settings-testnet", checked: isChecked }
         react.create-element 'div', { className: 'track thumb' }
 naming-part = ({ store, web3t })->
     react.create-element 'div', { className: 'section' }, children = 

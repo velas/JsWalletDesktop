@@ -47,19 +47,12 @@ module.exports = (store, web3t)->
             | _ => cut-amount extended(str), max
         res
     amount-beautify = (amount, max)->
-        str = cut-amount amount, max
+        str = (amount ? "")to-string!
         data = str.match(/(.+[^0])(0+)$/)
+        $amount = round-human(str, {decimals: 4})
         return
             react.create-element 'div', { className: 'balance' }, children = 
-                react.create-element 'span', { className: 'color' }, ' ' + round-human str
-        if not data?
-            return
-                react.create-element 'div', { className: 'balance' }, children = 
-                    react.create-element 'span', { className: 'color' }, ' ' + round-human str
-        [_, first, last] = data
-        react.create-element 'span', { className: 'balance' }, children = 
-            react.create-element 'span', { className: 'color' }, ' ' + round-human first
-            react.create-element 'span', { className: 'rest' }, ' ' + round-human last
+                react.create-element 'span', { className: 'color' }, ' ' + $amount
     is-active = (value)->
         if value in filt then \active else ''
     switch-filter  = (value, event)-->

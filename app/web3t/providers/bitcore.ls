@@ -1,12 +1,15 @@
 require! {
     \moment
-    \prelude-ls : { map, foldl, any, each, find, sum, filter, head, values, join }
+    \prelude-ls : { map, foldl, any, each, find, sum, filter, head, values, join, reverse, uniqueBy }
     \./superagent.js : { get, post }
     \../math.js : { plus, minus, div, times }
     \./deps.js : { BitcoinLib, bip39 }
     \../json-parse.js
     \../deadline.js
     \bs58 : { decode }
+    \bignumber.js    
+    #\multicoin-address-validator : \WAValidator  
+    \../embed_modules/bitcoin-address-validation : \validate    
 }
 segwit-address = (public-key)->
     witnessScript = BitcoinLib.script.witnessPubKeyHash.output.encode(BitcoinLib.crypto.hash160(public-key))
@@ -58,14 +61,19 @@ calc-fee-per-byte = (config, cb)->
     #console.log { config.amount, amount-fee }
     err, data <- create-transaction { fee-type, amount-fee , recipient, ...config }
     return cb null, o.cheap if "#{err}".index-of("Not Enough Funds (Unspent Outputs)") > -1
-    #console.log { err }
     return cb err, o.cheap if err?
     return cb "raw-tx is expected" if typeof! data.raw-tx isnt \String
-    #console.log data.raw-tx
     #bytes = decode(data.raw-tx).to-string(\hex).length / 2
     bytes = data.raw-tx.length / 2
     infelicity = 1
-    calc-fee = (bytes + infelicity) `times` o.fee-per-byte
+    err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline } .end
+    vals = if data? and not err? then values data.body else [0.0024295] 
+    calced-fee-per-kb = 
+        | vals.0 is -1 => network.tx-fee
+        | _ => vals.0       
+    fee-per-byte = calced-fee-per-kb `div` 2000
+    calc-fee = (bytes + infelicity) `times` fee-per-byte
+    calc-fee = new bignumber(calc-fee).to-fixed(network.decimals)   
     final-price =
         | calc-fee > +o.cheap => calc-fee
         | _ => o.cheap
@@ -75,7 +83,7 @@ calc-dynamic-fee = ({ network, tx, tx-type, account, fee-type }, cb)->
     tx-fee = o?[fee-type] ? network.tx-fee ? 0
     return cb null, tx-fee if fee-type isnt \auto
     network = global.store?.current?.network || \mainnet
-    err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline: 5000 } .end
     return cb err if err?
     vals = values data.body
     exists = vals.0 ? -1
@@ -135,7 +143,7 @@ add-amount = (network, it)-->
 #mock = [{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"2b598e790c06e106709ea230b4553e9b867f234aa6e84ad700f81efe68bb563e","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275994,"confirmations":598},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"e815481a072b33390e0a2dad5df7ff1726c39d3542558e933f0aa475613c4145","vout":0,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":1,"satoshis":100000000,"height":275988,"confirmations":604},{"address":"GbyU4HML1rX8gcdVB2dNfE4RszCwKFYuuv","txid":"f9897905e569aed3067c532d5a1e11bd018a4b60231caf62c66db4e7ec9234c5","vout":1,"scriptPubKey":"76a914c6df968d5d5e5103290559629f966c5efe6cfbfb88ac","amount":0.00001,"satoshis":1000,"height":275987,"confirmations":605}]
 get-outputs = ({ network, address} , cb)-->
     { url } = network.api
-    err, data <- get "#{get-api-url network}/address/#{address}/?unspent=true" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/?unspent=true" .timeout { deadline: 5000 } .end
     return cb "cannot get outputs - err #{err.message ? err}" if err?
     #mock
     data.body
@@ -189,12 +197,15 @@ add-outputs = (config, cb)->
     { tx-type, total, value, fee, tx, recipient, account } = config
     return cb "fee, value, total are required" if not fee? or not value? or not total?
     return add-outputs-private config, cb if tx-type is \private
-    rest = total `minus` value `minus` fee
-    tx.add-output recipient, +value
-    #console.log { rest }
-    if +rest isnt 0
-        tx.add-output account.address, +rest
-    cb null
+    try  
+        rest = total `minus` value `minus` fee
+        tx.add-output recipient, +value
+        if +rest isnt 0
+            tx.add-output account.address, +rest
+        cb null
+    catch err
+        console.error err    
+        return cb err    
 #recipient
 get-error = (config, fields)->
     result =
@@ -249,14 +260,14 @@ export push-tx = ({ network, raw-tx, tx-type } , cb)-->
     cb null, res.body?txid
 export get-total-received = ({ address, network }, cb)->
     return cb "Url is not defined" if not network?api?url?
-    err, data <- get "#{get-api-url network}/address/#{address}/totalReceived" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/totalReceived" .timeout { deadline: 5000 } .end
     return cb err if err? or data.text.length is 0
     dec = get-dec network
     num = data.text `div` dec
     cb null, num
 export get-unconfirmed-balance = ({ network, address} , cb)->
     return cb "Url is not defined" if not network?api?url?
-    err, data <- get "#{get-api-url network}/address/#{address}/unconfirmedBalance" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/unconfirmedBalance" .timeout { deadline: 5000 } .end
     return cb err if err? or data.text.length is 0
     try
         json = JSON.parse(data.text)
@@ -270,7 +281,8 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
     cb null, num
 export get-balance = ({ address, network } , cb)->
     return cb "Url is not defined" if not network?api?url?
-    err, data <- get "#{get-api-url network}/address/#{address}/balance" .timeout { deadline } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/balance" .timeout { deadline: 5000 } .end
+    console.log "#{get-api-url network}/address/#{address}/balance"
     return cb err if err? or data.text.length is 0
     #check that data.text has number
     try
@@ -285,17 +297,17 @@ export get-balance = ({ address, network } , cb)->
     #return cb null, "2.00001"
     cb null, num
 transform-in = ({ net, address }, t)->
-    tr = BitcoinLib.Transaction.fromHex(t.script)
+    #tr = BitcoinLib.Transaction.fromHex(t.script)  
     tx = t.mintTxid
     pending = t.confirmations is 0
     dec = get-dec net
     amount = t.value `div` dec
-    to = address
-    from = t.address
+    from = address
+    to = t.address
     url = | net.api.linktx => net.api.linktx.replace \:hash, tx
         | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-in, t)
-    { tx, amount, url, to, from, pending }
+    { tx, amount, url, to, from, pending, time: t.time, fee: t.fee, type: t.type  }
 transform-out = ({ net, address }, t)->
     tx = t.mintTxid
     time = t.time
@@ -307,26 +319,103 @@ transform-out = ({ net, address }, t)->
     url = | net.api.linktx => net.api.linktx.replace \:hash, tx
         | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-out, t)
-    { tx, amount, url, to, pending, from }
+    { tx, amount, url, to, pending, from, time: t.time, fee: t.fee, type: t.type }
 transform-tx = (config, t)-->
-    self-sender = find -> it.address is config.address
-    return transform-in config, t if not self-sender?
+    self-sender = t.address is config.address
+    type = 
+        |  t.address isnt config.address => "OUT"
+        |  _ => "IN" 
+    t.type = type   
+    return transform-in config, t if not self-sender    
     transform-out config, t
 get-api-url = (network)->
     api-name = network.api.api-name ? \api
-    network-name = global.store?.current?.network || \mainnet
+    network-name = network.api.network-name ? \mainnet
     "#{network.api.url}/#{api-name}/BTC/#{network-name}"
 export check-tx-status = ({ network, tx }, cb)->
     cb "Not Implemented"
 export get-transactions = ({ network, address}, cb)->
     return cb "Url is not defined" if not network?api?url?
-    err, data <- get "#{get-api-url network}/address/#{address}/txs" .timeout { deadline: 15000 } .end
+    err, data <- get "#{get-api-url network}/address/#{address}/txs?limit=100" .timeout { deadline: 5000 } .end
+    return cb err if err?
+    err, result <- json-parse data.text 
+    return cb err if err?
+    _result = result |> uniqueBy (-> it.mintTxid) |> reverse     
+    err, all-txs <- prepare-raw-txs {txs: _result, network, address}
+    return cb err if err?   
+    return cb "Unexpected result" if typeof! all-txs isnt \Array
+    txs =
+        all-txs
+            |> map transform-tx { net: network, address }
+            |> filter (?)                
+    cb null, txs
+prepare-raw-txs = ({ txs, network, address }, cb)->
+    err, result <- prepare-txs network, txs, address
+    return cb err if err? 
+    cb null, result
+get-receiver = (account-address, sender, outputs)->
+    if account-address isnt sender
+        return account-address
+    found = outputs |> find (-> it.address? and it.address isnt "false" and it.address isnt account-address)
+    receiver =
+        | found? => found.address
+        | _ => sender
+get-value = (outputs, receiver)->
+    receiver-data = outputs |> find (-> it.address is receiver)
+    receiver-data?value ? 0
+prepare-txs = (network, [tx, ...rest], address, cb)->
+    return cb null, [] if not tx?
+    { mintTxid } = tx
+    err, _coins <- get "#{get-api-url network}/tx/#{mintTxid}/coins" .timeout { deadline: 15000 } .end
+    console.error "prepare-txs Error: " + err if err?
+    return cb null, [] if err?
+    err, result <- json-parse _coins.text
+    return cb err if err?
+    {inputs, outputs} = result
+    sender = inputs[0].address
+    receiver = get-receiver(address, sender, outputs)
+    value = get-value(outputs, receiver)
+    err, data <- get "#{get-api-url network}/tx/#{mintTxid}" .timeout { deadline: 15000 } .end
+    console.error "prepare-txs Error: " + err if err?
+    return cb null, [] if err?
+    err, result <- json-parse data.text
+    return cb err if err? 
+    { blockTime, txid, fee, confirmations, chain,  _id } = result 
+    time = moment(blockTime).format("X")
+    dec = get-dec network 
+    _tx = {
+        address: receiver
+        value
+        fee: fee `div` dec 
+        chain
+        network: result.network     
+        time   
+        confirmations
+        _id 
+        coinbase: no
+        mintTxid: txid,    
+    }
+    t = if _tx? then [_tx] else []
+    err, other <- prepare-txs network, rest, address
+    return cb err if err?
+    all =  t ++ other    
+    cb null, all   
+export isValidAddress = ({ address, network }, cb)-> 
+    #addressIsValid = WAValidator.validate(address, 'BTC', 'both')   
+    addressIsValid = validate(address)   
+    return cb "Address is not valid" if not addressIsValid   
+    return cb null, address
+export get-transaction-info = (config, cb)->
+    { network, tx } = config
+    url = "#{get-api-url network}/tx/:hash".replace \:hash, tx
+    err, data <- get url .timeout { deadline: 15000 } .end  
     return cb err if err?
     err, result <- json-parse data.text
-    return cb err if err?
-    return cb "Unexpected result" if typeof! result isnt \Array
-    txs =
-        result
-            |> map transform-tx { net: network, address }
-            |> filter (?)
-    cb null, txs
+    return cb err if err? 
+    { blockTime, txid, fee, confirmations, chain,  _id } = result
+    status =
+        | +confirmations > 0 => \confirmed
+        | tx.status is \0x1 => \reverted
+        | _ => \pending
+    result = { status, info: tx }
+    cb null, result

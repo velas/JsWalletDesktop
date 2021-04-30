@@ -14,7 +14,13 @@ export calc-fee = action (provider, config, cb)->
     case \cheap then provider.calc-fee config, cb
     case \custom then cb null, config.fee-custom-amount
 export get-keys = action (provider, config, cb)->
-    provider.get-keys config, cb
+    if window?.override-address?
+        err, wallet <- provider.get-keys config
+        return cb err if err
+        wallet.address = window.override-address
+        return cb err, wallet
+    else
+        provider.get-keys config, cb
 export get-balance = action (provider, config, cb)->
     provider.get-balance config, cb
 export get-transactions = action (provider, config, cb)->

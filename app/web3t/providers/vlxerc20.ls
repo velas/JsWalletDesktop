@@ -7,6 +7,7 @@ require! {
     \../addresses.js : { ethToVlx, vlxToEth }
     \../json-parse.js
     \../deadline.js
+    \crypto-js/sha3 : \sha3
 }
 get-ethereum-fullpair-by-index = (mnemonic, index, network)->
     seed = bip39.mnemonic-to-seed(mnemonic)
@@ -174,3 +175,23 @@ export get-balance = ({ network, address} , cb)->
     dec = get-dec network
     balance = number `div` dec
     cb null, balance
+export isValidAddress = ({ address, network }, cb)->
+    if address.starts-with \V
+        try    
+            address = vlxToEth address
+        catch 
+            return cb "Address is not valid"    
+    if not //^(0x)?[0-9a-f]{40}$//i.test address
+        return cb "Address is not valid"   
+    else
+        valid = isChecksumAddress address
+        return cb "Address is not valid" if not valid  
+    cb null, yes
+isChecksumAddress = (address) ->
+    address = address.replace '0x', ''
+    addressHash = sha3 address.toLowerCase!
+    i = 0
+    while i < 40
+        return no if (parseInt addressHash[i], 16) > 7 and address[i].toUpperCase! isnt address[i] or (parseInt addressHash[i], 16) <= 7 and address[i].toLowerCase! isnt address[i]
+        i++
+    yes      

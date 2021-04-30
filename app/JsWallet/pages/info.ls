@@ -10,17 +10,18 @@ require! {
     \./switch-account.ls
     \../icons.ls
     \./choosestaker.ls
+    \./validators.ls
     \./staker-stats.ls
     \./staker-stats2.ls
     \./staker-stats3.ls
-    \prelude-ls : { map, foldl }
+    \prelude-ls : { map, foldl, filter }
     \../math.ls : { plus, div }
     \../round-human.ls
     \./epoch.ls
     \./alert-txn.ls
     \../components/burger.ls
 }
-# .stats-1905078497
+# .stats-1270740771
 #     @import scheme
 #     $border-radius: var(--border-btn)
 #     $smooth: opacity .15s ease-in-out
@@ -98,7 +99,7 @@ require! {
 #             box-sizing: border-box
 #             padding: 0 10px
 #             margin-bottom: 20px
-#             &:last-child   
+#             &:last-child
 #                 @media (max-width: 800px)
 #                     padding-bottom: $ios-m-b
 #             >div
@@ -174,7 +175,7 @@ staking-amount = (store, web3t)->
     stats=
         background: info.app.stats
     amount =
-        store.staking.pools |> map (.stake) |> foldl plus, 0
+        store.staking.pools |> map (-> +it.stakeInitial) |> foldl plus, 0
     react.create-element 'div', { className: 'col col-4' }, children = 
         react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
@@ -187,12 +188,15 @@ my-stake = (store, web3t)->
     stats=
         background: info.app.stats
     amount =
-        store.staking.pools |> map (.my-stake) |> foldl plus, 0
+        store.staking.pools
+            |> filter (-> not !it.my-stake?) 
+            |> map (-> +it.my-stake `div` 1e18) 
+            |> foldl plus, 0
     react.create-element 'div', { className: 'col col-4' }, children = 
         react.create-element 'div', { style: stats }, children = 
             react.create-element 'div', { className: 'value' }, children = 
                 react.create-element 'div', { className: 'symbol' }
-                react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(amount)
+                react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(+amount)
             react.create-element 'div', { className: 'header' }, ' ' + lang.total-my-stake
 chart-amount-sizes = (store, web3t)->
     lang = get-lang store
@@ -251,7 +255,7 @@ info = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'stats stats-1905078497' }, children = 
+    react.create-element 'div', { className: 'stats stats-1270740771' }, children = 
         alert-txn { store }
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics
@@ -289,10 +293,11 @@ feel-rewards = ({ store, web3t }, [epoch, ...epochs], cb)->
     all = [data] ++ rest
     cb null, all
 module.exports.init = ({ store, web3t }, cb)->
-    err, data <- choosestaker.init { store, web3t }
+    return cb null if store.staking.pools-are-loading is yes
+    err, data <- validators.init { store, web3t }
     cb null
 module.exports.focus = ({ store, web3t}, cb)->
-    err <- choosestaker.focus { store, web3t }
+    err <- validators.focus { store, web3t }
     return cb err if err?
     #err, epoch <- web3t.velas.Staking.stakingEpoch
     #return cb err if err?

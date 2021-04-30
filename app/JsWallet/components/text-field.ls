@@ -8,7 +8,7 @@ require! {
     \./keyboard.ls
     \../icons.ls
 }
-# .input-area1368855750
+# .input-area-1968452910
 #     position: relative
 #     margin: 10px 0
 #     width: 100%
@@ -34,6 +34,7 @@ require! {
 #             left: 0px
 #             z-index: 9999
 #             width: 400px
+#             box-shadow: 1px 2px 3px black;
 #         &:hover
 #             >.show-details
 #                 display: inline-block
@@ -41,7 +42,7 @@ require! {
 #             position: absolute
 #             right: 8px
 #             top: 13px
-module.exports = ({ store, value, on-change, placeholder, type, on-key-down, id })->
+module.exports = ({ ref, store, value, on-change, placeholder, type, on-key-down, id })->
     style = get-primary-info store
     input-style =
         background: style.app.input
@@ -54,8 +55,8 @@ module.exports = ({ store, value, on-change, placeholder, type, on-key-down, id 
     chosen-type =
         | type is \password => \password
         | _ => \text
-    react.create-element 'div', { className: 'input-area input-area1368855750' }, children = 
-        react.create-element 'input', { type: "#{chosen-type}", value: "#{value}", style: input-style, on-change: on-change, placeholder: actual-placeholder, auto-complete: "off", on-key-down: on-key-down, id: id }
+    react.create-element 'div', { className: 'input-area input-area-1968452910' }, children = 
+        react.create-element 'input', { ref: ref,, type: "#{chosen-type}", value: "#{value}", style: input-style, on-change: on-change, placeholder: actual-placeholder, auto-complete: "off", on-key-down: on-key-down, id: id }
         if store.current.device isnt \mobile
             react.create-element 'span', { className: 'keyboard-panel' }, children = 
                 react.create-element 'img', { src: "#{icons.keyboard}", className: 'icon-svg' }

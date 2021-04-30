@@ -1,13 +1,14 @@
 require! {
     \react
     \../send-funcs.ls
-    \prelude-ls : { map, find }
+    \prelude-ls : { map, find, keys, filter, pairs-to-obj, obj-to-pairs }
     \../get-primary-info.ls
     \./icon.ls
     \../get-lang.ls
     \./switch-account.ls
     \../icons.ls
     \../round-human.ls
+    \../round-number.ls
     \../wallets-funcs.ls
     \./epoch.ls
     \../components/button.ls
@@ -17,8 +18,15 @@ require! {
     \./send-contract.ls
     \../history-funcs.ls
     \../components/burger.ls
+    \../components/amount-field.ls
+    \../components/sliders/network-slider.ls
+    \../math.ls : { times }
+    \ethereumjs-util : {BN}
+    \../velas/addresses.ls
+    \../contracts.ls
+    \../swaping/networks.ls : \token-networks
 }
-# .content649763333
+# .content879310472
 #     position: relative
 #     @import scheme
 #     $border-radius: var(--border-btn)
@@ -127,10 +135,20 @@ require! {
 #             text-align: left
 #             margin: auto 10px
 #             >.form-group
+#                 &.sender, &.receiver
+#                     input 
+#                         padding: 0 10px 0 45px 
+#                         text-align: left
+#                 &.sender
+#                     .address-holder .inner-address-holder
+#                         text-align: left
+#                         padding-left: 45px
+#                 &.receiver input
+#                     text-align: left !important
 #                 .identicon
 #                     ~ span
 #                         background: var(--input)
-#                 &:nth-child(2)
+#                 &:nth-child(2), &:nth-child(3)
 #                     div
 #                         position: relative
 #                         img
@@ -143,10 +161,28 @@ require! {
 #                             margin: 0px
 #                         input
 #                             text-align: center
-#                 >.control-label
+#                 .control-label
 #                     padding-top: 5px
 #                     padding-left: $label-padding
 #                     font-size: $label-font
+#                 &.network
+#                     div
+#                         position: relative
+#                     .button
+#                         width: 12px
+#                         height: 16px
+#                         display: inline-block
+#                         padding: 9px
+#                         border-radius: var(--border-btn)
+#                         cursor: pointer
+#                         vertical-align: top
+#                         position: absolute
+#                         &.left
+#                             left: 0
+#                         &.right
+#                             right: 0
+#                         svg
+#                             vertical-align: inherit !important
 #                 margin-top: 4px
 #                 .address
 #                     padding: 0px
@@ -180,6 +216,8 @@ require! {
 #                         &.choose-currency
 #                             display: inline-flex
 #                             width: 45% !important
+#                         .input-area
+#                             margin: 0
 #                         select
 #                             -webkit-appearance: none
 #                             -moz-appearance: none
@@ -227,6 +265,8 @@ require! {
 #                             outline: none
 #                             ::placeholder
 #                                 color: #eee
+#                             &:disabled
+#                                 opacity:.2
 #                             &.amount
 #                                 border-radius: $border-radius 0 0 $border-radius
 #                                 border-right: 0
@@ -321,13 +361,14 @@ require! {
 #             padding: 0 4px
 #             font-size: 12px
 #             max-height: 20px
+#             font-weight: 400
 #             overflow: hidden
 #         .bold
 #             font-weight: bold
 #         .button-container
 #             text-align: center
 #             .buttons
-#                 margin-top: 40px
+#                 margin-top: 20px
 #                 text-align: center
 #                 border-radius: $border
 #                 width: 100%
@@ -356,13 +397,14 @@ require! {
 #                     &:hover
 #                         background: rgba(#6CA7ED, 0.2)
 #                         opacity: .9
-form-group = (title, style, content)->
-    react.create-element 'div', { className: 'form-group' }, children = 
+form-group = (classes, title, style, content)->
+    react.create-element 'div', { className: "#{classes} form-group" }, children = 
         react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
         content!
 send = ({ store, web3t })->
-    { token, name, fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
+    { token, name, fee-token, bridge-fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, before-send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
     return send-contract { store, web3t } if send.details is no
+    send.sending = false
     { go-back } = history-funcs store, web3t
     return go-back! if not wallet?
     round-money = (val)->
@@ -391,9 +433,16 @@ send = ({ store, web3t })->
         color: style.app.text2
         background: style.app.primary3
         background-color: style.app.primary3-spare
+    button-primary2-style=
+        border: "1px solid #{style.app.wallet}"
+        color: style.app.text
+        background: style.app.primary2
+        background-color: style.app.primary2-spare
     crypto-background =
         background: style.app.wallet
         width: "50%"
+    just-crypto-background =
+        background: style.app.wallet
     more-text=
         color: style.app.text
     border-header =
@@ -415,12 +464,34 @@ send = ({ store, web3t })->
     active-eur = active-class \eur
     show-class =
         if store.current.open-menu then \hide else \ ""
-    token-display = if token == \VLX2 then \VLX else token
-    fee-token-display = if fee-token == \VLX2 then \VLX else fee-token
-    react.create-element 'div', { className: 'content content649763333' }, children = 
+    token-display = (wallet.coin.nickname ? "").to-upper-case!
+    fee-token-display = 
+        | fee-token in <[ VLX2 VLX_EVM VLX_NATIVE ]> => \VLX
+        | bridge-fee-token? => bridge-fee-token
+        | wallet.network.tx-fee-in? => wallet.network.tx-fee-in
+        | _ => fee-token
+    fee-token-display = fee-token-display.to-upper-case!
+    fee-coin-image = 
+        | send.fee-coin-image? => send.fee-coin-image
+        |_ => send.coin.image
+    go-back-from-send = ->
+        send.error = ''
+        go-back!  
+    makeDisabled = send.amount-send <= 0
+    token = store.current.send.coin.token
+    is-swap = store.current.send.is-swap is yes
+    send-func = before-send-anyway
+    disabled = not send.to? or send.to.trim!.length is 0 or (send.error.index-of "address") > -1     
+    receiver-is-swap-contract = contracts.is-swap-contract(store, store.current.send.contract-address)
+    visible-error = if send.error? and send.error.length > 0 then "visible" else ""
+    get-recipient = (address)->
+        address
+    recipient = get-recipient(send.to)
+    title = if store.current.send.is-swap isnt yes then lang.send else \Swap
+    react.create-element 'div', { className: 'content content879310472' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.send
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
+            react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
+            react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             burger store, web3t
             epoch store, web3t
@@ -450,25 +521,27 @@ send = ({ store, web3t })->
                                     icon \Inbox, 20
                                 react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.history
             react.create-element 'form', {}, children = 
-                form-group lang.from, icon-style, ->
+                form-group \sender, lang.from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 
                         address-holder { store, wallet }
-                form-group lang.to, icon-style, ->
+                react.create-element 'div', { className: 'slider network form-group' }, children = 
+                    network-slider { web3t, wallet, store}
+                form-group \receiver, lang.to, icon-style, ->
                     react.create-element 'div', {}, children = 
                         identicon { store, address: send.to }
-                        react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{send.to}", placeholder: "#{store.current.send-to-mask}", id: "send-recipient" }
-                form-group lang.amount, icon-style, ->
+                        react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{recipient}", placeholder: "#{store.current.send-to-mask}", id: "send-recipient" }
+                form-group \send-amount, lang.amount, icon-style, ->
                     react.create-element 'div', {}, children = 
                         react.create-element 'div', { className: 'amount-field' }, children = 
                             react.create-element 'div', { style: input-style, className: 'input-wrapper' }, children = 
                                 react.create-element 'div', { className: 'label crypto' }, children = 
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     """ #{token-display}"""
-                                react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-change, placeholder: "0", title: "#{send.amount-send}", value: "#{round5edit send.amount-send}", id: "send-amount", className: 'amount' }
+                                amount-field { store, value: "#{round5edit send.amount-send}", on-change: amount-change, placeholder="0", id="send-amount", token, disabled }
                             if active-usd is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' $'
-                                    react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-usd-change, placeholder: "0", title: "#{send.amount-send-usd}", value: "#{round-money send.amount-send-usd}", id: "send-amount-usd", className: 'amount-usd' }
+                                    react.create-element 'input', { type: 'text', style: just-crypto-background, on-change: amount-usd-change, placeholder: "0", title: "#{send.amount-send-usd}", value: "#{round-number send.amount-send-usd, {decimals: 8}}", id: "send-amount-usd", disabled: disabled, className: 'amount-usd' }
                             if active-eur is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' €'
@@ -482,9 +555,9 @@ send = ({ store, web3t })->
                                     react.create-element 'span', {}, ' ' + token-display
                                 if +wallet.pending-sent >0 and no
                                     react.create-element 'span', { className: 'pending' }, ' ' + '(' + pending + ' ' + lang.pending + ')'
-                        react.create-element 'div', { title: "#{send.error}", className: 'control-label not-enough text-left' }, ' ' + send.error
+                        react.create-element 'div', { title: "#{send.error}", className: "#{visible-error} control-label not-enough text-left" }, ' ' + send.error
                 if is-data
-                    form-group 'Data', icon-style, ->
+                    form-group \contract-data, 'Data', icon-style, ->
                         react.create-element 'div', { style: input-style, className: 'smart-contract' }, ' ' + show-data!
                 trx-fee { store, web3t, wallet }
                 react.create-element 'table', { style: border-style }, children = 
@@ -500,24 +573,69 @@ send = ({ store, web3t })->
                             react.create-element 'td', {}, ' ' + lang.fee
                             react.create-element 'td', {}, children = 
                                 react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + round5 send.amount-send-fee
-                                    react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
+                                    react.create-element 'img', { src: "#{fee-coin-image}", className: 'label-coin' }
                                     react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token-display
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-send-fee-usd
             react.create-element 'div', { className: 'button-container' }, children = 
                 react.create-element 'div', { className: 'buttons' }, children = 
-                    button { store, text: \send , on-click: send-anyway , loading: send.sending, type: \primary, error: send.error, id: "send-confirm" }
+                    button { store, text: \send , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
 module.exports = send
 module.exports.init = ({ store, web3t }, cb)->
     { wallet } = send-funcs store, web3t
     return cb null if not wallet?
+    return cb null if send.sending is yes
+    store.current.send.foreign-network-fee = 0
+    store.current.send.amountCharged = 0
+    store.current.send.amountChargedUsd = 0
+    store.current.send.error = ''
+    if store.current.send.is-swap isnt yes
+        store.current.send.contract-address = null
+    is-swap-contract = contracts.is-swap-contract(store, send.to)
+    if is-swap-contract then
+        contract-address = if wallet.coin.token is \vlx2 then web3t.velas.HomeBridgeNativeToErc.address else web3t.velas.ForeignBridgeNativeToErc.address 
+        store.current.send.to = contract-address
+        network-type = store.current.network
+        networks = wallet.coin["#{network-type}s"]
+        store.current.send.networks = networks
+        network-keys = networks |> keys
+        default-network = networks[network-keys.0].name
+    /* If it is Swap! */
+    if wallet.network.networks? and (store.current.send.isSwap is yes) then
+        available-networks = 
+            wallet.network.networks 
+                |> obj-to-pairs
+                |> filter (-> (not it[1].disabled?) or it[1].disabled is no)
+                |> pairs-to-obj
+        wallet-swap-networks-ids = Object.keys(available-networks)
+        if wallet-swap-networks-ids.length > 0
+            default-network = wallet.network.networks[wallet-swap-networks-ids[0]]
+            store.current.send.chosenNetwork = default-network 
+            store.current.send.to = token-networks.get-default-recipient-address(store)  
+        else
+            console.error "networks prop in #{store.current.send.token} wallet is defined but is empty"    
     { wallets } = wallets-funcs store, web3t
     current-wallet =
         wallets |> find (-> it.coin.token is wallet.coin.token)
-    return cb null if current-wallet.address is wallet.address
+    err, fee <- contracts.get-home-network-fee({store, web3t}, store.current.send.to)
+    store.current.send.foreign-network-fee = fee
     { wallet } = send-funcs store, web3t
+    store.current.send.fee-coin-image = 
+        | wallet.network.tx-fee-in? =>
+            console.log "wallet.network.tx-fee-in" wallet.network.tx-fee-in
+            tx-fee-in-wallet = wallets |> find (-> it.coin.token is wallet.network.tx-fee-in)
+            if not tx-fee-in-wallet then
+                store.current.send.error = "Please add #{((wallet.network.tx-fee-in ? "").to-upper-case!)} wallet in order to calculate transaction fee"
+            tx-fee-in-wallet?coin?image ? ""   
+        | _ => wallet.coin.image   
+    if wallet.network.txBridgeFeeIn? and (wallet.coin.token isnt wallet.network.txBridgeFeeIn) then
+        bridge-fee-token = wallet.network.txBridgeFeeIn
+        second-wallet = wallets |> find (-> it.coin.token is bridge-fee-token)
+        store.current.send.fee-coin-image = second-wallet.coin.image
+    return cb null if current-wallet.address is wallet.address
     return cb null if not wallet?
-    return cb null if not web3t[wallet.coin.token]?
+    return cb null if not web3t[wallet.coin.token]?   
     { send-transaction } = web3t[wallet.coin.token]
     err <- send-transaction { to: "", value: 0 }
+    send.sending = false
     cb null

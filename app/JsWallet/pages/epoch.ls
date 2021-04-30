@@ -222,6 +222,10 @@ require! {
 #         width: 100%
 #         border-top: 1px solid #213040
 #         display: inline-block
+as-callback = (p, cb)->
+    p.catch (err) -> cb err
+    p.then (data)->
+        cb null, data
 module.exports = (store, web3t)->
     return null if not store.current.account?
     { wallets, go-up, can-up, go-down, can-down } = wallets-funcs store, web3t
@@ -261,22 +265,23 @@ module.exports = (store, web3t)->
         cb = alert
         store.current.current-epoch = not store.current.current-epoch
         return if not store.current.current-epoch
-        err, staking-epoch <- web3t.velas.Staking.stakingEpoch
-        return cb "#{err}" if err?
-        err, next-block <- web3t.velas.Staking.stakingEpochEndBlock
-        return cb err if err?
+        err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+        console.error err if err?
+        return cb null if err?
+        { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
+        next-block = slotsInEpoch
         err, start-block <- web3t.velas.Staking.stakingEpochStartBlock
-        return cb err if err?
-        err, current-block <- web3t.velas.web3.getBlockNumber
-        return cb err if err?
-        seconds = (next-block `minus` current-block) `times` 5
-        all = (next-block `minus` start-block) `times` 5
-        rest = all `minus` seconds
-        console.log store.dashboard.epoch-percent , all, seconds
-        store.dashboard.epoch-percent = 100 - ( 100 `div` all ) `times` seconds
+        console.error err if err?   
+        return cb null if err?
+        current-block = blockHeight
+        seconds-per-block = 0.4
+        seconds = (epochInfo.slotsInEpoch `minus` epochInfo.slotIndex) `times` seconds-per-block
+        epoch-time = epochInfo.slotsInEpoch `times` seconds-per-block
+        rest = epoch-time `minus` seconds
+        store.dashboard.epoch-percent = 100 - ( 100 `div` epoch-time ) `times` seconds
         store.dashboard.epoch-next = moment!.add(seconds, 'seconds').from-now!
         store.dashboard.current-block = current-block
-        store.dashboard.epoch = staking-epoch.to-fixed!
+        store.dashboard.epoch = epoch
     edit-account-name = ->
         store.current.edit-account-name = current-account-name!
     default-account-name = -> "#{lang.account} #{store.current.account-index}"
