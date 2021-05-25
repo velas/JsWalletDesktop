@@ -27,15 +27,17 @@ require! {
     \../../icons.ls
     \../placeholder.ls
     \../epoch.ls
-    \../confirmation.ls : { alert, notify, confirm, prompt2 }
+    \../confirmation.ls : { alert, notify, confirm, prompt2, prompt3 }
     \../../components/button.ls
     \../../components/address-holder.ls
     \../alert-txn.ls
     \../../components/amount-field.ls
     \../../seed.ls : seedmem
     \../../components/burger.ls
+    \./error-funcs.ls : { get-error-message }
+    \./rewards-stats.ls
 }
-# .staking-146665425
+# .staking672871527
 #     @import scheme
 #     position: relative
 #     display: block
@@ -48,6 +50,39 @@ require! {
 #     box-sizing: border-box
 #     padding: 0px
 #     background: transparent
+#     .syncing
+#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: fb 1s infinite
+#         animation-fill-mode: forwards
+#         background: var(--placeholder)
+#     @keyframes gradient
+#         0%
+#             background-position: 0% 50%
+#         50%
+#             background-position: 100% 50%
+#         100%
+#             background-position: 0% 50%
+#     @keyframes fb
+#         0%
+#             -webkit-mask-position: left
+#         100%
+#             -webkit-mask-position: right
+#     @media (max-width: 800px)
+#         .wallet-main, >.content, .history, .search, .filestore, .resources, .staking, .settings-menu, .staking-res, .stats, .monitor
+#             margin: 60px 0 0
+#             >.title
+#                 margin: 0
+#                 position: fixed
+#                 z-index: 11
+#     .error-no-connection
+#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+#         -webkit-mask-size: 50%
+#         animation: fb 1s infinite
+#         animation-fill-mode: forwards
+#         background: var(--placeholder)
+#         padding: 10px 20px
+#         display: inline-block
 #     .buttons
 #         display: flex
 #     .usd-amount
@@ -98,6 +133,90 @@ require! {
 #         border-radius: 0px
 #         position: relative
 #         box-sizing: border-box
+#         .table-scroll
+#             overflow-x: scroll
+#             background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+#             background-repeat: no-repeat
+#             background-attachment: local, local, scroll, scroll
+#             background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#             animation: breathe 3s ease-in infinite
+#             -moz-transition: breathe 3s ease-in infinite
+#             -web-kit-transition: breathe 3s ease-in infinite
+#             height: auto
+#             max-height: 400px
+#             .stake-pointer
+#                 background: rgb(37, 87, 127)
+#             &.lockup
+#                 height: auto
+#             .address-holder
+#                 a
+#                     padding-left: 30px !important
+#                 .browse
+#                     right: 30px !important
+#             thead
+#                 th
+#                     @media(min-width:800px) and (max-width: 900px)
+#                         font-size: 11px !important
+#             td
+#                 &:nth-child(2)
+#                     cursor: pointer
+#                 &.with-stake
+#                     filter: saturate(6.5)
+#             tr
+#                 &.current-epoch
+#                     background: transparent
+#                 &.chosen
+#                     background: #305673
+#                 &.active
+#                     color: var(--color-td)
+#                 &.inactive
+#                     color: orange
+#                 &.banned
+#                     color: red
+#                 .circle
+#                     border-radius: 0px
+#                     width: 20px
+#                     height: 20px
+#                     display: inline-block
+#                     color: white
+#                     line-height: 1.6
+#                     border-radius: 4px
+#                     background: gray
+#                     &.active
+#                         background: rgb(38, 219, 85)
+#                     &.inactive
+#                         background: orange
+#                     &.banned
+#                         background: red
+#             button
+#                 width: 100%
+#                 height: 36px
+#                 margin: 0
+#             table
+#                 width: 100%
+#                 border-collapse: collapse
+#                 margin: 0px auto
+#             tr:nth-of-type(odd)
+#                 background: rgba(gray, 0.2)
+#             th
+#                 font-weight: 400
+#                 &:first-child
+#                     text-align: center
+#                     width: 5%
+#             td
+#                 &:nth-child(1), &:nth-child(6)
+#                     text-align: center
+#                 img.copy
+#                     height: 16px
+#                     margin-right: 5px
+#             td, th
+#                 padding: 8px
+#                 max-width: 200px
+#                 border: 1px solid rgba(240, 237, 237, 0.16)
+#                 white-space: nowrap
+#                 font-size: 13px
+#                 @media(max-width:800px)
+#                     text-align: left
 #         .claim-table
 #             max-height: 100px
 #             width: 300px
@@ -137,6 +256,8 @@ require! {
 #                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
 #                 padding: 20px 20px
 #                 display: flex
+#                 &.rewards
+#                     display: block
 #                 .chosen-account
 #                     .buttons
 #                         text-align: left
@@ -196,6 +317,9 @@ require! {
 #                     font-size: 14px
 #                     width: 80%
 #                     text-align: left
+#                     .notification
+#                         @media(max-width:800px)
+#                             text-align: left
 #                     hr
 #                         margin: 15px auto
 #                         border: 1px solid rgba(240, 237, 237, 0.16)
@@ -212,89 +336,7 @@ require! {
 #                             td,td
 #                                 padding: 0 3px
 #                         .choose-pool
-#                             max-width: 50px
-#                     &.table-scroll
-#                         overflow-x: scroll
-#                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
-#                         background-repeat: no-repeat
-#                         background-attachment: local, local, scroll, scroll
-#                         background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#                         animation: breathe 3s ease-in infinite
-#                         -moz-transition: breathe 3s ease-in infinite
-#                         -web-kit-transition: breathe 3s ease-in infinite
-#                         height: auto
-#                         max-height: 400px
-#                         .stake-pointer
-#                             background: rgb(37, 87, 127)
-#                         &.lockup
-#                             height: auto
-#                         .address-holder
-#                             a
-#                                 padding-left: 30px !important
-#                             .browse
-#                                 right: 30px !important
-#                         thead
-#                             th
-#                                 @media(min-width:800px) and (max-width: 900px)
-#                                     font-size: 11px !important
-#                         td
-#                             &:nth-child(2)
-#                                 cursor: pointer
-#                             &.with-stake
-#                                 filter: saturate(6.5)
-#                         tr
-#                             &.chosen
-#                                 background: #305673
-#                             &.active
-#                                 color: var(--color-td)
-#                             &.inactive
-#                                 color: orange
-#                             &.banned
-#                                 color: red
-#                             .circle
-#                                 border-radius: 0px
-#                                 width: 20px
-#                                 height: 20px
-#                                 display: inline-block
-#                                 color: white
-#                                 line-height: 1.6
-#                                 border-radius: 4px
-#                                 background: gray
-#                                 &.active
-#                                     background: rgb(38, 219, 85)
-#                                 &.inactive
-#                                     background: orange
-#                                 &.banned
-#                                     background: red
-#                         button
-#                             width: 100%
-#                             height: 36px
-#                             margin: 0
-#                     table
-#                         width: 100%
-#                         border-collapse: collapse
-#                         margin: 0px auto
-#                     tr:nth-of-type(odd)
-#                         background: rgba(gray, 0.2)
-#                     th
-#                         font-weight: 400
-#                         &:first-child
-#                             text-align: center
-#                             width: 5%
-#                     td
-#                         &:nth-child(1), &:nth-child(6)
-#                             text-align: center
-#                         img.copy
-#                             height: 16px
-#                             margin-right: 5px
-#                     td, th
-#                         padding: 8px
-#                         max-width: 200px
-#                         border: 1px solid rgba(240, 237, 237, 0.16)
-#                         white-space: nowrap
-#                         font-size: 13px
-#                         @media(max-width:800px)
-#                             text-align: left
+#                             max-width: 50px     
 #                     .left
 #                         position: relative
 #                         .small-btns
@@ -635,9 +677,9 @@ staking-content = (store, web3t)->
         return cb null if not pay-account
         console.log ""
         err, result <- as-callback web3t.velas.NativeStaking.delegate(pay-account.address, account.address)
-        console.log "result" result
         console.error "Result sending:" err if err?
-        alert store, err.toString! if err?
+        err-message = get-error-message(err, result)
+        return alert store, err-message if err-message?
         <- notify store, "FUNDS DELEGATED"
         navigate store, web3t, \validators
     velas-node-applied-template =
@@ -700,10 +742,7 @@ staking-content = (store, web3t)->
         #err, options <- get-options
         #return alert store, err, cb if err?
         store.staking.add.add-validator-stake = Math.max (get-balance! `minus` 0.1), 0
-    your-balance = " #{store.staking.chosenAccount.balance} "
-    your-staking-amount = store.staking.stakeAmountTotal `div` (10^18)
-    your-staking = " #{round-human your-staking-amount}"
-    vlx-token = "VLX"
+    your-balance = store.staking.chosenAccount.balanceRaw `div` (10^9) `plus` store.staking.chosenAccount.rent 
     isSpinned = if ((store.staking.all-pools-loaded is no or !store.staking.all-pools-loaded?) and store.staking.pools-are-loading is yes) then "spin disabled" else ""
     cancel-pool = ->
         store.staking.chosenAccount = null
@@ -724,8 +763,8 @@ staking-content = (store, web3t)->
         { balanceRaw, rent, address, account } = store.staking.chosenAccount
         amount = account.lamports `plus` rent
         err, result <- as-callback web3t.velas.NativeStaking.withdraw(address, amount)
-        console.error "Undelegate error: " err if err?
-        return alert store, err.toString! if err?
+        err-message = get-error-message(err, result)
+        return alert store, err-message if err-message?
         <- set-timeout _, 1000
         <- notify store, lang.fundsWithdrawn
         store.staking.getAccountsFromCashe = no
@@ -738,7 +777,8 @@ staking-content = (store, web3t)->
         #
         err, result <- as-callback web3t.velas.NativeStaking.undelegate(store.staking.chosenAccount.address)
         console.error "Undelegate error: " err if err?
-        return alert store, err.toString! if err?
+        err-message = get-error-message(err, result)
+        return alert store, err-message if err-message?
         <- set-timeout _, 1000
         <- notify store, lang.fundsUndelegated
         store.staking.getAccountsFromCashe = no
@@ -749,9 +789,10 @@ staking-content = (store, web3t)->
         console.error err if err?
         /* Get next account seed */
         err, seed <- as-callback web3t.velas.NativeStaking.getNextSeed()
-        return alert store, err.toString! if err?
+        err-message = get-error-message(err, seed)
+        return alert store, err-message if err-message?
         /**/
-        amount <- prompt2 store, lang.howMuchToSplit
+        amount <- prompt3 store, lang.howMuchToSplit
         return if amount+"".trim!.length is 0
         min_stake = web3t.velas.NativeStaking.min_stake
         balance = store.staking.chosenAccount.balanceRaw
@@ -763,14 +804,13 @@ staking-content = (store, web3t)->
         /* Create new account */
         fromPubkey$ = store.staking.chosenAccount.address
         err, splitStakePubkey <- as-callback web3t.velas.NativeStaking.createNewStakeAccountWithSeed()
-        console.error "Result sending:" err if err?
         return alert store, err.toString! if err?
         /**/
         /* Split account */
         stakeAccount = store.staking.chosenAccount.address
         err, result <- as-callback web3t.velas.NativeStaking.splitStakeAccount(stakeAccount, splitStakePubkey, amount)
-        console.error "Result sending:" err if err?
-        return alert store, err.toString! if err?
+        err-message = get-error-message(err, result)
+        return alert store, err-message if err-message?
         <- set-timeout _, 500
         <- notify store, lang.accountCreatedAndFundsSplitted
         store.staking.getAccountsFromCashe = no
@@ -790,7 +830,7 @@ staking-content = (store, web3t)->
     inactive_stake = store.staking.chosenAccount.inactive_stake `div` (10^9)
     delegated_stake = active_stake `plus` inactive_stake 
     usd-rate = wallet?usdRate ? 0
-    usd-balance = round-number(store.staking.chosenAccount.balanceRaw `times` usd-rate, {decimals:2})
+    usd-balance = round-number(your-balance `times` usd-rate, {decimals:2})
     usd-rent = round-number(store.staking.chosenAccount.rent `times` usd-rate,{decimals:2})
     usd-active_stake = round-number(active_stake `times` usd-rate, {decimals:2})
     usd-inactive_stake = round-number(inactive_stake `times` usd-rate, {decimals:2})
@@ -811,6 +851,32 @@ staking-content = (store, web3t)->
         | store.staking.chosenAccount.status is "inactive" and has-validator => "Delegated (Inactive)"
         | store.staking.chosenAccount.status is "activating" => ""
         | _ => store.staking.chosenAccount.status
+    inactiveStakeLabel =
+        | store.staking.chosenAccount.status is "activating" => lang.warminUp
+        | _ => lang.inactiveStake
+    build-rewards = (item)->
+        {
+            epoch
+            rewardSlot
+            amount
+            newBalance
+            percentChange
+            apr
+        } = item
+        return null if epoch is store.staking.current-epoch   
+        $amount = amount `div` (10^9)
+        $newBalance = newBalance `div` (10^9)
+        if store.staking.current-epoch is epoch then
+            rewardSlot = $amount = $newBalance = percentChange = apr =  "Loading..."
+        $class = if epoch is store.staking.current-epoch then "syncing" else ""
+        $tr-class = if epoch is store.staking.current-epoch then "current-epoch " else ""
+        react.create-element 'tr', { key: "epoch#{epoch}", className: "#{$tr-class}" }, children = 
+            react.create-element 'td', { className: "#{$class}" }, ' ' + epoch
+            react.create-element 'td', { className: "#{$class}" }, ' ' + rewardSlot
+            react.create-element 'td', { className: "#{$class}" }, ' ' + $amount
+            react.create-element 'td', { className: "#{$class}" }, ' ' + $newBalance
+            react.create-element 'td', { className: "#{$class}" }, ' ' + percentChange
+            react.create-element 'td', { className: "#{$class}" }, ' ' + apr
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
             react.create-element 'div', { className: 'section' }, children = 
@@ -843,7 +909,7 @@ staking-content = (store, web3t)->
                     react.create-element 'h3', {}, ' ' + lang.balance
                 react.create-element 'div', { className: 'description' }, children = 
                     react.create-element 'span', {}, children = 
-                        """ #{store.staking.chosenAccount.balance} VLX"""
+                        """ #{your-balance} VLX"""
                     react.create-element 'span', { className: 'usd-amount' }, children = 
                         """ $#{usd-balance}"""
             react.create-element 'div', {}
@@ -874,6 +940,14 @@ staking-content = (store, web3t)->
                         """ #{credits_observed}"""
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
+                    react.create-element 'h3', {}, ' ' + lang.delegatedStake
+                react.create-element 'div', { className: 'description' }, children = 
+                    react.create-element 'span', {}, children = 
+                        """ #{round-human(delegated_stake)} VLX"""
+                    react.create-element 'span', { className: 'usd-amount' }, children = 
+                        """ $#{usd-delegated_stake}"""
+            react.create-element 'div', { className: 'section' }, children = 
+                react.create-element 'div', { className: 'title' }, children = 
                     react.create-element 'h3', {}, ' ' + lang.activeStake
                 react.create-element 'div', { className: 'description' }, children = 
                     react.create-element 'span', {}, children = 
@@ -889,20 +963,33 @@ staking-content = (store, web3t)->
                             """ #{myStakeMaxPart}"""
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.inactiveStake
+                    react.create-element 'h3', {}, ' ' + inactiveStakeLabel
                 react.create-element 'div', { className: 'description' }, children = 
                     react.create-element 'span', {}, children = 
                         """ #{round-human(inactive_stake)} VLX"""
                     react.create-element 'span', { className: 'usd-amount' }, children = 
                         """ $#{usd-inactive_stake}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.delegatedStake
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(delegated_stake)} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{usd-delegated_stake}"""
+                    if store.staking.chosenAccount.status is "activating"
+                        more-style =
+                            text-decoration: "none"
+                            opacity: 0.8
+                            line-height: 1.6
+                            font-size: "14px"
+                            letter-spacing: "2px"
+                            margin-left: "5px"
+                        tip-style =
+                            color: "#16ffb2"
+                            opacity: 0.8
+                        link-style =
+                            text-decoration: "none"
+                            color: "white"
+                            opacity: 0.8
+                        notification-style =
+                            margin-top: "10px"
+                        react.create-element 'div', { style: notification-style, className: 'notification' }, children = 
+                            react.create-element 'span', { style: tip-style }, ' Only 25% of active stake can be activated per epoch.'
+                            react.create-element 'a', { href: "https://support.velas.com/hc/en-150/articles/360021044820-Delegation-Warmup-and-Cooldown", target: "_blank", style: link-style }, children = 
+                                react.create-element 'span', { style: more-style }, ' More...'
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
                     react.create-element 'h2', {}, ' Actions'
@@ -915,6 +1002,22 @@ staking-content = (store, web3t)->
                         else if store.staking.chosenAccount.status isnt \deactivating then
                             button { store, on-click: undelegate , type: \secondary , text: lang.to_undelegate, icon : \arrowLeft, classes: "action-undelegate" }
                         button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }
+            react.create-element 'div', { className: 'section rewards' }, children = 
+                react.create-element 'div', { className: 'title' }, children = 
+                    react.create-element 'h2', {}, ' ' + lang.uRewards
+                react.create-element 'div', { className: 'table-scroll' }, children = 
+                    react.create-element 'table', {}, children = 
+                        react.create-element 'thead', {}, children = 
+                            react.create-element 'tr', {}, children = 
+                                react.create-element 'td', { width: "3%", style: staker-pool-style, title: "Epoch" }, ' ' + lang.epoch + ' (?)'
+                                react.create-element 'td', { width: "25%", style: stats, title: "Reward Slot" }, ' Reward Slot (?)'
+                                react.create-element 'td', { width: "25%", style: stats, title: "Amount" }, ' ' + lang.amount + ' (?)'
+                                react.create-element 'td', { width: "25%", style: stats, title: "New Balance" }, ' ' + lang.newBalance + ' (?)'
+                                react.create-element 'td', { width: "7%", style: stats, title: "Percent Change" }, ' Percent Change (?)'
+                                react.create-element 'td', { width: "7%", style: stats, title: "APR" }, ' APR (?)'
+                        react.create-element 'tbody', {}, children = 
+                            store.staking.chosenAccount.rewards |> map build-rewards 
+                rewards-stats {store, web3t}
 account-details = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -945,10 +1048,13 @@ account-details = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
+    just-go-back = ->
+        store.staking.getAccountsFromCashe = yes
+        go-back!    
     react.create-element 'div', { className: 'staking staking-146665425' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
+            react.create-element 'div', { on-click: just-go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             burger store, web3t
             epoch store, web3t
@@ -956,20 +1062,145 @@ account-details = ({ store, web3t })->
         staking-content store, web3t
 account-details.init = ({ store, web3t }, cb)!->
     console.log "account-details.init"
+    account = store.staking.chosenAccount
+    return null if not account?
+    store.staking.chosenAccount.rewards = []
     stake-accounts = store.staking.parsedProgramAccounts
-    #if true
-        #err, all-stakes <- get-all-active-stake(stake-accounts)
-        #console.log "all-active-stake" all-stakes
-        #store.staking.all-active-stake = (all-stakes ? 0)
-        #my-stake = store.staking.chosenAccount.balanceRaw `times` (10^9)
-        #my-weight = my-stake `div` all-stakes.inactive-stake
-        #activateMaxInSystem = all-stakes.active-stake `times` 0.25
-        #yourMaxPart = my-weight `times` activateMaxInSystem
-        #store.staking.myStakeMaxPart = yourMaxPart
+    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+    console.error err if err?
+    store.staking.current-epoch = epochInfo.epoch
+    err, stakeActivation <- as-callback web3t.velas.NativeStaking.getStakeActivation(store.staking.chosenAccount.address)
+    if not err? and stakeActivation?
+        store.staking.chosenAccount.status = stakeActivation.state
+        store.staking.chosenAccount.active_stake = stakeActivation.active
+        store.staking.chosenAccount.inactive_stake = stakeActivation.inactive
+    return alert store, err, cb if err?
+    # Get rewards per prev epoch
+    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+    console.error err if err?
+    return cb null if err?
+    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
+    prev-epoch = epoch `minus` 1
+    activationEpoch = store.staking.chosenAccount.account?data?parsed?info?stake?delegation?activationEpoch
+    err, rewards <- fetchEpochRewards(account.address, activationEpoch)
+    store.staking.chosenAccount.rewards = rewards
     cb null
 stringify = (value) ->
     if value? then
         round-human(parse-float value `div` (10^18))
     else
         '..'
+fetchEpochRewards = (address, activationEpoch, cb)->    
+    return cb null, [] if (not store.staking.chosenAccount.validator? or store.staking.chosenAccount.validator.toString!.length is 0)    
+    err, epochSchedule <- as-callback(web3t.velas.NativeStaking.getEpochSchedule!)
+    console.error err if err?
+    {firstNormalEpoch, firstNormalSlot, leaderScheduleSlotOffset, slotsPerEpoch, warmup} = epochSchedule
+    err, slot <- as-callback(web3t.velas.NativeStaking.getSlot!)
+    console.error err if err?
+    err, firstAvailableBlock <- as-callback(web3t.velas.NativeStaking.getFirstAvailableBlock!)
+    console.error err if err?
+    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+    console.error err if err?
+    return cb null if err?
+    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
+    # make loop here!
+    err, rewards <- query-rewards-loop(address, activationEpoch, firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstAvailableBlock, firstNormalEpoch, epoch)    
+    cb null, rewards
+#
+prev-epoch-data = {epoch_start_time: null, rewards: null, first_confirmed_block: null}
+# 
+query-rewards-loop = (address, activationEpoch, firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstAvailableBlock, firstNormalEpoch, epoch, cb)->
+    return cb null, [] if epoch < (activationEpoch) or epoch < 0    
+    # Get not skipped slot here!  
+    err, firstSlotInEpoch <- get_first_slot_in_epoch(firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstNormalEpoch, epoch)
+    # Get first comfirmed block/slot in epoch
+    limit = 1
+    err, result <- as-callback(web3t.velas.NativeStaking.getConfirmedBlocksWithLimit(firstSlotInEpoch, limit))
+    first_confirmed_block_in_epoch = result?result?0    
+    # Get first confirmed block    
+    err, first_confirmed_block <- get_confirmed_block_with_encoding(first_confirmed_block_in_epoch)
+    rewards = []
+    #
+    SECONDS_PER_DAY = 86400
+    # Get previous epoch start time
+    epoch_start_time = 
+        | not first_confirmed_block? => 0
+        | _ => first_confirmed_block.blockTime
+    epoch_end_time = prev-epoch-data.epoch_start_time
+    #set epoch_start_time for previous epoch
+    wallclock_epoch_duration =
+        | not epoch_end_time? => 0 
+        | _ => epoch_end_time `minus` epoch_start_time
+    wallclock_epochs_per_year = (SECONDS_PER_DAY * 365) `div` wallclock_epoch_duration 
+    all-rewards = (prev-epoch-data.rewards ? [])
+    rewards = 
+        all-rewards 
+            |> filter (-> it.pubkey is address)
+            |> map (it)->
+                percentChange = (it.lamports `div` it.postBalance) `times` 100
+                percentChange = round-number(percentChange, {decimals: 2})
+                rateChange = it.lamports `div` (it.postBalance - it.lamports)   
+                apr = 
+                    | not epoch_end_time? => "0" 
+                    | _ => (rateChange `times` wallclock_epochs_per_year) `times` 100
+                apr = round-number(apr, {decimals: 2})
+                {
+                    epoch: (epoch)
+                    rewardSlot: prev-epoch-data.rewardSlot
+                    amount: it.lamports
+                    newBalance: it.postBalance 
+                    percentChange: percentChange + "%"
+                    apr: apr + "%"
+                    disabled: not first_confirmed_block?  
+                }
+    #if not prev-epoch-data.first_confirmed_block?
+        #rewards = [
+            #{
+                #epoch: (epoch)
+                #rewardSlot: (prev-epoch-data?rewardSlot ? "no result")
+                #amount: "0"
+                #newBalance: "0"
+                #percentChange: ".."
+                #apr: ".." 
+                #disabled: yes 
+            #}
+        #]
+    # Set previous block start time and rewards
+    prev-epoch-data.first_confirmed_block = first_confirmed_block
+    prev-epoch-data.epoch_start_time =  first_confirmed_block?blockTime
+    prev-epoch-data.rewards = first_confirmed_block?rewards 
+    prev-epoch-data.rewardSlot = firstSlotInEpoch        
+    err, rest <- query-rewards-loop(address, activationEpoch, firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstAvailableBlock, firstNormalEpoch, --epoch)
+    all = rewards ++ rest
+    cb null, all
+#    
+get_first_slot_in_epoch = (firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstNormalEpoch, epoch, cb)->
+    #if epoch <= firstNormalEpoch
+        #console.log "Epoch is less or equals to firstNormalEpoch"
+        #return (Math.pow(2, epoch) - 1) * slotsInEpoch #MINIMUM_SLOTS_PER_EPOCH
+    #return (epoch - firstNormalEpoch) * slotsPerEpoch + firstNormalSlot
+    limit = 1
+    firstSlotInEpoch = (epoch - firstNormalEpoch) * slotsPerEpoch + firstNormalSlot
+    #err, result <- as-callback(web3t.velas.NativeStaking.getConfirmedBlocksWithLimit(firstSlotInEpoch, limit))
+    #return cb err if err? or not result?result
+    #firstSlot = result?result?0
+    #cb null, firstSlot
+    return cb null,  firstSlotInEpoch
+try-get-extra-slot = (default-response, new-slot, cb)->
+    return cb null, default-response, if default-response?
+    limit = 1
+    err, result <- as-callback(web3t.velas.NativeStaking.getConfirmedBlocksWithLimit(new-slot, limit))
+    cb null, result?result?0
+#    
+get_confirmed_block_with_encoding = (slot, cb)->    
+    err, confirmedBlock <- as-callback(web3t.velas.NativeStaking.getConfirmedBlock(slot))
+    console.error err if err?
+    cb null, confirmedBlock 
+#    
+retrieveRewardData = (firstSlotInEpoch, firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstAvailableBlock, firstNormalEpoch, epoch, cb)->
+    if firstSlotInEpoch < firstAvailableBlock
+        # RPC node is out of history data
+        return cb "RPC node is out of history data"
+    err, confirmed_block_with_encoding <- get_confirmed_block_with_encoding(firstSlotInEpoch)
+    cb null, confirmed_block_with_encoding    
 module.exports = account-details

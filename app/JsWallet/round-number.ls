@@ -28,7 +28,7 @@ module.exports = (value, config = null) ->
         if +value is 0 and (value + '').length <= decimals then return value
         ref$ = value.toString!.split '.'
         head = ref$.0
-        dec = ref$?1 ? "00"
+        dec = ref$?1 ? ""
         if digits isnt null and head.length > digits then head = head.substr 0, digits
         if dec is null then return head
         dec = dec.substr 0, decimals

@@ -222,16 +222,14 @@ module.exports = (store, web3t)->
         return send.error = err if err? 
         send.error = '' 
     get-value = (event)-> 
+        value = event.target?value     
         return null if not event.target?value      
         return \0 if event.target?value is ""    
-        value = event.target.value.match(/^[0-9]+([.]([0-9]+)?)?$/)?0
-        value2 =
-            | value?0 is \0 and value?1? and value?1 isnt \. => value.substr(1, value.length)
-            | _ => value
-        value2
+        value
     amount-change = (event)->
         value = get-value event
-        return if not value?    
+        # if empty string return zero!    
+        value = "0" if not value? or isNaN(value)   
         <- change-amount store, value, no
     perform-amount-eur-change = (value)->
         to-send = calc-crypto-from-eur store, value
@@ -269,7 +267,7 @@ module.exports = (store, web3t)->
         if (str ? "").length is 0 then def else str
     history = ->
         store.current.send-menu-open = no
-        store.current.filter = [\IN, \OUT, send.coin.token]
+        store.current.filter = {token: send.coin.token}
         apply-transactions store
         navigate store, web3t, \history
     export network =
@@ -298,7 +296,6 @@ module.exports = (store, web3t)->
         amount-send-fee = send.amount-send-fee      
         send.fee-type = \custom
         max-amount = Math.max 1e8, balance
-        amount = round-number(amount, {decimals: send.network.decimals, maxValue:max-amount})
         send.amount-send-fee = send.fee-custom-amount = amount
         <- change-amount store, send.amount-send, no
     chosen-cheap = if send.fee-type is \cheap then \chosen else ""

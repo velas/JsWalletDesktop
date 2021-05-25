@@ -61,8 +61,7 @@ module.exports = (store, web3t, wallets, wallet)->
         return if wallet-is-disabled or is-loading 
         return send(wallet, {}) if store.current.wallet-index is index
         store.current.wallet-index = index
-        store.current.filter.length = 0
-        store.current.filter = [\IN, \OUT, wallet.coin.token]
+        store.current.filter = { token: wallet.coin.token}
         apply-transactions store
     active = if index is store.current.wallet-index then \active else ''
     big = 

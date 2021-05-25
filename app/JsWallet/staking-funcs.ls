@@ -134,6 +134,7 @@ fill-accounts = ({ store, web3t, on-progress, on-finish }, [item, ...rest]) ->
     item.balanceRaw = if rent? then (item.account.lamports `minus` rent) else '-'
     item.balance = if rent? then (Math.round((item.account.lamports `minus` rent) `div` (10^9)) `times` 100) `div` 100  else "-"
     item.rent    = if rent? then (rent `div` (10^9)) else "-"
+    item.credits_observed = item.account?data?parsed?info?stake?creditsObserved ? 0
     item.status  = "inactive"
     item.validator = null
     item.account = item.account
@@ -143,11 +144,11 @@ fill-accounts = ({ store, web3t, on-progress, on-finish }, [item, ...rest]) ->
         if (deactivationEpoch > activationEpoch or activationEpoch is web3t.velas.NativeStaking.max_epoch) then
             item.status    = "loading"
             item.validator = item.account?data?parsed?info?stake?delegation?voter
-    err, stakeActivation <- as-callback web3t.velas.NativeStaking.getStakeActivation(item.address)
-    if not err? and stakeActivation?
-        item.status = stakeActivation.state
-        item.active_stake = stakeActivation.active
-        item.inactive_stake = stakeActivation.inactive
+    #err, stakeActivation <- as-callback web3t.velas.NativeStaking.getStakeActivation(item.address)
+    #if not err? and stakeActivation?
+        #item.status = stakeActivation.state
+        #item.active_stake = stakeActivation.active
+        #item.inactive_stake = stakeActivation.inactive
     #return alert store, err, cb if err?
     on-progress [item, ...rest] if on-progress?
     on-finish-local = (err, pools) ->
@@ -162,7 +163,7 @@ convert-accounts-to-view-model = (accounts) ->
             account: it.account
             address: it.key ? '..'
             key: it.key
-            balanceRaw: it.balance ? 0
+            balanceRaw: it.balanceRaw ? 0
             balance: if it.balance? then round-human(it.balance) else '..'
             rent: if it.rent? then it.rent else "-"
             lastVote: it.lastVote ? '..'
@@ -172,6 +173,7 @@ convert-accounts-to-view-model = (accounts) ->
             active_stake = it?active_stake ? 0
             inactive_stake = it?inactive_stake ? 0
             seed-index =  it.seed-index
+            credits_observed : it.credits_observed
         }
 ##################
 convert-pools-to-view-model = (pools) ->
@@ -189,5 +191,115 @@ convert-pools-to-view-model = (pools) ->
             status: it.status,
             my-stake: if it?stakes then it.stakes else []
             credits_observed : it.credits_observed
-        }
-module.exports = { query-pools, query-accounts, convert-accounts-to-view-model, convert-pools-to-view-model }
+            nodePubkey: it.nodePubkey
+        }       
+/*
+    * Calculate skipped solts percent for each validator.
+    * @param   { Object } store - The mobx store object
+    * @param   { Object } web3t - The web3t lib
+    * @returns { Object } Object <pubKey, Number> where key is public node addess and value is percent of skipped slosts per current epoch.
+    * */
+get-validators-skipped-slots-percents = ({store, web3t}, cb)->
+    # Get info for skipped slot % calculation
+    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+    console.error err if err?
+    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount, absoluteSlot } = epochInfo
+    store.staking.epochInfo = epochInfo
+    err, result <- as-callback web3t.velas.NativeStaking.getLeaderSchedule()
+    console.log "getLeaderSchedule" result 
+    store.staking.leaderSchedule = result
+    # First slot in epoch
+    err, first_slot_in_epoch <- getFirstSlotInEpoch(epoch, slotsInEpoch)
+    console.log "first_slot_in_epoch = " first_slot_in_epoch
+    start_slot = first_slot_in_epoch # // no limit
+    #start_slot_index = (start_slot - first_slot_in_epoch)  # //  start_slot_index = 0
+    start_slot_index = 0
+    # Last slot in epoch
+    last_slot_in_epoch = first_slot_in_epoch + slotsInEpoch - 1
+    end_slot = Math.min(absoluteSlot, last_slot_in_epoch)
+    console.log "end_slot = " end_slot
+    end_slot_index = (end_slot - first_slot_in_epoch)
+    # Prepare Leader per slot object
+    leader_per_slot_index = {}
+    store.staking.leaderSchedule 
+        |> keys
+        |> each (it)->
+            leader_slots = store.staking.leaderSchedule[it]
+            for slot_index in leader_slots
+                if slot_index >= start_slot_index and slot_index <= end_slot_index
+                    leader_per_slot_index[slot_index] = it 
+    #console.log "leader_per_slot_index" leader_per_slot_index 
+    # Prepare leader skipped slot object
+    leader_slot_count = {}
+    leader_skipped_slots = {}
+    confirmed_blocks_index = 0
+    # Get confirmed blocks
+    err, result <- as-callback(web3t.velas.NativeStaking.getConfirmedBlocks(start_slot, end_slot))
+    confirmedBlocks = (result?result ? [])
+    console.log "confirmedBlocks.length" confirmedBlocks.length
+    #
+    total_slots = end_slot_index - start_slot_index + 1
+    total_blocks_produced = confirmedBlocks.length
+    #
+    #console.log "leader_per_slot_index" Object.keys(leader_per_slot_index)
+    leader_per_slot_index |> keys |> each (it)->
+        slot_index = it
+        leader = leader_per_slot_index[slot_index]
+        slot = +start_slot + slot_index
+        if not leader_slot_count["#{leader}"]?
+            leader_slot_count["#{leader}"] = 0
+        leader_slot_count["#{leader}"] = +(leader_slot_count["#{leader}"]) + 1
+        if not leader_skipped_slots["#{leader}"]?
+            leader_skipped_slots["#{leader}"] = 0
+        while yes
+            if confirmed_blocks_index < confirmedBlocks.length
+                slot_of_next_confirmed_block = confirmedBlocks[confirmed_blocks_index]
+                if slot_of_next_confirmed_block < slot 
+                    +confirmed_blocks_index += 1
+                    continue
+                if slot_of_next_confirmed_block is slot
+                    break
+            leader_skipped_slots["#{leader}"] = +(leader_skipped_slots["#{leader}"]) + 1
+            break
+    console.log "leader_slot_count" Object.keys(leader_slot_count).length
+    console.log "leader_skipped_slots" Object.keys(leader_skipped_slots).length
+    scippedSlotsPercent = 
+        leader_slot_count 
+            |> keys 
+            |> map (it)->
+                leader = it
+                leaderSlots = leader_slot_count[leader]
+                percent = store.staking.leaderSchedule[leader].length `div` end_slot `times` 100
+                [leader, percent]
+            |> pairs-to-obj
+    cb null, scippedSlotsPercent
+/*
+    * Get first slot in epoch.
+    * @param   { Number } epoch - The epoch number for which the first slot is calculated
+    * @param   { Number } slotsInEpoch - The total number of slots in epoch
+    * @returns { Number } First slot in searched epoch. 
+    * */            
+getFirstSlotInEpoch = (epoch, slotsInEpoch, cb)->
+    err, epochSchedule <- getEpochSchedule!
+    {firstNormalEpoch, firstNormalSlot, leaderScheduleSlotOffset, slotsPerEpoch, warmup} = epochSchedule
+    if epoch <= firstNormalEpoch
+        console.log "Epoch is less or equals to firstNormalEpoch"
+        return cb null, (Math.pow(2, epoch) - 1) * slotsInEpoch #MINIMUM_SLOTS_PER_EPOCH
+    return cb null, (epoch - firstNormalEpoch) * slotsPerEpoch + firstNormalSlot
+/*
+    * Get epoch schedule of current epoch.
+    * @param   { Function } cb - The callback which will be executed after this function
+    * @returns { Object } Epoch schedule {firstNormalEpoch, firstNormalSlot, leaderScheduleSlotOffset, slotsPerEpoch, warmup}
+    * */  
+getEpochSchedule = (cb)->    
+    err, epochSchedule <- as-callback(web3t.velas.NativeStaking.getEpochSchedule!)
+    console.error err if err?
+    cb null, epochSchedule 
+# # # # # # # # # # # # # #
+module.exports = { 
+    query-pools, 
+    query-accounts, 
+    convert-accounts-to-view-model, 
+    convert-pools-to-view-model,
+    get-validators-skipped-slots-percents 
+}

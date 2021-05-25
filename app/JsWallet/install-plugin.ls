@@ -6,9 +6,7 @@ require! {
     \../web3t/providers/superagent.ls : { get }
     \./json-parse.ls
     \./providers.ls
-    \../web3t/plugins/dash-coin.js : dash
     \../web3t/plugins/eth-coin.js : eth
-    \../web3t/plugins/etc-coin.js : etc
     \../web3t/plugins/symblox.js : syx
     \../web3t/plugins/symblox-v2.js : syx2
     \../web3t/plugins/ltc-coin.js : ltc
@@ -17,7 +15,7 @@ require! {
     \../web3t/plugins/vlx-coin.js : vlx_evm   
     \../web3t/plugins/vlx_erc20-coin.js : vlx_erc20
 }
-current-configs = {dash, eth, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, vlx_evm}
+current-configs = { eth, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, vlx_evm}
 required-fields = <[ type token enabled ]>
 not-in = (arr, arr2)->
     arr |> any -> arr2.index-of(it) is -1

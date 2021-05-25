@@ -7,9 +7,9 @@ require! {
     \bignumber.js
     \../get-lang.ls
     \../history-funcs.ls
-    \../staking-funcs.ls : { query-pools, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model }
+    \../staking-funcs.ls : { query-pools, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model, get-validators-skipped-slots-percents }
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse, keys, pairs-to-obj }
     \../math.ls : { div, times, plus, minus }
     \../../web3t/providers/deps.js : { hdkey, bip39 }
     \md5
@@ -35,6 +35,7 @@ require! {
     \../seed.ls : seedmem
     \../components/burger.ls
     \./stake/accounts.ls : \stake-accounts
+    \../calc-certain-wallet.ls
 }
 # .staking-841737596
 #     @import scheme
@@ -744,10 +745,11 @@ staking-content = (store, web3t)->
     stats=
         background: style.app.stats
     totalValidators = (store.staking.totalValidators ? 0)    
-    allPages = Math.ceil(totalValidators `div` store.staking.validators-per-page)
+    allPages = Math.ceil(totalValidators `div` store.staking.validators_per_page)
     loadingValidatorIndex = store.staking.loadingValidatorIndex
-    per-page = store.staking.validators-per-page
+    per-page = store.staking.validators_per_page
     page = store.staking.current_validators_page
+    pagination-disabled = store.staking.pools-are-loading is yes
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { className: 'main-sections' }, children = 
             react.create-element 'div', { className: 'section' }, children = 
@@ -760,7 +762,8 @@ staking-content = (store, web3t)->
                 alert-txn { store }
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.validators
+                        react.create-element 'h3', { className: 'section-title' }, ' ' + lang.validators + ' '
+                            react.create-element 'span', { className: 'amount' }, ' (' + store.staking.pools.length + ')'
                     react.create-element 'div', { className: 'description' }, children = 
                         if store.staking.pools-are-loading is no then
                             react.create-element 'div', { className: 'table-scroll' }, children = 
@@ -768,7 +771,7 @@ staking-content = (store, web3t)->
                                     react.create-element 'thead', {}, children = 
                                         react.create-element 'tr', {}, children = 
                                             react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
-                                            react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-stake + ' (?)'
+                                            react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-active-stake + ' (?)'
                                             react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
                                             react.create-element 'td', { width: "10%", style: stats, title: "Last Staking Amount" }, ' ' + lang.lastVote + ' (?)'
                                             react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
@@ -785,7 +788,7 @@ staking-content = (store, web3t)->
                                                 react.create-element 'span', { className: 'item' }, '  ' + store.staking.loadingValidatorIndex
                                                 react.create-element 'span', { className: 'item' }, ' of'
                                                 react.create-element 'span', { className: 'item' }, '  ' + totalValidators
-                        pagination {store, type: \validators, config: {array: store.staking.pools, per-page: store.staking.validators-per-page }}
+                        pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
 validators = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -833,7 +836,7 @@ stringify = (value) ->
     else
         '..'
 validators.init = ({ store, web3t }, cb)!->
-    console.log "validators.init"
+    err <- calc-certain-wallet(store, "vlx_native")
     #return cb null if store.staking.pools-are-loading is yes
     store.staking.max-withdraw = 0
     random = ->
@@ -885,11 +888,22 @@ validators.init = ({ store, web3t }, cb)!->
     err, result <- query-accounts store, web3t, on-progress
     return cb err if err?
     store.staking.accounts = convert-accounts-to-view-model result
+    # Normalize currrent page for accounts in pagination
+    type = "accounts"
+    page = store.staking["current_#{type}_page"] ? 1
+    per-page = store.staking["#{type}_per_page"]
+    if +(page `times` per-page) >= store.staking.accounts.length
+        store.staking["current_#{type}_page"] = 1 
+    /* Call scippedSlotsPercent calculation here  */
+    #err, skipped-slots-object <- get-validators-skipped-slots-percents({store, web3t})
+    #return cb err if err?
     on-progress = ->
         store.staking.pools = convert-pools-to-view-model [...it]
     err, pools <- query-pools {store, web3t, on-progress}
     return cb err if err?
     store.staking.pools = convert-pools-to-view-model pools
+        |> sort-by (-> it.myStake.length ) |> reverse 
     store.staking.poolsFiltered = store.staking.pools
-    store.staking.getAccountsFromCashe = yes
+    store.staking.getAccountsFromCashe = no
+    err <- calc-certain-wallet(store, "vlx_native")
 module.exports = validators

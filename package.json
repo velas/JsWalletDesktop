@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.24",
+  "version": "0.14.25",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -38,7 +38,8 @@
     "electron-builder": "latest",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^0.2.1",
-    "electron-rebuild": "1.8.4"
+    "electron-rebuild": "1.8.4",
+    "node-pre-gyp": "^0.17.0"
   },
   "author": "Andrey Stehno <a.stegno@gmail.com>",
   "build": {

@@ -30,7 +30,7 @@ as-callback = (p, cb)->
     p.catch (err) -> cb err
     p.then (data)->
         cb null, data
-# .staking-accounts-content-1240229606
+# .staking-accounts-content-1295497501
 #     @keyframes blink-animation
 #         50%
 #             opacity: 0.3
@@ -88,6 +88,13 @@ as-callback = (p, cb)->
 #         &:hover
 #             .tooltip
 #                 visibility: visible
+#     .title
+#         h3
+#             display: inline
+#         .amount
+#             color: white
+#             font-size: 11px
+#             opacity: 0.5    
 #     .form-group
 #         .subtitle
 #             margin: 20px 0 10px
@@ -217,11 +224,16 @@ staking-accounts-content = (store, web3t)->
             store.staking.chosen-account = item
             navigate store, web3t, \poolchoosing
             cb null
+        stake-data = item?account?data?parsed?info?stake
         $button =
             | item.status is \inactive =>
                 button { store, text: lang.to_delegate, on-click: choose, type: \secondary , icon : \arrowRight }
             | _ => 
                 disabled = item.status in <[ deactivating ]>
+                if stake-data? and stake-data.delegation?
+                    {activationEpoch, deactivationEpoch} = stake-data.delegation
+                    if +activationEpoch < +deactivationEpoch and +deactivationEpoch isnt +max-epoch
+                        disabled = yes     
                 button { store, classes: "action-undelegate" text: lang.to_undelegate, on-click: undelegate , type: \secondary , icon : \arrowLeft, makeDisabled: disabled }
         react.create-element 'tr', { key: "#{address}", className: "#{item.status}" }, children = 
             react.create-element 'td', {}, children = 
@@ -285,11 +297,12 @@ staking-accounts-content = (store, web3t)->
         <- set-timeout _, 1000
         <- notify store, lang.accountCreatedAndFundsDeposited
         navigate store, web3t, "validators"
-    totalOwnStakingAccounts = store.staking.totalOwnStakingAccounts
-    loadingAccountIndex = store.staking.loadingAccountIndex
-    perPage =  store.staking.accounts-per-page
+    totalOwnStakingAccounts = store.staking.totalOwnStakingAccounts ? 0
+    loadingAccountIndex = Math.min(totalOwnStakingAccounts, store.staking.loadingAccountIndex)
+    perPage =  store.staking.accounts_per_page
     page = store.staking.current_accounts_page
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1240229606' }, children = 
+    pagination-disabled = store.staking.accounts-are-loading is yes
+    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1295497501' }, children = 
         react.create-element 'div', {}, children = 
             react.create-element 'div', { id: "create-staking-account", className: 'form-group' }, children = 
                 react.create-element 'div', { className: 'section create-staking-account' }, children = 
@@ -306,7 +319,8 @@ staking-accounts-content = (store, web3t)->
             react.create-element 'div', { id: "staking-accounts", className: 'form-group' }, children = 
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.yourStakingAccounts
+                        react.create-element 'h3', { className: 'section-title' }, ' ' + lang.yourStakingAccounts + ' '
+                            react.create-element 'span', { className: 'amount' }, ' (' + store.staking.accounts.length + ') '
                         react.create-element 'div', {}, children = 
                             react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
                                 icon \Sync, 25
@@ -322,7 +336,7 @@ staking-accounts-content = (store, web3t)->
                                             react.create-element 'td', { width: "30%", style: stats, title: "Where you staked" }, ' ' + lang.validator + ' (?)'
                                             react.create-element 'td', { width: "7%", style: stats, title: "The ID of your stake. This is made to simplify the search of your stake in validator list" }, ' ' + lang.seed + ' (?)'
                                             if no
-                                                react.create-element 'td', { width: "10%", style: stats, title: "Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by stacking and unstacking spam." }, ' ' + lang.status + ' (?)'
+                                                react.create-element 'td', { width: "10%", style: stats, title: "Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by staking and unstaking spam." }, ' ' + lang.status + ' (?)'
                                             react.create-element 'td', { width: "10%", style: stats }, ' ' + (lang.action ? "Action")
                                     react.create-element 'tbody', {}, children = 
                                         paginate( (store.staking.accounts |> sort-by (.seed-index)), perPage, page)
@@ -335,9 +349,9 @@ staking-accounts-content = (store, web3t)->
                                             react.create-element 'span', { className: 'item' }, '  ' + loadingAccountIndex
                                             react.create-element 'span', { className: 'item' }, ' of'
                                             react.create-element 'span', { className: 'item' }, '  ' + totalOwnStakingAccounts
-                        pagination {store, type: \accounts, config: {array: store.staking.accounts, per-page: store.staking.accounts-per-page }}
+                        pagination {store, type: \accounts, disabled: pagination-disabled, config: {array: store.staking.accounts }}
 staking-accounts = ({ store, web3t })->
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1240229606' }, children = 
+    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1295497501' }, children = 
         staking-accounts-content store, web3t
 stringify = (value) ->
     if value? then

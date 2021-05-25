@@ -2,7 +2,7 @@ add-spaces = (x)->
     x = x.toString!
     pattern = /(-?\d+)(\d{3})/
     while pattern.test x
-        x := x.replace pattern, "$1 $2"
+        x := x.replace pattern, "$1,$2"
     x
 module.exports = (value, config=null)->
     return \.. if not value?
