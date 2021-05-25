@@ -1,4 +1,9 @@
+state = {
+    timeout = null
+}
 module.exports = (store)-> (event)->
     store.current.copied = event
-    <- set-timeout _, 3000
-    store.current.copied = ""
+    clear-timeout(state.timeout)
+    remove-notification = ->
+        store.current.copied = ""
+    state.timeout = set-timeout remove-notification, 2000

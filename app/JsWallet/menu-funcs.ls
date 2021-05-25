@@ -7,7 +7,7 @@ require! {
     \./navigate.ls
     \./get-primary-info.ls
     \copy-to-clipboard
-    \./pages/confirmation.ls : { confirm, prompt, alert, notify, prompt-password }
+    \./pages/confirmation.ls : { confirm, prompt, alert, notify, prompt-password, prompt-choose-token }
     \./get-lang.ls
     \../web3t/providers/deps.ls : { bip39 }
 }
@@ -144,7 +144,7 @@ module.exports = (store, web3t)->
         return alert store, "wrong pin", cb if not check pin
         index = store.current.account-index
         store.current.prompt-answer = "VLX"
-        token-input <- prompt store, lang.private-key-enter-coin
+        token-input <- prompt-choose-token store, lang.private-key-enter-coin
         return if token-input+"".trim!.length is 0
         if token-input is \VLX
             token-input = \VLX2

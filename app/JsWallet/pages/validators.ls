@@ -37,7 +37,7 @@ require! {
     \./stake/accounts.ls : \stake-accounts
     \../calc-certain-wallet.ls
 }
-# .staking-841737596
+# .staking1198406361
 #     @import scheme
 #     position: relative
 #     display: block
@@ -139,6 +139,13 @@ require! {
 #             cursor: pointer
 #             vertical-align: top
 #             text-align: center
+#         .title
+#             h3
+#                 display: inline
+#             .amount
+#                 color: white
+#                 font-size: 11px
+#                 opacity: 0.5 
 #         .form-group
 #             text-align: center
 #             padding-top: 0px
@@ -146,6 +153,8 @@ require! {
 #                 margin: 5px 0
 #                 outline: none
 #             .section
+#                 &:last-of-type
+#                     margin-bottom: 50px
 #                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
 #                 padding: 30px 20px
 #                 display: flex

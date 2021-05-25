@@ -32,14 +32,16 @@ require! {
     \./confirmation.ls : { alert, notify }
     \../components/button.ls
     \../components/address-holder-popup.ls
+    \../components/pagination.ls
     \./alert-txn.ls
     \../components/amount-field.ls
     \./move-stake.ls
     \../seed.ls : seedmem
     \../components/burger.ls
     \./stake/accounts.ls : \stake-accounts
+    \./stake/error-funcs.ls : { get-error-message }
 }
-# .staking1126656918
+# .staking-1486535958
 #     @import scheme
 #     position: relative
 #     display: block
@@ -96,7 +98,6 @@ require! {
 #         color: #cc8b1a
 #         font-weight: bold
 #     .staking-content
-#         overflow: hidden
 #         background: transparent
 #         width: 100%
 #         border-radius: 0px
@@ -218,7 +219,7 @@ require! {
 #                                 padding: 0 3px
 #                         .choose-pool
 #                             max-width: 50px
-#                     &.table-scroll
+#                     .table-scroll
 #                         overflow-x: scroll
 #                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
 #                         background-repeat: no-repeat
@@ -589,6 +590,9 @@ as-callback = (p, cb)->
     p.catch (err) -> cb err
     p.then (data)->
         cb null, data
+export paginate = (array, per-page, page)->
+    page = page - 1
+    array.slice page * per-page, (page + 1) * per-page
 to-keystore = (store, with-keystore)->
     mnemonic = seedmem.mnemonic
     seed = bip39.mnemonic-to-seed(mnemonic)
@@ -636,8 +640,8 @@ staking-content = (store, web3t)->
         pay-account = store.staking.accounts |> find (-> it.address is account.address)
         return cb null if not pay-account
         err, result <- as-callback web3t.velas.NativeStaking.delegate(pay-account.address, pool.address)
-        console.error "Result sending:" err if err?
-        retun alert store, err.toString! if err?
+        err-message = get-error-message(err, result)
+        return alert store, err-message if err-message?
         store.staking.getAccountsFromCashe = no
         <- notify store, "Funds delegated to\n #{store.staking.chosenPool.address}" 
         navigate store, web3t, \validators
@@ -778,8 +782,6 @@ staking-content = (store, web3t)->
         mystake-class = if +my-stake > 0 then "with-stake" else ""
         chosen = if store.staking.chosen-pool? and store.staking.chosen-pool.address is item.address then "chosen" else ""
         react.create-element 'tr', { className: "#{item.status} #{chosen}" }, children = 
-            react.create-element 'td', {}, children = 
-                react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
             react.create-element 'td', { datacolumn: 'Staker Address', title: "#{item.address}" }, children = 
                 address-holder-popup { store, wallet }
             react.create-element 'td', {}, ' ' + stake
@@ -820,6 +822,12 @@ staking-content = (store, web3t)->
         background: style.app.stats
     stats=
         background: style.app.stats
+    totalValidators = (store.staking.totalValidators ? 0)
+    allPages = Math.ceil(totalValidators `div` store.staking.validators_per_page)
+    loadingValidatorIndex = store.staking.loadingValidatorIndex
+    per-page = store.staking.validators_per_page
+    page = store.staking.current_validators_page
+    pagination-disabled = store.staking.pools-are-loading is yes
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { className: 'main-sections' }, children = 
             react.create-element 'div', { id: "pools", className: 'form-group' }, children = 
@@ -831,19 +839,21 @@ staking-content = (store, web3t)->
                             if no
                                 react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
                                     icon \Sync, 25
-                    react.create-element 'div', { className: 'description table-scroll' }, children = 
-                        react.create-element 'table', {}, children = 
-                            react.create-element 'thead', {}, children = 
-                                react.create-element 'tr', {}, children = 
-                                    react.create-element 'td', { width: "3%", style: stats }, ' #'
-                                    react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
-                                    react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-stake + ' (?)'
-                                    react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
-                                    react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
-                                    react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
-                                    react.create-element 'td', { width: "4%", style: stats }, ' ' + lang.select
-                            react.create-element 'tbody', {}, children = 
-                                store.staking.pools |> map build-staker store, web3t
+                    react.create-element 'div', { className: 'description' }, children = 
+                        react.create-element 'div', { className: 'table-scroll' }, children = 
+                            react.create-element 'table', {}, children = 
+                                react.create-element 'thead', {}, children = 
+                                    react.create-element 'tr', {}, children = 
+                                        react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
+                                        react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-stake + ' (?)'
+                                        react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
+                                        react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
+                                        react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
+                                        react.create-element 'td', { width: "4%", style: stats }, ' ' + lang.select
+                                react.create-element 'tbody', {}, children = 
+                                    paginate(store.staking.pools, per-page, store.staking.current_validators_page)
+                                        |> map build-staker store, web3t
+                        pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
         if store.staking.chosen-pool?
             react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
                 react.create-element 'div', { className: 'section' }, children = 

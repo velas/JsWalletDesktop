@@ -3,11 +3,14 @@ require! {
     \../get-primary-info.ls
     \../round5.ls
     \../round.ls
+    \../round-number.ls
     \prelude-ls : { find }
     \../math.ls : { times }
     \./keyboard.ls
+    \../numbers.js : {parseNum}
+    \react-currency-input-field : { default: CurrencyInput }
 }
-# .input-area-2047551402
+# .input-area-2107940614
 #     @import scheme
 #     position: relative
 #     margin: 10px 0
@@ -24,6 +27,9 @@ require! {
 #         vertical-align: top
 #         z-index: 1
 #     >input
+#         background: transparent
+#         overflow-x: auto
+#         color: white
 #         display: inline-block
 #         width: calc(100% - 70px) !important
 #         padding: 0 10px
@@ -65,8 +71,12 @@ require! {
 #                 max-width: 250px
 #                 min-width: 250px
 #                 text-align: left
+DECIMAL_SEPARATOR = '.' 
 module.exports = ({ store, value, on-change, placeholder, id, show-details, token="vlx2", disabled=no })->
     style = get-primary-info store
+    usd = null
+    eur = null
+    ref=null
     input-style =
         background: style.app.input
         color: style.app.text
@@ -76,35 +86,63 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, toke
     { wallets } = store.current.account
     wallet =
         wallets |> find (-> it.coin.token is token)
-    value-token = value ? 0
-    usd =
-        | wallet.usd-rate? => (value-token || "0") `times` wallet.usd-rate
-        | _ => ".."
-    eur =
-        | wallet.eur-rate? => (value-token || "0") `times` wallet.eur-rate
-        | _ => ".."
-    actual-placeholder = placeholder ? ""
-    normalize = ->
-        return \0 if not it?
-        return parse-int it if it.index-of('.') is -1
-        return parse-int(it) + "." if it.substr(it.length - 1, 1) is "."
-        [first=\0, second=\0] = it.split('.')
-        "#{parse-int first}.#{second}"
-    get-number = (value)->
-        return \0 if value is ""
-        value = value.replace(/,/gi, '.')
-        value = value.match(/^[0-9]+([.]([0-9]+)?)?$/)?0
-        value2 =
-            | value?0 is \0 and value?1? and value?1 isnt \. => value.substr(1, value.length)
-            | _ => value
-        value2
+    if wallet?
+        usd =
+            | wallet.usd-rate? => (value || "0") `times` wallet.usd-rate
+            | _ => ".."
+        eur =
+            | wallet.eur-rate? => (value || "0") `times` wallet.eur-rate
+            | _ => ".."
+    value = 0 if value is "" or not value?
+    # Input validation #
+    decimalsLimit = wallet?network?decimals ? 4
+    decimals = value.toString!.split(DECIMAL_SEPARATOR).1
+    if decimals? and (decimals.length > decimalsLimit) then
+        value = round-number(value, {decimals: decimalsLimit})
+    ####################
+    actual-placeholder = placeholder ? ""        
+    get-number = (val)->
+        number = (val ? "").toString!
+        return \0 if number is ""
+        val
     on-change-internal = (it)->
-        value = get-number it.target?value
+        value = it
+        value = get-number(value)
+        # Restrictions check #
+        result = value.toString!.split(DECIMAL_SEPARATOR)
+        groups = result.0
+        decimals = result.1
+        if +groups > 10^15 then 
+            return
+        if decimals? and (decimals.length > decimalsLimit) then
+            value = round-number(value, {decimals: decimalsLimit})
+        balance = +wallet.balance
+        # # # # # # # # # # #
+        res = (value ? "0").toString().split(DECIMAL_SEPARATOR)
+        parsed-left = parseNum(res?0)
+        has-dot = res.length > 1
+        value = "0" if not value? or value is ""
+        str_val = (value ? "0").toString()
+        $value = 
+            | it is "" => 0
+            | value-without-decimal-with-dot(value) =>
+                left = res.0
+                parseNum(left) + DECIMAL_SEPARATOR
+            | has-dot and parsed-left is parseNum(it) =>
+                parsed-left + DECIMAL_SEPARATOR + (res?1 ? "" )    
+            | has-dot and (str_val.length isnt (+str_val).toString().length) and (+value is +str_val) =>
+                parseNum(res.0) + DECIMAL_SEPARATOR + (res?1 ? "" )          
+            | _ => parseNum(value)
+        value = $value 
         on-change { target: { value } }
     token = \vlx if token is \vlx2
     token-label = token.to-upper-case!
+    value-without-decimal-with-dot = (value)->
+        value = (value ? "0").toString()
+        res = value.split(DECIMAL_SEPARATOR)
+        value.index-of(DECIMAL_SEPARATOR) > -1 and (res.length > 1 and res[1] is "")
     react.create-element 'div', { className: 'input-area input-area-2047551402' }, children = 
-        react.create-element 'input', { type: "text", value: "#{value-token}", style: input-style, on-change: on-change-internal, placeholder: actual-placeholder, id: "#{id}", disabled: disabled }
+        react.create-element CurrencyInput, { style: input-style, key: "amount", allowDecimals: yes, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield" }
         react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
             react.create-element 'img', { src: "#{wallet.coin.image}", className: 'icon' }
             react.create-element 'span', {}, ' ' + token-label

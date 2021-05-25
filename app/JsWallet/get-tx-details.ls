@@ -22,6 +22,6 @@ module.exports = (store, web3t)->
         * funtype
         * "You are allowed to spend your resources on execution #{round-number send.amount-send-fee, {decimals: decimalsConfig}} #{token-display}."
     text-parts-regular =
-        * "Send #{round-number send.amount-send, {decimals: decimalsConfig}} #{token-display} to #{send.to}"
+        * "Send #{round-human send.amount-send, {decimals: decimalsConfig}} #{token-display} to #{send.to}"
         * "You are allowed to spend your resources on execution #{round-number send.amount-send-fee, {decimals: decimalsConfig}} #{token-display}."
     if is-data then text-parts-contract else text-parts-regular

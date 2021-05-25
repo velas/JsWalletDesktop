@@ -344,16 +344,6 @@ dapps = (store, web3t)->
                 react.create-element 'li', { on-click: goto-soundstorage, style: hide-sound }, children = 
                     react.create-element 'span', {}, ' Sound Storage'
         react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-resources2, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
-                react.create-element 'div', { className: 'header' }, ' ' + lang.velas-cpu-staking
-            react.create-element 'div', { className: 'description' }
-            react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
-                    react.create-element 'span', {}, ' About'
-                react.create-element 'li', {}, children = 
-                    react.create-element 'span', {}, ' FAQs'
-        react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-resources, className: 'source' }, children = 
                 react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
                 react.create-element 'div', { className: 'header' }, ' ' + lang.velas-cpu
@@ -380,11 +370,6 @@ dapps = (store, web3t)->
             react.create-element 'div', { on-click: goto-notice, className: 'source' }, children = 
                 react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
                 react.create-element 'div', { className: 'header' }, ' ' + lang.velas-messenger
-            react.create-element 'div', { className: 'description' }
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { on-click: goto-vote, className: 'source' }, children = 
-                react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
-                react.create-element 'div', { className: 'header' }, ' Vote'
             react.create-element 'div', { className: 'description' }
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-util, className: 'source' }, children = 

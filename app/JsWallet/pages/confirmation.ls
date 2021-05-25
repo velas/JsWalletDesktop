@@ -366,7 +366,7 @@ prompt-modal2 = (store)->
         store.current.prompt-answer = 
             | not wallet? => 0
             | _ => Math.floor(wallet.balance `minus` 1)
-    react.create-element 'div', { className: 'confirmation confirmation-450558461' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1193976920' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, store.current.prompt2
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }
@@ -548,6 +548,7 @@ prompt-choose-token-modal = (store)->
         position: "relative"
         text-align: "center"
         display: "flex"
+        width: "100%"
     disabled-layout-style =
         z-index: 1 
         background: "transparent"
@@ -557,6 +558,9 @@ prompt-choose-token-modal = (store)->
         left: 0
         right: 0
         width: "62%"
+    token-select-style = 
+        max-width: "300px"
+        margin: "auto"
     prompt-answer = store.current.prompt-answer ? null
     display-token = data.token ? ""
     btn-disabled = (typeof store.current.prompt-answer isnt "string") or (typeof store.current.prompt-answer is "string" and store.current.prompt-answer.length is 0)
@@ -566,7 +570,7 @@ prompt-choose-token-modal = (store)->
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, text
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }
-            react.create-element 'div', { className: 'token-select' }, children = 
+            react.create-element 'div', { className: 'token-select', style: token-select-style }, children = 
                 react.create-element 'div', { style: input-style, className: 'input-holder' }, children = 
                     react.create-element 'div', { style: disabled-layout-style, className: 'dlayout' }
                     react.create-element 'input', { type: "text", value: "#{display-token}", style: inputStyle, className: 'tokeninput' }

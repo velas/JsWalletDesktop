@@ -5,6 +5,8 @@ require! {
     \../pages/icon.ls
     \../icons.ls
     \../send-funcs.ls
+    \../numbers.js : {parseNum}
+    \react-currency-input-field : { default: CurrencyInput }
 }
 # .trx-fee125099688
 #     @import scheme
@@ -63,6 +65,7 @@ require! {
 #         border: 0px
 #         box-shadow: none
 #         margin-bottom: -1px
+DECIMAL_SEPARATOR = '.'
 trx-fee = ({ store, web3t, wallet })->
     style = get-primary-info store
     lang = get-lang store
@@ -73,23 +76,49 @@ trx-fee = ({ store, web3t, wallet })->
     active-class= (fee-type) ->
         return null if fee-type isnt send.fee-type
         return \active
+    decimalsLimit = wallet?network?decimals ? 4
     { choose-cheap, choose-custom, choose-auto, has-send-error} = send-funcs store, web3t
     disabled-class = if has-send-error! then "disabled" else ""
     select-custom = ->
         return if has-send-error!
         choose-custom send.amount-send-fee
-    on-fee-change = (ev) ->
-        {value} = ev.target
-        if (value.split \.).length > 2
-            value = "0"
-        if /[^\.0-9]/.test value
-            value = "0"
-        if value == ""
-            value = "0"
-        if value.starts-with "0" and value.index-of \. is -1 and value.length > 1
-            value = value.substr 1
-        if value.starts-with \.
-            value = "0" + value
+    get-number = (val)->
+        number = (val ? "").toString!
+        return \0 if number is ""
+        val
+    value-without-decimal-with-dot = (value)->
+        value = (value ? "").toString()
+        res = value.split(DECIMAL_SEPARATOR)
+        value.index-of(DECIMAL_SEPARATOR) > -1 and (res.length > 1 and res[1] is "")
+    on-change-internal = (it)->
+        value = it
+        value = get-number(value)
+        # Restrictions check #
+        result = value.toString!.split(DECIMAL_SEPARATOR)
+        groups = result.0
+        decimals = result.1
+        if +groups > 10^15 then 
+            return
+        if decimals? and (decimals.length > decimalsLimit) then
+            value = round-number(value, {decimals: decimalsLimit})
+        balance = +wallet.balance
+        # # # # # # # # # # #
+        res = (value ? "0").toString().split(DECIMAL_SEPARATOR)
+        parsed-left = parseNum(res?0)
+        has-dot = res.length > 1
+        value = "0" if not value? or value is ""
+        str_val = (value ? "0").toString()
+        $value = 
+            | it is "" => 0
+            | value-without-decimal-with-dot(value) =>
+                left = res.0
+                parseNum(left) + DECIMAL_SEPARATOR
+            | has-dot and parsed-left is parseNum(it) =>
+                parsed-left + DECIMAL_SEPARATOR + (res?1 ? "" )    
+            | has-dot and (str_val.length isnt (+str_val).toString().length) and (+value is +str_val) =>
+                parseNum(res.0) + DECIMAL_SEPARATOR + (res?1 ? "" )          
+            | _ => parseNum(value)
+        value = $value 
         choose-custom value
     fee-currency = wallet.network.tx-fee-in ? (wallet.coin.nickname ? "").to-upper-case!
     token-display = if fee-currency == \vlx2 then \vlx else fee-currency
@@ -125,7 +154,7 @@ trx-fee = ({ store, web3t, wallet })->
                     cheap-option!
                     custom-option!
                     auto-option!
-        if store.current.send.fee-type is \custom
-            react.create-element 'input', { type: 'text', style: input-style, on-change: on-fee-change, placeholder: "0", title: "Fee", value: "#{send.fee-custom-amount}", className: 'amount' }
+        if store.current.send.fee-type is \custom       
+            react.create-element CurrencyInput, { key: "tx-fee-input", style: input-style, defaultValue: "0", allowDecimals: yes, value: "#{send.fee-custom-amount}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield tx-fee" }
 module.exports = trx-fee
 #???store.current.send.send.fee-custom-amountcheaon-change-xcon-change-custom-fee.send""store.current.send.send.fstore.current.send.fee-custom-amount

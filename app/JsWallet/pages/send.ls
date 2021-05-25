@@ -19,6 +19,7 @@ require! {
     \../history-funcs.ls
     \../components/burger.ls
     \../components/amount-field.ls
+    \../components/amount-fiat-field.ls
     \../components/sliders/network-slider.ls
     \../math.ls : { times }
     \ethereumjs-util : {BN}
@@ -35,6 +36,11 @@ require! {
 #     width: calc(100% - 0px) !important
 #     margin-left: 0px !important
 #     max-width: none !important
+#     height: 100vh
+#     display: flex !important
+#     flex-direction: column
+#     justify-content: center
+#     align-items: center
 #     @media(max-width:800px)
 #         margin-left: 0 !important
 #     .icon-svg
@@ -47,8 +53,8 @@ require! {
 #     .content-body
 #         max-width: 450px !important
 #     >.title
-#         position: sticky
-#         position: -webkit-sticky
+#         position: fixed
+#         position: -webkit-fixed
 #         background: var(--background)
 #         box-sizing: border-box
 #         top: 0
@@ -102,10 +108,12 @@ require! {
 #                 display: inline-block
 #                 vertical-align: middle
 #     >.content-body
-#         margin-top: 15px
-#         height: 531px
+#         margin-top: 75px    
 #         @import scheme
 #         color: gray
+#         padding: 20px 10px
+#         @media(max-width:800px)
+#             margin-top: -5px  
 #         a
 #             color: #6f6fe2
 #         >form
@@ -302,6 +310,7 @@ require! {
 #                 width: 80%
 #                 &.center
 #                     padding-left: 10px
+#                     text-align: center
 #                 &.left
 #                     width: 10%
 #                     text-align: center
@@ -404,6 +413,7 @@ form-group = (classes, title, style, content)->
 send = ({ store, web3t })->
     { token, name, fee-token, bridge-fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, before-send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
     return send-contract { store, web3t } if send.details is no
+    theme = get-primary-info(store)
     send.sending = false
     { go-back } = history-funcs store, web3t
     return go-back! if not wallet?
@@ -443,6 +453,10 @@ send = ({ store, web3t })->
         width: "50%"
     just-crypto-background =
         background: style.app.wallet
+    content-body-style=
+        color: style.app.text
+        border: "1px solid #{style.app.border}"
+        background: theme.app.sendForm ? theme.app.background
     more-text=
         color: style.app.text
     border-header =
@@ -496,7 +510,7 @@ send = ({ store, web3t })->
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t
-        react.create-element 'div', { style: more-text, className: 'content-body' }, children = 
+        react.create-element 'div', { style: content-body-style, className: 'content-body' }, children = 
             if store.current.device isnt \mobile
                 react.create-element 'div', { className: 'header' }, children = 
                     react.create-element 'span', { className: 'head left' }, children = 
@@ -537,11 +551,9 @@ send = ({ store, web3t })->
                                 react.create-element 'div', { className: 'label crypto' }, children = 
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     """ #{token-display}"""
-                                amount-field { store, value: "#{round5edit send.amount-send}", on-change: amount-change, placeholder="0", id="send-amount", token, disabled }
+                                amount-field { store, value: send.amount-send, on-change: amount-change, placeholder="0", id="send-amount", token, disabled }
                             if active-usd is \active
-                                react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
-                                    react.create-element 'div', { className: 'label lusd' }, ' $'
-                                    react.create-element 'input', { type: 'text', style: just-crypto-background, on-change: amount-usd-change, placeholder: "0", title: "#{send.amount-send-usd}", value: "#{round-number send.amount-send-usd, {decimals: 8}}", id: "send-amount-usd", disabled: disabled, className: 'amount-usd' }
+                                amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: disabled }
                             if active-eur is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' €'
@@ -565,17 +577,17 @@ send = ({ store, web3t })->
                         react.create-element 'tr', {}, children = 
                             react.create-element 'td', {}, ' ' + lang.you-spend
                             react.create-element 'td', {}, children = 
-                                react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + round5(send.amount-charged)
+                                react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + round-human(send.amount-charged)
                                     react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
                                     react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + token-display
-                                react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-charged-usd
+                                react.create-element 'div', { className: 'usd' }, ' $ ' + round-human send.amount-charged-usd
                         react.create-element 'tr', { className: 'orange' }, children = 
                             react.create-element 'td', {}, ' ' + lang.fee
                             react.create-element 'td', {}, children = 
-                                react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + round5 send.amount-send-fee
+                                react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + round-human send.amount-send-fee
                                     react.create-element 'img', { src: "#{fee-coin-image}", className: 'label-coin' }
                                     react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token-display
-                                react.create-element 'div', { className: 'usd' }, ' $ ' + round5 send.amount-send-fee-usd
+                                react.create-element 'div', { className: 'usd' }, ' $ ' + round-human send.amount-send-fee-usd
             react.create-element 'div', { className: 'button-container' }, children = 
                 react.create-element 'div', { className: 'buttons' }, children = 
                     button { store, text: \send , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }

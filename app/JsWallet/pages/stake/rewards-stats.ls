@@ -5,10 +5,10 @@ require! {
     \../../round-number.ls
     \../../math.ls : { div, times, plus, minus }
 }
-#.rewards-linear-graph
-#    margin-top: 50px
-#    .rewards-stats-container     
-#        padding: 0 10%
+# .rewards-linear-graph1297541056
+#     margin-top: 50px
+#     .rewards-stats-container     
+#         padding: 0 10%
 get-color = (items)-> (it)->
     index = items.index-of(it)
     base = 
@@ -53,6 +53,6 @@ module.exports = ({store, web3t})->
             ]
         }
     }
-    react.create-element 'div', { className: 'rewards-linear-graph' }, children = 
+    react.create-element 'div', { className: 'rewards-linear-graph rewards-linear-graph1297541056' }, children = 
         react.create-element 'div', { className: 'rewards-stats-container' }, children = 
             react.create-element Line, { data: data, options: options, width: 300, height: 100, legend: legend }

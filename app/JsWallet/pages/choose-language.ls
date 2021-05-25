@@ -10,8 +10,9 @@ require! {
     \prelude-ls : { find }
     \../menu-funcs.ls
     \../icons.ls
+    \../navigate.ls
 }
-# .choose-language-863419943
+# .choose-language-1355584605
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -22,6 +23,7 @@ require! {
 #             transform: scale3d(1, 1, 1)
 #     position: fixed
 #     padding-top: 30px
+#     padding-bottom: 30px
 #     width: 100%
 #     top: 0
 #     left: 0
@@ -36,6 +38,23 @@ require! {
 #         color: #ebf6f8
 #         font-size: 22px
 #         margin-bottom: 20px
+#     .downloadwalletlist
+#         padding: 30px 0 30px
+#         position: fixed
+#         bottom: 30px
+#         left: 0
+#         right: 0
+#         .icon-download
+#             padding: 10px
+#             height: 20px
+#             cursor: pointer
+#             margin: 20px 6px 0
+#             transition: all 1s
+#             position: relative
+#             opacity: 0.7
+#             &:hover
+#                 opacity: 1
+#                 filter: drop-shadow(0px 8px 11px #71f4c0)
 #     >.account-body
 #         max-width: 600px
 #         display: inline-block
@@ -124,6 +143,8 @@ require! {
 #             .langs
 #                 width: 100%
 #                 margin: 50px auto
+#                 max-height: 50vh
+#                 overflow: auto
 #                 @media(max-width: 430px)
 #                     width: 100%
 #                     margin: 0
@@ -225,6 +246,8 @@ language = (store, web3t)->
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
+    download = ->
+        navigate store, web3t, \downloadwallet
     react.create-element 'div', {}, children = 
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'logo' }, children = 
@@ -268,6 +291,13 @@ language = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
                         react.create-element 'div', {}, ' Қазақ'
+            react.create-element 'div', { className: 'downloadwalletlist' }, children = 
+                react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank" }, children = 
+                    react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
+                react.create-element 'a', { href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet", target: "_blank" }, children = 
+                    react.create-element 'img', { src: "#{icons[\android]}", className: 'icon-download' }
+                react.create-element 'span', {}, children = 
+                    react.create-element 'img', { on-click: download, src: "#{icons[\desktop]}", className: 'icon-download' }
 module.exports = ({ store, web3t } )->
     return null if store.current.choose-language isnt yes
     { close-language } = menu-funcs store, web3t
@@ -283,7 +313,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-863419943' }, children = 
+    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-1355584605' }, children = 
         react.create-element 'div', { className: 'account-body' }, children = 
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 

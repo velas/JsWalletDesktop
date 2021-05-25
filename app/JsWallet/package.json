@@ -1,6 +1,6 @@
 {
   "name": "velas-wallet",
-  "version": "1.0.197",
+  "version": "1.0.33",
   "description": "",
   "main": "",
   "dependencies": {
@@ -26,6 +26,7 @@
     "react": "^16.8.0",
     "react-chartjs-2": "2.9.0",
     "react-copy-to-clipboard": "5.0.1",
+    "react-currency-input-field": "^3.3.2",
     "react-detect-offline": "^2.4.0",
     "react-dom": "^16.13.1",
     "react-simple-file-input": "2.1.0",
@@ -38,7 +39,7 @@
     "wallet-fast": "lsxc wallet -t index.html -wsfkibh -c main.ls",
     "wallet-start": "lsxc wallet -t index.html -wsfkibnh -c main.ls",
     "start": "lsxc wallet -t index.html -wsfkibnh -c main.ls",
-    "wallet-build": "lsxc wallet -t index.html -sfkibnh -c main.ls",
+    "wallet-build": "lsxc wallet -t index.html -sfkibh -c main.ls",
     "sync-languages": "lsc langs/index.ls --sync"
   }
 }

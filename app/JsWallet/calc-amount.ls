@@ -12,7 +12,7 @@ calc-crypto-generic = (name)-> (store, val)->
     { wallet } = send
     { token } = send.coin
     rate = wallet?[name] ? 0
-    round5 (val `div` rate)
+    (val `div` rate)
 export calc-crypto-from-usd = calc-crypto-generic \usdRate
 export calc-crypto-from-eur = calc-crypto-generic \eurRate
 calc-fiat = (name)-> (store, amount-send)->
@@ -38,7 +38,6 @@ change-amount-generic = (field)-> (store, amount-send, fast, cb)->
     { wallet } = send
     { token } = send.coin
     { wallets } = store.current.account
-    return cb null if !send.to
     fee-token = wallet.network.tx-fee-in ? send.coin.token ? \unknown
     fee-wallet =
         wallets |> find (-> it.coin?token is fee-token)
@@ -47,13 +46,13 @@ change-amount-generic = (field)-> (store, amount-send, fast, cb)->
     return cb "Balance is not loaded" if not wallet?
     decimalsConfig = send.network.decimals
     decimals = amountSend.toString!.split(".").1
-    if decimals? and (decimals.length > decimalsConfig) then
-        send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
-        amount-send = send.amount-send
-    if amount-send? then
-        balance = +wallet.balance
-        max-amount = Math.max 1e8, balance
-        return no if +amountSend > max-amount 
+    #if decimals? and (decimals.length > decimalsConfig) then
+        #send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
+        #amount-send = send.amount-send
+    #if amount-send? then
+        #balance = +wallet.balance
+        #max-amount = Math.max 1e10, balance
+        #amountSend = max-amount if +amountSend > max-amount
     result-amount-send = amount-send ? 0
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
@@ -98,7 +97,6 @@ export change-amount-send = (store, amount-send, fast, cb)->
     { wallet } = send
     { token } = send.coin
     { wallets } = store.current.account
-    return cb null if !send.to
     fee-token = wallet.network.tx-fee-in ? send.coin.token ? \unknown
     fee-wallet =
         wallets |> find (-> it.coin?token is fee-token)
@@ -107,13 +105,13 @@ export change-amount-send = (store, amount-send, fast, cb)->
     decimalsConfig = send.network.decimals
     decimals = amountSend.toString!.split(".").1
     result-amount-send = amount-send ? 0
-    if decimals? and (decimals.length > decimalsConfig) then
-        send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
-        amount-send = send.amount-send
-    if amount-send? then
-        balance = +wallet.balance
-        max-amount = Math.max 1e8, balance
-        return no if +amountSend > max-amount 
+    #if decimals? and (decimals.length > decimalsConfig) then
+        #send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
+        #amount-send = send.amount-send
+    #if amount-send? then
+        #balance = +wallet.balance
+        #max-amount = Math.max 1e10, balance
+        #amountSend = max-amount if +amountSend > max-amount
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
     fee-usd-rate = fee-wallet?usd-rate ? 0
@@ -154,7 +152,6 @@ export change-amount-calc-fiat = (store, amount-send, fast, cb)->
     { wallet } = send
     { token } = send.coin
     { wallets } = store.current.account
-    return cb null if !send.to
     fee-token = wallet.network.tx-fee-in ? send.coin.token ? \unknown
     fee-wallet =
         wallets |> find (-> it.coin?token is fee-token)
@@ -162,11 +159,11 @@ export change-amount-calc-fiat = (store, amount-send, fast, cb)->
     send.error = "Balance is not loaded" if not wallet?
     return cb "Balance is not loaded" if not wallet?
     decimalsConfig = send.network.decimals
-    if amount-send? then
-        balance = wallet.balance
-        decimals = amountSend.toString!.split(".").1
-        if decimals? and (decimals.length > decimalsConfig) then
-            return no
+    #if amount-send? then
+        #balance = wallet.balance
+        #decimals = amountSend.toString!.split(".").1
+        #if decimals? and (decimals.length > decimalsConfig) then
+            #amountSend = round-number amountSend, {decimals: decimalsConfig}
     result-amount-send = amount-send ? 0
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
@@ -206,7 +203,6 @@ export change-amount-without-fee = (store, amount-send, fast, cb)->
     { wallet } = send
     { token } = send.coin
     { wallets } = store.current.account
-    return cb null if !send.to
     fee-token = wallet.network.tx-fee-in ? send.coin.token ? \unknown
     fee-wallet =
         wallets |> find (-> it.coin?token is fee-token)
@@ -214,12 +210,12 @@ export change-amount-without-fee = (store, amount-send, fast, cb)->
     return cb "Balance is not loaded" if not wallet?
     decimalsConfig = send.network.decimals
     decimals = amountSend.toString!.split(".").1
-    if decimals? and (decimals.length > decimalsConfig) then
-        send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
-    if amount-send? then
-        balance = +wallet.balance
-        max-amount = Math.max 1e8, balance
-        return no if +amountSend > max-amount 
+    #if decimals? and (decimals.length > decimalsConfig) then
+        #send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
+    #if amount-send? then
+        #balance = +wallet.balance
+        #max-amount = Math.max 1e10, balance
+        #amountSend = max-amount if +amountSend > max-amount 
     result-amount-send = amount-send ? 0
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0

@@ -225,6 +225,10 @@ module.exports = (store, web3t)->
         value = event.target?value     
         return null if not event.target?value      
         return \0 if event.target?value is ""    
+        #value = event.target.value.match(/^[0-9]+([.]([0-9]+)?)?$/)?0
+        #value2 =
+            #| value?0 is \0 and value?1? and value?1 isnt \. => value.substr(1, value.length)
+            #| _ => value
         value
     amount-change = (event)->
         value = get-value event

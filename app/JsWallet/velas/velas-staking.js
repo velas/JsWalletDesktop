@@ -1,5 +1,5 @@
 const velasSolanaWeb3 = require("../../web3t/providers/solana/index.cjs");
-let PublicKey, Connection, Account, Transaction, SystemProgram, StakeProgram, Authorized, Lockup, STAKE_INSTRUCTION_LAYOUTS, TransactionInstruction;
+let PublicKey, Connection, StakeProgram, Authorized, Lockup, STAKE_INSTRUCTION_LAYOUTS, TransactionInstruction;
 PublicKey = velasSolanaWeb3.PublicKey;
 Connection = velasSolanaWeb3.Connection;
 StakeProgram = velasSolanaWeb3.StakeProgram;
@@ -13,9 +13,10 @@ TransactionInstruction = velasSolanaWeb3.TransactionInstruction;
 
 class VelasStaking {
 
+    // validate options.authorization;
     constructor(options) {
         this.connection    = new Connection(options.NODE_HOST, 'singleGossip');
-        this.authorization = {};
+        this.authorization = {}
         this.sol           = 1000000000;
         this.min_stake     = 1;
         this.max_epoch     = '18446744073709551615';
@@ -25,8 +26,8 @@ class VelasStaking {
     }
 
     getAccountPublicKey() {
-        return new PublicKey(this.authorization.publicKey);
-    }
+        return new PublicKey(this.authorization.publicKey)
+    };
 
     setAccountPublicKey(publicKey) {
         this.authorization.publicKey = publicKey;
@@ -55,13 +56,13 @@ class VelasStaking {
         return await this.connection.getSlot();
     }
     async getFirstAvailableBlock() {
-        return await this.connection.getFirstAvailableBlock();
+        return await this.connection.getFirstAvailableBlock(); 
     }
     async getConfirmedBlock(slot) {
         return await this.connection.getConfirmedBlock(slot);
     }
     async getConfirmedBlocksWithLimit(slot, limit) {
-        return await this.connection.getConfirmedBlocksWithLimit(slot, limit);
+        return await this.connection.getConfirmedBlocksWithLimit(slot, limit)
     }
     async getBlockTime(blockNum) {
         return this.connection.getBlockTime(blockNum);
@@ -82,9 +83,9 @@ class VelasStaking {
             return activation;
         } catch(_) {
             return undefined;
-        }
-    }
-
+        };
+    };
+    
     async splitStakeAccount(stakeAccount, splitStakePubkey, lamports){
         let transaction = new Transaction();
         const authorizedPubkey = this.getAccountPublicKey();
@@ -99,14 +100,14 @@ class VelasStaking {
             seed,
             base: authorizedPubkey
         };
-
+        
         try {
             transaction.add(StakeProgram.split(params));
         } catch (e) {
             return {
                 error: "split_stake_account_error",
                 description: e.message,
-            };
+            };    
         }
         return this.sendTransaction(transaction);
     }
@@ -115,7 +116,7 @@ class VelasStaking {
         const voteAccounts = await this.connection.getVoteAccounts();
         const validators = voteAccounts.current.concat(voteAccounts.delinquent);
         return validators;
-    }
+    };
 
     async getStakingValidators() {
         const voteAccounts = await this.connection.getVoteAccounts();
@@ -126,9 +127,10 @@ class VelasStaking {
         for (var i in validators) {
             validators[i].key   = validators[i].votePubkey;
             validators[i].stake = `${ Math.round((validators[i].activatedStake / this.sol) * 100) / 100} VLX`;
-        }
+        };
+
         return validators;
-    }
+    };
 
     async withdraw(account, amount = 10000002282880) {
 
@@ -149,9 +151,10 @@ class VelasStaking {
                 error: "prepare_transaction_error",
                 description: e.message,
             };
-        }
+        };
+
         return this.sendTransaction(transaction);
-    }
+    };
 
     async undelegate(account) {
 
@@ -170,9 +173,10 @@ class VelasStaking {
                 error: "prepare_transaction_error",
                 description: e.message,
             };
-        }
+        };
+
         return this.sendTransaction(transaction);
-    }
+    };
 
     async delegate(account, validator) {
 
@@ -193,9 +197,10 @@ class VelasStaking {
                 error: "prepare_transaction_error",
                 description: e.message,
             };
-        }
+        };
+
         return this.sendTransaction(transaction);
-    }
+    };
 
     async getNextSeed() {
         const fromPubkey = this.getAccountPublicKey();
@@ -207,12 +212,12 @@ class VelasStaking {
                 StakeProgram.programId,
             );
 
-            if (this.accounts.filter(item => { return item.address === stakeAccountWithSeed.toBase58();}).length === 0) {
+            if (this.accounts.filter(item => { return item.address === stakeAccountWithSeed.toBase58()}).length === 0) {
                 return i.toString();
-            }
-        }
-    }
-
+            };
+        };
+    };
+    
     async createNewStakeAccountWithSeed(){
 
         let stakeAccountWithSeed;
@@ -231,8 +236,9 @@ class VelasStaking {
                 error: "prepare_transaction_error",
                 description: e.message,
             };
-        }
-        return stakeAccountWithSeed;
+        };
+
+        return stakeAccountWithSeed;   
     }
 
     async createAccount(amount_sol = (this.min_stake * this.sol)) {
@@ -255,7 +261,7 @@ class VelasStaking {
             );
 
             const lockup = new Lockup(0,0, fromPubkey);
-
+            
             const config = {
                 authorized,
                 basePubkey: fromPubkey,
@@ -272,9 +278,10 @@ class VelasStaking {
                 error: "prepare_transaction_error",
                 description: e.message,
             };
-        }
+        };
+
         return this.sendTransaction(transaction);
-    }
+    };
 
     async checkSeed(base58PublicKey) {
         const fromPubkey = this.getAccountPublicKey();
@@ -285,9 +292,9 @@ class VelasStaking {
                 StakeProgram.programId,
             );
             if (stakeAccountWithSeed.toBase58() === base58PublicKey) return `stake:${i}`;
-        }
+        };
         return base58PublicKey.slice(0,6);
-    }
+    };
 
     async getOwnStakingAccounts(accounts) {
         var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
@@ -316,7 +323,7 @@ class VelasStaking {
             accounts[i].address = accounts[i].pubkey.toBase58();
             accounts[i].key     = accounts[i].address;
             if(accounts[i].seed === "stake:"+seed){
-                return accounts[i];
+                return accounts[i]
             }
         }
         return null;
@@ -324,9 +331,9 @@ class VelasStaking {
 
     async getStakingAccounts(accounts) {
         var  ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
-        console.log("[getStakingAccounts]");
+        console.log("[getStakingAccounts]")
         let owner = this.getAccountPublicKey();
-        console.log("owner", owner);
+        console.log("owner", owner)
 
         accounts = accounts.filter(item => {
             if (deepEq$(typeof item != 'undefined' && item !== null ? (ref$ = item.account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? (ref5$ = ref4$.authorized) != null ? ref5$.staker : void 8 : void 8 : void 8 : void 8 : void 8 : void 8 : void 8, owner.toBase58(), '===')) {
@@ -336,7 +343,7 @@ class VelasStaking {
         });
 
         for (var i in accounts) {
-            var rent;
+            var rent, ref$, ref1$, ref2$, ref3$, ref4$;
             rent = (ref$ = accounts[i].account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? ref4$.rentExemptReserve : void 8 : void 8 : void 8 : void 8 : void 8;
             accounts[i].seed    = await this.checkSeed(accounts[i].pubkey.toBase58());
             accounts[i].address = accounts[i].pubkey.toBase58();
@@ -355,14 +362,15 @@ class VelasStaking {
                     if((ref4$ = ref3$.delegation) != null) {
                         accounts[i].validator = ref4$.voter;
                     }
-                }
-            }
-        }
+                };
+            };
+        };
+        
         this.accounts = accounts;
 
         return accounts;
-    }
-
+    };
+    
     async getParsedProgramAccounts(){
         const accounts = await this.connection.getParsedProgramAccounts(StakeProgram.programId);
         const delegators = {};
@@ -376,14 +384,15 @@ class VelasStaking {
                 if (voter && (deactivationEpoch > activationEpoch || activationEpoch === this.max_epoch)) {
                     delegators[voter] = delegators[voter] ? delegators[voter] + 1 : 1;
                 }
+                ;
             }
-        }
+        }; 
         return accounts;
     }
-
+    
     async getInfo() {
         const accounts = await this.connection.getParsedProgramAccounts(StakeProgram.programId);
-        console.log("accounts", accounts);
+        console.log("accounts", accounts)
         const delegators = {};
         const stakes     = {};
 
@@ -397,8 +406,9 @@ class VelasStaking {
                 if (voter && (deactivationEpoch > activationEpoch || activationEpoch === this.max_epoch)) {
                     delegators[voter] = delegators[voter] ? delegators[voter] + 1 : 1;
                 }
+                ;
             }
-        }
+        };
         this.accounts   = await this.getStakingAccounts(accounts);
         this.validators = await this.getStakingValidators();
 
@@ -410,17 +420,19 @@ class VelasStaking {
                     key:  this.accounts[s].key,
                     seed: this.accounts[s].seed,
                 });
-            }
-        }
+            };
+        };
+
         for (var i in this.validators) {
             this.validators[i].delegators = delegators[this.validators[i].votePubkey] || 0;
             this.validators[i].stakes     = stakes[this.validators[i].votePubkey] || [];
-        }
+        };
+
         return {
             accounts: this.accounts,
             validators: this.validators,
         };
-    }
+    };
 
     async sendTransaction(transaction) {
         try {
@@ -435,17 +447,18 @@ class VelasStaking {
                 error: "cunstruct_transaction_error",
                 description: e.message,
             };
-        }
+        };
+       
         const payAccount = new Account(this.secretKey);
         let result = await this.connection.sendTransaction(
             transaction,
             [payAccount]
         );
         console.log("result !", result);
-
+         
         return result;
-
-    }
+        
+    };
 
     async userinfo() {
         return new Promise((resolve) => {
@@ -458,8 +471,8 @@ class VelasStaking {
             //     ;
             // })
         });
-    }
-}
+    };
+};
 
 function deepEq$(x, y, type){
     var toString = {}.toString, hasOwnProperty = {}.hasOwnProperty,
@@ -467,7 +480,7 @@ function deepEq$(x, y, type){
     var first = true;
     return eq(x, y, []);
     function eq(a, b, stack) {
-        var className, length, size, result, alength, blength, key, sizeB;
+        var className, length, size, result, alength, blength, r, key, ref, sizeB;
         if (a == null || b == null) { return a === b; }
         if (a.__placeholder__ || b.__placeholder__) { return true; }
         if (a === b) { return a !== 0 || 1 / a == 1 / b; }
@@ -531,7 +544,7 @@ function deepEq$(x, y, type){
                     if (type === '<<=') {
                         result = size < sizeB;
                     } else if (type === '<==') {
-                        result = size <= sizeB;
+                        result = size <= sizeB
                     } else {
                         result = size === sizeB;
                     }

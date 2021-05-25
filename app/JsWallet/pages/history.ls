@@ -1,6 +1,6 @@
 require! {
     \react
-    \prelude-ls : { sort-by, reverse, filter, map, find, take }
+    \prelude-ls : { sort-by, reverse, filter, map, find, take, obj-to-pairs }
     \../history-funcs.ls
     \../get-primary-info.ls
     \../get-lang.ls
@@ -15,12 +15,29 @@ require! {
     \../round-number.ls
     \../components/popups/loading.ls
 }
-# .history1064831901
+# .history95075167
 #     @import scheme
 #     width: 100%
 #     position: relative
 #     padding-bottom: 0px
 #     display: inline-block
+#     .filters
+#         white-space: nowrap
+#         height: 30px
+#         overflow: auto
+#         .filter-item
+#             display: inline-block
+#             background: #404167
+#             color: white
+#             padding: 5px 10px
+#             text-align: center
+#             font-size: 10px
+#             margin: 0 5px 5px 0
+#             cursor: pointer
+#             .key
+#                 font-weight: bold
+#             .close-icon
+#                 margin-left: 5px
 #     .from-to
 #         width: 40px
 #         display: inline-block
@@ -124,10 +141,7 @@ require! {
 #                 text-align: left
 #     .header, .header-table
 #         text-align: left
-#         height: 100px
 #         box-sizing: border-box
-#         left: 0
-#         top: 0
 #         width: 100%
 #         .table-header
 #             width: 100%
@@ -205,6 +219,11 @@ require! {
 #                     font-size: 14px
 #                     border: 0px
 #                     box-shadow: none
+#                     border-left: 8px solid
+#                     &.from
+#                         border-color: #0349fb
+#                     &.from
+#                         border-color: #6cf8f9
 #                 button
 #                     outline: none
 #                     cursor: pointer
@@ -344,7 +363,7 @@ require! {
 #         width: 100%
 #         overflow-y: scroll
 #         margin-top: -1px
-#         height: calc(100vh - 420px)
+#         height: calc(100vh - 450px)
 #         opacity: .8
 #         .head, .record
 #             &.record
@@ -836,7 +855,7 @@ render-transaction = (store, web3t, tran)-->
                         react.create-element 'div', { className: 'balance' }, children = 
                             react.create-element 'span', { className: 'color' }, ' ' + rounded-fee
 module.exports = ({ store, web3t })->
-    { go-back, switch-type-in, switch-type-out, coins, is-active, switch-filter } = history-funcs store, web3t
+    { go-back, switch-type-in, switch-type-out, switch-sender, switch-receiver, remove-type-from-filter, remove-filter-raram, coins, is-active, switch-filter } = history-funcs store, web3t
     style = get-primary-info store
     lang = get-lang store
     header-style =
@@ -894,8 +913,36 @@ module.exports = ({ store, web3t })->
     rowRenderer = ({ key, index, isScrolling, isVisible, style })->
         return render-transaction store, web3t, store.transactions.applied[index] # if isVisible
         null
+    build-types = (item)->
+        remove-type = remove-type-from-filter(item)
+        react.create-element 'span', { on-click: remove-type, className: 'filter-item' }, children = 
+            react.create-element 'span', { className: 'key' }, ' ' + item
+            react.create-element 'span', { className: 'close-icon' }, children = 
+                icon \X, 10
+    build-filter-items = (item)->
+        key = item.0
+        value = item.1
+        return null if not value?
+        return null if key is \token
+        $key = (item.0 ? "").to-upper-case!
+        obj = {}
+        obj["#{key}"] = value
+        react.create-element 'span', { on-click: remove-filter-raram(obj), className: 'filter-item' }, children = 
+            react.create-element 'span', {}, children = 
+                react.create-element 'span', { className: 'key' }, ' ' + $key + ':'
+                react.create-element 'span', { className: 'value' }, ' ' + value
+                react.create-element 'span', { className: 'close-icon' }, children = 
+                    icon \X, 10
     history-width = store.current.size.width / 1.9
     history-height = store.current.size.height - 200 - 60
+    on-sender-filter = (e) ->
+        e.target.value = (e.target.value ? "").trim!
+        switch-sender(e.target.value)    
+    on-receiver-filter = (e) ->
+        e.target.value = (e.target.value ? "").trim!
+        switch-receiver(e.target.value)
+    send-from = (store.current.filter.from ? "")
+    send-to = (store.current.filter.to ? "")
     react.create-element 'div', { className: 'normalheader history history1064831901' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
@@ -904,6 +951,12 @@ module.exports = ({ store, web3t })->
             react.create-element 'span', { className: 'head left h1' }, ' ' + lang.your-transactions
             react.create-element 'span', { on-click: expand-collapse, className: 'head right' }, children = 
                 react.create-element 'img', { src: "#{icons.filter}", style: icon2, className: 'icon-svg1' }
+            react.create-element 'div', { className: 'filters' }, children = 
+                react.create-element 'div', { className: 'filter__types' }, children = 
+                    store.current.filter-txs-types |> map build-types      
+                    store.current.filter
+                        |> obj-to-pairs 
+                        |> map build-filter-items
             react.create-element 'div', { className: 'table-header' }, children = 
                 react.create-element 'span', { className: 'from-to' }, children = 
                     """ #{lang.from}"""
@@ -923,22 +976,26 @@ module.exports = ({ store, web3t })->
                             react.create-element 'img', { src: "#{icons.get}", className: 'icon-svg' }
                     react.create-element 'div', { style: border-b, className: 'middle' }, children = 
                         react.create-element 'div', {}, children = 
-                            react.create-element 'input', { type: 'text', style: input-style, placeholder: "#{lang.from}" }
+                            react.create-element 'input', { type: 'text', value: "#{send-from}", on-change: on-sender-filter, style: input-style, placeholder: "#{lang.from}", className: 'from' }
                         react.create-element 'div', {}, children = 
-                            react.create-element 'input', { type: 'text', style: input-style, placeholder: "#{lang.to}" }
-                        react.create-element 'button', { on-click: '', style: button-primary1-style }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-btn' }
-                                """ #{lang.btn-apply}"""
-                    react.create-element 'div', { className: 'bottom' }, children = 
-                        for coin in coins
-                            react.create-element 'button', { key: "#{coin.token}", style: filter-style, on-click: switch-filter(coin.token), className: "#{is-active(coin.token)}" }, children = 
-                                react.create-element 'img', { src: "#{coin.image}" }
+                            react.create-element 'input', { type: 'text', value: "#{send-to}", on-change: on-receiver-filter, style: input-style, placeholder: "#{lang.to}", className: 'to' }
+                        if no
+                            react.create-element 'button', { on-click: filter-txs, style: button-primary1-style }, children = 
+                                react.create-element 'span', {}, children = 
+                                    react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg-btn' }
+                                    """ #{lang.btn-apply}"""
+                    if no
+                        react.create-element 'div', { className: 'bottom' }, children = 
+                            for coin in coins
+                                react.create-element 'button', { key: "#{coin.token}", style: filter-style, on-click: switch-filter(coin.token), className: "#{is-active(coin.token)}" }, children = 
+                                    react.create-element 'img', { src: "#{coin.image}" }
         react.create-element 'div', {}, children = 
             react.create-element 'div', {}, children = 
                 loading { store }
             react.create-element 'div', { style: border-t, className: 'table' }, children = 
-                store.transactions.applied |> take 30 |> map render-transaction store, web3t
+                store.transactions.applied 
+                    |> take 30 
+                    |> map render-transaction store, web3t
             if length is 0 and store.current.transactions-are-loading isnt yes
                 react.create-element 'div', { style: menu-style, className: 'nothin-to-show' }, children = 
                     react.create-element 'img', { style: nothing-icon, src: "#{icons.search-history}" }

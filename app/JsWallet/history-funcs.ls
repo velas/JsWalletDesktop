@@ -54,15 +54,62 @@ module.exports = (store, web3t)->
             react.create-element 'div', { className: 'balance' }, children = 
                 react.create-element 'span', { className: 'color' }, ' ' + $amount
     is-active = (value)->
-        if value in filt then \active else ''
-    switch-filter  = (value, event)-->
-        if value not in filt
-            filt.push value
+        types = store.current.filter-txs-types
+        if value in types then \active else ''
+    set-filter  = (value)->
+        key = Object.keys(value).0
+        val = value[key]  
+        if (val.toString().trim()).length > 0
+            filt["#{key}"] = val
         else
-            filt.splice(filt.index-of(value), 1)
+            delete filt["#{key}"]
         apply-transactions store
-    switch-type-in = switch-filter \IN
-    switch-type-out = switch-filter \OUT
+    switch-type = (type, event)-->
+        types = filt.types
+        if type not in store.current.filter-txs-types
+            store.current.filter-txs-types.push type
+        else
+            store.current.filter-txs-types.splice(store.current.filter-txs-types.index-of(type), 1) 
+    # Deprecated: was used in order to switch filter to another tokens to filter tansactions in chosen wallet.
+    switch-filter  = (value, event)-->
+        key = Object.keys(value).0
+        val = value[key]  
+        if not filt["#{key}"]?
+            filt["#{key}"] = val
+        else
+            delete filt["#{key}"]
+        apply-transactions store
+    switch-type = (type, event)-->
+        #types = filt.types
+        if type not in store.current.filter-txs-types
+            store.current.filter-txs-types.push type
+        else
+            store.current.filter-txs-types.splice(store.current.filter-txs-types.index-of(type), 1)  
+        apply-transactions store  
+    switch-type-in = switch-type \IN
+    switch-type-out = switch-type \OUT
+    switch-sender = (from)->
+        if \IN not in store.current.filter-txs-types 
+            store.current.filter-txs-types.push(\IN)
+        set-filter {from}
+    switch-receiver = (to)->
+        if \OUT not in store.current.filter-txs-types 
+            store.current.filter-txs-types.push(\OUT)
+        set-filter {to}
+    get-key = (obj)->
+        Object.keys(obj).0
+    get-value = (obj)->
+        key = Object.keys(obj).0
+        obj[key] 
+    remove-type-from-filter = (type, event)-->
+        store.current.filter-txs-types.splice(store.current.filter-txs-types.index-of(type), 1) 
+        apply-transactions store      
+    remove-filter-raram = (prop, event)-->
+        return null if not prop?
+        key = get-key(prop)
+        return no if not store.current.filter["#{key}"]?
+        delete store.current.filter["#{key}"]
+        apply-transactions store  
     delete-pending-tx = (tx)-> (event)->
         agree <- confirm store, "Would you like to remove pending transaction? Your balance will be increased till confirmed transaction"
         return if not agree
@@ -71,4 +118,4 @@ module.exports = (store, web3t)->
     transaction-info = (config)-> (event)->
         err, info <- get-transaction-info config
         console.log err, info
-    { go-back, switch-type-in, transaction-info, switch-type-out, store.coins, is-active, switch-filter, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago }
+    { go-back, switch-type-in, transaction-info, remove-type-from-filter, remove-filter-raram, switch-sender, switch-receiver, switch-type-out, store.coins, is-active, switch-filter, arrow, arrow-lg, sign, delete-pending-tx, amount-beautify, ago }

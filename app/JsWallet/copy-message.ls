@@ -2,6 +2,7 @@ require! {
     \react
     \./get-primary-info.ls
     \./get-lang.ls
+    \./icons.ls
 }
 # .copied-640234004
 #     @import scheme
@@ -14,7 +15,7 @@ require! {
 #     width: 100%
 #     height: 80px
 #     padding: 10px
-#     left: 0
+#     right: 0
 #     text-align: center
 #     border-radius: 0px 0px var(--border-btn) var(--border-btn)
 #     box-shadow: 0px 0px 0px 0px #aee7f3
@@ -22,6 +23,10 @@ require! {
 #     border-radius: calc(var(--border-btn) * 2)
 #     width: calc(100% - 20px)
 #     box-shadow: 7px 10px 13px #0000001f, -16px 20px 13px #00000024
+#     opacity: 0.85
+#     min-width: 30%
+#     max-width: 400px
+#     background: green
 #     @keyframes top
 #         0%
 #             top: -80px
@@ -29,6 +34,11 @@ require! {
 #             top: 0
 #     &.opened
 #         animation: top 0.5s forwards
+#     .button-close
+#         cursor: pointer
+#         float: right
+#         img
+#             width: 13px
 #     .mb-5
 #         margin-bottom: 5px
 #     .contents
@@ -46,8 +56,12 @@ module.exports = (store)->
         #r.to-upper-case!
     copy-style=
         color: style.app.text
-        background: style.app.bg-primary-light
-        border: "1px solid #{style.app.border}"
+    cancel = ->
+        store.current.copied = ""
     react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied-640234004" }, children = 
-        react.create-element 'div', { className: 'mb-5' }, ' ' + lang.copied
-        react.create-element 'div', { className: 'contents' }, ' ' + cut copied
+        react.create-element 'div', { on-click: cancel, id: "prompt-close", className: 'button-close' }, children = 
+            react.create-element 'span', { className: 'cancel' }, children = 
+                react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
+        react.create-element 'div', { className: 'copied-inner' }, children = 
+            react.create-element 'div', { className: 'mb-5' }, ' ' + lang.copied
+            react.create-element 'h4', { className: 'contents' }, ' ' + cut copied
