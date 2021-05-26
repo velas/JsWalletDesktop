@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.26",
+  "version": "0.14.27",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -110,6 +110,7 @@
     "react": "^16.13.1",
     "react-chartjs-2": "^2.10.0",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-currency-input-field": "^3.3.2",
     "react-detect-offline": "^2.4.0",
     "react-dom": "^16.13.1",
     "react-middle-ellipsis": "^1.1.0",

@@ -291,6 +291,7 @@ language = (store, web3t)->
                     react.create-element 'li', { style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
                         react.create-element 'div', {}, ' Қазақ'
+        if not process?versions?electron?
             react.create-element 'div', { className: 'downloadwalletlist' }, children = 
                 react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank" }, children = 
                     react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
@@ -313,7 +314,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-1355584605' }, children = 
+    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-863419943' }, children = 
         react.create-element 'div', { className: 'account-body' }, children = 
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 
