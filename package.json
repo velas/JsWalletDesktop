@@ -1,7 +1,7 @@
 {
-  "name": "velas-desktop-wallet",
+  "name": "Velas Desktop Wallet",
   "homepage": "velas.com",
-  "version": "0.14.27",
+  "version": "0.14.29",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -41,11 +41,11 @@
     "electron-rebuild": "1.8.4",
     "node-pre-gyp": "^0.17.0"
   },
-  "author": "Andrey Stehno <a.stegno@gmail.com>",
+  "author": "Velas <info@velas.com>",
   "build": {
     "framework": "electron",
     "afterSign": "electron-builder-notarize",
-    "appId": "web3.space",
+    "appId": "com.velas.wallet",
     "mac": {
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
