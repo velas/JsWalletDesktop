@@ -1,7 +1,7 @@
 {
   "name": "Velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.30",
+  "version": "0.14.31",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -47,9 +47,11 @@
     "afterSign": "electron-builder-notarize",
     "appId": "com.velas.wallet",
     "mac": {
+      "category": "public.app-category.developer-tools",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "entitlements": "./node_modules/electron-builder-notarize/entitlements.mac.inherit.plist"
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "./node_modules/electron-builder-notarize/entitlements.mac.inherit.plist"
     },
     "dmg": {
       "icon": false
