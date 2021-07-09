@@ -15,7 +15,6 @@ calc-wallet = (store, token, cb)->
     index = 0
     wallets |> each (it)-> 
         if it.coin.token is token then
-            console.log "found index" index
             current.token-index = index
         index++
     wallet = wallets |> find (-> it.coin.token is token)

@@ -273,6 +273,7 @@ module.exports = (store, web3t)->
         current-block = blockHeight
         seconds-per-block = 0.4
         seconds = (epochInfo.slotsInEpoch `minus` epochInfo.slotIndex) `times` seconds-per-block
+        console.log "seconds per epoch" seconds
         epoch-time = epochInfo.slotsInEpoch `times` seconds-per-block
         rest = epoch-time `minus` seconds
         store.dashboard.epoch-percent = 100 - ( 100 `div` epoch-time ) `times` seconds

@@ -495,20 +495,20 @@ filestorage = ({ store, web3t })->
             react.create-element 'span', { on-click: switch-files, className: "#{file-tree} files" }, children = 
                 react.create-element 'img', { src: "#{icons.file-side-menu}" }
             react.create-element 'ul', { className: 'path' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "files" }, children = 
                     react.create-element 'span', {}, ' Files  ' + store.filestore.path + ' '
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "docs" }, children = 
                     react.create-element 'span', {}, ' Documents'
             react.create-element 'span', { on-click: expand-collapse, className: 'add-file' }, children = 
                 icon "Plus", 20
             react.create-element 'ul', { className: "#{active} action" }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "cloud-download" }, children = 
                     react.create-element 'span', {}, children = 
                         icon "CloudDownload", 20
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "link-external" }, children = 
                     react.create-element 'span', {}, children = 
                         icon "LinkExternal", 20
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "trashcan" }, children = 
                     react.create-element 'span', {}, children = 
                         icon "Trashcan", 20
             if store.filestore.menu-open
@@ -571,10 +571,10 @@ filestorage = ({ store, web3t })->
                         react.create-element 'span', { className: 'col folder-menu' }, children = 
                             react.create-element 'div', {}, ' Uploading 1 item'
                         react.create-element 'ul', { className: "#{active} action col" }, children = 
-                            react.create-element 'li', { on-click: switch-progress, className: "#{hide-progress}" }, children = 
+                            react.create-element 'li', { key: "hide-progress", on-click: switch-progress, className: "#{hide-progress}" }, children = 
                                 react.create-element 'span', {}, children = 
                                     icon "ChevronDown", 15
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "close-icon" }, children = 
                                 react.create-element 'span', {}, children = 
                                     icon \X, 15
                 react.create-element 'div', { style: header-table-style, className: "#{hide-progress}" }, children = 

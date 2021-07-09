@@ -339,19 +339,19 @@ dapps = (store, web3t)->
                 react.create-element 'div', { className: 'header' }, ' ' + lang.storage-dapp
             react.create-element 'div', { className: 'description' }, ' ' + lang.storage-description
             react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "video-storage" }, children = 
                     react.create-element 'span', { on-click: goto-videostorage }, ' ' + lang.video-storage
-                react.create-element 'li', { on-click: goto-soundstorage, style: hide-sound }, children = 
-                    react.create-element 'span', {}, ' Sound Storage'
+                react.create-element 'li', { key: "hide-sound", on-click: goto-soundstorage, style: hide-sound }, children = 
+                    react.create-element 'span', {}, ' Sound Storage    '
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-resources, className: 'source' }, children = 
                 react.create-element 'div', { className: 'address' }, ' ' + lang.velas-sphere
                 react.create-element 'div', { className: 'header' }, ' ' + lang.velas-cpu
             react.create-element 'div', { className: 'description' }, ' ' + lang.cpu-description
             react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "about" }, children = 
                     react.create-element 'span', {}, ' About'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "faqs" }, children = 
                     react.create-element 'span', {}, ' FAQs'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-wallets, className: 'source' }, children = 
@@ -364,7 +364,7 @@ dapps = (store, web3t)->
                 react.create-element 'div', { className: 'header' }, ' ' + lang.staking-dapp
             react.create-element 'div', { className: 'description' }, ' ' + lang.staking-description
             react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "choose-staker" }, children = 
                     react.create-element 'span', { on-click: goto-choose-staker }, ' ' + lang.delegate-stake
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-notice, className: 'source' }, children = 
@@ -387,9 +387,9 @@ dapps = (store, web3t)->
                 react.create-element 'div', { className: 'header' }, ' DeFi Dapp | This page is under development.'
             react.create-element 'div', { className: 'description' }, ' With many of the playlists we have assembled, the parameters have been clear. To be considered decentralized finance, or DeFi, we can argue endlessly about ...'
             react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "learn-more" }, children = 
                     react.create-element 'span', {}, ' Learn More'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "defi" }, children = 
                     react.create-element 'span', {}, ' About DeFi'
         react.create-element 'div', { className: 'section developing' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -397,9 +397,9 @@ dapps = (store, web3t)->
                 react.create-element 'div', { className: 'header' }, ' DEXX Dapp | This page is under development.'
             react.create-element 'div', { className: 'description' }, ' QuikNode provides reliable dedicated endpoints for your Ethereum applications. Geth & Parity. Full & Archive Nodes. HTTP & WebSocket Support. Fast RPC. 8 Locations. Types: MainNet (ETH), Classic (ETC), Kovan/Ropsten/Rinkeby.'
             react.create-element 'ul', { className: 'links' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "about" }, ' '
                     react.create-element 'span', {}, ' About'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "faqs-2" }, ' '
                     react.create-element 'span', {}, ' FAQs'
 web = (store, web3t)->
     lang = get-lang store
@@ -501,23 +501,23 @@ search = ({ store, web3t })->
                 react.create-element 'div', { className: 'title' }
                 react.create-element 'div', { className: 'description tabs' }, children = 
                     react.create-element 'ul', {}, children = 
-                        react.create-element 'li', { on-click: activate-all, className: "#{active-all}" }, children = 
+                        react.create-element 'li', { key: "active-all", on-click: activate-all, className: "#{active-all}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Search, 15
                             react.create-element 'span', {}, ' ' + lang.all
-                        react.create-element 'li', { on-click: activate-dapps, className: "#{active-dapps}" }, children = 
+                        react.create-element 'li', { key: "active-dapps", on-click: activate-dapps, className: "#{active-dapps}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Rocket, 15
                             react.create-element 'span', {}, ' ' + lang.dapps
-                        react.create-element 'li', { on-click: activate-web, className: "#{active-web}" }, children = 
+                        react.create-element 'li', { key: "active-web", on-click: activate-web, className: "#{active-web}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \Globe, 15
                             react.create-element 'span', {}, ' ' + lang.web
-                        react.create-element 'li', { on-click: activate-images, className: "#{active-images}" }, children = 
+                        react.create-element 'li', { key: "active-images", on-click: activate-images, className: "#{active-images}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \FileMedia, 15
                             react.create-element 'span', {}, ' ' + lang.images
-                        react.create-element 'li', { on-click: activate-files, className: "#{active-files}" }, children = 
+                        react.create-element 'li', { key: "active-files", on-click: activate-files, className: "#{active-files}" }, children = 
                             react.create-element 'span', { className: 'icon' }, children = 
                                 icon \FileDirectory, 15
                             react.create-element 'span', {}, ' ' + lang.public-files

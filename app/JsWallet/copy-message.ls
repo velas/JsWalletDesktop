@@ -4,7 +4,7 @@ require! {
     \./get-lang.ls
     \./icons.ls
 }
-# .copied-640234004
+# .copied-640919231
 #     @import scheme
 #     position: fixed
 #     background: #74cee1
@@ -58,7 +58,7 @@ module.exports = (store)->
         color: style.app.text
     cancel = ->
         store.current.copied = ""
-    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied-640234004" }, children = 
+    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied-640919231" }, children = 
         react.create-element 'div', { on-click: cancel, id: "prompt-close", className: 'button-close' }, children = 
             react.create-element 'span', { className: 'cancel' }, children = 
                 react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }

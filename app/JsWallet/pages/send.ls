@@ -27,7 +27,7 @@ require! {
     \../contracts.ls
     \../swaping/networks.ls : \token-networks
 }
-# .content879310472
+# .content-1138766249
 #     position: relative
 #     @import scheme
 #     $border-radius: var(--border-btn)
@@ -502,7 +502,7 @@ send = ({ store, web3t })->
         address
     recipient = get-recipient(send.to)
     title = if store.current.send.is-swap isnt yes then lang.send else \Swap
-    react.create-element 'div', { className: 'content content879310472' }, children = 
+    react.create-element 'div', { className: 'content content-1138766249' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
             react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
@@ -553,7 +553,7 @@ send = ({ store, web3t })->
                                     """ #{token-display}"""
                                 amount-field { store, value: send.amount-send, on-change: amount-change, placeholder="0", id="send-amount", token, disabled }
                             if active-usd is \active
-                                amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: disabled }
+                                amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: no }
                             if active-eur is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' €'

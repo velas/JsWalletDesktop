@@ -81,7 +81,7 @@
       });
     });
   });
-  if (false && 'serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator) {
     console.log("in!");
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('./service-worker.js').then(function(registration){

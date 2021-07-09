@@ -638,7 +638,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -1051,7 +1051,7 @@ account-details = ({ store, web3t })->
     just-go-back = ->
         store.staking.getAccountsFromCashe = yes
         go-back!    
-    react.create-element 'div', { className: 'staking staking-146665425' }, children = 
+    react.create-element 'div', { className: 'staking staking672871527' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: just-go-back, className: 'close' }, children = 

@@ -12,7 +12,7 @@ require! {
     \../icons.ls
     \../navigate.ls
 }
-# .choose-language-1355584605
+# .choose-language1007162010
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -32,6 +32,7 @@ require! {
 #     min-height: 100vh
 #     box-sizing: border-box
 #     background-color: var(--bgspare)
+#     overflow: auto
 #     @media(max-width: 430px)
 #         padding-top: 0px
 #     .title
@@ -40,10 +41,6 @@ require! {
 #         margin-bottom: 20px
 #     .downloadwalletlist
 #         padding: 30px 0 30px
-#         position: fixed
-#         bottom: 30px
-#         left: 0
-#         right: 0
 #         .icon-download
 #             padding: 10px
 #             height: 20px
@@ -61,11 +58,8 @@ require! {
 #         overflow: hidden
 #         width: 100%
 #         margin-top: 0vh
-#         margin-bottom: 25vh
-#         padding-bottom: 50px
 #         border-radius: $border
 #         position: relative
-#         max-height: 100vh
 #         box-sizing: border-box
 #         >.title
 #             position: absolute
@@ -243,6 +237,18 @@ language = (store, web3t)->
         return set-lang \fr
     change-lang-es = ->
         return set-lang \es
+    change-lang-ar = ->
+        return set-lang \ar
+    change-lang-id = ->
+        return set-lang \id
+    change-lang-ph = ->
+        return set-lang \ph
+    change-lang-yr = ->
+        return set-lang \yr
+    change-lang-vn = ->
+        return set-lang \vn
+    change-lang-in = ->
+        return set-lang \in
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
@@ -256,42 +262,57 @@ language = (store, web3t)->
             react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { style: comming-soon, id: "lang-gr", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-gr", style: comming-soon, id: "lang-gr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-gr}" }
                         react.create-element 'div', {}, ' Deutsch'
-                    react.create-element 'li', { on-click: change-lang-fr, style: color, id: "lang-fr", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-fr", on-click: change-lang-fr, style: color, id: "lang-fr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-fr}" }
                         react.create-element 'div', {}, ' Français'
-                    react.create-element 'li', { on-click: change-lang-en, style: color, id: "lang-en", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-en", on-click: change-lang-en, style: color, id: "lang-en", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-en}" }
                         react.create-element 'div', {}, ' English'
-                    react.create-element 'li', { on-click: change-lang-kr, style: color, id: "lang-kr", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-kr", on-click: change-lang-kr, style: color, id: "lang-kr", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-cn}" }
                         react.create-element 'div', {}, ' 한국어'
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { on-click: change-lang-cn, style: color, id: "lang-cn", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-cn", on-click: change-lang-cn, style: color, id: "lang-cn", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kr}" }
                         react.create-element 'div', {}, ' 中文語言'
-                    react.create-element 'li', { style: comming-soon, id: "lang-jp", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-jp", style: comming-soon, id: "lang-jp", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-jp}" }
                         react.create-element 'div', {}, ' 日本語'
-                    react.create-element 'li', { style: comming-soon, id: "lang-hn", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-in", on-click: change-lang-in, style: color, id: "lang-in", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-hn}" }
                         react.create-element 'div', {}, ' हिंदी'
-                    react.create-element 'li', { on-click: change-lang-es, style: color, id: "lang-sp", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-sp", on-click: change-lang-es, style: color, id: "lang-sp", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-sp}" }
                         react.create-element 'div', {}, ' Español'
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { on-click: change-lang-ua, style: color, id: "lang-ua", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-ua", on-click: change-lang-ua, style: color, id: "lang-ua", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-ua}" }
                         react.create-element 'div', {}, ' Українська'
-                    react.create-element 'li', { on-click: change-lang-ru, style: color, id: "lang-ru", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-ru", on-click: change-lang-ru, style: color, id: "lang-ru", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-ru}" }
                         react.create-element 'div', {}, ' Русский'
-                    react.create-element 'li', { style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
+                    react.create-element 'li', { key: "lang-kz", style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
                         react.create-element 'img', { src: "#{icons.langs-kz}" }
                         react.create-element 'div', {}, ' Қазақ'
-        if not process?versions?electron?
+                    react.create-element 'li', { key: "lang-ar", on-click: change-lang-ar, style: color, id: "lang-ar", className: 'lang-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.langs-ar}" }
+                        react.create-element 'div', {}, ' عربى'
+                react.create-element 'ul', {}, children = 
+                    react.create-element 'li', { key: "lang-id", on-click: change-lang-id, style: color, id: "lang-id", className: 'lang-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.langs-id}" }
+                        react.create-element 'div', {}, ' Indonesian'
+                    react.create-element 'li', { key: "lang-ph", on-click: change-lang-ph, style: color, id: "lang-ph", className: 'lang-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.langs-ph}" }
+                        react.create-element 'div', {}, ' Pilipino'
+                    react.create-element 'li', { key: "lang-yr", on-click: change-lang-yr, style: color, id: "lang-yr", className: 'lang-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.langs-yr}" }
+                        react.create-element 'div', {}, ' Yoruba'
+                    react.create-element 'li', { key: "lang-vn", on-click: change-lang-vn, style: color, id: "lang-vn", className: 'lang-item' }, children = 
+                        react.create-element 'img', { src: "#{icons.langs-vn}" }
+                        react.create-element 'div', {}, ' Tiếng Việt'
             react.create-element 'div', { className: 'downloadwalletlist' }, children = 
                 react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank" }, children = 
                     react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
@@ -314,7 +335,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language-863419943' }, children = 
+    react.create-element 'div', { style: account-body-style, className: 'choose-language choose-language1007162010' }, children = 
         react.create-element 'div', { className: 'account-body' }, children = 
             if no
                 react.create-element 'div', { style: border-style, className: 'title' }, children = 

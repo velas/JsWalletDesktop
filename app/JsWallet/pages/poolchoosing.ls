@@ -605,7 +605,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "show-validator-#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -899,7 +899,7 @@ pool-chosing = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking1126656918' }, children = 
+    react.create-element 'div', { className: 'staking staking-1486535958' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

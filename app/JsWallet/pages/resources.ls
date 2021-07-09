@@ -383,16 +383,16 @@ resources = ({ store, web3t })->
                                     """ / PER MONTH"""
                         react.create-element 'div', { className: 'entry-content' }, children = 
                             react.create-element 'ul', {}, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "mining" }, children = 
                                     react.create-element 'strong', {}
                                     """  for mining"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "calculation" }, children = 
                                     react.create-element 'strong', {}
                                     """  for distributed calculations"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "remote-serverside" }, children = 
                                     react.create-element 'strong', {}
                                     """   for remote serverside"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "vfr" }, children = 
                                     react.create-element 'strong', {}
                                     """   for VFR, etc"""
                         react.create-element 'div', { className: 'wallet-middle' }, children = 
@@ -412,16 +412,16 @@ resources = ({ store, web3t })->
                                     """ / PER MONTH"""
                         react.create-element 'div', { className: 'entry-content' }, children = 
                             react.create-element 'ul', {}, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "mining2" }, children = 
                                     react.create-element 'strong', {}
                                     """  for mining"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "rendering-video" }, children = 
                                     react.create-element 'strong', {}
                                     """  for rendering of video"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "destr-calc" }, children = 
                                     react.create-element 'strong', {}
                                     """  for distributed calculations"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "science" }, children = 
                                     react.create-element 'strong', {}
                                     """  for science"""
                         react.create-element 'div', { className: 'wallet-middle' }, children = 
@@ -441,16 +441,16 @@ resources = ({ store, web3t })->
                                     """ / PER MONTH"""
                         react.create-element 'div', { className: 'entry-content' }, children = 
                             react.create-element 'ul', {}, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "file-sharing" }, children = 
                                     react.create-element 'strong', {}
                                     """  for file sharing"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "file-storage" }, children = 
                                     react.create-element 'strong', {}
                                     """  for file storage"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "distributed-ai" }, children = 
                                     react.create-element 'strong', {}
                                     """  for distributed AI"""
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "dapps" }, children = 
                                     react.create-element 'strong', {}
                                     """  for DAPPS"""
                         react.create-element 'div', { className: 'wallet-middle' }, children = 

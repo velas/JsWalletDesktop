@@ -943,7 +943,7 @@ module.exports = ({ store, web3t })->
         switch-receiver(e.target.value)
     send-from = (store.current.filter.from ? "")
     send-to = (store.current.filter.to ? "")
-    react.create-element 'div', { className: 'normalheader history history1064831901' }, children = 
+    react.create-element 'div', { className: 'normalheader history history95075167' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

@@ -588,7 +588,7 @@ as-callback = (p, cb)->
     p.then (data)->
         cb null, data
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator_#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store

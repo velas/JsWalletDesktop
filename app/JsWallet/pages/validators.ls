@@ -7,9 +7,9 @@ require! {
     \bignumber.js
     \../get-lang.ls
     \../history-funcs.ls
-    \../staking-funcs.ls : { query-pools, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model, get-validators-skipped-slots-percents }
+    \../staking-funcs.ls : { query-pools, get-my-stakes, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model }
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse, keys, pairs-to-obj }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse }
     \../math.ls : { div, times, plus, minus }
     \../../web3t/providers/deps.js : { hdkey, bip39 }
     \md5
@@ -620,7 +620,7 @@ as-callback = (p, cb)->
     p.then (data)->
         cb null, data
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -830,7 +830,7 @@ validators = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-841737596' }, children = 
+    react.create-element 'div', { className: 'staking staking1198406361' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -902,10 +902,7 @@ validators.init = ({ store, web3t }, cb)!->
     page = store.staking["current_#{type}_page"] ? 1
     per-page = store.staking["#{type}_per_page"]
     if +(page `times` per-page) >= store.staking.accounts.length
-        store.staking["current_#{type}_page"] = 1 
-    /* Call scippedSlotsPercent calculation here  */
-    #err, skipped-slots-object <- get-validators-skipped-slots-percents({store, web3t})
-    #return cb err if err?
+        store.staking["current_#{type}_page"] = 1    
     on-progress = ->
         store.staking.pools = convert-pools-to-view-model [...it]
     err, pools <- query-pools {store, web3t, on-progress}

@@ -64,15 +64,15 @@ calc-fee-per-byte = (config, cb)->
     return cb err, o.cheap if err?
     return cb "raw-tx is expected" if typeof! data.raw-tx isnt \String
     #bytes = decode(data.raw-tx).to-string(\hex).length / 2
-    bytes = data.raw-tx.length / 2
+    bytes = (new bignumber(data.raw-tx.length)) `div` 1
     infelicity = 1
     err, data <- get "#{get-api-url network}/fee/6" .timeout { deadline } .end
     vals = if data? and not err? then values data.body else [0.0024295] 
     calced-fee-per-kb = 
         | vals.0 is -1 => network.tx-fee
-        | _ => vals.0       
-    fee-per-byte = calced-fee-per-kb `div` 2000
-    calc-fee = (bytes + infelicity) `times` fee-per-byte
+        | _ => vals.0 
+    fee-per-byte = calced-fee-per-kb `div` (new bignumber(1000))
+    calc-fee = (bytes `plus` infelicity) `times` fee-per-byte
     calc-fee = new bignumber(calc-fee).to-fixed(network.decimals)   
     final-price =
         | calc-fee > +o.cheap => calc-fee
@@ -288,14 +288,11 @@ export get-balance = ({ address, network } , cb)->
     try
         json = JSON.parse(data.text)
         dec = get-dec network
-        num = json.balance `div` dec
+        #num = (json.confirmed `minus` json.unconfirmed ) `div` dec
+        num = json.confirmed `div` dec
         return cb null, num
     catch e
-        return cb e.message
-    dec = get-dec network
-    num = data.text `div` dec
-    #return cb null, "2.00001"
-    cb null, num
+        return cb e.message 
 transform-in = ({ net, address }, t)->
     #tr = BitcoinLib.Transaction.fromHex(t.script)  
     tx = t.mintTxid

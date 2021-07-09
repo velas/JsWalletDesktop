@@ -274,15 +274,14 @@
     }());
     gasPrice = (function(){
       switch (false) {
-      case t.gasUsed == null:
-        return t.gasUsed;
-      case t.gasUsed + "".length !== 0:
+      case t.gasPrice == null:
+        return t.gasPrice;
+      case t.gasPrice + "".length !== 0:
         return "0";
       default:
         return "0";
       }
     }());
-    t.gasPrice == null && "0";
     fee = div(times(gasUsed, gasPrice + ""), dec);
     recipientType = ((ref$ = t.input) != null ? ref$ : "").length > 3 ? 'contract' : 'regular';
     res = {

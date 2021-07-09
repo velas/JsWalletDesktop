@@ -33,10 +33,10 @@ module.exports = ({ store, web3t } )->
                     react.create-element 'span', { className: 'col folder-menu' }, children = 
                         react.create-element 'div', {}, ' Uploading ' + file-descriptions.length + ' item(s)'
                     react.create-element 'ul', { className: "#{active} action col" }, children = 
-                        react.create-element 'li', { on-click: switch-progress, className: "#{hide-progress}" }, children = 
+                        react.create-element 'li', { key: "hide-progress3", on-click: switch-progress, className: "#{hide-progress}" }, children = 
                             react.create-element 'span', {}, children = 
                                 icon "ChevronDown", 15
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "close3" }, ' '
                             react.create-element 'span', {}, children = 
                                 icon \X, 15
             react.create-element 'div', { style: header-table-style, className: "#{hide-progress}" }, children = 

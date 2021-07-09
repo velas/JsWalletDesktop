@@ -487,14 +487,12 @@
             sender = instructions[0].parsed.info.account;
             receiver = instructions[0].parsed.info.owner;
             hash = transaction.signatures[0];
-            senderIndex = getIndexOfObj(accountKeys, sender);
             amount = (ref2$ = getSentAmount(txData)[sender]) != null ? ref2$ : 0;
           }
           if (type === "delegate") {
             sender = instructions[0].parsed.info.stakeAccount;
             receiver = instructions[0].parsed.info.voteAccount;
             hash = transaction.signatures[0];
-            senderIndex = getIndexOfObj(accountKeys, sender);
             amount = (ref2$ = getSentAmount(txData)[sender]) != null ? ref2$ : 0;
           }
           if (type === "createAccountWithSeed") {
@@ -511,8 +509,8 @@
           }
           if (type === "withdraw") {
             sender = (ref2$ = instructions[0].parsed.info.stakeAccount) != null
-              ? ref2$
-              : instructions[0].parsed.info.stakeAccount;
+                ? ref2$
+                : instructions[0].parsed.info.stakeAccount;
             receiver = instructions[0].parsed.info.withdrawAuthority;
             amount = instructions[0].parsed.info.lamports;
             hash = transaction.signatures[0];

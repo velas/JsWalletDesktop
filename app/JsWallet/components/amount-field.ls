@@ -141,7 +141,7 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, toke
         value = (value ? "0").toString()
         res = value.split(DECIMAL_SEPARATOR)
         value.index-of(DECIMAL_SEPARATOR) > -1 and (res.length > 1 and res[1] is "")
-    react.create-element 'div', { className: 'input-area input-area-2047551402' }, children = 
+    react.create-element 'div', { className: 'input-area input-area-2107940614' }, children = 
         react.create-element CurrencyInput, { style: input-style, key: "amount", allowDecimals: yes, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield" }
         react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
             react.create-element 'img', { src: "#{wallet.coin.image}", className: 'icon' }

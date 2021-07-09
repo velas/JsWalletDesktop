@@ -122,7 +122,6 @@ class VelasStaking {
         const voteAccounts = await this.connection.getVoteAccounts();
 
         const validators = voteAccounts.current.concat(voteAccounts.delinquent);
-        console.log("validators", validators);
 
         for (var i in validators) {
             validators[i].key   = validators[i].votePubkey;

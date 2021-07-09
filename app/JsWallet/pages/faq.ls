@@ -1091,7 +1091,7 @@ item = (store, web3t)->
                         """How many wallets can be created?"""
                     if active-item is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str1" }, children = 
                                 react.create-element 'span', {}, ' There are no limits to the number of wallets you can create.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1101,7 +1101,7 @@ item = (store, web3t)->
                         """How do I stake with my web wallet?"""
                     if active-item2 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str2" }, children = 
                                 react.create-element 'span', {}, ' To become a delegate in the staking pool, you must have a minimum amount of 10,000 VLX or to run your own masternode you must have a minimum amount of 1,000,000 VLX.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1111,7 +1111,7 @@ item = (store, web3t)->
                         """Just started staking but can’t see tokens?"""
                     if active-item3 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str3" }, children = 
                                 react.create-element 'span', {}, ' Don’t worry your tokens are helping support the network. You can look at you stake in the rewards section after you click on your staking pool'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1121,11 +1121,11 @@ item = (store, web3t)->
                         """What kind of security features does Velas incorporate?"""
                     if active-item4 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str4" }, children = 
                                 react.create-element 'span', {}, ' We are constantly updating and implementing new security features to make sure your tokens are safe.'
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str5" }, children = 
                                 react.create-element 'span', {}, ' When you first create your new wallet you must create a pin code to login to your wallet.'
-                            react.create-element 'li', { className: 'attention' }, children = 
+                            react.create-element 'li', { key: "str6", className: 'attention' }, children = 
                                 react.create-element 'span', {}, ' You are then given a 12(24)-word seed phrase with a printable seed phrase sheet, so you can store your seed phrase somewhere safe and secure.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1135,7 +1135,7 @@ item = (store, web3t)->
                         """What do I do if I lose my pin?"""
                     if active-item5 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str7" }, children = 
                                 react.create-element 'span', {}, ' If you can’t remember what your pin is and/or you lost your pin, do worry you can always recover your wallet with your 12(24)-word seed phrase.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1145,7 +1145,7 @@ item = (store, web3t)->
                         """How do I recover my web wallet?"""
                     if active-item6 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str8" }, children = 
                                 react.create-element 'span', {}, ' You can recover your wallet with your 12(24)-word phrase.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1155,7 +1155,7 @@ item = (store, web3t)->
                         """What type of digital assets can I store in my wallet?"""
                     if active-item7 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str9" }, children = 
                                 react.create-element 'span', {}, ' Why have more than one wallet for your assets, so we created an all-in-one multi-currency wallet. Some of the assets you can store are BTC, ETH, ERC-20 Tokens, EOS, TRX and many more to come.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1165,7 +1165,7 @@ item = (store, web3t)->
                         """What do I do if I lose my seed phrase?"""
                     if active-item8 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', { className: 'placeholder' }, children = 
+                            react.create-element 'li', { key: "str10", className: 'placeholder' }, children = 
                                 react.create-element 'span', {}
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1175,7 +1175,7 @@ item = (store, web3t)->
                         """What does “export private key” mean? """
                     if active-item9 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str11" }, children = 
                                 react.create-element 'span', {}, ' All your private keys are securely stored in the network, you are the only one that can see your keys. So if you ever need your keys for any asset you can simply type the ticker symbol and your keys will be copied to your clipboard.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1185,7 +1185,7 @@ item = (store, web3t)->
                         """What does the account index mean?"""
                     if active-item10 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', { className: 'placeholder' }, children = 
+                            react.create-element 'li', { key: "str12", className: 'placeholder' }, children = 
                                 react.create-element 'span', {}
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1195,7 +1195,7 @@ item = (store, web3t)->
                         """What is Voogle?"""
                     if active-item11 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str13" }, children = 
                                 react.create-element 'span', {}, ' Voogle, is like Google but for dApps! We will have an extensive amount of dApps being built on our network. So we made it easy to find your favorite dApp and made it easy to discover new ones.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1205,7 +1205,7 @@ item = (store, web3t)->
                         """How do I check my other wallets?"""
                     if active-item12 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str14" }, children = 
                                 react.create-element 'span', {}, ' In your dashboard, there is a section that says “WALLETS” directly across from it is a drop-down menu with your other wallets.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1215,7 +1215,7 @@ item = (store, web3t)->
                         """How do I send and receive coins/tokens from my wallet?"""
                     if active-item13 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "str15" }, children = 
                                 react.create-element 'span', {}, ' When in your wallet dashboard, click the wallet you desire to send coins/tokens from, then on the right side of the page there will be '
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1225,7 +1225,7 @@ item = (store, web3t)->
                         """What is the Staking, Your Node page?"""
                     if active-item14 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', { className: 'placeholder' }, children = 
+                            react.create-element 'li', { key: "str16", className: 'placeholder' }, children = 
                                 react.create-element 'span', {}
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1235,7 +1235,7 @@ item = (store, web3t)->
                         """What is the Staking, Delegate page?"""
                     if active-item15 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', { className: 'placeholder' }, children = 
+                            react.create-element 'li', { key: "str17", className: 'placeholder' }, children = 
                                 react.create-element 'span', {}
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1245,7 +1245,7 @@ item = (store, web3t)->
                         """What is the Staking, Info page?"""
                     if active-item16 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', { className: 'placeholder' }, children = 
+                            react.create-element 'li', { key: "str18", className: 'placeholder' }, children = 
                                 react.create-element 'span', {}
 item2 = (store, web3t)->
     lang = get-lang store
@@ -1332,7 +1332,7 @@ item2 = (store, web3t)->
                         """How much VLX do you need to become a delegate?"""
                     if active-item is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "answer1" }, children = 
                                 react.create-element 'span', {}, ' A minimum of 10,000 VLX'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1342,7 +1342,7 @@ item2 = (store, web3t)->
                         """How much VLX do you need to run a node?"""
                     if active-item2 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "answer2" }, children = 
                                 react.create-element 'span', {}, ' A minimum of 1,000,000 VLX'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1352,7 +1352,7 @@ item2 = (store, web3t)->
                         """How much VLX do you need to pool stake?"""
                     if active-item3 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "answer3" }, children = 
                                 react.create-element 'span', {}, ' On our Web Wallet 2.0, you will need a minimum of 10,000 VLX and/or if you have a smaller amount you can also pool stake with one of our exchange partners..'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1362,7 +1362,7 @@ item2 = (store, web3t)->
                         """How long do you need to stake for?"""
                     if active-item4 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "answer4" }, children = 
                                 react.create-element 'span', {}, ' The staking time period is 30 days'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { className: 'source' }, children = 
@@ -1372,7 +1372,7 @@ item2 = (store, web3t)->
                         """How many people can stake in one pool?"""
                     if active-item5 is \active
                         react.create-element 'ul', { className: 'answer' }, children = 
-                            react.create-element 'li', {}, children = 
+                            react.create-element 'li', { key: "answer5" }, children = 
                                 react.create-element 'span', {}, ' There is no limit to the number of delegates per staking pool.'
 item3 = (store, web3t)->
     lang = get-lang store
@@ -1651,20 +1651,20 @@ faq = ({ store, web3t })->
                 react.create-element 'div', { style: border-right, className: 'section filter' }, children = 
                     react.create-element 'div', { className: 'tabs' }, children = 
                         react.create-element 'ul', { style: border-style3 }, children = 
-                            react.create-element 'li', { on-click: activate-item, className: "#{active-item}" }, children = 
+                            react.create-element 'li', { key: "activate-item2", on-click: activate-item, className: "#{active-item}" }, children = 
                                 react.create-element 'div', { className: 'dot' }
                                 react.create-element 'span', {}, ' Web Wallet'
                                 react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg' }
-                            react.create-element 'li', { on-click: activate-item2, className: "#{active-item2}" }, children = 
+                            react.create-element 'li', { key: "activate-item22", on-click: activate-item2, className: "#{active-item2}" }, children = 
                                 react.create-element 'div', { className: 'dot' }
                                 react.create-element 'span', {}, ' Pool Staking'
                                 react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg' }
                             if no    
-                                react.create-element 'li', { on-click: activate-item3, className: "#{active-item3}" }, children = 
+                                react.create-element 'li', { key: "activate-item3", on-click: activate-item3, className: "#{active-item3}" }, children = 
                                     react.create-element 'div', { className: 'dot' }
                                     react.create-element 'span', {}, ' Backup / Restore'
                                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg' }
-                                react.create-element 'li', { on-click: activate-item4, className: "#{active-item4}" }, children = 
+                                react.create-element 'li', { key: "activate-item4", on-click: activate-item4, className: "#{active-item4}" }, children = 
                                     react.create-element 'div', { className: 'dot' }
                                     react.create-element 'span', {}, ' Others'
                                     react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg' }

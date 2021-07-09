@@ -134,7 +134,7 @@ as-callback = (p, cb)->
 #                     border: none
 cb = console.log
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
 export paginate = (array, per-page, page)->
     page = page - 1
     array.slice page * per-page, (page + 1) * per-page
@@ -314,7 +314,7 @@ staking-accounts-content = (store, web3t)->
                         if store.staking.accounts.length is 0
                             react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' Please create a staking account before you stake'
                         else 
-                            react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' You can stake more by creating new accounts'
+                            react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' ' + lang.youCanStakeMore
         react.create-element 'div', {}, children = 
             react.create-element 'div', { id: "staking-accounts", className: 'form-group' }, children = 
                 react.create-element 'div', { className: 'section' }, children = 

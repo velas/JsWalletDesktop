@@ -14,6 +14,7 @@ require! {
     \../web3t/plugins/usdt_erc20.json : usdt_erc20
     \../web3t/plugins/vlx-coin.js : vlx_evm   
     \../web3t/plugins/vlx_erc20-coin.js : vlx_erc20
+    #\../web3t/plugins/gobyte-coin.js : gbx
 }
 current-configs = { eth, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, vlx_evm}
 required-fields = <[ type token enabled ]>

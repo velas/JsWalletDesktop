@@ -67,4 +67,4 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, titl
         on-change { target: { value } }
     react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
         react.create-element 'div', { className: 'label lusd' }, ' $'
-        react.create-element CurrencyInput, { key: "amount-usd", style: just-crypto-background, allowDecimals: yes, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield amount-usd" }
+        react.create-element CurrencyInput, { key: "amount-usd", style: just-crypto-background, allowDecimals: yes, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, disabled: disabled, className: "textfield amount-usd" }

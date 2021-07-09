@@ -762,9 +762,9 @@ video = (store, web3t)->
                 react.create-element 'iframe', { width: '560', height: '315', src: 'https://www.youtube.com/embed/USGLlp-zfhI', frameborder: '0', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: '' }
                 react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                 react.create-element 'ul', { className: 'stat' }, children = 
-                    react.create-element 'li', {}, children = 
+                    react.create-element 'li', { key: "custom-views11" }, children = 
                         react.create-element 'span', {}, ' 1.4K views'
-                    react.create-element 'li', {}, children = 
+                    react.create-element 'li', { key: "custom-views12" }, children = 
                         react.create-element 'span', {}, ' 8 mounths ago'
             add-comments store, web3t
             comments store, web3t
@@ -782,9 +782,9 @@ add-comments = (store, web3t)->
         react.create-element 'span', { className: 'action' }, children = 
             react.create-element 'input', { type: "text", placeholder: "Leave a comment", vlue: "Leave a comment" }
             react.create-element 'ul', { className: 'stat' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "cancel3" }, children = 
                     react.create-element 'button', {}, ' Cancel'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "leavecomment" }, children = 
                     react.create-element 'button', { style: button-primary1-style }, ' Leave a Comment'
 comments = (store, web3t)->
     lang = get-lang store
@@ -794,21 +794,21 @@ comments = (store, web3t)->
             react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
         react.create-element 'span', { className: 'action' }, children = 
             react.create-element 'ul', { className: 'stat' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "velasnetworkag" }, children = 
                     react.create-element 'span', { className: 'user' }, ' Velas Network AG'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "velasnetworkag-date" }, children = 
                     react.create-element 'span', {}, ' 1 week ago'
             react.create-element 'div', { className: 'header' }, ' There will be any comment on this video..'
             react.create-element 'ul', { className: 'rating' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "rating-like" }, children = 
                     react.create-element 'img', { src: "#{icons.img-like}", className: 'like' }
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "counts" }, children = 
                     react.create-element 'span', {}, ' 124'
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "dislikes" }, children = 
                     react.create-element 'img', { src: "#{icons.img-like}", className: 'dislike' }
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "custom-empty" }, children = 
                     react.create-element 'span', {}
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "reply-leave" }, children = 
                     react.create-element 'span', { className: 'action' }, ' REPLY'
 next = (store, web3t)->
     lang = get-lang store
@@ -885,9 +885,9 @@ next = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas logo" }, children = 
                             react.create-element 'span', {}, ' Velas'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas views" }, children = 
                             react.create-element 'span', {}, ' 122 views • 5 days ago'
 similarvideo = (store, web3t)->
     lang = get-lang store
@@ -956,9 +956,9 @@ similarvideo = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-expl-video" }, children = 
                             react.create-element 'span', {}, ' Velas'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-views" }, children = 
                             react.create-element 'span', {}, ' 1.4K views • 8 days ago'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -968,9 +968,9 @@ similarvideo = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-logo2" }, children = 
                             react.create-element 'span', {}, ' Velas'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-ago2" }, children = 
                             react.create-element 'span', {}, ' 122 views • 5 days ago'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -980,9 +980,9 @@ similarvideo = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-logo4" }, children = 
                             react.create-element 'span', {}, ' Velas'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "velas-ago5" }, children = 
                             react.create-element 'span', {}, ' 1.4K views • 8 days ago'
 videodetails = ({ store, web3t })->
     lang = get-lang store
