@@ -23,7 +23,7 @@ export testnet =
     mask: \0x0000000000000000000000000000000000000000
     api:
         provider: \eth
-        web3Provider : \https://ropsten.infura.io/v3/009278d1b77a4af48536f1f772926648
+        web3Provider : \https://ropsten.infura.io/v3/843d2e25655c47c7851744f65ce95837
         url : \https://ropsten.etherscan.io
         apiUrl : \https://api-ropsten.etherscan.io/api
 export color = \#71DF8F
