@@ -2,15 +2,15 @@
 (function(){
   var react, projectLinks, menuFuncs, getPrimaryInfo, getLang, icon, loading, navigate, setupPages, icons;
   react = require('react');
-  projectLinks = require('./project-links.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  loading = require('./loading.ls');
-  navigate = require('../navigate.ls');
-  setupPages = require('../setup-pages.ls');
-  icons = require('../icons.ls');
+  projectLinks = require('./project-links.js');
+  menuFuncs = require('../menu-funcs.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  loading = require('./loading.js');
+  navigate = require('../navigate.js');
+  setupPages = require('../setup-pages.js');
+  icons = require('../icons.js');
   module.exports = function(store, web3){
     var ref$, current, openAccount, lock, walletStyle, info, activateS1, activateS2, activateS3, switchNetwork, refresh, style, wallets, search, settings, filestorage, staking, resources, stakingActive, delegateActive, infoActive, menuStyle, iconStyle, lockStyle, lang, syncing, borderStyle, logoStyle, expandCollapse, langsMenuBody, walletIcon, commingSoon, iconNode, lockIcon, textStyle, gotoSettings, gotoSearch, wallet, gotoStaking, gotoChooseStaker, gotoInfo, gotoSupport, openSubmenu, menuStaking, menuOut, showMobile, close, children;
     if (store == null || in$(store.current.page, setupPages)) {
@@ -98,7 +98,7 @@
       return store.menu.show = false;
     };
     gotoChooseStaker = function(){
-      navigate(store, web3t, 'choosestaker');
+      navigate(store, web3t, 'validators');
       return store.menu.show = false;
     };
     gotoInfo = function(){
@@ -126,7 +126,7 @@
       return store.menu.show = false;
     };
     return react.createElement('div', {
-      className: showMobile + " mobile-menu mobile-menu1893277218"
+      className: showMobile + " mobile-menu mobile-menu1180085679"
     }, children = react.createElement('div', {
       style: borderStyle,
       className: showMobile + " content"
@@ -144,48 +144,13 @@
           style: walletIcon
         }), react.createElement('label', {}, ' ' + lang.yourWallets)
       ]) : void 8 : void 8, store.preference.settingsVisible === true ? store.current.device === 'mobile' ? react.createElement('div', {
-        onClick: openSubmenu,
+        onClick: gotoChooseStaker,
         style: iconStyle,
-        className: (staking + ' ' + menuStaking + ' ' + infoActive + ' ' + stakingActive + ' ' + delegateActive) + " menu-item"
+        className: staking + " menu-item"
       }, children = [
-        react.createElement('div', {
-          className: 'plus'
-        }, children = icon('X', 20)), react.createElement('div', {
-          className: 'dash'
-        }, children = icon('Dash', 20)), react.createElement('img', {
+        react.createElement('img', {
           src: icons.staking + ""
-        }), react.createElement('label', {}, ' ' + lang.staking), react.createElement('div', {
-          className: 'menu arrow_box'
-        }, children = react.createElement('ul', {}, children = [
-          react.createElement('li', {
-            onClick: gotoStaking,
-            style: iconStyle,
-            className: stakingActive + ""
-          }, children = [
-            react.createElement('img', {
-              src: icons.node + "",
-              style: iconNode
-            }), " " + lang.installNode
-          ]), react.createElement('li', {
-            onClick: gotoChooseStaker,
-            style: iconStyle,
-            className: delegateActive + ""
-          }, children = [
-            react.createElement('img', {
-              src: icons.delegate + "",
-              style: iconNode
-            }), " " + lang.delegateStake
-          ]), react.createElement('li', {
-            onClick: gotoInfo,
-            style: iconStyle,
-            className: infoActive + ""
-          }, children = [
-            react.createElement('img', {
-              src: icons.info + "",
-              style: iconNode
-            }), " " + lang.stats
-          ])
-        ]))
+        }), react.createElement('label', {}, ' ' + lang.staking)
       ]) : void 8 : void 8, store.preference.settingsVisible === true ? store.current.device === 'mobile' ? react.createElement('div', {
         onClick: gotoSearch,
         style: iconStyle,

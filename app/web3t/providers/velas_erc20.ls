@@ -58,7 +58,7 @@ export isValidAddress =  ({ address }, cb)->
 get-ethereum-fullpair-by-index = (mnemonic, index, network)->
     seed = bip39.mnemonic-to-seed(mnemonic)
     wallet = hdkey.from-master-seed(seed)
-    w = wallet.derive-path("m0").derive-child(index).get-wallet!
+    w = wallet.derive-path("m/44'/60'/"+index+"'/0/0").get-wallet!
     address = \0x + w.get-address!.to-string(\hex)
     vlx-address = ethToVlx w.get-address!.to-string(\hex)    
     private-key = w.get-private-key-string!
@@ -82,7 +82,6 @@ make-query = (network, method, params, cb)->
         id : 1
         method
         params
-        secret: \494f6287e5974752bbc4281598c3993f    
     }
     err, data <- post web3-provider, query .end
     return cb "query err: #{err.message ? err}" if err?
@@ -103,15 +102,20 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx-data?from, tx-data?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas }, cb)->
+get-gas-estimate = ({ network, query, gas, swap }, cb)->
+    if ((network?api?web3Provider ? "").indexOf("ropsten") is -1)
+        gas = 
+            | swap is yes => 200000 
+            | _ => 50000 
     return cb null, gas if gas?
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 1000000 if err?
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
+    return cb null, 200000 if err?
     estimate-normal = from-hex(estimate)
-    return cb null, 1000000 if +estimate-normal < 1000000
+    return cb null, 35000 if estimate-normal < 35000     
     cb null, estimate-normal
-export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
+    
+    
+export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas, swap }, cb)->
     return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
@@ -127,9 +131,7 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     console.error "calc-fee from address #{err}" if err?
     return cb "Given address is not valid Velas address" if err?
     query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, gas }
-    return cb err if err?
-    #return cb "estimate gas err: #{err.message ? err}" if err?
+    err, estimate <- get-gas-estimate { network, query, swap }
     res = gas-price `times` estimate
     val = res `div` dec
     cb null, val
@@ -143,6 +145,7 @@ to-hex = ->
 transform-tx = (network, description, t)-->
     { url } = network.api
     dec = get-dec network
+    { FOREIGN_BRIDGE } =  network
     network = \eth
     tx =
         | t.hash? => t.hash
@@ -161,7 +164,12 @@ transform-tx = (network, description, t)-->
     gas-price = t.gas-price ? 0
     fee = gas-used `times` gas-price `div` dec
     recipient-type = if (t.input ? "").length > 3 then \contract else \regular
-    { network, tx, status, amount, fee, time, url, t.from, t.to, recipient-type, description }
+    tx-type =
+        | t.from is \0x0000000000000000000000000000000000000000 => "EVM → ETHEREUM Swap"
+        | up(t.to) is up(FOREIGN_BRIDGE ? "") => "ETHEREUM → EVM Swap"   
+        | _ => null  
+    from = t.from
+    { network, tx, status, amount, fee, time, url, from, t.to, recipient-type, description, tx-type }
 get-internal-transactions = ({ network, address }, cb)->
     err, address <- to-eth-address address
     return cb err if err?
@@ -204,6 +212,10 @@ get-external-transactions = ({ network, address }, cb)->
     txs =
         result.result |> map transform-tx network, 'external'
     cb null, txs
+    
+up = (s)->
+    (s ? "").to-upper-case!
+    
 export get-transactions = ({ network, address }, cb)->
     { api-url } = network.api
     module = \account
@@ -220,7 +232,8 @@ export get-transactions = ({ network, address }, cb)->
     return cb "Unexpected result" if typeof! result?result isnt \Array
     txs =
         result.result
-            #|> filter -> it.contract-address is network.address
+            |> filter -> 
+                up(it.contract-address) is up(network.address) and up(it.tokenSymbol) is \VLX
             |> uniqueBy (-> it.hash)
             |> map transform-tx network, 'external' 
     cb null, txs
@@ -248,14 +261,15 @@ export get-contract-transactions = ({ network, address }, cb)->
 get-dec = (network)->
     { decimals } = network
     10^decimals
-calc-gas-price = ({ fee-type, network, gas-price }, cb)->
-    return cb null, gas-price if gas-price?
-    return cb null, 22000 if fee-type is \cheap
+export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->
+    GAS_PRICE_AVERAGE = 69000000000
+    return cb null, gas-price if gas-price? and ((network?api?web3Provider ? "").indexOf("ropsten") is -1)
+    return cb null, GAS_PRICE_AVERAGE if ((network?api?web3Provider ? "").indexOf("ropsten") is -1)        
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
-    return cb null, 22000 if +price < 22000
     cb null, price
+    
 try-get-latest = ({ network, account }, cb)->
     err, address <- to-eth-address account.address
     return cb err if err?
@@ -278,13 +292,11 @@ is-address = (address) ->
         true
 get-contract-instance = (web3, network, swap)->
     abi = ERC20BridgeToken.abi 
-    addr = 
-        | swap? => network.address
-        | _ => network.ERC20BridgeToken 
-    web3.eth.contract(abi).at(addr)
+    web3.eth.contract(abi).at(network.address)
+    
+    
 export create-transaction = (config, cb)-->
-    console.log "[erc20 create-transaction]"    
-    { network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas, swap, chainId } = config 
+    { network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas, swap } = config 
     return cb "address in not correct ethereum address" if not is-address recipient
     web3 = get-web3 network
     dec = get-dec network
@@ -299,29 +311,38 @@ export create-transaction = (config, cb)-->
     value = to-wei amount
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
-    gas-minimal = to-wei-eth(amount-fee) `div` gas-price
-    gas-estimate = round ( gas-minimal `times` 5 )
+    
+    gas-estimate =                                      
+        |  +gas-price is 0 => 0
+        | _ => round(to-wei(amount-fee) `div` gas-price)
+    
     err, balance <- get-eth-balance { network, address: account.address }
     return cb err if err?
-    fee-in = network.txFeeIn.to-upper-case!    
+    fee-in = network.txFeeIn.to-upper-case! 
+    err, chainId <- make-query network, \eth_chainId , []
+    return cb err if err?   
     return cb "Not enought balance on #{fee-in} wallet to send tx with fee #{amount-fee}" if +balance < +amount-fee
-    _data =
+    
+    $data =
+        | config.data? and config.data isnt "0x" => config.data    
         | swap? => contract.transferAndCall.get-data(recipient, value, "0x") 
         | contract.methods? => contract.methods.transfer(recipient, value).encodeABI!      
         | _ => contract.transfer.get-data(recipient, value) 
-    _recipient = 
-        | swap? => recipient
-        | _ => network.ERC20BridgeToken  
+    
+    $recipient =
+        | data? and data isnt "0x" => recipient
+        | _ => network.address  
+        
     configs = 
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
         gas: to-hex gas-estimate
-        to: _recipient 
+        to: $recipient
         from: account.address
-        data: config.data || _data || "0x"    
+        data:  $data
         chainId: chainId 
-    console.log "Last data before parse:"  configs     
+        
     tx = new Tx(configs)
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex
@@ -385,3 +406,12 @@ export get-peer-count = ({ network }, cb)->
     err, estimate <- make-query network, \net_getPeerCount , [ ]
     return cb err if err?
     return cb null, estimate
+    
+export get-market-history-prices = (config, cb)->
+    { network, coin } = config  
+    {market} = coin    
+    err, resp <- get market .timeout { deadline } .end
+    return cb "cannot execute query - err #{err.message ? err }" if err?
+    err, result <- json-parse resp.text
+    return cb err if err?
+    cb null, result

@@ -6,17 +6,17 @@
   render = require('react-dom').render;
   react = require('react');
   patchCrypto = require('./patch-crypto.js');
-  app = require('./app.ls');
-  dataScheme = require('./data-scheme.ls');
-  window = require('./browser/window.ls');
-  web3 = require('./web3.ls');
-  autodetectLang = require('./autodetect-lang.ls');
-  getDevice = require('./get-device.ls');
-  getSize = require('./get-size.ls');
-  startService = require('./background/background-task.ls').startService;
-  renderError = require('./render-error.ls');
-  scamWarning = require('./scam-warning.ls');
-  serviceWorker = require('./service-worker.ls');
+  app = require('./app.js');
+  dataScheme = require('./data-scheme.js');
+  window = require('./browser/window.js');
+  web3 = require('./web3.js');
+  autodetectLang = require('./autodetect-lang.js');
+  getDevice = require('./get-device.js');
+  getSize = require('./get-size.js');
+  startService = require('./background/background-task.js').startService;
+  renderError = require('./render-error.js');
+  scamWarning = require('./scam-warning.js');
+  serviceWorker = require('./service-worker.js');
   isAllowedContext = function(){
     if (window === window.parent) {
       return true;

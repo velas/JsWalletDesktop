@@ -4,7 +4,7 @@
   Web3 = require('web3');
   networks = {
     mainnet: 'https://explorer.velas.com/rpc',
-    testnet: 'https://explorer.testnet.veladev.net/rpc'
+    testnet: 'https://explorer.testnet.velas.com/rpc'
   };
   module.exports = function(store){
     var network, web3;

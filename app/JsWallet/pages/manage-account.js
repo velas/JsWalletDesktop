@@ -2,12 +2,12 @@
 (function(){
   var react, menuFuncs, naming, getPrimaryInfo, getLang, icon, navigate, switchAccount, namingPart, manageAccount;
   react = require('react');
-  menuFuncs = require('../menu-funcs.ls');
-  naming = require('./naming.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  navigate = require('../navigate.ls');
+  menuFuncs = require('../menu-funcs.js');
+  naming = require('./naming.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  navigate = require('../navigate.js');
   switchAccount = function(store, web3t){
     var ref$, accountLeft, accountRight, changeAccountIndex, style, inputStyle, color, buttonPrimary2Style, children;
     ref$ = menuFuncs(store, web3t), accountLeft = ref$.accountLeft, accountRight = ref$.accountRight, changeAccountIndex = ref$.changeAccountIndex;
@@ -186,7 +186,7 @@
     };
     lang = getLang(store);
     return react.createElement('div', {
-      className: 'manage-account manage-account1726745763'
+      className: 'manage-account manage-account-1411573454'
     }, children = react.createElement('div', {
       style: accountBodyStyle,
       className: 'account-body'

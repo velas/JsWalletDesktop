@@ -1,23 +1,27 @@
 require! {
-    \./plugins/btc-coin.js : btc
-    \./plugins/dash-coin.js : dash
-    \./plugins/eth-coin.js : eth
-    \./plugins/etc-coin.js : etc
-    \./plugins/symblox.js : symblox
-    \./plugins/symblox-v2.js : symblox
-    \./plugins/ltc-coin.js : ltc
-    #\./plugins/xem-coin.js : xem
-    #\./plugins/xrp-coin.js : xrp
-    \./plugins/usdt-coin.js : usdt
-    \./plugins/sol-coin.js : sol
+    \./plugins/btc-coin.ls : btc
+    \./plugins/eth-coin.ls : eth
+    \./plugins/eth-legacy-coin.ls : eth_legacy
+    \./plugins/symblox.ls : symblox
+    \./plugins/symblox-v2.ls : symblox-v2
+    \./plugins/ltc-coin.ls : ltc
+    \./plugins/usdt-coin.ls : usdt
+    \./plugins/sol-coin.ls : sol
     \./plugins/vlx_erc20-coin.ls : vlx_erc20
-    \./plugins/vlx-coin.js : vlx
-    #\./plugins/eos-coin.js : eos
-    #\./plugins/xlm-coin.js : xlm
-    #\./plugins/trx-coin.js : trx
-    #\./plugins/xmr-coin.js : xmr
-    #\./plugins/qiwi-coin.js : qiwi_token
-    #\./plugins/ym-coin.js : ym_token
+    \./plugins/vlx-coin.ls : vlx
+    \./plugins/vlx-evm-legacy-coin.ls : vlx_evm_legacy
+    \./plugins/bnb-coin.ls : bnb
+    \./plugins/vlx_busd-coin.ls : vlx_busd
+    \./plugins/busd-coin.ls : busd
+    \./plugins/huobi-coin.ls : huobi
+    \./plugins/vlx-huobi-coin.ls : vlx_huobi
+    \./plugins/vlx-usdt-coin.ls : vlx_usdt
+    \./plugins/vlx-eth-coin.ls : vlx_eth
+    \./plugins/usdt_erc20_legacy-coin.ls : usdt_erc20_legacy
+    \./plugins/usdc-coin.ls : usdc
+    \./plugins/vlx_usdc-coin.ls : vlx_usdc
+    \./plugins/bsc-vlx-coin.ls : bsc_vlx
+    
     \prelude-ls : { obj-to-pairs, pairs-to-obj, filter }
 }
 only-coins = (plugins)->
@@ -30,6 +34,6 @@ extend-coins = (coins, config)->
     coins <<<< only-coins config.plugins
 module.exports = (config, cb)->
     #eos
-    def = { btc, dash, eth, ltc, usdt, etc, vlx_erc20, sol, vlx, symblox, symblox-v2  }
+    def = { btc, eth, ltc, usdt, vlx_erc20, sol, vlx, symblox, symblox-v2, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt, eth_legacy, usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }
     extend-coins def, config
     cb null, def

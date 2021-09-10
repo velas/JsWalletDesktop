@@ -2,13 +2,13 @@
 (function(){
   var react, seedmem, web3, getLang, getPrimaryInfo, desktop, mobile, signTransaction, wallets, choise, toString$ = {}.toString;
   react = require('react');
-  seedmem = require('../seed.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  desktop = require('./wallets-desktop.ls');
-  mobile = require('./wallets-mobile.ls');
-  signTransaction = require('../components/sign-transaction.ls');
+  seedmem = require('../seed.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  desktop = require('./wallets-desktop.js');
+  mobile = require('./wallets-mobile.js');
+  signTransaction = require('../components/sign-transaction.js');
   wallets = function(arg$){
     var store, web3t, func;
     store = arg$.store, web3t = arg$.web3t;
@@ -33,12 +33,19 @@
     if ((ref1$ = store.current.send) != null) {
       ref1$.txType = 'regular';
     }
+    store.current.send.swap = false;
+    store.current.send.chosenNetwork = null;
     if (store.current.account != null) {
       return cb(null);
     }
     seedmem.mnemonic = seedmem.get();
     return web3t.init(function(err){
-      return cb(null);
+      cb(null);
+      return setImmediate(function(){
+        if (store.urlHashParams.page != null) {
+          return store.current.page = store.urlHashParams.page;
+        }
+      });
     });
   };
   wallets.focus = function(arg$, cb){

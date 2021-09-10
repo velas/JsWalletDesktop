@@ -2,13 +2,13 @@
 (function(){
   var react, getLang, getPrimaryInfo, historyFuncs, switchAccount, icons, claimStake, burger;
   react = require('react');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  historyFuncs = require('../history-funcs.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  claimStake = require('./claim-stake.ls');
-  burger = require('../components/burger.ls');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  historyFuncs = require('../history-funcs.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  claimStake = require('./claim-stake.js');
+  burger = require('../components/burger.js');
   module.exports = function(arg$){
     var store, web3t, lang, goBack, gotoSearch, info, style, borderStyle, borderStyle2, borderRight, buttonPrimary2Style, headerTableStyle, lightText, children;
     store = arg$.store, web3t = arg$.web3t;

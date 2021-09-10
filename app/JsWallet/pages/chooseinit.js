@@ -2,13 +2,13 @@
 (function(){
   var react, newseedFuncs, getLang, getPrimaryInfo, icon, icons, navigate, chooseLanguage, newseed, focus;
   react = require('react');
-  newseedFuncs = require('../newseed-funcs.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icon = require('./icon.ls');
-  icons = require('../icons.ls');
-  navigate = require('../navigate.ls');
-  chooseLanguage = require('./choose-language.ls');
+  newseedFuncs = require('../newseed-funcs.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icon = require('./icon.js');
+  icons = require('../icons.js');
+  navigate = require('../navigate.js');
+  chooseLanguage = require('./choose-language.js');
   newseed = function(arg$){
     var store, web3t, lang, style, ref$, generateSeed, next, textStyle, btnIcon, addressInput, buttonPrimary2Style, buttonPrimary3Style, logoStyle, expandCollapse, langsMenuBody, setLang, commingSoon, newWallet, restoreOption, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -26,7 +26,7 @@
       background: style.app.wallet
     };
     buttonPrimary2Style = {
-      border: "1px solid " + style.app.primary2,
+      border: "0",
       color: style.app.text,
       background: style.app.primary2,
       backgroundColor: style.app.primary2Spare
@@ -68,7 +68,7 @@
       return navigate(store, web3t, ':init');
     };
     return react.createElement('div', {
-      className: 'newseed newseed332852373'
+      className: 'newseed newseed2064620563'
     }, children = [
       react.createElement('div', {
         className: 'logo'
@@ -88,6 +88,7 @@
         react.createElement('button', {
           style: buttonPrimary2Style,
           onClick: newWallet,
+          id: "btn-create",
           className: 'left'
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {
@@ -97,6 +98,7 @@
         ])), react.createElement('button', {
           style: buttonPrimary3Style,
           onClick: restoreOption,
+          id: "btn-restore",
           className: 'right'
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {

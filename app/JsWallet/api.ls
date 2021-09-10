@@ -21,6 +21,9 @@ export get-keys = action (provider, config, cb)->
         return cb err, wallet
     else
         provider.get-keys config, cb
+export get-market-history-prices = action (provider, config, cb)->
+    return cb "getMarketHistoryPrices method is not supported" if typeof! provider.get-market-history-prices isnt \Function
+    provider.get-market-history-prices config, cb
 export get-balance = action (provider, config, cb)->
     provider.get-balance config, cb
 export get-transactions = action (provider, config, cb)->

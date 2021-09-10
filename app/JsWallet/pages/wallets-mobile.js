@@ -2,19 +2,19 @@
 (function(){
   var react, wallet, ref$, map, take, drop, menu, web3, walletsFuncs, manageAccount, tokenMigration, addCoinPage, getLang, getPrimaryInfo, history, icons, icon, mobile;
   react = require('react');
-  wallet = require('./wallet.ls');
+  wallet = require('./wallet.js');
   ref$ = require('prelude-ls'), map = ref$.map, take = ref$.take, drop = ref$.drop;
-  menu = require('./menu.ls');
-  web3 = require('../web3.ls');
-  walletsFuncs = require('../wallets-funcs.ls');
-  manageAccount = require('./manage-account.ls');
-  tokenMigration = require('./token-migration.ls');
-  addCoinPage = require('./add-coin.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  history = require('./history.ls');
-  icons = require('../icons.ls');
-  icon = require('./icon.ls');
+  menu = require('./menu.js');
+  web3 = require('../web3.js');
+  walletsFuncs = require('../wallets-funcs.js');
+  manageAccount = require('./manage-account.js');
+  tokenMigration = require('./token-migration.js');
+  addCoinPage = require('./add-coin.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  history = require('./history.js');
+  icons = require('../icons.js');
+  icon = require('./icon.js');
   mobile = function(arg$){
     var store, web3t, ref$, wallets, goUp, canUp, goDown, canDown, style, lang, borderStyleW, borderStyle, row, leftSide, rightSide, headerStyle, input, headerLeft, borderRight, openAccount, editAccountName, defaultAccountName, editAccount, doneEdit, cancelEditAccountName, currentAccountName, accountName, rotateClass, viewAccountTemplate, editAccountTemplate, chosenAccountTemplate, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -134,7 +134,7 @@
       : editAccountTemplate();
     return react.createElement('div', {
       key: "wallets",
-      className: 'wallet-mobile wallet-mobile-69666813'
+      className: 'wallet-mobile wallet-mobile-823430927'
     }, children = [
       menu({
         store: store,

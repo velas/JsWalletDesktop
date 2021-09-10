@@ -2,12 +2,12 @@
 (function(){
   var react, newseedFuncs, getLang, getPrimaryInfo, icons, ref$, map, find, foldl, unique, take, sortBy, confirm, newseed, random, getVerifier, init, focus;
   react = require('react');
-  newseedFuncs = require('../newseed-funcs.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icons = require('../icons.ls');
+  newseedFuncs = require('../newseed-funcs.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icons = require('../icons.js');
   ref$ = require('prelude-ls'), map = ref$.map, find = ref$.find, foldl = ref$.foldl, unique = ref$.unique, take = ref$.take, sortBy = ref$.sortBy;
-  confirm = require('./confirmation.ls').confirm;
+  confirm = require('./confirmation.js').confirm;
   newseed = function(arg$){
     var store, web3t, lang, ref$, next, save, style, textStyle, addressInput, buttonPrimary1Style, buttonPrimary3Style, btnIcon, seedStyle, newseedStyle, wrongWord, verifySeed, back, onKeyDown, buildVerifySeed, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -96,7 +96,7 @@
       }));
     });
     return react.createElement('div', {
-      className: 'newseed newseed-1353730657'
+      className: 'newseed newseed-1830801947'
     }, children = [
       react.createElement('img', {
         style: newseedStyle,

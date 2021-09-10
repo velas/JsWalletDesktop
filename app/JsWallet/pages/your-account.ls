@@ -322,7 +322,7 @@ module.exports = (store, web3t)->
         if store.current.switch-account
             react.create-element 'div', { style: filter-body, className: 'switch-menu' }, children = 
                 react.create-element 'div', { className: 'middle account' }, children = 
-                    [1 to length] |> map create-account-position
+                    [0 to length] |> map create-account-position
                 react.create-element 'div', { style: border-top, className: 'middle' }, children = 
                     react.create-element 'div', { className: 'table-row-menu' }, children = 
                         react.create-element 'div', { on-click: create-account, className: 'col buttons folder-menu' }, children = 

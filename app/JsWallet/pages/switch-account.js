@@ -2,21 +2,21 @@
 (function(){
   var react, wallet, ref$, map, take, drop, filter, menu, web3, walletsFuncs, manageAccount, tokenMigration, addCoinPage, getLang, getPrimaryInfo, history, yourAccount, icon, localStorage, icons;
   react = require('react');
-  wallet = require('./wallet.ls');
+  wallet = require('./wallet.js');
   ref$ = require('prelude-ls'), map = ref$.map, take = ref$.take, drop = ref$.drop, filter = ref$.filter;
-  menu = require('./menu.ls');
-  web3 = require('../web3.ls');
-  walletsFuncs = require('../wallets-funcs.ls');
-  manageAccount = require('./manage-account.ls');
-  tokenMigration = require('./token-migration.ls');
-  addCoinPage = require('./add-coin.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  history = require('./history.ls');
-  yourAccount = require('./your-account.ls');
-  icon = require('./icon.ls');
+  menu = require('./menu.js');
+  web3 = require('../web3.js');
+  walletsFuncs = require('../wallets-funcs.js');
+  manageAccount = require('./manage-account.js');
+  tokenMigration = require('./token-migration.js');
+  addCoinPage = require('./add-coin.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  history = require('./history.js');
+  yourAccount = require('./your-account.js');
+  icon = require('./icon.js');
   localStorage = require('localStorage');
-  icons = require('../icons.ls');
+  icons = require('../icons.js');
   module.exports = function(store, web3t){
     var ref$, wallets, goUp, canUp, goDown, canDown, style, lang, borderStyle, headerStyle, input, iconColor, icon2, icon3, headerLeft, borderRight, openAccount, openMenu, editAccountName, defaultAccountName, editAccount, doneEdit, cancelEditAccountName, currentAccountName, accountName, rotateClass, showClass, viewAccountTemplate, editAccountTemplate, chosenAccountTemplate, children;
     if (store.current.account == null) {
@@ -140,7 +140,7 @@
       ? viewAccountTemplate()
       : editAccountTemplate();
     return react.createElement('div', {
-      className: 'choose-account choose-account-2062889240'
+      className: 'choose-account choose-account-2129320115'
     }, children = [chosenAccountTemplate, yourAccount(store, web3t)]);
   };
 }).call(this);

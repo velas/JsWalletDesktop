@@ -2,24 +2,24 @@
 (function(){
   var ref$, objToPairs, map, pairsToObj, each, find, keys, guid, waitFormResult, div, plus, times, protect, navigate, useNetwork, getBalance, getTransactionInfo, buildInstall, buildUninstall, buildInstallByName, buildQuickInstall, backgroundRefreshAccount, setAccount, Web3, getRecord, setPageTheme, mirror, getCoins, velasApi, sendFuncs, pages, themes, localStorage, supportedThemes, state, titles, showCases, buildGetBalance, buildUnlock, buildSendTransaction, getContractInstance, buildContract, buildNetworkEthereum, buildOtherNetworks, buildNetworkSpecific, buildGetUsdAmount, buildGetTransactionReceipt, buildApi, buildUse, getApis, refreshApis, setupRefreshTimer, buildGetAccountName, buildGetSupportedTokens, buildGetAddress, slice$ = [].slice, toString$ = {}.toString;
   ref$ = require('prelude-ls'), objToPairs = ref$.objToPairs, map = ref$.map, pairsToObj = ref$.pairsToObj, each = ref$.each, find = ref$.find, keys = ref$.keys;
-  guid = require('./guid.ls');
-  waitFormResult = require('./send-form.ls').waitFormResult;
-  ref$ = require('./math.ls'), div = ref$.div, plus = ref$.plus, times = ref$.times;
+  guid = require('./guid.js');
+  waitFormResult = require('./send-form.js').waitFormResult;
+  ref$ = require('./math.js'), div = ref$.div, plus = ref$.plus, times = ref$.times;
   protect = require('protect');
-  navigate = require('./navigate.ls');
-  useNetwork = require('./use-network.ls');
-  ref$ = require('./api.ls'), getBalance = ref$.getBalance, getTransactionInfo = ref$.getTransactionInfo;
-  ref$ = require('./install-plugin.ls'), buildInstall = ref$.buildInstall, buildUninstall = ref$.buildUninstall, buildInstallByName = ref$.buildInstallByName, buildQuickInstall = ref$.buildQuickInstall;
-  ref$ = require('./refresh-account.ls'), backgroundRefreshAccount = ref$.backgroundRefreshAccount, setAccount = ref$.setAccount;
+  navigate = require('./navigate.js');
+  useNetwork = require('./use-network.js');
+  ref$ = require('./api.js'), getBalance = ref$.getBalance, getTransactionInfo = ref$.getTransactionInfo;
+  ref$ = require('./install-plugin.js'), buildInstall = ref$.buildInstall, buildUninstall = ref$.buildUninstall, buildInstallByName = ref$.buildInstallByName, buildQuickInstall = ref$.buildQuickInstall;
+  ref$ = require('./refresh-account.js'), backgroundRefreshAccount = ref$.backgroundRefreshAccount, setAccount = ref$.setAccount;
   Web3 = require('web3');
-  getRecord = require('./get-record.ls');
-  setPageTheme = require('./set-page-theme.ls');
-  mirror = require('./mirror.ls');
-  getCoins = require('./plugin-loader.ls').getCoins;
-  velasApi = require('./velas/velas-api.ls');
-  sendFuncs = require('./send-funcs.ls');
-  pages = require('./pages.ls');
-  themes = require('./themes.ls');
+  getRecord = require('./get-record.js');
+  setPageTheme = require('./set-page-theme.js');
+  mirror = require('./mirror.js');
+  getCoins = require('./plugin-loader.js').getCoins;
+  velasApi = require('./velas/velas-api.js');
+  sendFuncs = require('./send-funcs.js');
+  pages = require('./pages.js');
+  themes = require('./themes.js');
   localStorage = require('localStorage');
   supportedThemes = map(function(it){
     return it[0];
@@ -70,12 +70,12 @@
   };
   buildSendTransaction = function(store, cweb3, coin){
     return function(tx, cb){
-      var network, to, data, decodedData, value, gas, amount, gasPrice, ref$, id, current, send, amountObtain, amountObtainUsd, amountSendUsd, amountSendFee, amountSendFeeUsd, proposeEscrow, details, amountSend, wallet, sendAnyway, changeAmount, chooseAuto;
+      var network, to, data, decodedData, value, gas, amount, gasPrice, swap, ref$, id, current, send, amountObtain, amountObtainUsd, amountSendUsd, amountSendFee, amountSendFeeUsd, proposeEscrow, details, amountSend, wallet, sendAnyway, changeAmount, chooseAuto;
       network = coin[store.current.network];
       if (toString$.call(tx).slice(8, -1) !== 'Object') {
         return cb("Transaction is required");
       }
-      to = tx.to, data = tx.data, decodedData = tx.decodedData, value = tx.value, gas = tx.gas, amount = tx.amount, gasPrice = tx.gasPrice;
+      to = tx.to, data = tx.data, decodedData = tx.decodedData, value = tx.value, gas = tx.gas, amount = tx.amount, gasPrice = tx.gasPrice, swap = tx.swap;
       if (toString$.call(tx.to).slice(8, -1) !== 'String') {
         return cb("Recipient (to) is required");
       }
@@ -125,14 +125,15 @@
         amountSendFee: amountSendFee,
         amountSendFeeUsd: amountSendFeeUsd,
         proposeEscrow: proposeEscrow,
-        details: details
+        details: details,
+        swap: swap
       });
       ref$ = sendFuncs(store, web3t), sendAnyway = ref$.sendAnyway, changeAmount = ref$.changeAmount, chooseAuto = ref$.chooseAuto;
       chooseAuto();
       return changeAmount(store, amountSend, true, function(){
         var helps;
         navigate(store, cweb3, 'send', false);
-        if (tx.to !== "") {
+        if (tx.to !== "" && (tx.swap != null && tx.value !== 0)) {
           sendAnyway();
         }
         helps = titles.concat([network.mask]);
@@ -398,7 +399,8 @@
       }
       return page.init({
         store: store,
-        web3t: web3t
+        web3t: web3t,
+        callAgain: false
       }, function(){
         if (toString$.call(page.focus).slice(8, -1) !== 'Function') {
           return cb(null);
@@ -422,14 +424,13 @@
         });
       });
     };
-    setTheme = function(it, cb){
+    setTheme = function(it){
       if (!in$(it, supportedThemes)) {
-        return cb("support only dark an light");
+        return;
       }
       store.theme = it;
       localStorage.setItem('theme', it);
       setPageTheme(store, it);
-      return cb(null);
     };
     setLang = function(it, cb){
       if (it !== 'en' && it !== 'ru' && it !== 'uk') {

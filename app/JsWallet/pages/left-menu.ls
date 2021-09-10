@@ -254,8 +254,7 @@ module.exports = (store, web3t)->
     settings = if store.current.page is \settings then \active else \not-active
     filestorage = if store.current.page is \filestorage then \active else \not-active
     staking = if store.current.page is \staking then \active else \not-active
-    staking-active = if store.current.page is \staking then \active else \not-active
-    delegate-active = if store.current.page is \choosestaker then \active else \not-active
+    staking-active = if store.current.page is \validators then \active else \not-active
     info-active = if store.current.page is \info then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
     faq = if store.current.page is \faq then \active else \not-active
@@ -350,6 +349,8 @@ module.exports = (store, web3t)->
         color: style.app.text
     goto-mainnet = ->
         web3t.use \mainnet
+        store.current.wallet-index = 0
+        store.current.group-index = 0    
     goto-wallet = ->
         navigate store, web3t, \wallets
     version = (store, web3t)->
@@ -370,7 +371,7 @@ module.exports = (store, web3t)->
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{delegate-active} menu-item" }, children = 
+                react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{staking-active} menu-item" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
                     react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
             if store.preference.settings-visible is yes
@@ -385,6 +386,10 @@ module.exports = (store, web3t)->
                 react.create-element 'div', { on-click: goto-support, style: icon-style, id: "menu-support", className: 'menu-item' }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
                     react.create-element 'img', { src: "#{icons.support}", style: icon-color }
+            if store.current.network is \devnet
+                react.create-element 'div', { on-click: goto-mainnet, style: icon-style, id: "menu-devnet", className: "#{settings} menu-item testnet" }, children = 
+                    react.create-element 'span', { className: 'arrow_box' }, ' Devnet'
+                    react.create-element 'img', { src: "#{icons.test}", style: icon-color }
             if store.current.network is \testnet
                 react.create-element 'div', { on-click: goto-mainnet, style: icon-style, id: "menu-testnet", className: "#{settings} menu-item testnet" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' Testnet'

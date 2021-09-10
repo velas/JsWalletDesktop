@@ -176,7 +176,6 @@ export create-transaction = (config, cb)->
     to-hex = ->
         new BN(it)
     if swap? and swap is yes then
-        console.log "---> swapNativeToEvm"
         transaction = swapNativeToEvm(pay-account.public-key, amount, recipient)
         transaction.recentBlockhash = recentBlockhash     
     else 
@@ -193,7 +192,6 @@ export create-transaction = (config, cb)->
     encoded = transaction.serialize!.toString('base64') 
     cb null, { raw-tx: encoded }
 export push-tx = (config, cb)--> 
-    console.log "push tx config" config    
     err, result <- make-query config.network, \sendTransaction , [ config.raw-tx, {encoding: 'base64'} ]
     return cb err if err?
     return cb "[push-tx] Error: #{err}" if err?    
@@ -225,18 +223,15 @@ export get-transactions = ({ network, address}, cb)->
     err, result <- make-query network, \getConfirmedSignaturesForAddress2 , [ address, {limit: 20} ]
     return cb err if err?   
     txs = result
-    #console.log "Got raw txs" txs
     return cb null, [] if txs.length is 0 
     #return cb null, [] 
     err, all-txs <- prepare-raw-txs {txs, network, address} 
     return cb err if err?
-    #console.log "Native all-txs" all-txs
     return cb "Unexpected result" if typeof! all-txs isnt \Array                
     cb null, all-txs
 prepare-raw-txs = ({ txs, network, address }, cb)->
     $txs = txs |> sort-by (.blockTime) |> reverse
     err, result <- prepare-txs network, $txs, address
-    console.log "all txs" result.length
     cb null, result
 get-index-of-obj = (arr, pubKey)->
     index = -1
@@ -246,38 +241,52 @@ get-index-of-obj = (arr, pubKey)->
         if it.pubkey is pubKey
             index = count
     index
+    
+    
+cache = 
+    transactions: {}
+    
+get-tx-data = (network, signature, cb)->
+    return cb null, cache.transactions[signature] if cache.transactions[signature]?
+    err, data <- make-query network, \getConfirmedTransaction , [ signature, 'jsonParsed' ]
+    return cb err if err?  
+    cache.transactions[signature] = data 
+    return cb null, data    
+    
 prepare-txs = (network, [tx, ...rest], address, cb)->
     return cb null, [] if not tx?
-    #console.log "prepare-txs" tx
     { blockTime, signature, slot } = tx
-    err, data <- make-query network, \getConfirmedTransaction , [ signature, 'jsonParsed' ]
+    err, data <- get-tx-data network, signature
     console.error "Error occured while fetching tx details for signature:" signature if err?
     t = []
-    #console.log "raw-tx" data
     if not err? and data?
         tx-data = data
         sender = ''
         receiver = ''
         hash = ''
-        senderIndex = ''
         amount = 0
         {fee, err, status} = tx-data.meta
         transaction = tx-data.transaction
         {accountKeys,instructions} = transaction.message
         type = instructions[0]?parsed?type
+        dec = get-dec network
         try
+            if type is "evmTransaction" then
+                { from, to, value, hash } = instructions[0].parsed.info.transaction   
+                sender      = instructions[0].parsed.info.bridgeAccount   
+                receiver    = accountKeys?2?pubkey ? to   
+                amount      = value `div` dec 
+                hash        = transaction?signatures?0 ? hash  
             if type is "assign" then
                 #sender      = instructions[0].parsed.info.owner
                 sender      = instructions[0].parsed.info.account
                 receiver    = instructions[0].parsed.info.owner
                 hash        = transaction.signatures[0]
-                senderIndex = get-index-of-obj(accountKeys, sender)
                 amount      = get-sent-amount(tx-data)[sender] ? 0
             if type is "delegate" then
                 sender      = instructions[0].parsed.info.stakeAccount
                 receiver    = instructions[0].parsed.info.voteAccount
                 hash        = transaction.signatures[0]
-                senderIndex = get-index-of-obj(accountKeys, sender)
                 amount      = get-sent-amount(tx-data)[sender] ? 0
             if type is "createAccountWithSeed" then
                 sender      = instructions[0].parsed.info.base
@@ -328,7 +337,6 @@ prepare-txs = (network, [tx, ...rest], address, cb)->
         _type =
             |  address isnt receiver => "OUT"
             |  _ => "IN"
-        #console.log "#{signature}  address*" type
         recipient-type = \regular
         is-stake = instructions[0]?parsed?type in <[ stake createAccountWithSeed delegate deactivate ]>
         tx-type =
@@ -338,7 +346,8 @@ prepare-txs = (network, [tx, ...rest], address, cb)->
                 "create stake account".to-upper-case!
             | type? and type not in <[ transfer assign ]> => type.to-upper-case!
             | type? and type in <[ assign ]> and receiver is "EVM1111111111111111111111111111111111111111" =>
-                "Swap Native to EVM"
+                "Native → EVM Swap"
+            | instructions[0]?programId is "EVM1111111111111111111111111111111111111111" => "EVM → Native Swap"   
             | _ => null
         _tx = {
             tx: hash
@@ -353,8 +362,6 @@ prepare-txs = (network, [tx, ...rest], address, cb)->
             recipient-type
             tx-type: tx-type
         }
-        #console.log "Tx:" _tx
-        #console.log "________________________________"
         t = [_tx]
     err, other <- prepare-txs network, rest, address 
     all =  t ++ other
@@ -407,4 +414,13 @@ export get-transaction-info = (config, cb)->
         #| tx.status is \0x1 => \reverted
         | _ => \pending
     result = { from: sender, to: receiver, status, info: tx }
+    cb null, result
+    
+export get-market-history-prices = (config, cb)->
+    { network, coin } = config  
+    {market} = coin    
+    err, resp <- get market .timeout { deadline } .end
+    return cb "cannot execute query - err #{err.message ? err }" if err?
+    err, result <- json-parse resp.text
+    return cb err if err?
     cb null, result

@@ -3,17 +3,17 @@
   var react, reactDom, navigate, getPrimaryInfo, web3, getLang, historyFuncs, icon, switchAccount, epoch, hint, icons, alertDemo, menu, playBar, home, stream, library, stats, videostorage;
   react = require('react');
   reactDom = require('react-dom');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  historyFuncs = require('../history-funcs.ls');
-  icon = require('./icon.ls');
-  switchAccount = require('./switch-account.ls');
-  epoch = require('./epoch.ls');
-  hint = require('./hint.ls');
-  icons = require('../icons.ls');
-  alertDemo = require('./alert-demo.ls');
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  historyFuncs = require('../history-funcs.js');
+  icon = require('./icon.js');
+  switchAccount = require('./switch-account.js');
+  epoch = require('./epoch.js');
+  hint = require('./hint.js');
+  icons = require('../icons.js');
+  alertDemo = require('./alert-demo.js');
   menu = function(store, web3t){
     var info, dragFile, filterBody, children;
     info = getPrimaryInfo(store);

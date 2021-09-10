@@ -18,6 +18,9 @@ addresses =
         ResolverAuRa        : "0x9285bea804a386C650afAA63dc6e39e97C9f3f26"
         Development         : "0x4c4955d1a507f59DeC1755C30463825d4BEfE6d1"
         EvmToNative         : "0x56454c41532d434841494e000000000053574150"
+        ForeignBridgeErcToErcAddress: "0xb404c51bbc10dcbe948077f18a4b8e553d160084"
+    devnet:
+        EvmToNative         : "0x56454c41532d434841494e000000000053574150"
 addresses.mainnet <<<< swapping-addresses.mainnet
 addresses.testnet <<<< swapping-addresses.testnet
 module.exports = addresses

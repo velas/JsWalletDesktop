@@ -3,15 +3,15 @@
   var react, reactDom, navigate, getPrimaryInfo, web3, getLang, historyFuncs, icon, switchAccount, icons, epoch, item, item2, item3, item4, faq;
   react = require('react');
   reactDom = require('react-dom');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  historyFuncs = require('../history-funcs.ls');
-  icon = require('./icon.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  epoch = require('./epoch.ls');
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  historyFuncs = require('../history-funcs.js');
+  icon = require('./icon.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  epoch = require('./epoch.js');
   item = function(store, web3t){
     var lang, goBack, info, style, borderStyle, borderRight, borderStyle2, borderStyle3, buttonPrimary2Style, headerTableStyle, dashedBorder, filterBody, borderB, buttonPrimary1Style, inputStyle, lightText, iconStyle, switchFiles, fileTree, activate, activateItem, activateItem2, activateItem3, activateItem4, activateItem5, activateItem6, activateItem7, activateItem8, activateItem9, activateItem10, activateItem11, activateItem12, activateItem13, activateItem14, activateItem15, activateItem16, activeClass, activeItem, activeItem2, activeItem3, activeItem4, activeItem5, activeItem6, activeItem7, activeItem8, activeItem9, activeItem10, activeItem11, activeItem12, activeItem13, activeItem14, activeItem15, activeItem16, children;
     lang = getLang(store);

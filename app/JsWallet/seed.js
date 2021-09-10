@@ -2,10 +2,10 @@
 (function(){
   var localStorage, encrypt, aes, wordsToUtf8, seedEncrypt, name, del, setbkp, set, saved, get, out$ = typeof exports != 'undefined' && exports || this;
   localStorage = require('localStorage');
-  encrypt = require('./pin.ls').encrypt;
+  encrypt = require('./pin.js').encrypt;
   aes = require('crypto-js/aes');
-  wordsToUtf8 = require('./words-to-utf8.ls');
-  seedEncrypt = require('./seed-encrypt.ls');
+  wordsToUtf8 = require('./words-to-utf8.js');
+  seedEncrypt = require('./seed-encrypt.js');
   name = 'sseed';
   out$.del = del = function(){
     return localStorage.setItem(name, "");

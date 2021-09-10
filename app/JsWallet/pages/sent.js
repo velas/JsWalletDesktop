@@ -2,14 +2,14 @@
 (function(){
   var react, navigate, history, getPrimaryInfo, getLang, icons, filter, confirm, button, moment, successIcon;
   react = require('react');
-  navigate = require('../navigate.ls');
-  history = require('./history.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icons = require('../icons.ls');
+  navigate = require('../navigate.js');
+  history = require('./history.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icons = require('../icons.js');
   filter = require('prelude-ls').filter;
-  confirm = require('./confirmation.ls').confirm;
-  button = require('../components/button.ls');
+  confirm = require('./confirmation.js').confirm;
+  button = require('../components/button.js');
   moment = require('moment');
   successIcon = function(store){
     var style, iconStyle, children;
@@ -129,7 +129,8 @@
         store: store,
         onClick: goHome,
         type: 'secondary',
-        text: 'home'
+        text: 'home',
+        id: typeof id != 'undefined' && id !== null ? id : "sent-home"
       }), react.createElement('div', {
         className: 'limited-history'
       }, children = history({

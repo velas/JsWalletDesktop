@@ -2,8 +2,8 @@
 (function(){
   var react, getPrimaryInfo, icon;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icon = require('../pages/icon.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icon = require('../pages/icon.js');
   module.exports = function(arg$){
     var store, web3t, info, fileDescriptions, row, filterBody, headerTableStyle, hideProgress, active, switchProgress, box, children;
     store = arg$.store, web3t = arg$.web3t;

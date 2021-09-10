@@ -2,23 +2,24 @@
 (function(){
   var react, menuFuncs, historyFuncs, naming, getPrimaryInfo, getLang, icon, navigate, icons, button, burger, chooseThemes, ref$, objToPairs, pairsToObj, map, listLanguage, switchLanguage, switchAccount, networks, networksReverted, switchNetwork, namingPart, manageAccount;
   react = require('react');
-  menuFuncs = require('../menu-funcs.ls');
-  historyFuncs = require('../history-funcs.ls');
-  naming = require('./naming.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  navigate = require('../navigate.ls');
-  icons = require('../icons.ls');
-  button = require('../components/button.ls');
-  burger = require('../components/burger.ls');
-  chooseThemes = require('./choose-themes.ls');
+  menuFuncs = require('../menu-funcs.js');
+  historyFuncs = require('../history-funcs.js');
+  naming = require('./naming.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  navigate = require('../navigate.js');
+  icons = require('../icons.js');
+  button = require('../components/button.js');
+  burger = require('../components/burger.js');
+  chooseThemes = require('./choose-themes.js');
   ref$ = require('prelude-ls'), objToPairs = ref$.objToPairs, pairsToObj = ref$.pairsToObj, map = ref$.map;
   listLanguage = function(store, web3t){
-    var style, lang, setLang, changeLangEn, changeLangRu, changeLangUa, changeLangCn, changeLangKr, changeLangFr, changeLangEs, color, commingSoon, children;
+    var style, lang, setLang, changeLangEn, changeLangRu, changeLangUa, changeLangCn, changeLangKr, changeLangFr, changeLangEs, changeLangAr, color, commingSoon, children;
     style = getPrimaryInfo(store);
     lang = getLang(store);
     setLang = function(lang){
+      localStorage.setItem('lang', lang);
       return store.lang = lang;
     };
     changeLangEn = function(){
@@ -48,6 +49,10 @@
     changeLangEs = function(){
       store.current.languageMenu = false;
       return setLang('es');
+    };
+    changeLangAr = function(){
+      store.current.languageMenu = false;
+      return setLang('ar');
     };
     color = {
       color: style.app.text
@@ -96,6 +101,14 @@
         react.createElement('img', {
           src: icons.langsKr + ""
         }), " 中文語言"
+      ]), react.createElement('li', {
+        onClick: changeLangAr,
+        style: color,
+        className: 'lang-item'
+      }, children = [
+        react.createElement('img', {
+          src: icons.langsAr + ""
+        }), " عربى"
       ]), react.createElement('li', {
         style: commingSoon,
         className: 'lang-item'
@@ -190,7 +203,7 @@
     style = getPrimaryInfo(store);
     lang = getLang(store);
     inputStyle = {
-      background: style.app.wallet,
+      background: style.app.input,
       color: style.app.text,
       border: "0"
     };
@@ -238,7 +251,7 @@
   objToPairs(
   networks)));
   switchNetwork = function(store, web3t){
-    var style, lang, changeNetwork, value, children;
+    var style, lang, changeNetwork, value, isChecked, children;
     style = getPrimaryInfo(store);
     lang = getLang(store);
     changeNetwork = function(it){
@@ -247,13 +260,16 @@
       return web3t.use(networksReverted[!value]);
     };
     value = networks[store.current.network];
+    isChecked = store.current.network === "testnet";
     return react.createElement('label', {
       className: 'active-network'
     }, children = [
       react.createElement('input', {
         type: 'checkbox',
         onChange: changeNetwork,
-        value: value
+        value: value,
+        id: "settings-testnet",
+        checked: isChecked
       }), react.createElement('div', {
         className: 'track thumb'
       })
@@ -408,7 +424,7 @@
     ]);
   };
   module.exports = function(arg$){
-    var store, web3t, goBack, style, accountBodyStyle, iconColor, borderStyle, lang, children;
+    var store, web3t, goBack, style, accountBodyStyle, iconColor, borderStyle, settingsStyle, lang, children;
     store = arg$.store, web3t = arg$.web3t;
     goBack = function(){
       return navigate(store, web3t, 'wallets');
@@ -426,9 +442,13 @@
       background: style.app.background,
       backgroundColor: style.app.bgspare
     };
+    settingsStyle = {
+      overflow: "auto",
+      maxHeight: "100vh"
+    };
     lang = getLang(store);
     return react.createElement('div', {
-      className: 'settings-menu settings-menu1222193239'
+      className: 'settings-menu settings-menu1478476306'
     }, children = [
       react.createElement('div', {
         style: borderStyle,
@@ -448,6 +468,7 @@
         style: accountBodyStyle,
         className: 'account-body'
       }, children = react.createElement('div', {
+        style: settingsStyle,
         className: 'settings'
       }, children = manageAccount(store, web3t)))
     ]);

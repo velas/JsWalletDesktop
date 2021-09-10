@@ -2,12 +2,12 @@
 (function(){
   var react, icons, getPrimaryInfo, getLang, switchAccount, navigate, addWallet;
   react = require('react');
-  icons = require('../icons.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  switchAccount = require('../pages/switch-account.ls');
-  navigate = require('../navigate.ls');
-  addWallet = require('../pages/add-wallet.ls');
+  icons = require('../icons.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  switchAccount = require('../pages/switch-account.js');
+  navigate = require('../navigate.js');
+  addWallet = require('../pages/add-wallet.js');
   module.exports = function(store, web3t){
     var lang, style, rightSide, header, lockIcon, iconStyle, inputStyle, iconColor, buttonAdd, lock, showClass, show, searchOnChange, children;
     lang = getLang(store);
@@ -53,7 +53,7 @@
     };
     return react.createElement('div', {
       style: header,
-      className: 'header header162830242'
+      className: 'header header1840047076'
     }, children = [
       react.createElement('div', {
         className: 'left-side'
@@ -61,6 +61,7 @@
         react.createElement('button', {
           style: buttonAdd,
           onClick: show,
+          id: "menu-hamb-tablet",
           className: showClass + " button menu"
         }, children = react.createElement('img', {
           src: icons.menu + "",

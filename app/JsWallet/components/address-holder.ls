@@ -8,7 +8,7 @@ require! {
     \./copy.ls
     \../contracts.ls
 }
-# .address-holder84202264
+# .address-holder431607113
 #     @import scheme
 #     $card-top-height: 50px
 #     width: 100%
@@ -19,6 +19,9 @@ require! {
 #     position: relative
 #     overflow: visible
 #     z-index: 0
+#     .custom-title
+#         font-size: 12px
+#         text-transform: lowercase
 #     .browse
 #         display: inline-block
 #         position: absolute
@@ -128,7 +131,7 @@ module.exports = ({ store, wallet, type, text })->
         wallet["address#{address-suffix}"]
     address = get-address(wallet, address-suffix)
     is-contract = contracts.is-contract(store, address)
-    react.create-element 'div', { className: 'address-holder address-holder84202264' }, children = 
+    react.create-element 'div', { className: 'address-holder address-holder431607113' }, children = 
         identicon { store, address: address-title }
         react.create-element 'span', { style: input, className: 'inner-address-holder' }, children = 
             if store.url-params.internal?
@@ -141,7 +144,7 @@ module.exports = ({ store, wallet, type, text })->
                 address-display = contracts.get-contract-name(store, address)
                 react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display + '     '
             else if text?
-                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + text
+                react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active} custom-title" }, ' ' + text
             else
                 react.create-element MiddleEllipsis, { key: address-title }, children = 
                     react.create-element 'a', { target: "_blank", href: "#{address-link}", className: "#{active}" }, ' ' + address-display

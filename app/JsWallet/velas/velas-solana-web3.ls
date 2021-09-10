@@ -6,6 +6,7 @@ require! {
 networks =
     mainnet: \https://explorer.velas.com/rpc
     testnet: \https://testnet.velas.com/rpc
+    devnet:  \https://api.devnet.velas.com
 module.exports = (store)->
     network = networks[store.current.network]
     new solanaWeb3.Connection(network)

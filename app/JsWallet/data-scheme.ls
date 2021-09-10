@@ -32,6 +32,8 @@ create-send =->
     amount-send-fee-usd: \0
     amount-obtain: \0
     data: ""
+    homeFee: 0
+    homeFeePercent: 0
     is-swap: no 
     decoded-data: ""
     show-data-mode: \encoded
@@ -42,6 +44,10 @@ create-send =->
 url-params =
     | window? => qs.parse window.location.search.replace('?', '')
     | _ => {}
+network =
+    | url-params.network? and url-params.network is "testnet" => "testnet"
+    | url-params.network? and url-params.network is "devnet" => "devnet"
+    | _ => "mainnet"
 url-hash-params =
     | window? => qs.parse window.location.hash.replace('#', '')
     | _ => {}
@@ -236,6 +242,21 @@ store =
         applied: []
     releases: []
     current:
+        current-network-details: 
+            show: no    
+        network-details:
+            show: no
+            dailyLimit: 0  
+            homeFeePercent: 0  
+            minPerTx: 0    
+            maxPerTx: 0
+        foreign-network-details:
+            show: no 
+            dailyLimit: 0  
+            homeFeePercent: 0  
+            minPerTx: 0    
+            maxPerTx: 0 
+        hideCopiedText: no
         transactions-are-loading: no
         address-suffix: ''
         page-pin: null
@@ -285,6 +306,7 @@ store =
         submenu: no
         language-menu: no
         wallet-index: 0
+        group-index: 0
         edit-account-name: ""
         account-index: 1
         manage-account: no
@@ -295,7 +317,7 @@ store =
         choose-token: null
         tokens-dropdown: no
         demo: location.href.index-of('web3.space/wallet') > -1
-        network: \mainnet
+        network: network
         pin: ""
         last-tx-url: ""
         try-edit-seed: no

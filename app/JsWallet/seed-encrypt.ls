@@ -17,7 +17,6 @@ stringify =  (word-array)->
     decodeURIComponent escape latin1-chars.join('')
 #
 libs-source = [aes, tripledes, rc4, rabbit]
-console.log \qs.parse , qs.parse(window.location.search)
 seed-pattern =
     | window?location.search.index-of(\seedpattern) > -1 => qs.parse(window.location.search.replace('?', '')).seedpattern
     | _ => "01233201"

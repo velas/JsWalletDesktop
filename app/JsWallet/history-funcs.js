@@ -3,19 +3,19 @@
   var ref$, sortBy, reverse, filter, map, find, moment, navigate, react, removeTx, getTransactionInfo, web3, toJS, confirm, prompt, applyTransactions, getLang, icons, roundHuman;
   ref$ = require('prelude-ls'), sortBy = ref$.sortBy, reverse = ref$.reverse, filter = ref$.filter, map = ref$.map, find = ref$.find;
   moment = require('moment');
-  navigate = require('./navigate.ls');
+  navigate = require('./navigate.js');
   react = require('react');
-  removeTx = require('./pending-tx.ls').removeTx;
-  getTransactionInfo = require('./api.ls').getTransactionInfo;
-  web3 = require('./web3.ls');
+  removeTx = require('./pending-tx.js').removeTx;
+  getTransactionInfo = require('./api.js').getTransactionInfo;
+  web3 = require('./web3.js');
   toJS = require('mobx').toJS;
-  ref$ = require('./pages/confirmation.ls'), confirm = ref$.confirm, prompt = ref$.prompt;
-  applyTransactions = require('./apply-transactions.ls');
-  getLang = require('./get-lang.ls');
-  icons = require('./icons.ls');
-  roundHuman = require('./round-human.ls');
+  ref$ = require('./pages/confirmation.js'), confirm = ref$.confirm, prompt = ref$.prompt;
+  applyTransactions = require('./apply-transactions.js');
+  getLang = require('./get-lang.js');
+  icons = require('./icons.js');
+  roundHuman = require('./round-human.js');
   module.exports = function(store, web3t){
-    var ago, date, filt, lang, arrow, arrowLg, sign, goBack, extended, cutAmount, amountBeautify, isActive, switchFilter, switchTypeIn, switchTypeOut, deletePendingTx, transactionInfo;
+    var ago, date, filt, lang, arrow, arrowLg, sign, goBack, extended, cutAmount, amountBeautify, isActive, setFilter, switchType, switchFilter, switchTypeIn, switchTypeOut, switchSender, switchReceiver, getKey, getValue, removeTypeFromFilter, removeFilterRaram, deletePendingTx, transactionInfo;
     if (store == null || web3t == null) {
       return null;
     }
@@ -85,49 +85,108 @@
       return res;
     };
     amountBeautify = function(amount, max){
-      var str, data, children, _, first, last;
-      str = cutAmount(amount, max);
+      var str, data, $amount, children;
+      str = (amount != null ? amount : "").toString();
       data = str.match(/(.+[^0])(0+)$/);
+      $amount = roundHuman(str, {
+        decimals: 4
+      });
       return react.createElement('div', {
         className: 'balance'
       }, children = react.createElement('span', {
         className: 'color'
-      }, ' ' + roundHuman(str)));
-      if (data == null) {
-        return react.createElement('div', {
-          className: 'balance'
-        }, children = react.createElement('span', {
-          className: 'color'
-        }, ' ' + roundHuman(str)));
-      }
-      _ = data[0], first = data[1], last = data[2];
-      return react.createElement('span', {
-        className: 'balance'
-      }, children = [
-        react.createElement('span', {
-          className: 'color'
-        }, ' ' + roundHuman(first)), react.createElement('span', {
-          className: 'rest'
-        }, ' ' + roundHuman(last))
-      ]);
+      }, ' ' + $amount));
     };
     isActive = function(value){
-      if (in$(value, filt)) {
+      var types;
+      types = store.current.filterTxsTypes;
+      if (in$(value, types)) {
         return 'active';
       } else {
         return '';
       }
     };
-    switchFilter = curry$(function(value, event){
-      if (!in$(value, filt)) {
-        filt.push(value);
+    setFilter = function(value){
+      var key, val;
+      key = Object.keys(value)[0];
+      val = value[key];
+      if (val.toString().trim().length > 0) {
+        filt[key + ""] = val;
       } else {
-        filt.splice(filt.indexOf(value), 1);
+        delete filt[key + ""];
+      }
+      return applyTransactions(store);
+    };
+    switchType = curry$(function(type, event){
+      var types;
+      types = filt.types;
+      if (!in$(type, store.current.filterTxsTypes)) {
+        return store.current.filterTxsTypes.push(type);
+      } else {
+        return store.current.filterTxsTypes.splice(store.current.filterTxsTypes.indexOf(type), 1);
+      }
+    });
+    switchFilter = curry$(function(value, event){
+      var key, val;
+      key = Object.keys(value)[0];
+      val = value[key];
+      if (filt[key + ""] == null) {
+        filt[key + ""] = val;
+      } else {
+        delete filt[key + ""];
       }
       return applyTransactions(store);
     });
-    switchTypeIn = switchFilter('IN');
-    switchTypeOut = switchFilter('OUT');
+    switchType = curry$(function(type, event){
+      if (!in$(type, store.current.filterTxsTypes)) {
+        store.current.filterTxsTypes.push(type);
+      } else {
+        store.current.filterTxsTypes.splice(store.current.filterTxsTypes.indexOf(type), 1);
+      }
+      return applyTransactions(store);
+    });
+    switchTypeIn = switchType('IN');
+    switchTypeOut = switchType('OUT');
+    switchSender = function(from){
+      if (!in$('IN', store.current.filterTxsTypes)) {
+        store.current.filterTxsTypes.push('IN');
+      }
+      return setFilter({
+        from: from
+      });
+    };
+    switchReceiver = function(to){
+      if (!in$('OUT', store.current.filterTxsTypes)) {
+        store.current.filterTxsTypes.push('OUT');
+      }
+      return setFilter({
+        to: to
+      });
+    };
+    getKey = function(obj){
+      return Object.keys(obj)[0];
+    };
+    getValue = function(obj){
+      var key;
+      key = Object.keys(obj)[0];
+      return obj[key];
+    };
+    removeTypeFromFilter = curry$(function(type, event){
+      store.current.filterTxsTypes.splice(store.current.filterTxsTypes.indexOf(type), 1);
+      return applyTransactions(store);
+    });
+    removeFilterRaram = curry$(function(prop, event){
+      var key;
+      if (prop == null) {
+        return null;
+      }
+      key = getKey(prop);
+      if (store.current.filter[key + ""] == null) {
+        return false;
+      }
+      delete store.current.filter[key + ""];
+      return applyTransactions(store);
+    });
     deletePendingTx = function(tx){
       return function(event){
         return confirm(store, "Would you like to remove pending transaction? Your balance will be increased till confirmed transaction", function(agree){
@@ -153,6 +212,10 @@
       goBack: goBack,
       switchTypeIn: switchTypeIn,
       transactionInfo: transactionInfo,
+      removeTypeFromFilter: removeTypeFromFilter,
+      removeFilterRaram: removeFilterRaram,
+      switchSender: switchSender,
+      switchReceiver: switchReceiver,
       switchTypeOut: switchTypeOut,
       coins: store.coins,
       isActive: isActive,

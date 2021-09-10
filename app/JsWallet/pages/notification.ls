@@ -1287,7 +1287,7 @@ item = (store, web3t)->
                 react.create-element 'div', { className: 'name' }, ' Paul Smith'
                 react.create-element 'div', { className: 'activity' }, ' last seen 2 minutes ago'
             react.create-element 'ul', { className: 'action' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "icon-serach" }, children = 
                     react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
         react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
             react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
@@ -1295,27 +1295,27 @@ item = (store, web3t)->
             react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.writemsg}" }
         react.create-element 'div', { className: 'content-msg' }, children = 
             react.create-element 'ul', {}, children = 
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog1", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Hello"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog2", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Hi"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog-message-3", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ How are you?"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog-message-4", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Fine"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog-message-5", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ And you?"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog-message-6", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Inconspicuous motes of rock and gas how far away brain is the seed of intelligence gathered by gravity concept of the number one Orions sword."""
                         react.create-element 'span', {}, ' 22:53'
@@ -1393,7 +1393,7 @@ item2 = (store, web3t)->
                 react.create-element 'div', { className: 'name' }, ' Nicolas Gate'
                 react.create-element 'div', { className: 'activity' }, ' last seen 2 minutes ago'
             react.create-element 'ul', { className: 'action' }, children = 
-                react.create-element 'li', {}, children = 
+                react.create-element 'li', { key: "search-video" }, children = 
                     react.create-element 'img', { on-click: search, src: "#{icons.search}", className: 'icon-svg-video' }
         react.create-element 'div', { style: border-b, className: "#{search-show} search" }, children = 
             react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
@@ -1401,27 +1401,27 @@ item2 = (store, web3t)->
             react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.writemsg}" }
         react.create-element 'div', { className: 'content-msg' }, children = 
             react.create-element 'ul', {}, children = 
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog-message-8", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Hi, bro"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog-message-9", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Hello"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog-message-10", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ How are you feeling?"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog-message-11", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Good"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'out' }, children = 
+                react.create-element 'li', { key: "dialog-message-12", className: 'out' }, children = 
                     react.create-element 'span', {}, children = 
                         """ And you?"""
                         react.create-element 'span', {}, ' 22:53'
-                react.create-element 'li', { className: 'in' }, children = 
+                react.create-element 'li', { key: "dialog-message-13", className: 'in' }, children = 
                     react.create-element 'span', {}, children = 
                         """ Also good!"""
                         react.create-element 'span', {}, ' 22:53'
@@ -1544,10 +1544,10 @@ notice = ({ store, web3t })->
                     react.create-element 'div', { className: 'tabs' }, children = 
                         react.create-element 'div', { style: border-t, className: 'left-menu' }
                         react.create-element 'ul', { style: border-style3 }, children = 
-                            react.create-element 'li', { style: search-bg }, children = 
+                            react.create-element 'li', { key: "icons-create", style: search-bg }, children = 
                                 react.create-element 'input', { type: 'text', style: input-style, value: '', placeholder: "#{lang.search}" }
                                 react.create-element 'img', { src: "#{icons.create}", className: 'edit' }
-                            react.create-element 'li', { on-click: activate-item, style: border-b, className: "#{active-item}" }, children = 
+                            react.create-element 'li', { key: "avatar", on-click: activate-item, style: border-b, className: "#{active-item}" }, children = 
                                 react.create-element 'img', { src: "#{imgs.ava}", className: 'ava' }
                                 react.create-element 'span', { className: 'preview' }, children = 
                                     react.create-element 'div', { className: 'name' }, ' Paul Smith'
@@ -1555,7 +1555,7 @@ notice = ({ store, web3t })->
                                 react.create-element 'span', { className: 'notification' }, children = 
                                     react.create-element 'div', { className: 'time' }, ' 22:51'
                                     react.create-element 'div', { className: 'count' }, ' 2'
-                            react.create-element 'li', { on-click: activate-item2, style: border-b, className: "#{active-item2}" }, children = 
+                            react.create-element 'li', { key: "avatar2", on-click: activate-item2, style: border-b, className: "#{active-item2}" }, children = 
                                 react.create-element 'img', { src: "#{imgs.ava}", className: 'ava' }
                                 react.create-element 'span', { className: 'preview' }, children = 
                                     react.create-element 'div', { className: 'name' }, ' Nicolas Gate'

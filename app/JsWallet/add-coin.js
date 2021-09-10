@@ -2,7 +2,7 @@
 (function(){
   var ref$, map, take, drop, filter, loadRegistry;
   ref$ = require('prelude-ls'), map = ref$.map, take = ref$.take, drop = ref$.drop, filter = ref$.filter;
-  loadRegistry = require('./load-registry.ls');
+  loadRegistry = require('./load-registry.js');
   module.exports = curry$(function(store, e){
     var cb;
     cb = alert;

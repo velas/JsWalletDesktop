@@ -2,11 +2,11 @@
 (function(){
   var react, getLang, getPrimaryInfo, icons, navigate, get, network, init;
   react = require('react');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icons = require('../icons.ls');
-  navigate = require('../navigate.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icons = require('../icons.js');
+  navigate = require('../navigate.js');
+  get = require('../../web3t/providers/superagent.js').get;
   network = require('../../web3t/providers/superagent-adapter.js');
   init = function(arg$, cb){
     var store, web3t;

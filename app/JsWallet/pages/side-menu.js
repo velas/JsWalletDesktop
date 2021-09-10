@@ -2,16 +2,16 @@
 (function(){
   var react, projectLinks, menuFuncs, getPrimaryInfo, getLang, icon, loading, navigate, setupPages, icons, menu;
   react = require('react');
-  projectLinks = require('./project-links.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  loading = require('./loading.ls');
-  navigate = require('../navigate.ls');
-  setupPages = require('../setup-pages.ls');
-  icons = require('../icons.ls');
-  menu = require('./menu.ls');
+  projectLinks = require('./project-links.js');
+  menuFuncs = require('../menu-funcs.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  loading = require('./loading.js');
+  navigate = require('../navigate.js');
+  setupPages = require('../setup-pages.js');
+  icons = require('../icons.js');
+  menu = require('./menu.js');
   module.exports = function(store, web3t){
     var ref$, current, openAccount, lock, walletStyle, info, activateS1, activateS2, activateS3, switchNetwork, refresh, style, wallets, search, settings, filestorage, staking, stakingActive, delegateActive, infoActive, resources, faq, notice, claimActive, menuStyle, iconColor, iconStyle, iconStyle2, iconStyle3, lang, syncing, borderStyle, logoStyle, expandCollapse, langsMenuBody, lockIcon, walletIcon, iconNode, textStyle, backgroundMenu, wallet, gotoSearch, gotoSettings, gotoFileStorage, gotoStaking, gotoResources, gotoChooseStaker, gotoInfo, gotoFaq, gotoNotice, gotoClaim, commingSoon, tooltip, openSubmenu, menuStaking, menuOut, color, gotoMainnet, gotoWallet, children;
     if (store == null || in$(store.current.page, setupPages)) {
@@ -155,7 +155,7 @@
     return react.createElement('div', {
       style: borderStyle,
       onMouseLeave: menuOut,
-      className: 'menu side-menu menu1524712243'
+      className: 'menu side-menu menu-1720431039'
     }, children = [
       react.createElement('div', {
         className: 'logo'
@@ -192,7 +192,7 @@
         }, children = [
           react.createElement('div', {
             style: backgroundMenu,
-            className: 'menu arrow_box menu1524712243'
+            className: 'menu arrow_box menu-1720431039'
           }, children = react.createElement('ul', {}, children = [
             react.createElement('li', {
               onClick: gotoStaking,

@@ -241,8 +241,8 @@ video-upload = (store, web3t)->
     active-preview = active-class \preview
     react.create-element 'div', {}, children = 
         react.create-element 'ul', { className: 'tab' }, children = 
-            react.create-element 'li', { on-click: activate-upload, className: "#{active-upload}" }, ' Upload'
-            react.create-element 'li', { on-click: activate-preview, className: "#{active-preview}" }, ' Preview'
+            react.create-element 'li', { key: "activate-upload", on-click: activate-upload, className: "#{active-upload}" }, ' Upload'
+            react.create-element 'li', { key: "activate-preview", on-click: activate-preview, className: "#{active-preview}" }, ' Preview'
         react.create-element 'div', { className: 'header' }, children = 
             react.create-element 'img', { src: "#{icons.img-drag}", style: icon-style }
             if active-upload is \active

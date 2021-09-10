@@ -4,7 +4,7 @@ require! {
     \./get-lang.ls
     \./icons.ls
 }
-# .copied-640234004
+# .copied-640919231
 #     @import scheme
 #     position: fixed
 #     background: #74cee1
@@ -52,13 +52,18 @@ module.exports = (store)->
     cut = (tx)->
         return \none if not tx?
         t = tx.to-string!
-        r = t.substr(0, 10) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 10, 10)
+        if t.to-lower-case!.indexOf("private key") > -1
+            t
+        else
+            t.substr(0, 10) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 10, 10)
+        
         #r.to-upper-case!
     copy-style=
         color: style.app.text
+        z-index: 99999999999
     cancel = ->
         store.current.copied = ""
-    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied-640234004" }, children = 
+    react.create-element 'div', { key: "copy-message", style: copy-style, className: "#{copied-class} copied copied-640919231" }, children = 
         react.create-element 'div', { on-click: cancel, id: "prompt-close", className: 'button-close' }, children = 
             react.create-element 'span', { className: 'cancel' }, children = 
                 react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }

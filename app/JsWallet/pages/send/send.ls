@@ -108,7 +108,7 @@ send = ({ store, web3t })->
         go-back!  
     makeDisabled = send.amount-send <= 0
     token = store.current.send.coin.token
-    is-swap = store.current.send.is-swap is yes
+    is-swap = store.current.send.swap is yes
     send-func =
         | token is \vlx_erc20 and is-swap => swap-back
         | _ => before-send-anyway
@@ -216,7 +216,7 @@ module.exports.init = ({ store, web3t }, cb)->
     return cb null if not wallet?
     return cb null if send.sending is yes
     store.current.send.foreign-network-fee = 0
-    if store.current.send.is-swap isnt yes
+    if store.current.send.swap isnt yes
         store.current.send.contract-address = null
     is-swap-contract = contracts.is-swap-contract(store, send.to)
     if is-swap-contract then
@@ -228,7 +228,7 @@ module.exports.init = ({ store, web3t }, cb)->
         network-keys = networks |> keys
         default-network = networks[network-keys.0].name
     /* If it is Swap! */
-    if wallet.network.networks? and (store.current.send.isSwap is yes) then
+    if wallet.network.networks? and (store.current.send.swap is yes) then
         store.current.send.chosenNetwork = wallet.network.networks.evm
         store.current.send.to = token-networks.get-default-recipient-address(store) 
     { wallets } = wallets-funcs store, web3t

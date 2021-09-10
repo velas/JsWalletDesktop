@@ -2,15 +2,15 @@
 (function(){
   var ref$, each, find, web3, round5, getPrimaryInfo, navigate, applyTransactions, times, transaction;
   ref$ = require('prelude-ls'), each = ref$.each, find = ref$.find;
-  web3 = require('./web3.ls');
-  round5 = require('./round5.ls');
-  getPrimaryInfo = require('./get-primary-info.ls');
-  navigate = require('./navigate.ls');
-  applyTransactions = require('./apply-transactions.ls');
-  times = require('./math.ls').times;
+  web3 = require('./web3.js');
+  round5 = require('./round5.js');
+  getPrimaryInfo = require('./get-primary-info.js');
+  navigate = require('./navigate.js');
+  applyTransactions = require('./apply-transactions.js');
+  times = require('./math.js').times;
   transaction = require('mobx').transaction;
   module.exports = function(store, web3t, wallets, wallet){
-    var ref$, index, send, receive, usdRate, ref1$, uninstall, expand, active, big, balance, balanceUsd, pending, style, buttonStyle, last;
+    var ref$, index, send, receive, swap, usdRate, ref1$, uninstall, expand, active, big, balance, balanceUsd, pending, style, buttonStyle, last;
     if (store == null || web3t == null || wallets == null || (wallet != null ? (ref$ = wallet.coin) != null ? ref$.token : void 8 : void 8) == null) {
       return null;
     }
@@ -46,7 +46,34 @@
       });
       return navigate(store, web3t, 'invoice');
     });
-    usdRate = (ref1$ = wallet != null ? wallet.usdRate : void 8) != null ? ref1$ : 0;
+    swap = curry$(function(store, wallet, event){
+      var cb, sendTransaction, config;
+      cb = console.log;
+      store.current.send.contractAddress = null;
+      store.current.send.swap = true;
+      if (wallet == null) {
+        return alert("Not yet loaded");
+      }
+      if (web3t[wallet.coin.token] == null) {
+        return alert("Not yet loaded");
+      }
+      sendTransaction = web3t[wallet.coin.token].sendTransaction;
+      config = {
+        to: "",
+        value: 0,
+        swap: true,
+        gas: 1000000
+      };
+      return sendTransaction(config, function(err){
+        if (err != null) {
+          store.current.send.error = err;
+        }
+        if (err != null) {
+          return cb(err);
+        }
+      });
+    });
+    usdRate = (ref1$ = wallet != null ? wallet.usdRate : void 8) != null ? ref1$ : "..";
     uninstall = function(e){
       var walletIndex;
       e.stopPropagation();
@@ -62,13 +89,20 @@
       });
     };
     expand = function(e){
+      var walletIsDisabled, isLoading;
       e.stopPropagation();
+      walletIsDisabled = isNaN(wallet.balance);
+      isLoading = store.current.refreshing === true;
+      if (walletIsDisabled || isLoading) {
+        return;
+      }
       if (store.current.walletIndex === index) {
         return send(wallet, {});
       }
       store.current.walletIndex = index;
-      store.current.filter.length = 0;
-      store.current.filter = ['IN', 'OUT', wallet.coin.token];
+      store.current.filter = {
+        token: wallet.coin.token
+      };
       return applyTransactions(store);
     };
     active = index === store.current.walletIndex ? 'active' : '';
@@ -108,6 +142,7 @@
       balanceUsd: balanceUsd,
       pending: pending,
       send: send,
+      swap: swap,
       expand: expand,
       usdRate: usdRate,
       last: last,

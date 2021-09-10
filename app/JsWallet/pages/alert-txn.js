@@ -2,8 +2,8 @@
 (function(){
   var react, getPrimaryInfo, getLang, filter;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
   filter = require('prelude-ls').filter;
   module.exports = function(arg$){
     var store, web3t, lang, hasPending, children;

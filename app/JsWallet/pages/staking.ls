@@ -872,7 +872,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -1087,10 +1087,10 @@ staking-content = (store, web3t)->
                     react.create-element 'div', { className: 'description' }, children = 
                         react.create-element 'div', { className: 'left' }, children = 
                             react.create-element 'ul', {}, children = 
-                                react.create-element 'li', {}, ' 1. ' + lang.check-node1
-                                react.create-element 'li', {}, ' 2. ' + lang.check-node2
-                                react.create-element 'li', {}, ' 3. ' + lang.check-node3
-                                react.create-element 'li', {}, ' 4. ' + lang.check-node4
+                                react.create-element 'li', { key: "langs-check-node1" }, ' 1. ' + lang.check-node1
+                                react.create-element 'li', { key: "langs-check-node2" }, ' 2. ' + lang.check-node2
+                                react.create-element 'li', { key: "langs-check-node3" }, ' 3. ' + lang.check-node3
+                                react.create-element 'li', { key: "langs-check-node4" }, ' 4. ' + lang.check-node4
             if +store.staking.stake-amount-total is 0
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
@@ -1148,8 +1148,8 @@ staking-content = (store, web3t)->
                                 if store.staking.is-active-staker is no
                                     react.create-element 'div', { className: 'warning' }, children = 
                                         react.create-element 'ol', {}, children = 
-                                            react.create-element 'li', {}, ' ' + lang.your-status1
-                                            react.create-element 'li', {}, ' ' + lang.your-status2
+                                            react.create-element 'li', { key: "your-status" }, ' ' + lang.your-status1
+                                            react.create-element 'li', { key: "your-status2" }, ' ' + lang.your-status2
                             react.create-element 'hr', {}
                             react.create-element 'label', {}, ' ' + lang.stake-more
                             amount-field { store, value: store.staking.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake, show-details: yes, id: "vlx-stake-input", token:"vlx2" }

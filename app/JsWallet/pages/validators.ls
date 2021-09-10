@@ -7,9 +7,9 @@ require! {
     \bignumber.js
     \../get-lang.ls
     \../history-funcs.ls
-    \../staking-funcs.ls : { query-pools, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model, get-validators-skipped-slots-percents }
+    \../staking-funcs.ls : { query-pools, get-my-stakes, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model }
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse, keys, pairs-to-obj }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse }
     \../math.ls : { div, times, plus, minus }
     \../../web3t/providers/deps.js : { hdkey, bip39 }
     \md5
@@ -37,7 +37,7 @@ require! {
     \./stake/accounts.ls : \stake-accounts
     \../calc-certain-wallet.ls
 }
-# .staking1198406361
+# .staking287952458
 #     @import scheme
 #     position: relative
 #     display: block
@@ -281,6 +281,25 @@ require! {
 #                                 color: orange
 #                             &.banned
 #                                 color: red
+#                             .inner-address-holder
+#                                 text-align: left !important 
+#                             &.validator-item                
+#                                 &.delinquent
+#                                     .inner-address-holder
+#                                         &:after
+#                                             content: "Delinquent"
+#                                             color: #e84444
+#                                 .inner-address-holder
+#                                     overflow: visible
+#                                     &:after
+#                                         content: "Running"
+#                                         color: green
+#                                         position: absolute 
+#                                         left: 50px
+#                                         opacity: .8
+#                                         font-size: 10px
+#                                         top: 16px
+#                                         font-weight: bold 
 #                             .circle
 #                                 border-radius: 0px
 #                                 width: 20px
@@ -620,7 +639,7 @@ as-callback = (p, cb)->
     p.then (data)->
         cb null, data
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -677,6 +696,7 @@ staking-content = (store, web3t)->
     build-staker = (store, web3t)-> (item)->
         checked = item.checked
         stake = item.stakeInitial
+        isDelinquent = item.status is "delinquent"
         $stake = round-human(stake, {decimals:2})
         my-stake =
             | +item.my-stake.length is 0 => []
@@ -703,6 +723,9 @@ staking-content = (store, web3t)->
                 | reward > 75 => \orange
                 | reward > 40 => "rgb(165, 174, 81)"
                 | _ => "rgb(38, 219, 85)"
+        delinquent-class =
+            | isDelinquent => "delinquent"
+            | _ => ""
         vlx_native =
             store.current.account.wallets |> find (.coin.token is \vlx_native)
         return null if not vlx_native?
@@ -714,7 +737,7 @@ staking-content = (store, web3t)->
             | item.vote-power? => "#{item.vote-power}%"
             | _ => "..."
         mystake-class = if my-stake isnt 0 then "with-stake" else ""
-        react.create-element 'tr', { className: "#{item.status}" }, children = 
+        react.create-element 'tr', { key: "validator-item-#{item.address}", className: "validator-item #{item.status} #{delinquent-class}" }, children = 
             react.create-element 'td', { datacolumn: 'Staker Address', title: "#{item.address}" }, children = 
                 address-holder-popup { store, wallet }
             react.create-element 'td', {}, ' ' + $stake
@@ -830,7 +853,7 @@ validators = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-841737596' }, children = 
+    react.create-element 'div', { className: 'staking staking287952458' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
@@ -873,6 +896,11 @@ validators.init = ({ store, web3t }, cb)!->
             return cb null
     else
         store.staking.pools-network = store.current.network
+        
+    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
+    console.error err if err?
+    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
+    store.staking.current-epoch = epochInfo.epoch
     #<- web3t.refresh
     #err, voteAccounts <- as-callback web3t.velas.NativeStaking.getVoteAccounts()
     #console.log "Vote accounts" err, voteAccounts
@@ -903,15 +931,19 @@ validators.init = ({ store, web3t }, cb)!->
     per-page = store.staking["#{type}_per_page"]
     if +(page `times` per-page) >= store.staking.accounts.length
         store.staking["current_#{type}_page"] = 1 
-    /* Call scippedSlotsPercent calculation here  */
-    #err, skipped-slots-object <- get-validators-skipped-slots-percents({store, web3t})
-    #return cb err if err?
+    #<- set-timeout _, 4000
     on-progress = ->
         store.staking.pools = convert-pools-to-view-model [...it]
     err, pools <- query-pools {store, web3t, on-progress}
     return cb err if err?
     store.staking.pools = convert-pools-to-view-model pools
-        |> sort-by (-> it.myStake.length ) |> reverse 
+        |> sort-by (-> it.myStake.length )
+    delinquent = store.staking.pools |> filter (-> it.status is "delinquent")
+    running = store.staking.pools
+        |> filter (it)->
+            delinquent.index-of(it) < 0
+        |> reverse
+    store.staking.pools = running ++ delinquent
     store.staking.poolsFiltered = store.staking.pools
     store.staking.getAccountsFromCashe = no
     err <- calc-certain-wallet(store, "vlx_native")

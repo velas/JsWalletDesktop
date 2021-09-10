@@ -3,8 +3,8 @@
   var react, QRCode, getPrimaryInfo, getLang, qrcode;
   react = require('react');
   QRCode = require('qrcode.react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
   qrcode = function(store, wallet){
     var info, bgColor, fgColor;
     info = getPrimaryInfo(store);
@@ -12,7 +12,7 @@
       return null;
     }
     bgColor = info.background;
-    fgColor = "rgb(158, 79, 235)";
+    fgColor = '#0b0c27';
     return react.createElement(QRCode, {
       value: wallet.address + "",
       size: "256",
@@ -23,7 +23,7 @@
   module.exports = function(store, wallet){
     var children;
     return react.createElement('div', {
-      className: 'receive receive408703176'
+      className: 'receive receive173047909'
     }, children = react.createElement('div', {
       className: 'receive-body'
     }, children = qrcode(store, wallet)));

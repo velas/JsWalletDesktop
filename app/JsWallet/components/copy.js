@@ -2,10 +2,10 @@
 (function(){
   var react, getPrimaryInfo, CopyToClipboard, copiedInform, copy;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
   CopyToClipboard = require('react-copy-to-clipboard').CopyToClipboard;
-  copiedInform = require('../copied-inform.ls');
-  copy = require('../copy.ls');
+  copiedInform = require('../copied-inform.js');
+  copy = require('../copy.js');
   module.exports = function(arg$){
     var store, text, style, filterIcon, icon2, enter, leave, children;
     store = arg$.store, text = arg$.text;

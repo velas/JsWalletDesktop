@@ -7,7 +7,7 @@ require! {
     \protect
     \./navigate.ls
     \./use-network.ls
-    \./api.ls : { get-balance, get-transaction-info }
+    \./api.ls : { get-balance, get-transaction-info, get-market-history-prices }
     \./install-plugin.ls : { build-install, build-uninstall, build-install-by-name, build-quick-install }
     \./refresh-account.ls : { background-refresh-account, set-account }
     \web3 : \Web3
@@ -25,24 +25,30 @@ supported-themes =
     themes
         |> obj-to-pairs
         |> map (-> it.0)
+        
 state =
     time: null
+    
 titles = <[ name@email.com name.ethnamed.io domain.com ]>
+
 show-cases = (store, [title, ...titles], cb)->
     return cb null if not title?
     store.current.send-to-mask = title
     <- set-timeout _, 1000
     <- show-cases store, titles
     return cb null
+    
 build-get-balance = (store, coin)-> (cb)->
     network = coin[store.current.network]
     { wallet } = coin
     get-balance { coin.token, network, wallet.address }, cb
+    
 build-unlock = (store, cweb3)-> (cb)->
     return cb null if store.page is \locked
     err, data <- wait-form-result \unlock
     return cb err if err?
     cb null, data
+    
 build-send-transaction = (store, cweb3, coin)-> (tx, cb)->
     network = coin[store.current.network]
     return cb "Transaction is required" if typeof! tx isnt \Object
@@ -82,9 +88,11 @@ build-send-transaction = (store, cweb3, coin)-> (tx, cb)->
     # before cb was fired 'send-money' function is beeing executed.
     return cb err if err?
     cb null, data
+    
 get-contract-instance = (web3, abi, addr)->
     | typeof! web3.eth.contract is \Function => web3.eth.contract(abi).at(addr)
     | _ => new web3.eth.Contract(abi, addr)
+    
 build-contract = (store, methods, coin)-> (abi)-> at: (address)->
     { send-transaction } = methods
     network = coin[store.current.network]
@@ -93,48 +101,63 @@ build-contract = (store, methods, coin)-> (abi)-> at: (address)->
     web3.eth.send-transaction = ({ value, data, to, gas, gas-price }, cb)->
         send-transaction { to, data, value, gas, gas-price }, cb
     get-contract-instance web3, abi, address
+
 build-network-ethereum = (store, methods, coin)->
     { send-transaction, get-balance, get-address } = methods
     contract = build-contract store, methods, coin
     { send-transaction, get-balance, get-address, contract }
+    
 build-other-networks = (store, methods, coin)->
     { send-transaction, get-balance, get-address, get-transaction-receipt } = methods
     contract = ->
         throw "Not Implemented For this network"
     { send-transaction, get-balance, get-address, contract, get-transaction-receipt }
+    
 build-network-specific = (store, methods, coin)->
     builder =
         | coin.token in <[ eth ]> => build-network-ethereum
         | _ => build-other-networks
     builder store, methods, coin
+    
 build-get-usd-amount = (store, coin)-> (amount, cb)->
     return cb "wallet isnt loaded" if typeof! store.current.account?wallets isnt \Array
     wallet =
         store.current.account.wallets |> find (.coin.token is coin.token)
     return cb "wallet not found for #{token}" if not wallet?
     return cb "usd rate not found #{token}" if not wallet.usd-rate?
+    wallet.usd-rate = 0 if wallet.usd-rate is ""
     usd = amount `times` wallet.usd-rate
     cb null, usd
+    
 build-get-transaction-receipt = (store, cweb3, coin)-> (tx, cb)->
     network = coin[store.current.network]
     { wallet } = coin
     get-transaction-info { coin.token, network, tx }, cb
+    
+build-get-market-history-prices = (store, cweb3, coin)-> (cb)->
+    network = coin[store.current.network]
+    get-market-history-prices { network }, cb
+    
 build-api = (store, cweb3, coin)->
     get-transaction-receipt = build-get-transaction-receipt store, cweb3, coin
     send-transaction = build-send-transaction store, cweb3, coin
+    get-market-history-prices = build-get-market-history-prices cweb3, store
     get-balance = build-get-balance store, coin
     get-address = build-get-address store, coin
     get-usd-amount = build-get-usd-amount store, coin
-    methods = { get-address, send-transaction, get-balance, get-usd-amount, get-transaction-receipt }
+    methods = { get-address, send-transaction, get-balance, get-usd-amount, get-transaction-receipt, get-market-history-prices }
     build-network-specific store, methods, coin
+    
 build-use = (web3, store)->  (network)->
     <- use-network web3, store, network
+    
 get-apis = (cweb3, store, cb)->
     res =
         store.coins
             |> map -> [it.token, build-api(store, cweb3, it)]
             |> pairs-to-obj
     cb null, res
+    
 refresh-apis = (cweb3, store, cb)->
     store.coins |> map (.token) |> each (-> delete cweb3[it])
     cweb3.velas = velas-api store

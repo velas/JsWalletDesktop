@@ -2,18 +2,19 @@
 (function(){
   var react, menuFuncs, naming, getPrimaryInfo, getLang, icon, navigate, get, find, icons, language;
   react = require('react');
-  menuFuncs = require('../menu-funcs.ls');
-  naming = require('./naming.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  navigate = require('../navigate.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
+  menuFuncs = require('../menu-funcs.js');
+  naming = require('./naming.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  navigate = require('../navigate.js');
+  get = require('../../web3t/providers/superagent.js').get;
   find = require('prelude-ls').find;
-  menuFuncs = require('../menu-funcs.ls');
-  icons = require('../icons.ls');
+  menuFuncs = require('../menu-funcs.js');
+  icons = require('../icons.js');
+  navigate = require('../navigate.js');
   language = function(store, web3t){
-    var style, lang, closeLanguage, inputStyle, color, styleTextarea, logoStyle, buttonPrimary2Style, buttonPrimary3Style, filterIcon, textStyle, setLang, changeLangEn, changeLangRu, changeLangUa, changeLangCn, changeLangKr, changeLangFr, changeLangEs, commingSoon, children;
+    var style, lang, closeLanguage, inputStyle, color, styleTextarea, logoStyle, buttonPrimary2Style, buttonPrimary3Style, filterIcon, textStyle, setLang, changeLangEn, changeLangRu, changeLangUa, changeLangCn, changeLangKr, changeLangFr, changeLangEs, changeLangAr, commingSoon, download, children;
     style = getPrimaryInfo(store);
     lang = getLang(store);
     closeLanguage = menuFuncs(store, web3t).closeLanguage;
@@ -74,9 +75,15 @@
     changeLangEs = function(){
       return setLang('es');
     };
+    changeLangAr = function(){
+      return setLang('ar');
+    };
     commingSoon = {
       opacity: ".3",
       cursor: "no-drop"
+    };
+    download = function(){
+      return navigate(store, web3t, 'downloadwallet');
     };
     return react.createElement('div', {}, children = react.createElement('div', {
       className: 'section'
@@ -99,6 +106,7 @@
         react.createElement('ul', {}, children = [
           react.createElement('li', {
             style: commingSoon,
+            id: "lang-gr",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -107,6 +115,7 @@
           ]), react.createElement('li', {
             onClick: changeLangFr,
             style: color,
+            id: "lang-fr",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -115,6 +124,7 @@
           ]), react.createElement('li', {
             onClick: changeLangEn,
             style: color,
+            id: "lang-en",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -123,6 +133,7 @@
           ]), react.createElement('li', {
             onClick: changeLangKr,
             style: color,
+            id: "lang-kr",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -133,6 +144,7 @@
           react.createElement('li', {
             onClick: changeLangCn,
             style: color,
+            id: "lang-cn",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -140,6 +152,7 @@
             }), react.createElement('div', {}, ' 中文語言')
           ]), react.createElement('li', {
             style: commingSoon,
+            id: "lang-jp",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -147,6 +160,7 @@
             }), react.createElement('div', {}, ' 日本語')
           ]), react.createElement('li', {
             style: commingSoon,
+            id: "lang-hn",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -155,6 +169,7 @@
           ]), react.createElement('li', {
             onClick: changeLangEs,
             style: color,
+            id: "lang-sp",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -165,6 +180,7 @@
           react.createElement('li', {
             onClick: changeLangUa,
             style: color,
+            id: "lang-ua",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -173,6 +189,7 @@
           ]), react.createElement('li', {
             onClick: changeLangRu,
             style: color,
+            id: "lang-ru",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
@@ -180,13 +197,43 @@
             }), react.createElement('div', {}, ' Русский')
           ]), react.createElement('li', {
             style: commingSoon,
+            id: "lang-kz",
             className: 'lang-item'
           }, children = [
             react.createElement('img', {
               src: icons.langsKz + ""
             }), react.createElement('div', {}, ' Қазақ')
+          ]), react.createElement('li', {
+            onClick: changeLangAr,
+            style: color,
+            id: "lang-ar",
+            className: 'lang-item'
+          }, children = [
+            react.createElement('img', {
+              src: icons.langsAr + ""
+            }), react.createElement('div', {}, ' عربى')
           ])
         ])
+      ]), react.createElement('div', {
+        className: 'downloadwalletlist'
+      }, children = [
+        react.createElement('a', {
+          href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748",
+          target: "_blank"
+        }, children = react.createElement('img', {
+          src: icons['ios'] + "",
+          className: 'icon-download'
+        })), react.createElement('a', {
+          href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet",
+          target: "_blank"
+        }, children = react.createElement('img', {
+          src: icons['android'] + "",
+          className: 'icon-download'
+        })), react.createElement('span', {}, children = react.createElement('img', {
+          onClick: download,
+          src: icons['desktop'] + "",
+          className: 'icon-download'
+        }))
       ])
     ]));
   };
@@ -214,7 +261,7 @@
     lang = getLang(store);
     return react.createElement('div', {
       style: accountBodyStyle,
-      className: 'choose-language choose-language-863419943'
+      className: 'choose-language choose-language-1355584605'
     }, children = react.createElement('div', {
       className: 'account-body'
     }, children = [

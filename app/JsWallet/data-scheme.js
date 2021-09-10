@@ -2,12 +2,12 @@
 (function(){
   var ref$, map, pairsToObj, seedmem, location, langs, icons, getDevice, getSize, version, qs, localStorage, savedSeed, createSend, urlParams, urlHashParams, store;
   ref$ = require('prelude-ls'), map = ref$.map, pairsToObj = ref$.pairsToObj;
-  seedmem = require('./seed.ls');
-  location = require('./browser/location.ls');
+  seedmem = require('./seed.js');
+  location = require('./browser/location.js');
   langs = require('./langs/langs.json');
-  icons = require('./icons.ls');
-  getDevice = require('./get-device.ls');
-  getSize = require('./get-size.ls');
+  icons = require('./icons.js');
+  getDevice = require('./get-device.js');
+  getSize = require('./get-size.js');
   version = require('./package.json').version;
   qs = require('qs');
   localStorage = require('localStorage');
@@ -16,6 +16,8 @@
     return {
       id: "",
       to: "",
+      chosenNetwork: null,
+      contractAddress: null,
       details: true,
       proposeEscrow: false,
       address: '',
@@ -32,6 +34,7 @@
       amountSendFeeUsd: '0',
       amountObtain: '0',
       data: "",
+      swap: false,
       decodedData: "",
       showDataMode: 'encoded',
       error: '',
@@ -58,11 +61,12 @@
     }
   }());
   store = {
+    inputCaretPosition: 0,
     urlParams: urlParams,
     urlHashParams: urlHashParams,
     root: null,
     theme: (ref$ = localStorage.getItem('theme')) != null ? ref$ : 'velas',
-    lang: 'en',
+    lang: (ref$ = localStorage.getItem('lang')) != null ? ref$ : 'en',
     langs: langs,
     icons: 'icons',
     registry: [],
@@ -73,7 +77,7 @@
       proposals: [],
       newProposal: {
         description: "",
-        url: "",
+        name: "",
         opened: false,
         progress: '0',
         updateProgress: null
@@ -137,13 +141,60 @@
       isAddressQueried: false,
       origin: false
     },
+    HomeBridgeNativeToErc: {},
+    ForeignBridgeNativeToErc: {},
+    lockups: {
+      currentTimelock: null,
+      stakeAmountTotal: 0,
+      exitTab: '',
+      waitForEpochChange: false,
+      maxWithdrawAllowed: 0,
+      orderedWithdrawAmount: 0,
+      maxWithdrawOrderAllowed: 0,
+      withdrawAmount: 0,
+      unstakeAmount: 0,
+      currentPool: null,
+      lockupWasChoosed: false,
+      chosenLockup: null,
+      chosenLockupAction: '',
+      lockupStaking: {},
+      lockupContracts: [],
+      successCb: null,
+      error: "",
+      stake: {
+        step: ""
+      },
+      add: {
+        moveStake: 0,
+        addValidatorStake: "",
+        addValidatorTopup: ""
+      }
+    },
     staking: {
+      accounts: [],
+      myStakeMaxPart: null,
       rewardInfo: [],
+      rent: 0,
       exitTab: '',
       maxWithdrawOrderAllowed: 0,
       withdrawAmount: 0,
       maxWithdrawAllowed: 0,
       orderedWithdrawAmount: 0,
+      poolsAreLoading: false,
+      loadingAccountIndex: 0,
+      totalOwnStakingAccounts: 0,
+      totalValidators: 0,
+      loadingValidatorIndex: 0,
+      getAccountsLastTime: null,
+      cachedAccounts: null,
+      cachedValidators: null,
+      getAccountsFromCashe: true,
+      parsedProgramAccounts: [],
+      accountsCached: {},
+      validators_per_page: 10,
+      accounts_per_page: 10,
+      visible_per_page_accounts_selector: false,
+      visible_per_page_validators_selector: false,
       add: {
         addValidator: "",
         addValidatorStake: "",
@@ -169,12 +220,19 @@
       dataGeneration: 1,
       tab: "line",
       pools: [],
+      poolWasChoosed: false,
       chosenPool: null,
+      chosenAccount: null,
       stakeAmountTotal: 0,
       maxWithdraw: 0,
       delegators: 0,
       rewardLoading: false,
-      waitForEpochChange: false
+      waitForEpochChange: false,
+      lockups: [],
+      current_validators_page: 1,
+      validatorsPerPage: 5,
+      accountsPerPage: 3,
+      current_accounts_page: 1
     },
     filestore: {
       menuOpen: false,
@@ -230,6 +288,7 @@
     },
     releases: [],
     current: {
+      transactionsAreLoading: false,
       addressSuffix: '',
       pagePin: null,
       tryCopy: null,
@@ -243,8 +302,13 @@
       device: getDevice(),
       size: getSize(),
       list: 0,
+      promptType: "",
       promptAnswer: "",
       prompt: false,
+      prompt2: false,
+      prompt3: false,
+      promptPassword: false,
+      promptPasswordAnswer: "",
       step: "first",
       verifySeedIndexes: [],
       switchAccount: false,
@@ -279,7 +343,10 @@
       manageAccount: false,
       filterPlugins: "",
       confirmation: null,
+      notification: null,
       alert: null,
+      chooseToken: null,
+      tokensDropdown: false,
       demo: location.href.indexOf('web3.space/wallet') > -1,
       network: 'mainnet',
       pin: "",
@@ -304,7 +371,12 @@
       seedGenerated: false,
       savedSeed: savedSeed,
       balanceUsd: '...',
-      filter: ['IN', 'OUT'],
+      filterTxsTypes: ['IN', 'OUT'],
+      filter: {
+        from: null,
+        to: null,
+        token: null
+      },
       loading: false,
       send: createSend(),
       invoice: createSend(),
@@ -312,9 +384,12 @@
       convert: "usd",
       trxType: "custom",
       allowMiningClaimCall: undefined,
-      search: ""
+      search: "",
+      voteIndex: null
     },
     history: {
+      filterFrom: '',
+      filterTo: '',
       filterOpen: false,
       txDetails: false
     },

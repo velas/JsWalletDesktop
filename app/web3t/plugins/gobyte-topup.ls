@@ -3,5 +3,5 @@ export networks = "mainnet"
 export type = \topup
 export enabled = yes
 export token = \gobyte
-export image = \https://res.cloudinary.com/nixar-work/image/upload/v1547940596/logo3-bl.png
+export image = ""
 export address = "https://exchange.gobyte.network/?from=EUR&to={token}&address={address}"

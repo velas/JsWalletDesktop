@@ -8,14 +8,15 @@ require! {
 module.exports = (store, mnemonic="", cb)->
     generate-coin-wallet = (coin, cb)->
         network = coin[store.current.network]
-        return cb null if network.disabled is yes
+        return cb null if not network? or network?disabled is yes
         index = store.current.account-index
         err, wallet <- get-keys { index, network, mnemonic, coin.token }
         return cb err if err?
         balance = \...
         balance-usd = \...
         usd-rate = \...
-        wallet <<< { coin, network, balance, balance-usd, usd-rate, mnemonic }
+        market-history-prices = null
+        wallet <<< { coin, network, balance, balance-usd, usd-rate, mnemonic, market-history-prices }
         cb null, wallet
     generate-coin-wallets = ([coin, ...rest], cb)->
         return cb null, [] if not coin?

@@ -8,7 +8,7 @@ require! {
     \./confirmation.ls : { confirm }
 }
 # verification seed
-# .newseed-1830801947
+# .newseed-136522795
 #     @import scheme
 #     padding-top: 50px
 #     width: 100%
@@ -111,7 +111,7 @@ require! {
 #         &:hover
 #             background: #248295 - 20
 #     .warning
-#         padding: 10px 0
+#         padding: 10px
 #         border: 1px solid orange
 #         margin: 20px auto 0
 #         max-width: 180px
@@ -172,10 +172,10 @@ newseed = ({ store, web3t })->
         verify-seed! if it.key-code is 13
     build-verify-seed = (store, item)-->
         enter-confirm = ->
-            item.part = it.target.value
+            item.part = (it?target?value ? "").trim!
         react.create-element 'div', { style: seed-style, className: 'word' }, children = 
             react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "#{lang.word} ##{item.index + 1}", on-key-down: on-key-down }
-    react.create-element 'div', { className: 'newseed newseed-1830801947' }, children = 
+    react.create-element 'div', { className: 'newseed newseed-136522795' }, children = 
         react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
         react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase
         react.create-element 'div', { className: 'words' }, children = 

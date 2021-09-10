@@ -399,7 +399,7 @@ locked = ({ store, web3t })->
         filter: info.app.filterLogo
     download = ->
         navigate store, web3t, \downloadwallet
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked2093684640' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-906198149' }, children = 
         react.create-element 'div', { className: 'locked-inner' }, children = 
             react.create-element 'div', { className: 'logo' }, children = 
                 react.create-element 'img', { src: "#{info.branding.logo}" }

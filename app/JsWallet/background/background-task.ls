@@ -6,7 +6,7 @@ export add-task = (id, task)->
     cb = console.log 
     return cb "id is required unique string" if typeof! id isnt \String
     return cb "task should be a function" if typeof! task isnt \Function
-    return cb "already known task" if tasks[id]?
+    return if tasks[id]?
     tasks[id] = task
 escalate-one-by-one = (store, [head, ...tail], cb)->
     return cb null if not head?

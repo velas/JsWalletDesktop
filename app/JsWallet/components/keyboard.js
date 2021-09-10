@@ -3,7 +3,7 @@
   var react, map, getPrimaryInfo, genCharArray, az, di, sp, buildKey, numpad, all, toString$ = {}.toString;
   react = require('react');
   map = require('prelude-ls').map;
-  getPrimaryInfo = require('../get-primary-info.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
   genCharArray = function(charA, charZ){
     var a, i, j;
     a = [];

@@ -3,17 +3,17 @@
   var react, reactDom, navigate, getPrimaryInfo, web3, getLang, historyFuncs, icon, switchAccount, epoch, icons, alertDemo, burger, all, dapps, web, images, files, search;
   react = require('react');
   reactDom = require('react-dom');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  historyFuncs = require('../history-funcs.ls');
-  icon = require('./icon.ls');
-  switchAccount = require('./switch-account.ls');
-  epoch = require('./epoch.ls');
-  icons = require('../icons.ls');
-  alertDemo = require('./alert-demo.ls');
-  burger = require('../components/burger.ls');
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  historyFuncs = require('../history-funcs.js');
+  icon = require('./icon.js');
+  switchAccount = require('./switch-account.js');
+  epoch = require('./epoch.js');
+  icons = require('../icons.js');
+  alertDemo = require('./alert-demo.js');
+  burger = require('../components/burger.js');
   all = function(store, web3t){
     var lang, children;
     lang = getLang(store);
@@ -99,13 +99,13 @@
       return navigate(store, web3t, 'filestorage');
     };
     gotoStaking = function(){
-      return navigate(store, web3t, 'staking');
+      return navigate(store, web3t, 'validators');
     };
     gotoResources2 = function(){
       return navigate(store, web3t, 'resources2');
     };
     gotoChooseStaker = function(){
-      return navigate(store, web3t, 'choosestaker');
+      return navigate(store, web3t, 'validators');
     };
     gotoVideostorage = function(){
       return navigate(store, web3t, 'videostorage');
@@ -152,25 +152,8 @@
           }, ' ' + lang.videoStorage)), react.createElement('li', {
             onClick: gotoSoundstorage,
             style: hideSound
-          }, children = react.createElement('span', {}, ' Sound Storage'))
+          }, children = react.createElement('span', {}, ' Sound Storage    '))
         ])
-      ]), react.createElement('div', {
-        className: 'section'
-      }, children = [
-        react.createElement('div', {
-          onClick: gotoResources2,
-          className: 'source'
-        }, children = [
-          react.createElement('div', {
-            className: 'address'
-          }, ' ' + lang.velasSphere), react.createElement('div', {
-            className: 'header'
-          }, ' ' + lang.velasCpuStaking)
-        ]), react.createElement('div', {
-          className: 'description'
-        }), react.createElement('ul', {
-          className: 'links'
-        }, children = [react.createElement('li', {}, children = react.createElement('span', {}, ' About')), react.createElement('li', {}, children = react.createElement('span', {}, ' FAQs'))])
       ]), react.createElement('div', {
         className: 'section'
       }, children = [
@@ -234,21 +217,6 @@
           }, ' ' + lang.velasSphere), react.createElement('div', {
             className: 'header'
           }, ' ' + lang.velasMessenger)
-        ]), react.createElement('div', {
-          className: 'description'
-        })
-      ]), react.createElement('div', {
-        className: 'section'
-      }, children = [
-        react.createElement('div', {
-          onClick: gotoVote,
-          className: 'source'
-        }, children = [
-          react.createElement('div', {
-            className: 'address'
-          }, ' ' + lang.velasSphere), react.createElement('div', {
-            className: 'header'
-          }, ' Vote')
         ]), react.createElement('div', {
           className: 'description'
         })
@@ -432,7 +400,7 @@
     activeFiles = activeClass('files');
     showClass = store.current.openMenu ? 'hide' : "";
     return react.createElement('div', {
-      className: 'search search-1018737767'
+      className: 'search search974474038'
     }, children = [
       alertDemo(store, web3t), react.createElement('div', {
         style: borderStyle,

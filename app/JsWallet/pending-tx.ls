@@ -74,7 +74,7 @@ export create-pending-tx = (config, cb)->
     err, arr <- get-all config
     return cb err if err?
     now = moment!.unix!
-    to2 = to ? recipient
+    to2 = recipient ? to
     arr.push [tx, amount-send, amount-send-fee, now, from, to2, network.token]
     err <- set config, arr
     return cb err if err?

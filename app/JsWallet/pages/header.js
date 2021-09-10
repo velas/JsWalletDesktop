@@ -2,15 +2,15 @@
 (function(){
   var react, projectLinks, menuFuncs, getPrimaryInfo, getLang, icon, loading, navigate, setupPages, icons;
   react = require('react');
-  projectLinks = require('./project-links.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  loading = require('./loading.ls');
-  navigate = require('../navigate.ls');
-  setupPages = require('../setup-pages.ls');
-  icons = require('../icons.ls');
+  projectLinks = require('./project-links.js');
+  menuFuncs = require('../menu-funcs.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  loading = require('./loading.js');
+  navigate = require('../navigate.js');
+  setupPages = require('../setup-pages.js');
+  icons = require('../icons.js');
   module.exports = function(store, web3){
     var ref$, current, openAccount, lock, walletStyle, info, activateS1, activateS2, activateS3, switchNetwork, refresh, style, wallets, search, settings, filestorage, staking, resources, stakingActive, delegateActive, infoActive, menuStyle, iconStyle, iconStyle2, lang, syncing, borderStyle, logoStyle, expandCollapse, langsMenuBody, lockIcon, walletIcon, commingSoon, iconNode, textStyle, gotoSettings, gotoSearch, wallet, gotoStaking, gotoChooseStaker, gotoInfo, openSubmenu, menuStaking, menuOut, hideMenu, showMenu, showClass, show, children;
     if (store == null || in$(store.current.page, setupPages)) {
@@ -25,7 +25,7 @@
     staking = store.current.page === 'staking' ? 'active' : 'not-active';
     resources = store.current.page === 'resources' ? 'active' : 'not-active';
     stakingActive = store.current.page === 'staking' ? 'active' : 'not-active';
-    delegateActive = store.current.page === 'choosestaker' ? 'active' : 'not-active';
+    delegateActive = store.current.page === 'validators' ? 'active' : 'not-active';
     infoActive = store.current.page === 'info' ? 'active' : 'not-active';
     menuStyle = {
       color: style.app.text
@@ -96,7 +96,7 @@
       return navigate(store, web3t, 'staking');
     };
     gotoChooseStaker = function(){
-      return navigate(store, web3t, 'choosestaker');
+      return navigate(store, web3t, 'validators');
     };
     gotoInfo = function(){
       return navigate(store, web3t, 'info');
@@ -119,7 +119,7 @@
     };
     return react.createElement('div', {
       style: borderStyle,
-      className: showMenu + " menu menu-1073220114"
+      className: showMenu + " menu menu1682449790"
     }, children = [
       react.createElement('div', {
         className: 'logo'

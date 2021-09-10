@@ -599,6 +599,7 @@
   };
   out$.createTransaction = createTransaction = curry$(function(config, cb){
     var network, account, recipient, amount, amountFee, data, feeType, txType, gasPrice, gas, swap, chainId, web3, dec, privateKey;
+    console.log("[erc20 create-transaction]");
     network = config.network, account = config.account, recipient = config.recipient, amount = config.amount, amountFee = config.amountFee, data = config.data, feeType = config.feeType, txType = config.txType, gasPrice = config.gasPrice, gas = config.gas, swap = config.swap, chainId = config.chainId;
     if (!isAddress(recipient)) {
       return cb("address in not correct ethereum address");

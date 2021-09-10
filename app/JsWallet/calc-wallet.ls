@@ -18,7 +18,10 @@ calc-wallet = (store, cb)->
         #wallet.balance = \..
         #wallet.balance-usd = 0
         token = wallet.coin.token.to-lower-case!
-        usd-rate = rates[token] ? \..
+        usd-rate = 
+            | not rates[token]? =>  \..
+            | rates[token] is "" => \..
+            | _ => rates[token]
         # convert usd-rate to string because bigint does not like number type and can throw exception
         usd-rate = usd-rate + ''
         #coin =

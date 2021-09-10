@@ -2,13 +2,13 @@
 (function(){
   var react, navigate, getPrimaryInfo, web3, getLang, icons, button, get, terms;
   react = require('react');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  icons = require('../icons.ls');
-  button = require('../components/button.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  icons = require('../icons.js');
+  button = require('../components/button.js');
+  get = require('../../web3t/providers/superagent.js').get;
   terms = function(arg$){
     var store, web3t, lang, info, style, buttonStyle, accept, children;
     store = arg$.store, web3t = arg$.web3t;

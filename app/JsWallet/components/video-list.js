@@ -2,11 +2,11 @@
 (function(){
   var react, getPrimaryInfo, getLang, icon, navigate, icons;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('../pages/icon.ls');
-  navigate = require('../navigate.ls');
-  icons = require('../icons.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('../pages/icon.js');
+  navigate = require('../navigate.js');
+  icons = require('../icons.js');
   module.exports = function(arg$){
     var store, web3t, fileDescriptions, info, gotoDetails, videoStyle, videos;
     store = arg$.store, web3t = arg$.web3t;

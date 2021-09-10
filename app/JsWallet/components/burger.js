@@ -2,10 +2,10 @@
 (function(){
   var react, icons, getPrimaryInfo, getLang, navigate;
   react = require('react');
-  icons = require('../icons.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  navigate = require('../navigate.ls');
+  icons = require('../icons.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  navigate = require('../navigate.js');
   module.exports = function(store, web3t){
     var lang, style, showClass, show, buttonAdd, children;
     lang = getLang(store);

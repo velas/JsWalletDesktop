@@ -2,14 +2,14 @@
 (function(){
   var react, getPrimaryInfo, getLang, epoch, alertDemo, burger, switchAccount, icons, historyFuncs, AddressUtil, convert;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  epoch = require('./epoch.ls');
-  alertDemo = require('./alert-demo.ls');
-  burger = require('../components/burger.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  historyFuncs = require('../history-funcs.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  epoch = require('./epoch.js');
+  alertDemo = require('./alert-demo.js');
+  burger = require('../components/burger.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  historyFuncs = require('../history-funcs.js');
   AddressUtil = function(props){
     var style, ref$, vlxAddress, vlxAddressChange, ethAddress, ethAddressChange, vlxAddressOnhange, ethAddressOnhange, children;
     style = getPrimaryInfo(store);
@@ -81,7 +81,7 @@
     };
     showClass = store.current.openMenu ? 'hide' : "";
     return react.createElement('div', {
-      className: 'convert convert-710266440'
+      className: 'convert convert179103145'
     }, children = [
       alertDemo(store, web3t), react.createElement('div', {
         style: borderStyle,

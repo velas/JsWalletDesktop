@@ -11,3 +11,11 @@ rm -rf ./app
 cp -r ../JsWallet/.compiled-ssr ./app
 cp -r ../JsWallet/.compiled/main-bundle.css ./
 rsync -av --progress ../web3t ./app --exclude ".git"
+
+
+
+# Alternative
+#mkdir ./app
+#cp -rv ../VelasWalet/wallet-area/wallet/.compiled-ssr/wallet ./app/JsWallet
+#cp -rv ../VelasWalet/wallet-area/wallet/.compiled/main-bundle.css ./
+#rsync -av --progress ../VelasWalet/wallet-area/web3t/ ./app/web3t --exclude ".git"

@@ -38,14 +38,14 @@ clear-timer = (cb)->
     delete cb.timer
     clear-timeout cb.timer
 reset-request = (cb)-> ->
-    return console.log('') if not cb.timer?
+    return if not cb.timer?
     clear-timer cb
     cb "Deadline was reached"
 get-cb-with-deadline = (timeout, cb)->
     return cb "timeout.deadline is expected" if typeof! timeout.deadline isnt \Number
     cb.timer = set-timeout reset-request(cb), timeout.deadline
     (err, data)->
-        return console.log('') if not cb.timer?
+        return if not cb.timer?
         clear-timer cb
         cb err, data
 make-cross-api = (method)-> (url, data)->

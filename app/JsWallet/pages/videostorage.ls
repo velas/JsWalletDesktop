@@ -913,12 +913,12 @@ trend = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "122views" }, children = 
                             react.create-element 'span', {}, ' 122 views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "date5daysago" }, children = 
                             react.create-element 'span', {}, ' 5 days ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "custom-text" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -928,12 +928,12 @@ trend = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "views-stats" }, children = 
                             react.create-element 'span', {}, ' 1.4K views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "date-ago" }, children = 
                             react.create-element 'span', {}, ' 8 mounths ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "custom3" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
 subscr = (store, web3t)->
     lang = get-lang store
@@ -1021,9 +1021,9 @@ subscr = (store, web3t)->
                         react.create-element 'span', {}, children = 
                             react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                             react.create-element 'ul', { className: 'stat' }, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "2kviews" }, children = 
                                     react.create-element 'span', {}, ' 2K views'
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "5-days-ago" }, children = 
                                     react.create-element 'span', {}, ' 5 days ago'
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -1036,9 +1036,9 @@ subscr = (store, web3t)->
                         react.create-element 'span', {}, children = 
                             react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                             react.create-element 'ul', { className: 'stat' }, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "50kviews" }, children = 
                                     react.create-element 'span', {}, ' 50K views'
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "1monthago" }, children = 
                                     react.create-element 'span', {}, ' 1 mounth ago'
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -1051,9 +1051,9 @@ subscr = (store, web3t)->
                         react.create-element 'span', {}, children = 
                             react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                             react.create-element 'ul', { className: 'stat' }, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "lnew-custom2" }, children = 
                                     react.create-element 'span', {}, ' 2K views'
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "date-custom" }, children = 
                                     react.create-element 'span', {}, ' 5 days ago'
         react.create-element 'div', { style: header-style-light, className: 'block-content' }, children = 
             react.create-element 'h2', { className: 'header' }, ' Yesterday'
@@ -1068,9 +1068,9 @@ subscr = (store, web3t)->
                         react.create-element 'span', {}, children = 
                             react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                             react.create-element 'ul', { className: 'stat' }, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "views-custom2" }, children = 
                                     react.create-element 'span', {}, ' 2K views'
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "date-custom3" }, children = 
                                     react.create-element 'span', {}, ' 5 days ago'
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -1083,9 +1083,9 @@ subscr = (store, web3t)->
                         react.create-element 'span', {}, children = 
                             react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                             react.create-element 'ul', { className: 'stat' }, children = 
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "views-custom4" }, children = 
                                     react.create-element 'span', {}, ' 50K views'
-                                react.create-element 'li', {}, children = 
+                                react.create-element 'li', { key: "date-custom4" }, children = 
                                     react.create-element 'span', {}, ' 1 mounth ago'
 history = (store, web3t)->
     lang = get-lang store
@@ -1157,12 +1157,12 @@ history = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "views5" }, children = 
                             react.create-element 'span', {}, ' 122 views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "fate-from2" }, children = 
                             react.create-element 'span', {}, ' 5 days ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "text-custom2" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -1172,12 +1172,12 @@ history = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "views-custom-6" }, children = 
                             react.create-element 'span', {}, ' 1.4K views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "date-from-custom6" }, children = 
                             react.create-element 'span', {}, ' 8 mounths ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "text-custom3" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
         react.create-element 'h2', { className: 'header' }, ' Yesterday'
         react.create-element 'div', { className: 'section' }, children = 
@@ -1188,12 +1188,12 @@ history = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' How to setup New Velas Web Wallet Tutorial'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "views-custom7" }, children = 
                             react.create-element 'span', {}, ' 122 views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "dys-ago-cusotm7" }, children = 
                             react.create-element 'span', {}, ' 5 days ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "text-custom8" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
         react.create-element 'div', { className: 'section' }, children = 
             react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
@@ -1203,12 +1203,12 @@ history = (store, web3t)->
                 react.create-element 'span', { className: 'content-right' }, children = 
                     react.create-element 'div', { className: 'header' }, ' Velas Explainer Video'
                     react.create-element 'ul', { className: 'stat' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "views-custom" }, children = 
                             react.create-element 'span', {}, ' 1.4K views'
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "days-ago-sucom" }, children = 
                             react.create-element 'span', {}, ' 8 mounths ago'
                     react.create-element 'ul', { className: 'stat-text' }, children = 
-                        react.create-element 'li', {}, children = 
+                        react.create-element 'li', { key: "text-custom9" }, children = 
                             react.create-element 'span', {}, ' Velas blockchain uses AI-enhanced DPOS (AIDPOS) consensus for high volume transactions processing without sacrificing decentralization and security.'
 video = (store, web3t)->
     react.create-element 'div', { className: 'panel-content' }, children = 
@@ -1338,24 +1338,24 @@ videostorage = ({ store, web3t })->
                 react.create-element 'div', { style: border-right, className: 'section filter' }, children = 
                     react.create-element 'div', { className: 'tabs' }, children = 
                         react.create-element 'ul', { style: tabs-style }, children = 
-                            react.create-element 'li', { on-click: activate-home, className: "#{active-home}" }, children = 
+                            react.create-element 'li', { key: "activate-home", on-click: activate-home, className: "#{active-home}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.home}", className: 'icon-svg-menu' }
                                     """ Home"""
-                            react.create-element 'li', { on-click: activate-trend, className: "#{active-trend}" }, children = 
+                            react.create-element 'li', { key: "activate-trend", on-click: activate-trend, className: "#{active-trend}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.flame}", className: 'icon-svg-menu' }
                                     """ Trending"""
-                            react.create-element 'li', { on-click: activate-subscr, className: "#{active-subscr}" }, children = 
+                            react.create-element 'li', { key: "activate-subscr", on-click: activate-subscr, className: "#{active-subscr}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.subscriptions}", className: 'icon-svg-menu' }
                                     """   Subscriptions"""
                         react.create-element 'ul', { style: tabs-style }, children = 
-                            react.create-element 'li', { on-click: activate-history, className: "#{active-history}" }, children = 
+                            react.create-element 'li', { key: "activate-history", on-click: activate-history, className: "#{active-history}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.history}", className: 'icon-svg-menu' }
                                     """ History"""
-                            react.create-element 'li', { on-click: activate-video, className: "#{active-video}" }, children = 
+                            react.create-element 'li', { key: "activate-video", on-click: activate-video, className: "#{active-video}" }, children = 
                                 react.create-element 'span', { className: 'icon' }, children = 
                                     react.create-element 'img', { src: "#{icons.u-video}", className: 'icon-svg-menu' }
                                     """ Your videos"""

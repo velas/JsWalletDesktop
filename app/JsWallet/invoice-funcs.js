@@ -2,15 +2,15 @@
 (function(){
   var toJS, ref$, times, minus, div, changeAmountInvoice, calcCrypto, window, navigate, close, round5edit, getPrimaryInfo, map, put;
   toJS = require('mobx').toJS;
-  ref$ = require('./math.ls'), times = ref$.times, minus = ref$.minus, div = ref$.div;
-  ref$ = require('./calc-amount.ls'), changeAmountInvoice = ref$.changeAmountInvoice, calcCrypto = ref$.calcCrypto;
-  window = require('./browser/window.ls');
-  navigate = require('./navigate.ls');
-  close = require('./close.ls');
-  round5edit = require('./round5edit.ls');
-  getPrimaryInfo = require('./get-primary-info.ls');
+  ref$ = require('./math.js'), times = ref$.times, minus = ref$.minus, div = ref$.div;
+  ref$ = require('./calc-amount.js'), changeAmountInvoice = ref$.changeAmountInvoice, calcCrypto = ref$.calcCrypto;
+  window = require('./browser/window.js');
+  navigate = require('./navigate.js');
+  close = require('./close.js');
+  round5edit = require('./round5edit.js');
+  getPrimaryInfo = require('./get-primary-info.js');
   map = require('prelude-ls').map;
-  put = require('../web3t/providers/superagent.ls').put;
+  put = require('../web3t/providers/superagent.js').put;
   module.exports = function(store, web3t){
     var invoice, wallet, color, primaryButtonStyle, defaultButtonStyle, sendAnyway, cancel, recipientChange, getValue, amountChange, amountUsdChange, network, token, descriptionChange;
     if (store == null || web3t == null) {

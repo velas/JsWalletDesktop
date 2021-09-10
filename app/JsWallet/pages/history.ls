@@ -15,7 +15,7 @@ require! {
     \../round-number.ls
     \../components/popups/loading.ls
 }
-# .history95075167
+# .history-1075169295
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -78,9 +78,13 @@ require! {
 #         border-radius: 0px
 #         height: 15px
 #         top: 2px
+#         transition: transform .2s
 #         &.more
 #             height: 8px
 #             top: 0
+#         &.rotate
+#             transform: rotate(180deg)
+#             transition: transform .2s
 #     .icon-svg-arrow
 #         position: relative
 #         height: 12px
@@ -374,7 +378,8 @@ require! {
 #                     position: relative
 #                 .tx-middle
 #                     height: 60px
-#                     animation: appear .1s ease-in
+#                     overflow: hidden
+#                     animation: appearSixtyHeight .1s ease-in
 #                 &:last-child
 #                     margin-bottom: 0px
 #             .cell
@@ -745,6 +750,9 @@ render-transaction = (store, web3t, tran)-->
         store.history.tx-details =
             | store.history.tx-details is "#{tx}#{type}" => null
             | _ => "#{tx}#{type}"
+    rotate-class = 
+        | store.history.tx-details is "#{tx}#{type}" => "rotate"
+        | _ => ""    
     icon-pending=
         filter: if pending is yes then 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-370deg) saturate(790%) contrast(0.5)' else style.app.icon-filter
     amount-pending=
@@ -825,7 +833,7 @@ render-transaction = (store, web3t, tran)-->
                     react.create-element 'span', {}, children = 
                         react.create-element 'span', { className: 'bold confirmed done' }, ' ' + lang.confirmed
             react.create-element 'div', { on-click: tx-details, className: 'cell divider more' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", style: icon1, className: 'icon-svg1 more' }
+                react.create-element 'img', { src: "#{icons.arrow-down}", style: icon1, className: "#{rotate-class} icon-svg1 more" }
                 react.create-element 'div', { style: tooltip, className: 'arrow_box' }, ' ' + lang.details
         if store.history.tx-details is "#{tx}#{type}"
             react.create-element 'div', { style: light-style, on-click: transaction-info(request), className: 'tx-middle' }, children = 
@@ -943,7 +951,7 @@ module.exports = ({ store, web3t })->
         switch-receiver(e.target.value)
     send-from = (store.current.filter.from ? "")
     send-to = (store.current.filter.to ? "")
-    react.create-element 'div', { className: 'normalheader history history1064831901' }, children = 
+    react.create-element 'div', { className: 'normalheader history history-1075169295' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

@@ -2,11 +2,11 @@
 (function(){
   var react, newseedFuncs, getLang, getPrimaryInfo, icon, icons, ref$, map, each, sortBy, newseed, focus;
   react = require('react');
-  newseedFuncs = require('../newseed-funcs.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icon = require('./icon.ls');
-  icons = require('../icons.ls');
+  newseedFuncs = require('../newseed-funcs.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icon = require('./icon.js');
+  icons = require('../icons.js');
   ref$ = require('prelude-ls'), map = ref$.map, each = ref$.each, sortBy = ref$.sortBy;
   newseed = function(arg$){
     var store, web3t, lang, style, ref$, generateSeed, next, textStyle, btnIcon, addressInput, buttonPrimary1Style, buttonPrimary2Style, buttonPrimary3Style, logoStyle, expandCollapse, langsMenuBody, commingSoon, newWallet, random, restoreWallet, restore12, restore24, restorecustom, back, children;
@@ -124,6 +124,7 @@
         react.createElement('button', {
           style: buttonPrimary1Style,
           onClick: restore12,
+          id: "restore-12",
           className: 'left'
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {
@@ -133,6 +134,7 @@
         ])), react.createElement('button', {
           style: buttonPrimary1Style,
           onClick: restore24,
+          id: "restore-24",
           className: 'right'
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {
@@ -142,6 +144,7 @@
         ])), react.createElement('button', {
           style: buttonPrimary1Style,
           onClick: restorecustom,
+          id: "restore-custom",
           className: 'right'
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {
@@ -151,6 +154,7 @@
         ])), react.createElement('button', {
           onClick: back,
           style: buttonPrimary3Style,
+          id: "restore-back",
           className: 'right'
         }, children = [
           react.createElement('img', {

@@ -1,7 +1,7 @@
 require! {
     \react
     \../tools.ls : { money }
-    \prelude-ls : { each, find, filter, foldl, map }
+    \prelude-ls : { each, filter, foldl, map, obj-to-pairs, group-by, keys }
     \../wallet-funcs.ls
     \../get-lang.ls
     \../math.ls : { plus }
@@ -156,7 +156,16 @@ require! {
 #                 width: inherit
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
-    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
+    return null if not wallets? or not wallet?
+    wallets-groups =
+        (wallets ? [])
+            |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
+            |> group-by (.network.group)
+            |> keys
+
+    group-name = wallet.network.group
+
+    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet, wallets-groups, group-name
     lang = get-lang store
     style = get-primary-info store
     label-uninstall =
@@ -170,12 +179,17 @@ module.exports = (store, web3t, wallets, wallet)-->
     placeholder-coin =
         | store.current.refreshing => "placeholder-coin"
         | _ => ""
-    name = wallet.coin.name ? wallet.coin.token
+        
+    wallet-is-disabled = isNaN(wallet?balance)
+    is-loading = store.current.refreshing is yes
+    send-swap-disabled = wallet-is-disabled or is-loading
+        
+    name = wallet?coin?name ? wallet?coin?token
     receive-click = receive(wallet)
     send-click = send(wallet)
     swap-click = swap(store, wallet)
-    token = wallet.coin.token.to-upper-case!
-    tokenDisplay = (wallet.coin.nickname ? "").to-upper-case!
+    token = (wallet?coin?token ? "").to-upper-case!
+    tokenDisplay = (wallet?coin?nickname ? "").to-upper-case!
     style = get-primary-info store
     color1 =
         color: style.app.text
@@ -192,6 +206,14 @@ module.exports = (store, web3t, wallets, wallet)-->
             |> round-human
     total-sent = get-total \OUT, wallet.address
     total-received = get-total \IN, wallet.address
+    
+    installed-networks = store.coins |> map (.token)
+    available-networks = 
+        (wallet?network?networks ? []) 
+            |> obj-to-pairs
+            |> map (-> it.1 )
+            |> filter (-> it.disabled isnt yes and it.referTo in installed-networks)    
+    
     wallet-style=
         color: style.app.text3
         background: style.app.wallet
@@ -207,21 +229,17 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    makeDisabled = store.current.refreshing
     react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed-1057132066' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
-                if no
-                    react.create-element 'div', { className: 'wallet-header-part left' }, children = 
-                        react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
                 react.create-element 'div', { className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', {}, children = 
                         react.create-element 'span', { className: "#{placeholder} title" }, ' ' + name
-                        if wallet.coin.token not in <[ btc vlx vlx_native vlx2 ]>
+                        if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
                             react.create-element 'span', { on-click: uninstall, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
                     react.create-element 'div', { className: "#{placeholder} balance" }, children = 
-                        react.create-element 'div', { title: "#{wallet.balance}", className: 'token-balance' }, children = 
-                            react.create-element 'span', {}, ' ' +  round-human wallet.balance 
+                        react.create-element 'div', { title: "#{wallet?balance}", className: 'token-balance' }, children = 
+                            react.create-element 'span', {}, ' ' +  round-human wallet?balance 
                             react.create-element 'span', {}, ' ' +  tokenDisplay 
                         react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
                             react.create-element 'span', {}, ' ' +  round-human balance-usd 
@@ -230,17 +248,17 @@ module.exports = (store, web3t, wallets, wallet)-->
                             react.create-element 'div', { className: 'pending' }, children = 
                                 react.create-element 'span', {}, ' -' +  pending 
             address-holder { store, wallet, type: \bg }
-            if (wallet.network.networks? and Object.keys(wallet.network.networks).length > 0) then
+            if (available-networks.length > 0) then
                 react.create-element 'div', { className: 'buttons' }, children = 
                     react.create-element 'div', { className: 'with-swap' }, children = 
-                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=no }
+                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
                     react.create-element 'div', { className: 'with-swap' }, children = 
-                        button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", makeDisabled=no, classes="wallet-swap" }                       
+                        button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", classes="wallet-swap", makeDisabled=send-swap-disabled  }                       
             else
                 react.create-element 'div', { className: 'buttons' }, children = 
                     react.create-element 'div', { className: 'with-swap' }, children = 
-                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=no }
+                        button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
             react.create-element 'div', { className: 'details' }, children = 
                 react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, ' $' +  round-human balance-usd 
@@ -251,7 +269,7 @@ module.exports = (store, web3t, wallets, wallet)-->
                     react.create-element 'div', { className: 'stats' }, children = 
                         react.create-element 'span', { className: 'stats-style' }, children = 
                             react.create-element 'div', { style: text, className: 'coin' }, children = 
-                                react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
+                                react.create-element 'img', { src: "#{wallet?coin?image}", className: "#{placeholder-coin} label-coin" }
                                 react.create-element 'div', { className: "#{placeholder}" }, ' ' +  token-display 
                                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
                         wallet-stats store, web3t

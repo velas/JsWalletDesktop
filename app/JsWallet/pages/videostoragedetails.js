@@ -3,17 +3,17 @@
   var react, reactDom, navigate, getPrimaryInfo, web3, getLang, historyFuncs, icon, switchAccount, icons, epoch, alertDemo, burger, video, addComments, comments, next, similarvideo, videodetails;
   react = require('react');
   reactDom = require('react-dom');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  historyFuncs = require('../history-funcs.ls');
-  icon = require('./icon.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  epoch = require('./epoch.ls');
-  alertDemo = require('./alert-demo.ls');
-  burger = require('../components/burger.ls');
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  historyFuncs = require('../history-funcs.js');
+  icon = require('./icon.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  epoch = require('./epoch.js');
+  alertDemo = require('./alert-demo.js');
+  burger = require('../components/burger.js');
   video = function(store, web3t){
     var lang, goBack, info, style, borderStyle, borderRight, borderStyle2, borderStyle3, buttonPrimary2Style, headerTableStyle, dashedBorder, filterBody, borderB, buttonPrimary1Style, inputStyle, lightText, iconStyle, children;
     lang = getLang(store);

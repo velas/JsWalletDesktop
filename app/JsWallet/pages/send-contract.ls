@@ -155,7 +155,7 @@ form-group = (title, style, content)->
         react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
         content!
 build-part = (store, item)-->
-    react.create-element 'li', {}, ' ' + item
+    react.create-element 'li', { key: "build-part-#{item}" }, ' ' + item
 send-contract = ({ store, web3t })->
     { token, name, fee-token, network, send, wallet, round5, pending, history, cancel, send-anyway, round5, is-data, invoice } = send-funcs store, web3t
     style = get-primary-info store

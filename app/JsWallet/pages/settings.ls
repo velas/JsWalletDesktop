@@ -365,45 +365,78 @@ list-language = (store, web3t)->
     change-lang-es = ->
         store.current.language-menu = no
         return set-lang \es
+    change-lang-ar = ->
+        store.current.language-menu = no
+        return set-lang \ar
+    change-lang-in = ->
+        store.current.language-menu = no
+        return set-lang \in
+    change-lang-id = ->
+        store.current.language-menu = no
+        return set-lang \id
+    change-lang-ph = ->
+        store.current.language-menu = no
+        return set-lang \ph
+    change-lang-yr = ->
+        store.current.language-menu = no
+        return set-lang \yr
+    change-lang-vn = ->
+        store.current.language-menu = no
+        return set-lang \vn
     color =
         color: style.app.text
     comming-soon =
         opacity: ".3"
         cursor: "no-drop"
     react.create-element 'ul', {}, children = 
-        react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-gr", style: comming-soon, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-gr}" }
             """ Deutsch"""
-        react.create-element 'li', { on-click: change-lang-fr, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-fr", on-click: change-lang-fr, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-fr}" }
             """ Français"""
-        react.create-element 'li', { on-click: change-lang-en, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-en", on-click: change-lang-en, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-en}" }
             """ English"""
-        react.create-element 'li', { on-click: change-lang-kr, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-kr", on-click: change-lang-kr, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-cn}" }
             """ 한국어"""
-        react.create-element 'li', { on-click: change-lang-cn, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-cn", on-click: change-lang-cn, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-kr}" }
             """ 中文語言"""
-        react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-ar", on-click: change-lang-ar, style: color, className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-ar}" }
+            """ عربى"""
+        react.create-element 'li', { key: "langs-jp", style: comming-soon, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-jp}" }
             """ 日本語"""
-        react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-hn}" }
+        react.create-element 'li', { key: "langs-in", on-click: change-lang-in, style: color, className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-in}" }
             """ हिंदी"""
-        react.create-element 'li', { on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-es", on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-sp}" }
             """ Español"""
-        react.create-element 'li', { on-click: change-lang-ua, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-ua", on-click: change-lang-ua, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-ua}" }
             """ Українська"""
-        react.create-element 'li', { on-click: change-lang-ru, style: color, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-ru", on-click: change-lang-ru, style: color, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-ru}" }
             """ Русский"""
-        react.create-element 'li', { style: comming-soon, className: 'lang-item' }, children = 
+        react.create-element 'li', { key: "langs-kz", style: comming-soon, className: 'lang-item' }, children = 
             react.create-element 'img', { src: "#{icons.langs-kz}" }
             """ Қазақ"""
+        react.create-element 'li', { key: "langs-id", on-click: change-lang-id, style: color, id: "lang-id", className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-id}" }
+            react.create-element 'div', {}, ' Indonesian'
+        react.create-element 'li', { key: "langs-ph", on-click: change-lang-ph, style: color, id: "lang-ph", className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-ph}" }
+            react.create-element 'div', {}, ' Pilipino'
+        react.create-element 'li', { key: "langs-yr", on-click: change-lang-yr, style: color, id: "lang-yr", className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-yr}" }
+            react.create-element 'div', {}, ' Yoruba'
+        react.create-element 'li', { key: "langs-vn", on-click: change-lang-vn, style: color, id: "lang-vn", className: 'lang-item' }, children = 
+            react.create-element 'img', { src: "#{icons.langs-vn}" }
+            react.create-element 'div', {}, ' Tiếng Việt'
 switch-language = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -461,6 +494,8 @@ switch-network = (store, web3t)->
     change-network = ->
         value = it.target.value is \true
         web3t.use networks-reverted[not value]
+        store.current.wallet-index = 0
+        store.current.group-index = 0
     value= networks[store.current.network]
     isChecked = store.current.network is "testnet"
     react.create-element 'label', { className: 'active-network' }, children = 
@@ -519,6 +554,8 @@ manage-account = (store, web3t)->
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 if store.current.network is \testnet
                     react.create-element 'span', {}, ' ' + lang.network-description2
+                else if store.current.network is \devnet
+                    react.create-element 'span', {}, ' The default network for all transactions is Devnet'
                 else
                     react.create-element 'span', {}, ' ' + lang.network-description
             react.create-element 'div', { className: 'content' }, children = 
@@ -556,6 +593,9 @@ module.exports = ({ store, web3t } )->
         border-bottom: "1px solid #{style.app.border}"
         background: style.app.background
         background-color: style.app.bgspare
+    settings-style = 
+        overflow: "auto"
+        max-height: "100vh"
     lang = get-lang store
     react.create-element 'div', { className: 'settings-menu settings-menu1478476306' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
@@ -564,5 +604,5 @@ module.exports = ({ store, web3t } )->
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
             burger store, web3t
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
-            react.create-element 'div', { className: 'settings' }, children = 
+            react.create-element 'div', { style: settings-style, className: 'settings' }, children = 
                 manage-account store, web3t

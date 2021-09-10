@@ -2,21 +2,21 @@
 (function(){
   var react, sendFuncs, ref$, map, find, objToPairs, filter, join, getPrimaryInfo, icon, getLang, switchAccount, icons, roundHuman, walletsFuncs, epoch, button, addressHolder, identicon, send, getTxDetails, formGroup, buildPart, sendContract;
   react = require('react');
-  sendFuncs = require('../send-funcs.ls');
+  sendFuncs = require('../send-funcs.js');
   ref$ = require('prelude-ls'), map = ref$.map, find = ref$.find, objToPairs = ref$.objToPairs, filter = ref$.filter, join = ref$.join;
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icon = require('./icon.ls');
-  getLang = require('../get-lang.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  roundHuman = require('../round-human.ls');
-  walletsFuncs = require('../wallets-funcs.ls');
-  epoch = require('./epoch.ls');
-  button = require('../components/button.ls');
-  addressHolder = require('../components/address-holder.ls');
-  identicon = require('../components/identicon.ls');
-  send = require('./send.ls');
-  getTxDetails = require('../get-tx-details.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  icon = require('./icon.js');
+  getLang = require('../get-lang.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  roundHuman = require('../round-human.js');
+  walletsFuncs = require('../wallets-funcs.js');
+  epoch = require('./epoch.js');
+  button = require('../components/button.js');
+  addressHolder = require('../components/address-holder.js');
+  identicon = require('../components/identicon.js');
+  send = require('./send.js');
+  getTxDetails = require('../get-tx-details.js');
   formGroup = function(title, style, content){
     var children;
     return react.createElement('div', {

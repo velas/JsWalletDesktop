@@ -2,7 +2,7 @@
 (function(){
   var react, scrollTop, modalControl, current, makeChoice, acceptAsk, cancelAsk, reduceOrCancel, plug, install, replace, out$ = typeof exports != 'undefined' && exports || this, toString$ = {}.toString;
   react = require('react');
-  scrollTop = require('./scroll-top.ls');
+  scrollTop = require('./scroll-top.js');
   out$.modalControl = modalControl = function(store){
     var ref$, text, callback, enabled, accept, reject, coinImage, coinType, children, i;
     ref$ = store.ask, text = ref$.text, callback = ref$.callback, enabled = ref$.enabled;

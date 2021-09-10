@@ -375,23 +375,23 @@ content = (store, web3t)->
         if no
             react.create-element 'div', { style: style, className: 'filter' }, children = 
                 react.create-element 'ul', {}, children = 
-                    react.create-element 'li', {}, children = 
+                    react.create-element 'li', { key: "best" }, children = 
                         react.create-element 'img', { src: "#{icons.best}" }
                         """ Best"""
-                    react.create-element 'li', { className: 'active' }, children = 
+                    react.create-element 'li', { key: "hot", className: 'active' }, children = 
                         react.create-element 'img', { src: "#{icons.hot}" }
                         """ Hot"""
-                    react.create-element 'li', {}, children = 
+                    react.create-element 'li', { key: "new" }, children = 
                         react.create-element 'img', { src: "#{icons.new}" }
                         """ New"""
-                    react.create-element 'li', {}, children = 
+                    react.create-element 'li', { key: "top" }, children = 
                         react.create-element 'img', { src: "#{icons.top}" }
                         """ Top"""
                 react.create-element 'ul', { className: 'view' }, children = 
-                    react.create-element 'li', { on-click: add-class, className: "#{view}" }, children = 
+                    react.create-element 'li', { on-click: add-class, key: "compound1", className: "#{view}" }, children = 
                         react.create-element 'img', { src: "#{icons.compact}" }
                         react.create-element 'img', { src: "#{icons.classic}" }
-                    react.create-element 'li', { on-click: create-new-vote }, children = 
+                    react.create-element 'li', { on-click: create-new-vote, key: "compound2" }, children = 
                         react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
                         react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
         react.create-element 'div', { className: 'notice' }, children = 

@@ -2,19 +2,19 @@
 (function(){
   var react, button, ref$, map, filter, head, find, get, getPrimaryInfo, icons, navigate, burger, buildVersion, onlyVersion, onlyMd5, header, slice$ = [].slice;
   react = require('react');
-  button = require('../components/button.ls');
+  button = require('../components/button.js');
   ref$ = require('prelude-ls'), map = ref$.map, filter = ref$.filter, head = ref$.head, find = ref$.find;
-  get = require('../../web3t/providers/superagent.ls').get;
-  getPrimaryInfo = require('../get-primary-info.ls');
-  icons = require('../icons.ls');
-  navigate = require('../navigate.ls');
-  burger = require('../components/burger.ls');
+  get = require('../../web3t/providers/superagent.js').get;
+  getPrimaryInfo = require('../get-primary-info.js');
+  icons = require('../icons.js');
+  navigate = require('../navigate.js');
+  burger = require('../components/burger.js');
   buildVersion = curry$(function(store, release){
     var style, buttonPrimary1Style, buttonPrimary3Style, buttonPrimary2Style, buttonLink, resource, ref$, i$, parts, last, source, name, icon, md5File, children;
     style = getPrimaryInfo(store);
     buttonPrimary1Style = {
       border: "0",
-      color: style.app.text,
+      color: style.app.textInvert,
       background: style.app.primary1,
       backgroundColor: style.app.primary1Spare
     };
@@ -141,7 +141,7 @@
     var store, web3t, children;
     store = arg$.store, web3t = arg$.web3t;
     return react.createElement('div', {
-      className: 'wallets wallets2091236913'
+      className: 'wallets wallets-1770015941'
     }, children = [
       header(store, web3t), react.createElement('div', {
         className: 'platforms'

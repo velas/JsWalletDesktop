@@ -2,12 +2,12 @@
 (function(){
   var react, newseedFuncs, getLang, getPrimaryInfo, ref$, map, sortBy, navigate, icons, createWord, reviewWordsPanel, reviewwords;
   react = require('react');
-  newseedFuncs = require('../newseed-funcs.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
+  newseedFuncs = require('../newseed-funcs.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
   ref$ = require('prelude-ls'), map = ref$.map, sortBy = ref$.sortBy;
-  navigate = require('../navigate.ls');
-  icons = require('../icons.ls');
+  navigate = require('../navigate.js');
+  icons = require('../icons.js');
   createWord = function(store, index, word){
     var style, seedStyle, children;
     index = index + 1;
@@ -68,6 +68,7 @@
         react.createElement('button', {
           onClick: back,
           style: buttonPrimary3Style,
+          id: 'seed-back',
           className: 'right'
         }, children = [
           react.createElement('img', {
@@ -78,6 +79,7 @@
         ]), react.createElement('button', {
           onClick: print,
           style: buttonPrimary2Style,
+          id: 'seed-print',
           className: 'right doc'
         }, children = [
           react.createElement('img', {
@@ -87,6 +89,7 @@
         ]), react.createElement('button', {
           onClick: next,
           style: buttonPrimary1Style,
+          id: 'seed-next',
           className: 'right save'
         }, children = [
           react.createElement('img', {
@@ -113,7 +116,7 @@
       width: "120px"
     };
     return react.createElement('div', {
-      className: 'newseed newseed-1613741453'
+      className: 'newseed newseed1158038099'
     }, children = [
       react.createElement('img', {
         style: newseedStyle,

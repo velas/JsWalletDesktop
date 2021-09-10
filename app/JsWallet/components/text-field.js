@@ -2,23 +2,22 @@
 (function(){
   var react, getPrimaryInfo, round5, round, find, times, keyboard, icons;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  round5 = require('../round5.ls');
-  round = require('../round.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  round5 = require('../round5.js');
+  round = require('../round.js');
   find = require('prelude-ls').find;
-  times = require('../math.ls').times;
-  keyboard = require('./keyboard.ls');
-  icons = require('../icons.ls');
+  times = require('../math.js').times;
+  keyboard = require('./keyboard.js');
+  icons = require('../icons.js');
   module.exports = function(arg$){
-    var store, value, onChange, placeholder, type, onKeyDown, style, inputStyle, btnIcon, actualPlaceholder, chosenType, children;
-    store = arg$.store, value = arg$.value, onChange = arg$.onChange, placeholder = arg$.placeholder, type = arg$.type, onKeyDown = arg$.onKeyDown;
+    var ref, store, value, onChange, placeholder, type, onKeyDown, id, style, inputStyle, btnIcon, actualPlaceholder, chosenType, children;
+    ref = arg$.ref, store = arg$.store, value = arg$.value, onChange = arg$.onChange, placeholder = arg$.placeholder, type = arg$.type, onKeyDown = arg$.onKeyDown, id = arg$.id;
     style = getPrimaryInfo(store);
     inputStyle = {
       background: style.app.input,
       color: style.app.text,
       overflowX: 'auto',
-      marginBottom: '5px',
-      borderRadius: '6px'
+      marginBottom: '5px'
     };
     btnIcon = {
       filter: style.app.btnIcon
@@ -33,22 +32,24 @@
       }
     }());
     return react.createElement('div', {
-      className: 'input-area input-area1793422214'
+      className: 'input-area input-area-1968452910'
     }, children = [
       react.createElement('input', {
+        ref: ref,
+        'void': void 8,
         type: chosenType + "",
         value: value + "",
         style: inputStyle,
         onChange: onChange,
         placeholder: actualPlaceholder,
         autoComplete: "off",
-        onKeyDown: onKeyDown
+        onKeyDown: onKeyDown,
+        id: id
       }), store.current.device !== 'mobile' ? react.createElement('span', {
         className: 'keyboard-panel'
       }, children = [
         react.createElement('img', {
           src: icons.keyboard + "",
-          style: btnIcon,
           className: 'icon-svg'
         }), react.createElement('div', {
           style: inputStyle,

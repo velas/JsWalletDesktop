@@ -3,9 +3,9 @@
   var react, ref$, map, find, icons, getPrimaryInfo, jsonParse, asCallback, waitXhrUpload, makeVideoThumbnail, onBrowseFiles, getVlxPrivateAddress, uploadVideoFilesRecursive, dropZone, slice$ = [].slice, arrayFrom$ = Array.from || function(x){return slice$.call(x);};
   react = require('react');
   ref$ = require('prelude-ls'), map = ref$.map, find = ref$.find;
-  icons = require('../icons.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  jsonParse = require('../../web3t/json-parse.ls');
+  icons = require('../icons.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  jsonParse = require('../../web3t/json-parse.js');
   asCallback = function(p, cb){
     p['catch'](function(err){
       return cb(err);
@@ -94,7 +94,7 @@
     })(
     wallets);
     if (wallet == null) {
-      return cb("wallet vlx2 not found");
+      return cb("wallet vlx not found");
     }
     return cb(null, wallet.privateKey);
   };

@@ -3,13 +3,13 @@
   var react, ref$, map, filter, loading2, web3, getPrimaryInfo, getLang, icon, icons, get, createItem, filterItem, addByAddress, addByVlxaddress;
   react = require('react');
   ref$ = require('prelude-ls'), map = ref$.map, filter = ref$.filter;
-  loading2 = require('./loading2.ls');
-  web3 = require('../web3.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  icons = require('../icons.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
+  loading2 = require('./loading2.js');
+  web3 = require('../web3.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  icons = require('../icons.js');
+  get = require('../../web3t/providers/superagent.js').get;
   createItem = curry$(function(arg$, item){
     var store, web3t, add, title, style, buttonStyle, background, menuStyle, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -168,11 +168,12 @@
     ]);
   };
   module.exports = function(arg$){
-    var store, web3t, close, filterRegistery, style, accountBodyStyle, color, lang, inputStyle, children;
+    var store, web3t, network, close, filterRegistery, style, accountBodyStyle, color, lang, inputStyle, children;
     store = arg$.store, web3t = arg$.web3t;
     if (store.current.addCoin !== true) {
       return null;
     }
+    network = store.current.network;
     close = function(){
       return store.current.addCoin = false;
     };
@@ -195,7 +196,7 @@
       border: "0"
     };
     return react.createElement('div', {
-      className: 'manage-account manage-account366755008'
+      className: 'manage-account manage-account1611566248'
     }, children = react.createElement('div', {
       style: accountBodyStyle,
       className: 'account-body'
@@ -233,7 +234,10 @@
           web3t: web3t
         }))(
         filter(filterItem(store))(
-        store.registry))
+        filter(function(it){
+          return it[network].disabled === false || it[network].disabled == null;
+        })(
+        store.registry)))
         : react.createElement('div', {
           className: 'loading'
         }, children = loading2('black')))))

@@ -2,7 +2,7 @@ require! {
     \./new-account.ls
     \./refresh-wallet.ls
     \mobx : { toJS, transaction }
-    \prelude-ls : { map, pairs-to-obj, find }
+    \prelude-ls : { map, pairs-to-obj, find, findIndex }
     \./mirror.ls
     \./apply-transactions.ls
     \./scam-warning.ls
@@ -43,7 +43,11 @@ export background-refresh-account = (web3, store, cb)->
     store.current.refreshing = no
     return cb err if err?
     transaction ->
-        wallet = bg-store.current.account.wallets[store.current.wallet-index]
+        wallet-index = 
+            | store.current?filter?token? => 
+                bg-store.current.account.wallets |> findIndex (-> it.coin.token is store.current?filter?token)
+            | _ => store.current.wallet-index 
+        wallet = bg-store.current.account.wallets[wallet-index]
         return if not wallet?
         store.rates = bg-store.rates
         store.current.account = bg-store.current.account

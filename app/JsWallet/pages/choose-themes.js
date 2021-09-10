@@ -2,8 +2,8 @@
 (function(){
   var react, button, themes, ref$, objToPairs, map, createButton;
   react = require('react');
-  button = require('../components/button.ls');
-  themes = require('../themes.ls');
+  button = require('../components/button.js');
+  themes = require('../themes.js');
   ref$ = require('prelude-ls'), objToPairs = ref$.objToPairs, map = ref$.map;
   createButton = function(store, web3t){
     return function(text){
@@ -51,7 +51,7 @@
   module.exports = function(store, web3t){
     var children;
     return react.createElement('div', {
-      className: 'choose-theme choose-theme-1047863594'
+      className: 'choose-theme choose-theme-1045472592'
     }, children = map(createButton(store, web3t))(
     map(function(it){
       return it[0];

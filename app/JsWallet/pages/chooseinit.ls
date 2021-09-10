@@ -9,7 +9,7 @@ require! {
     \./choose-language.ls
 }
 # ss
-# .newseed2064620563
+# .newseed1477500738
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
@@ -33,7 +33,14 @@ require! {
 #     .title
 #         color: #ebf6f8
 #         font-size: 22px
-#         margin-bottom: 20px
+#     .version
+#         letter-spacing: 1px
+#         font-size: 8px
+#         padding: 6px
+#         color: #89829d
+#         border-radius: 8px
+#         line-height: 5px
+#         margin: 5px auto
 #     .align-v
 #         display: inline-grid
 #         position: relative
@@ -180,10 +187,11 @@ newseed = ({ store, web3t })->
         store.current.seed-words.length = 0
         navigate store, web3t, \:init
         #store.current.page = 'newseedrestore'
-    react.create-element 'div', { className: 'newseed newseed2064620563' }, children = 
+    react.create-element 'div', { className: 'newseed newseed1477500738' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}" }
             react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
+            react.create-element 'div', { className: 'version' }, ' ' + store.version
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.welcome-wallet
         react.create-element 'div', { className: 'align-v' }, children = 
             react.create-element 'button', { style: button-primary2-style, on-click: new-wallet, id: "btn-create", className: 'left' }, children = 

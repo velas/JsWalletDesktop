@@ -25,6 +25,7 @@ module.exports = {
             "web3Provider": "https://explorer.velas.com/rpc",
             "url": "https://explorer.velas.com",
             "apiUrl": "https://explorer.velas.com/api"
-        }
+        },
+        "group": 'Velas Legacy'
     }
 }

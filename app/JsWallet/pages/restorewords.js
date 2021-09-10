@@ -2,14 +2,14 @@
 (function(){
   var react, newseedFuncs, getLang, getPrimaryInfo, ref$, map, sortBy, filter, navigate, icons, bip39, typeahead, restoreWords, restoreWordsPanel, newseed;
   react = require('react');
-  newseedFuncs = require('../newseed-funcs.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
+  newseedFuncs = require('../newseed-funcs.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
   ref$ = require('prelude-ls'), map = ref$.map, sortBy = ref$.sortBy, filter = ref$.filter;
-  navigate = require('../navigate.ls');
-  icons = require('../icons.ls');
-  bip39 = require('../../web3t/providers/deps.ls').bip39;
-  typeahead = require('../components/typeahead.ls');
+  navigate = require('../navigate.js');
+  icons = require('../icons.js');
+  bip39 = require('../../web3t/providers/deps.js').bip39;
+  typeahead = require('../components/typeahead.js');
   restoreWords = curry$(function(store, web3t, next, item){
     var lang, style, seedStyle, txtStyle, index, list, changePart, onKeyDown, children;
     lang = getLang(store);
@@ -38,7 +38,8 @@
       ? react.createElement('textarea', {
         value: item.part + "",
         placeholder: "Enter your custom seed phrase here. Please check your addresses and balances before use.",
-        onChange: changePart
+        onChange: changePart,
+        id: "seedphrase-custom"
       })
       : [
         typeahead({
@@ -47,7 +48,8 @@
           placeholder: lang.word + " #" + index,
           onChange: changePart,
           onKeyDown: onKeyDown,
-          list: list
+          list: list,
+          id: "seed-phrase-word"
         }), react.createElement('span', {
           className: 'effect'
         }, ' ' + index)
@@ -112,6 +114,7 @@
         react.createElement('button', {
           onClick: back,
           style: buttonPrimary3Style,
+          id: "seed-phrase-back",
           className: 'right'
         }, children = [
           react.createElement('img', {
@@ -122,6 +125,7 @@
         ]), react.createElement('button', {
           onClick: next,
           style: buttonPrimary1Style,
+          id: "seed-phrase-next",
           className: 'right'
         }, children = [
           react.createElement('img', {
@@ -152,7 +156,7 @@
       width: "120px"
     };
     return react.createElement('div', {
-      className: 'newseed newseed2001585109'
+      className: 'newseed newseed-1527643649'
     }, children = [
       react.createElement('img', {
         style: newseedStyle,

@@ -4801,7 +4801,7 @@ var solanaWeb3 = (function (exports) {
     }
   });
 
-  //      
+  //
   const toBuffer = arr => {
     if (arr instanceof buffer.Buffer) {
       return arr;
@@ -8595,7 +8595,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   const BPF_LOADER_DEPRECATED_PROGRAM_ID = new PublicKey('BPFLoader1111111111111111111111111111111111');
 
   var global$1 = (typeof global !== "undefined" ? global :
@@ -10662,7 +10662,7 @@ var solanaWeb3 = (function (exports) {
   /** Factory for {@link Blob} values. */
   var blob = ((length, property) => new Blob(length, property));
 
-  //      
+  //
   /**
    * Layout for a public key
    */
@@ -10726,7 +10726,7 @@ var solanaWeb3 = (function (exports) {
     return alloc;
   }
 
-  //      
+  //
   function decodeLength(bytes) {
     let len = 0;
     let size = 0;
@@ -11288,9 +11288,7 @@ var solanaWeb3 = (function (exports) {
 
       const seen = new Set();
       this.signatures = signers.filter(publicKey => {
-        console.log("publicKey", publicKey);
         const key = publicKey.toString();
-        console.log("key", key);
 
         if (seen.has(key)) {
           return false;
@@ -11592,7 +11590,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   const SYSVAR_CLOCK_PUBKEY = new PublicKey('SysvarC1ock11111111111111111111111111111111');
   const SYSVAR_RECENT_BLOCKHASHES_PUBKEY = new PublicKey('SysvarRecentB1ockHashes11111111111111111111');
   const SYSVAR_RENT_PUBKEY = new PublicKey('SysvarRent111111111111111111111111111111111');
@@ -17013,7 +17011,7 @@ var solanaWeb3 = (function (exports) {
     exports.Client = Client;
   });
 
-  //      
+  //
   /**
    * https://github.com/solana-labs/solana/blob/90bedd7e067b5b8f3ddbb45da00a4e9cabb22c62/sdk/src/fee_calculator.rs#L7-L11
    *
@@ -17062,7 +17060,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   // TODO: These constants should be removed in favor of reading them out of a
   // Syscall account
 
@@ -17086,13 +17084,13 @@ var solanaWeb3 = (function (exports) {
 
   const MS_PER_SLOT = 1000 / NUM_SLOTS_PER_SECOND;
 
-  //      
+  //
   // zzz
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  //      
+  //
   function promiseTimeout(promise, timeoutMs) {
     let timeoutId;
     const timeoutPromise = new Promise(resolve => {
@@ -17670,6 +17668,7 @@ var solanaWeb3 = (function (exports) {
       executable: 'boolean',
       owner: 'string',
       lamports: 'number',
+      lamportsStr: 'string?',
       data: ['string', struct$1.literal('base64')],
       rentEpoch: 'number?'
     })
@@ -17684,6 +17683,7 @@ var solanaWeb3 = (function (exports) {
       executable: 'boolean',
       owner: 'string',
       lamports: 'number',
+      lamportsStr: 'string?',
       data: struct$1.pick({
         program: 'string',
         parsed: 'any',
@@ -17706,6 +17706,7 @@ var solanaWeb3 = (function (exports) {
 
   const GetLargestAccountsRpcResult = jsonRpcResultAndContext(struct$1.array([struct$1({
     lamports: 'number',
+    lamportsStr: 'string?',
     address: 'string'
   })]));
   /**
@@ -17726,6 +17727,7 @@ var solanaWeb3 = (function (exports) {
     executable: 'boolean',
     owner: 'string',
     lamports: 'number',
+    lamportsStr: 'string?',
     data: 'any',
     rentEpoch: 'number?'
   });
@@ -17737,6 +17739,7 @@ var solanaWeb3 = (function (exports) {
     executable: 'boolean',
     owner: 'string',
     lamports: 'number',
+    lamportsStr: 'string?',
     data: struct$1.union([['string', struct$1.literal('base64')], struct$1.pick({
       program: 'string',
       parsed: 'any',
@@ -18069,6 +18072,7 @@ var solanaWeb3 = (function (exports) {
     rewards: struct$1.union(['undefined', struct$1.array([struct$1({
       pubkey: 'string',
       lamports: 'number',
+      lamportsStr: 'string?',
       postBalance: struct$1.union(['number', 'undefined']),
       rewardType: struct$1.union(['string', 'undefined'])
     })])])
@@ -18388,10 +18392,36 @@ var solanaWeb3 = (function (exports) {
     }
 
     async getBlockProduction(identity) {
-      const unsafeRes = await this._rpcRequest('getBlockProduction', [{identity}]);
-      const res = GetBlockTimeRpcResult(unsafeRes);
-      assert(typeof res.result !== 'undefined');
-      return res.result;
+        const unsafeRes = await this._rpcRequest('getBlockProduction', [{identity}]);
+        //assert(typeof unsafeRes.result !== 'undefined');
+        return unsafeRes;
+    }
+
+    async getConfirmedBlocks(start_slot, end_slot) {
+        const unsafeRes = await this._rpcRequest('getConfirmedBlocks', [start_slot, end_slot]);
+        //const res = GetConfirmedBlockRpcResult(unsafeRes);
+        const res = unsafeRes;
+
+        if (res.error) {
+            throw new Error('failed to get confirmed block: ' + res.error.message);
+        }
+
+        const result = res.result;
+        assert(typeof result !== 'undefined');
+
+        if (!result) {
+            throw new Error('Confirmed block ' + slot + ' not found');
+        }
+
+        return unsafeRes;
+
+    }
+
+
+    async getLeaderSchedule(identity) {
+        const unsafeRes = await this._rpcRequest('getLeaderSchedule', [{identity}]);
+        //assert(typeof res.result !== 'undefined');
+        return unsafeRes;
     }
 
     /**
@@ -18818,8 +18848,11 @@ var solanaWeb3 = (function (exports) {
      */
 
 
-    async getParsedProgramAccounts(programId, commitment) {
+    async getParsedProgramAccounts(programId, filter, commitment) {
       const args = this._buildArgs([programId.toBase58()], commitment, 'jsonParsed');
+      if(filter){
+        args[1].filters = filter.filters;
+      }
 
       const unsafeRes = await this._rpcRequest('getProgramAccounts', args);
       const res = GetParsedProgramAccountsRpcResult(unsafeRes);
@@ -19240,7 +19273,6 @@ var solanaWeb3 = (function (exports) {
 
     async getConfirmedBlocksWithLimit(slot, limit) {
       const unsafeRes = await this._rpcRequest('getConfirmedBlocksWithLimit', [slot, limit]);
-      console.log("unsafeRes", unsafeRes);
       //const res = GetConfirmedBlockRpcResult(unsafeRes);
       const res = unsafeRes;
 
@@ -19599,7 +19631,6 @@ var solanaWeb3 = (function (exports) {
 
 
     async sendTransaction(transaction, signers, options) {
-      console.log("index.cjs.js [sendTransaction]");
       if (transaction.nonceInfo) {
         transaction.sign(...signers);
       } else {
@@ -20254,7 +20285,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   /**
    * Sign, send and confirm a transaction.
    *
@@ -20282,7 +20313,7 @@ var solanaWeb3 = (function (exports) {
     return signature;
   }
 
-  //      
+  //
   /**
    * @typedef {Object} InstructionType
    * @property (index} The Instruction index (from solana upstream program)
@@ -20322,7 +20353,7 @@ var solanaWeb3 = (function (exports) {
     return data;
   }
 
-  //      
+  //
   /**
    * Create account system transaction params
    * @typedef {Object} CreateAccountParams
@@ -21140,7 +21171,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   /**
    * Program loader interface
    */
@@ -21307,7 +21338,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   const BPF_LOADER_PROGRAM_ID = new PublicKey('BPFLoader2111111111111111111111111111111111');
   /**
    * Factory class for transactions to interact with a program loader
@@ -28852,7 +28883,7 @@ var solanaWeb3 = (function (exports) {
     })();
   });
 
-  //      
+  //
   const {
     publicKeyCreate,
     ecdsaSign
@@ -29119,7 +29150,7 @@ var solanaWeb3 = (function (exports) {
 
   }
 
-  //      
+  //
   /**
    * Send and confirm a raw transaction
    *
@@ -29146,7 +29177,7 @@ var solanaWeb3 = (function (exports) {
     return signature;
   }
 
-  //     
+  //
 
   /**
    * @private
@@ -29183,7 +29214,7 @@ var solanaWeb3 = (function (exports) {
     return url;
   }
 
-  //      
+  //
   /**
    * There are 1-billion lamports in one SOL
    */

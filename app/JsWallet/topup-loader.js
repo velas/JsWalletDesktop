@@ -2,9 +2,9 @@
 (function(){
   var ref$, filter, reverse, head, foldl, find, getInstallList, getPrimaryCoin, common, verifyFields, getMethods, support, replace, put, filterByImportance, getTopupAddress, toString$ = {}.toString, out$ = typeof exports != 'undefined' && exports || this;
   ref$ = require('prelude-ls'), filter = ref$.filter, reverse = ref$.reverse, head = ref$.head, foldl = ref$.foldl, find = ref$.find;
-  getInstallList = require('./install-plugin.ls').getInstallList;
-  getPrimaryCoin = require('./get-primary-coin.ls');
-  common = [require('../web3t/plugins/gobyte-topup.ls'), require('../web3t/plugins/trycrypto-topup.ls')];
+  getInstallList = require('./install-plugin.js').getInstallList;
+  getPrimaryCoin = require('./get-primary-coin.js');
+  common = [require('../web3t/plugins/gobyte-topup.js'), require('../web3t/plugins/trycrypto-topup.js')];
   verifyFields = function(t){
     if (t.type !== 'topup') {
       return false;

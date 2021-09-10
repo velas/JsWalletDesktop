@@ -3,20 +3,20 @@
   var react, reactDom, navigate, getPrimaryInfo, CopyToClipboard, copiedInform, copy, web3, getLang, historyFuncs, icon, switchAccount, icons, epoch, alertDemo, burger, resources;
   react = require('react');
   reactDom = require('react-dom');
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
   CopyToClipboard = require('react-copy-to-clipboard').CopyToClipboard;
-  copiedInform = require('../copied-inform.ls');
-  copy = require('../copy.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  historyFuncs = require('../history-funcs.ls');
-  icon = require('./icon.ls');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  epoch = require('./epoch.ls');
-  alertDemo = require('./alert-demo.ls');
-  burger = require('../components/burger.ls');
+  copiedInform = require('../copied-inform.js');
+  copy = require('../copy.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  historyFuncs = require('../history-funcs.js');
+  icon = require('./icon.js');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  epoch = require('./epoch.js');
+  alertDemo = require('./alert-demo.js');
+  burger = require('../components/burger.js');
   resources = function(arg$){
     var store, web3t, lang, goBack, gotoSearch, info, action, active, style, borderStyle, resource, resourceHeader, borderRight, buttonPrimary2Style, headerTableStyle, filterBody, borderB, buttonPrimary1Style, filterIcon, addressInput, lightText, expandCollapse, bgCpu, bgGpu, bgSpacing, th, trOdd, trEven, showClass, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -44,7 +44,7 @@
       color: info.app.text,
       border: "1px solid " + info.app.border,
       background: info.app.header,
-      borderRadius: '6px'
+      borderRadius: info.app.borderBtn
     };
     resourceHeader = {
       color: info.app.text,
@@ -110,7 +110,7 @@
     };
     showClass = store.current.openMenu ? 'hide' : "";
     return react.createElement('div', {
-      className: 'resources resources-65050170'
+      className: 'resources resources1489477053'
     }, children = [
       alertDemo(store, web3t), react.createElement('div', {
         style: borderStyle,

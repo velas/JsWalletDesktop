@@ -144,6 +144,10 @@ round = (num)->
     Math.round +num
 to-hex = ->
     new BN(it)
+    
+up = (str)->
+    (str ? "").to-upper-case! 
+    
 transform-tx = (network, description, t)-->
     { url } = network.api
     dec = get-dec network
@@ -168,6 +172,8 @@ transform-tx = (network, description, t)-->
     tx-type =
         | t.to is "V8sA8Q5jR44E4q6S59eUhhSJQiRBBFdZA8" or t.to is "0x56454c41532d434841494e000000000053574150"
             => "Swap EVM to Native"
+        | up(t.from) is up("V8sA8Q5jR44E4q6S59eUhhSJQiRBBFdZA8") or up(t.from) is up("0x56454c41532d434841494e000000000053574150")
+            => "Native to EVM Swap"     
         | _ => null
     res = { network, tx, amount, fee, time, url, t.from, t.to, recipient-type, description, tx-type }
     res    
@@ -314,7 +320,6 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         data: data || "0x"
         chainId: chainId     
     }
-    console.log "tx before parse" tx-obj    
     tx = new Tx tx-obj, { common }
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex
@@ -357,6 +362,17 @@ export get-balance = ({ network, address} , cb)->
     dec = get-dec network
     balance = number `div` dec
     cb null, balance
+    
+export get-market-history-prices = (config, cb)->
+    { network, coin } = config  
+    {market} = coin    
+    err, resp <- get market .timeout { deadline } .end
+    return cb "cannot execute query - err #{err.message ? err }" if err?
+    err, result <- json-parse resp.text
+    return cb err if err?
+    cb null, result   
+        
+    
 #console.log \test
 #to-eth-address "VADyNxJR9PjWrQzJVmoaKxqaS8Mk", console.log
 #console.log to-velas-address Buffer.from("0b6a35fafb76e0786db539633652a8553ac28d67", 'hex')

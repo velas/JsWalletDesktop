@@ -2,10 +2,10 @@
 (function(){
   var localStorage, jsonParse, api, moment, plus, ref$, foldl, map, set, getAll, getOne, removeTx, getPendingAmount, getPendingTxs, getName, createPendingTx, out$ = typeof exports != 'undefined' && exports || this, toString$ = {}.toString;
   localStorage = require('localStorage');
-  jsonParse = require('./json-parse.ls');
-  api = require('./api.ls');
+  jsonParse = require('./json-parse.js');
+  api = require('./api.js');
   moment = require('moment');
-  plus = require('./math.ls').plus;
+  plus = require('./math.js').plus;
   ref$ = require('prelude-ls'), foldl = ref$.foldl, map = ref$.map;
   set = function(config, arr, cb){
     var name, value;

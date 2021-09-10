@@ -7,3 +7,5 @@ module.exports =
         HomeBridge          : "0x57C7f6CD50a432943F40F987a1448181D5B11307"
         ForeignBridge       : "0xBDeDd09D5283fB38EFF898E3859AbAE96B712aF9" 
         ERC20BridgeToken    : "0xfEFF2e74eC612A288Ae55fe9F6e40c52817a1B6C"
+        ERC677BridgeToken   : "0x77622C2F95846dDaB1300F46685CC953C17A78df"
+        HomeERC677Bridge    : "0x97B7eb15cA5bFa82515f6964a3EAa1fE71DFB7A7"

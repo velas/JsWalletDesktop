@@ -2,16 +2,16 @@
 (function(){
   var react, invoiceFuncs, map, receive, getPrimaryInfo, getLang, copiedInform, copy, icons, button, addressHolder, formGroup, addressLink, illQr, send;
   react = require('react');
-  invoiceFuncs = require('../invoice-funcs.ls');
+  invoiceFuncs = require('../invoice-funcs.js');
   map = require('prelude-ls').map;
-  receive = require('./receive.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  copiedInform = require('../copied-inform.ls');
-  copy = require('../copy.ls');
-  icons = require('../icons.ls');
-  button = require('../components/button.ls');
-  addressHolder = require('../components/address-holder.ls');
+  receive = require('./receive.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  copiedInform = require('../copied-inform.js');
+  copy = require('../copy.js');
+  icons = require('../icons.js');
+  button = require('../components/button.js');
+  addressHolder = require('../components/address-holder.js');
   formGroup = function(title, iconStyle, content){
     var children;
     return react.createElement('div', {

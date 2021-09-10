@@ -474,10 +474,10 @@ token-migration = (store, web3t)->
                             react.create-element 'span', {}, children = 
                                 react.create-element 'span', { className: 'orange' }, ' I am not:'
                                 react.create-element 'ol', { type: 'I' }, children = 
-                                    react.create-element 'li', {}, ' a citizen or resident of, or domiciled in;'
-                                    react.create-element 'li', {}, ' participating in the token swap from a location in;'
-                                    react.create-element 'li', {}, ' representing or acting on behalf of a person residing or located in,'
-                                    react.create-element 'li', {}, ' representing or acting on behalf of an entity (including, but not limited to, any company or partnership) incorporated, established or registered in or under the laws of: the United States of America (USA) and its territories (American Samoa, Guam, the Northern Mariana Islands, Puerto Rico, and the U.S. Virgin Islands), Peoples Republic of China (except for Hong Kong and Macao), Cuba, Democratic Republic of Congo, Iran, Iraq, Malaysia, North Korea, Sudan, Syria, Zimbabwe.'
+                                    react.create-element 'li', { key: "one" }, ' a citizen or resident of, or domiciled in;'
+                                    react.create-element 'li', { key: "two" }, ' participating in the token swap from a location in;'
+                                    react.create-element 'li', { key: "three" }, ' representing or acting on behalf of a person residing or located in,'
+                                    react.create-element 'li', { key: "four" }, ' representing or acting on behalf of an entity (including, but not limited to, any company or partnership) incorporated, established or registered in or under the laws of: the United States of America (USA) and its territories (American Samoa, Guam, the Northern Mariana Islands, Puerto Rico, and the U.S. Virgin Islands), Peoples Republic of China (except for Hong Kong and Macao), Cuba, Democratic Republic of Congo, Iran, Iraq, Malaysia, North Korea, Sudan, Syria, Zimbabwe.'
                     react.create-element 'div', { className: 'content' }, children = 
                         react.create-element 'button', { on-click: visible-migrate-accept, style: button-primary3-style }, children = 
                             react.create-element 'span', {}, children = 

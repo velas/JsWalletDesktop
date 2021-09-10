@@ -3,9 +3,9 @@
   var react, reactDom, getPrimaryInfo, web3, getLang, section;
   react = require('react');
   reactDom = require('react-dom');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
   section = function(store, web3t){
     var children;
     return react.createElement('div', {

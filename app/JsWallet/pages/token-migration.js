@@ -2,20 +2,20 @@
 (function(){
   var react, menuFuncs, naming, getPrimaryInfo, getLang, icon, navigate, get, find, CopyToClipboard, copiedInform, copy, minus, sendFuncs, icons, tokenMigration;
   react = require('react');
-  menuFuncs = require('../menu-funcs.ls');
-  naming = require('./naming.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  navigate = require('../navigate.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
+  menuFuncs = require('../menu-funcs.js');
+  naming = require('./naming.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  navigate = require('../navigate.js');
+  get = require('../../web3t/providers/superagent.js').get;
   find = require('prelude-ls').find;
   CopyToClipboard = require('react-copy-to-clipboard').CopyToClipboard;
-  copiedInform = require('../copied-inform.ls');
-  copy = require('../copy.ls');
-  minus = require('../math.ls').minus;
-  sendFuncs = require('../send-funcs.ls');
-  icons = require('../icons.ls');
+  copiedInform = require('../copied-inform.js');
+  copy = require('../copy.js');
+  minus = require('../math.js').minus;
+  sendFuncs = require('../send-funcs.js');
+  icons = require('../icons.js');
   tokenMigration = function(store, web3t){
     var style, lang, btnIcon, inputStyle, color, styleTextarea, logoStyle, buttonPrimary2Style, buttonPrimary3Style, buttonPrimary4Style, filterIcon, gotoTerms, visibleMigrate, visibleMigrateAccept, visibleClass, hideClass, hide, visible, tryMigrate, swap, closeMigration, children;
     style = getPrimaryInfo(store);

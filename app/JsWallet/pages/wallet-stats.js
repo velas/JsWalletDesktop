@@ -5,7 +5,7 @@
   ref$ = require('nivo'), ResponsivePie = ref$.ResponsivePie, linearGradientDef = ref$.linearGradientDef;
   ref$ = require('prelude-ls'), map = ref$.map, sortBy = ref$.sortBy, each = ref$.each;
   ethToVlx = require('../../web3t/addresses.js').ethToVlx;
-  getPrimaryInfo = require('../get-primary-info.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
   getStake = function(it){
     switch (false) {
     case it.stakers !== '..':

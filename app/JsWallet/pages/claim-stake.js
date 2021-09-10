@@ -2,14 +2,14 @@
 (function(){
   var react, getLang, round5, icons, getPrimaryInfo, ref$, div, times, plus, minus, map, split, filter, find, foldl, drop, take, roundHuman, button, getCheckedAmount, calcRewardEpoch, calcNextReward, calcReward, buildClaimReward, slice$ = [].slice;
   react = require('react');
-  getLang = require('../get-lang.ls');
-  round5 = require('../round5.ls');
-  icons = require('../icons.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  ref$ = require('../math.ls'), div = ref$.div, times = ref$.times, plus = ref$.plus, minus = ref$.minus;
+  getLang = require('../get-lang.js');
+  round5 = require('../round5.js');
+  icons = require('../icons.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  ref$ = require('../math.js'), div = ref$.div, times = ref$.times, plus = ref$.plus, minus = ref$.minus;
   ref$ = require('prelude-ls'), map = ref$.map, split = ref$.split, filter = ref$.filter, find = ref$.find, foldl = ref$.foldl, drop = ref$.drop, take = ref$.take;
-  roundHuman = require('../round-human.ls');
-  button = require('../components/button.ls');
+  roundHuman = require('../round-human.js');
+  button = require('../components/button.js');
   getCheckedAmount = function(store){
     return foldl(plus, 0)(
     map(function(it){
@@ -204,7 +204,7 @@
     };
     return react.createElement('div', {
       style: bg,
-      className: 'section-reward reward section-reward-699086726'
+      className: 'section-reward reward section-reward133174922'
     }, children = [
       react.createElement('div', {
         className: 'title'
@@ -213,6 +213,8 @@
       }, children = store.staking.reward != null
         ? react.createElement('div', {}, children = [
           react.createElement('div', {
+            className: 'note'
+          }, ' ' + lang.rewardAlert), react.createElement('div', {
             className: 'balance'
           }, children = [
             react.createElement('span', {}, ' ' + lang.availableReward + ':'), react.createElement('span', {
@@ -222,7 +224,7 @@
               className: 'label-coin'
             }), react.createElement('span', {
               className: 'color'
-            }, '  VLX2')
+            }, '  VLX')
           ]), react.createElement('div', {
             className: 'staking-reward'
           }, children = map(buildClaimReward(store, web3t))(
@@ -236,7 +238,7 @@
               className: 'label-coin'
             }), react.createElement('span', {
               className: 'color'
-            }, '  VLX2')
+            }, '  VLX')
           ]), button({
             store: store,
             onClick: claim,

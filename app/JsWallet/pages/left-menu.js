@@ -2,16 +2,16 @@
 (function(){
   var react, projectLinks, menuFuncs, getPrimaryInfo, getLang, icon, loading, navigate, setupPages, icons, menu;
   react = require('react');
-  projectLinks = require('./project-links.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  loading = require('./loading.ls');
-  navigate = require('../navigate.ls');
-  setupPages = require('../setup-pages.ls');
-  icons = require('../icons.ls');
-  menu = require('./menu.ls');
+  projectLinks = require('./project-links.js');
+  menuFuncs = require('../menu-funcs.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  loading = require('./loading.js');
+  navigate = require('../navigate.js');
+  setupPages = require('../setup-pages.js');
+  icons = require('../icons.js');
+  menu = require('./menu.js');
   module.exports = function(store, web3t){
     var ref$, current, openAccount, lock, walletStyle, info, activateS1, activateS2, activateS3, switchNetwork, refresh, style, wallets, search, settings, filestorage, staking, stakingActive, delegateActive, infoActive, resources, faq, notice, claimActive, menuStyle, iconColor, iconStyle, iconStyle2, iconStyle3, lang, syncing, borderStyle, logoStyle, expandCollapse, langsMenuBody, lockIcon, walletIcon, iconNode, textStyle, wallet, gotoSearch, gotoSettings, gotoSupport, gotoFileStorage, gotoStaking, gotoResources, gotoChooseStaker, gotoInfo, gotoFaq, gotoNotice, gotoClaim, commingSoon, tooltip, openSubmenu, menuStaking, menuOut, color, gotoMainnet, gotoWallet, version, showMobile, close, children;
     if (store == null || in$(store.current.page, setupPages)) {
@@ -119,7 +119,7 @@
       return navigate(store, web3t, 'resources');
     };
     gotoChooseStaker = function(){
-      navigate(store, web3t, 'choosestaker');
+      navigate(store, web3t, 'validators');
       return store.menu.show = false;
     };
     gotoInfo = function(){
@@ -169,7 +169,7 @@
     };
     return react.createElement('div', {
       style: borderStyle,
-      className: showMobile + " menu side-menu menu1864322263"
+      className: showMobile + " menu side-menu menu855995223"
     }, children = [
       react.createElement('div', {
         onClick: close,
@@ -185,6 +185,7 @@
         store.preference.settingsVisible === true ? react.createElement('div', {
           onClick: wallet,
           style: iconStyle,
+          id: "menu-wallets",
           className: wallets + " menu-item"
         }, children = [
           react.createElement('span', {
@@ -194,63 +195,21 @@
             style: walletIcon
           })
         ]) : void 8, store.preference.settingsVisible === true ? react.createElement('div', {
-          onClick: openSubmenu,
+          onClick: gotoChooseStaker,
           style: iconStyle,
-          onMouseLeave: menuOut,
-          className: (staking + ' ' + menuStaking + ' ' + infoActive + ' ' + stakingActive + ' ' + delegateActive) + " menu-item"
+          id: "menu-delegate",
+          className: delegateActive + " menu-item"
         }, children = [
           react.createElement('span', {
             className: 'arrow_box'
           }, ' ' + lang.staking), react.createElement('img', {
             src: icons.staking + "",
             style: iconColor
-          }), react.createElement('img', {
-            src: icons.arrowDown + "",
-            className: 'more'
-          }), react.createElement('div', {
-            className: 'menu arrow_box menu1864322263'
-          }, children = react.createElement('ul', {}, children = [
-            react.createElement('li', {
-              onClick: gotoStaking,
-              style: iconStyle,
-              className: stakingActive + ""
-            }, children = [
-              react.createElement('img', {
-                src: icons.node + "",
-                style: iconNode
-              }), " " + lang.installNode
-            ]), react.createElement('li', {
-              onClick: gotoChooseStaker,
-              style: iconStyle,
-              className: delegateActive + ""
-            }, children = [
-              react.createElement('img', {
-                src: icons.delegate + "",
-                style: iconNode
-              }), " " + lang.delegateStake
-            ]), false ? react.createElement('li', {
-              onClick: gotoClaim,
-              style: iconStyle,
-              className: claimActive + ""
-            }, children = [
-              react.createElement('img', {
-                src: icons.claim + "",
-                style: iconNode
-              }), " " + lang.claimReward
-            ]) : void 8, react.createElement('li', {
-              onClick: gotoInfo,
-              style: iconStyle,
-              className: infoActive + ""
-            }, children = [
-              react.createElement('img', {
-                src: icons.info + "",
-                style: iconNode
-              }), " " + lang.stats
-            ])
-          ]))
+          })
         ]) : void 8, store.preference.settingsVisible === true ? react.createElement('div', {
           onClick: gotoSearch,
           style: iconStyle,
+          id: "menu-search",
           className: search + " menu-item"
         }, children = [
           react.createElement('span', {
@@ -262,6 +221,7 @@
         ]) : void 8, store.preference.settingsVisible === true ? react.createElement('div', {
           onClick: gotoSettings,
           style: iconStyle,
+          id: "menu-settings",
           className: settings + " menu-item"
         }, children = [
           react.createElement('span', {
@@ -273,6 +233,7 @@
         ]) : void 8, store.preference.settingsVisible === true ? react.createElement('div', {
           onClick: gotoSupport,
           style: iconStyle,
+          id: "menu-support",
           className: 'menu-item'
         }, children = [
           react.createElement('span', {
@@ -284,6 +245,7 @@
         ]) : void 8, store.current.network === 'testnet' ? react.createElement('div', {
           onClick: gotoMainnet,
           style: iconStyle,
+          id: "menu-testnet",
           className: settings + " menu-item testnet"
         }, children = [
           react.createElement('span', {

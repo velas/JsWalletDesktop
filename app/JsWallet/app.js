@@ -4,22 +4,22 @@
   observer = require('mobx-react').observer;
   observable = require('mobx').observable;
   react = require('react');
-  pages = require('./pages.ls');
-  header = require('./pages/header.ls');
-  mobilemenu = require('./pages/mobilemenu.ls');
-  leftMenu = require('./pages/left-menu.ls');
-  description = require('./description.ls');
-  window = require('./browser/window.ls');
-  copyMessage = require('./copy-message.ls');
-  modalControl = require('./modal.ls').modalControl;
-  getPrimaryInfo = require('./get-primary-info.ls');
-  confirmationControl = require('./pages/confirmation.ls').confirmationControl;
-  hoveredAddress = require('./pages/hovered-address.ls');
+  pages = require('./pages.js');
+  header = require('./pages/header.js');
+  mobilemenu = require('./pages/mobilemenu.js');
+  leftMenu = require('./pages/left-menu.js');
+  description = require('./description.js');
+  window = require('./browser/window.js');
+  copyMessage = require('./copy-message.js');
+  modalControl = require('./modal.js').modalControl;
+  getPrimaryInfo = require('./get-primary-info.js');
+  confirmationControl = require('./pages/confirmation.js').confirmationControl;
+  hoveredAddress = require('./pages/hovered-address.js');
   ref$ = require('react-detect-offline'), Offline = ref$.Offline, Online = ref$.Online;
   defineRoot = function(store){
     var style, text;
     style = getPrimaryInfo(store);
-    text = ":root { --background: " + style.app.background + ";--bgspare: " + style.app.bgspare + ";--bg-secondary: " + style.app.wallet + ";--bg-primary-light: " + style.app.bgPrimaryLight + ";--placeholder: " + style.app.placeholder + ";--placeholder-menu: " + style.app.placeholderMenu + ";--color3: " + style.app.color3 + ";--border: " + style.app.border + "; --color1: " + style.app.color1 + "; --color2: " + style.app.color2 + "; --color-td: " + style.app.colorTd + ";--drag-bg: " + style.app.dragBg + ";--td-hover: " + style.app.th + ";--border-color: " + style.app.borderColor + ";--waves: " + style.app.waves + ";--primary1: " + style.app.primary1 + ";--primary2: " + style.app.primary2 + ";--primary3: " + style.app.primary3 + ";--primary1-spare: " + style.app.primary1Spare + ";--primary2-spare: " + style.app.primary2Spare + ";--primary3-spare: " + style.app.primary3Spare + ";--input: " + style.app.input + ";--dark-theme: " + style.app.menu + ";--border: " + style.app.border + ";--ligh-text: " + style.app.icon + ";--alert-spare: " + style.app.alertSpare + "}";
+    text = ":root { --background: " + style.app.background + ";--bgspare: " + style.app.bgspare + ";--bg-secondary: " + style.app.wallet + ";--bg-primary-light: " + style.app.bgPrimaryLight + ";--placeholder: " + style.app.placeholder + ";--placeholder-menu: " + style.app.placeholderMenu + ";--color3: " + style.app.color3 + ";--border: " + style.app.border + "; --color1: " + style.app.color1 + "; --color2: " + style.app.color2 + "; --color-td: " + style.app.colorTd + ";--drag-bg: " + style.app.dragBg + ";--td-hover: " + style.app.th + ";--border-color: " + style.app.borderColor + ";--waves: " + style.app.waves + ";--primary1: " + style.app.primary1 + ";--primary2: " + style.app.primary2 + ";--primary3: " + style.app.primary3 + ";--primary1-spare: " + style.app.primary1Spare + ";--primary2-spare: " + style.app.primary2Spare + ";--primary3-spare: " + style.app.primary3Spare + ";--input: " + style.app.input + ";--dark-theme: " + style.app.menu + ";--border: " + style.app.border + ";--ligh-text: " + style.app.icon + ";--alert-spare: " + style.app.alertSpare + "; --btn-clip: " + style.app.clip + "; --border-btn: " + style.app.borderBtn + "; --filter: " + style.app.filter + "; --confirm: " + style.app.confirm + "}";
     return react.createElement('style', {}, ' ' + text);
   };
   module.exports = function(arg$){
@@ -50,7 +50,7 @@
       defineRoot(store), description(store), react.createElement('div', {
         key: "content",
         style: style,
-        className: syncing + " app app13460764"
+        className: syncing + " app app-1830253507"
       }, children = [
         modalControl(store, web3t), confirmationControl(store, web3t), copyMessage(store, web3t), false ? store.current.device === 'mobile' ? header(store, web3t) : void 8 : void 8, store.current.device === 'mobile' ? mobilemenu(store, web3t) : void 8, store.current.device === 'desktop' ? leftMenu(store, web3t) : void 8, currentPage({
           store: store,

@@ -7,7 +7,7 @@ require! {
     \../icons.ls
     \prelude-ls : { map, each, sort-by }
 }
-# .newseed-restore-873991282
+# .newseed-restore-2102385091
 #     @import scheme
 #     padding-top: 30px
 #     width: 100%
@@ -31,7 +31,14 @@ require! {
 #     .title
 #         color: #ebf6f8
 #         font-size: 22px
-#         margin-bottom: 20px
+#     .version
+#         letter-spacing: 1px
+#         font-size: 8px
+#         padding: 6px
+#         color: #89829d
+#         border-radius: 8px
+#         line-height: 5px
+#         margin: 5px auto
 #     .align-v
 #         display: inline-grid
 #         position: relative
@@ -194,10 +201,11 @@ newseed = ({ store, web3t })->
     restorecustom = restore-wallet 1
     back = ->
         store.current.page = 'chooseinit'
-    react.create-element 'div', { className: 'newseed-restore newseed-restore-873991282' }, children = 
+    react.create-element 'div', { className: 'newseed-restore newseed-restore-2102385091' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{style.branding.logo}" }
             react.create-element 'div', { style: text-style, className: 'title' }, ' ' + style.branding.title
+            react.create-element 'span', { className: 'version low' }, ' ' + store.version
         react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.restore-from
         react.create-element 'div', { className: 'align-v' }, children = 
             react.create-element 'button', { style: button-primary1-style, on-click: restore12, id: "restore-12", className: 'left' }, children = 

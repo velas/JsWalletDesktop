@@ -3,7 +3,7 @@
   var react, QRCode, getPrimaryInfo;
   react = require('react');
   QRCode = require('qrcode.react');
-  getPrimaryInfo = require('../get-primary-info.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
   module.exports = function(arg$){
     var store, address, info, fgColor, bgColor, children;
     store = arg$.store, address = arg$.address;
@@ -11,8 +11,8 @@
     if (address == null) {
       return null;
     }
-    fgColor = '#FFF';
-    bgColor = '#000';
+    fgColor = '#000';
+    bgColor = '#FFF';
     return react.createElement('div', {
       className: 'qrcode qrcode-37996170'
     }, children = react.createElement(QRCode, {

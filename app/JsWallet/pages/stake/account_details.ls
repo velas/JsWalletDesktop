@@ -35,9 +35,9 @@ require! {
     \../../seed.ls : seedmem
     \../../components/burger.ls
     \./error-funcs.ls : { get-error-message }
-    \./rewards-stats.ls
+    \./rewards-stats.ls : RewardsStats
 }
-# .staking672871527
+# .staking1828099731
 #     @import scheme
 #     position: relative
 #     display: block
@@ -50,6 +50,25 @@ require! {
 #     box-sizing: border-box
 #     padding: 0px
 #     background: transparent
+#     @keyframes blink-animation
+#         50%
+#             opacity: 0.3
+#     @-webkit-keyframes blink-animation
+#         50%
+#             opacity: 0.3
+#     .blink
+#         animation: 1s linear blink-animation  infinite
+#         -webkit-animation: 1s linear blink-animation  infinite
+#     .entities-loader
+#         position: absolute;
+#         top: 0
+#         bottom: 0
+#         left: 0
+#         right: 0
+#         display: flex
+#         align-items: center
+#         .inner-section
+#             margin: auto
 #     .syncing
 #         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
 #         -webkit-mask-size: 50%
@@ -134,6 +153,7 @@ require! {
 #         position: relative
 #         box-sizing: border-box
 #         .table-scroll
+#             position: relative
 #             overflow-x: scroll
 #             background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
 #             background-repeat: no-repeat
@@ -143,6 +163,7 @@ require! {
 #             -moz-transition: breathe 3s ease-in infinite
 #             -web-kit-transition: breathe 3s ease-in infinite
 #             height: auto
+#             min-height: 100px
 #             max-height: 400px
 #             .stake-pointer
 #                 background: rgb(37, 87, 127)
@@ -639,6 +660,77 @@ to-keystore = (store, with-keystore)->
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
     react.create-element 'li', {}, ' ' + validator
+Rewards = (props)->
+    lang = get-lang store
+    style = get-primary-info store
+    account = store.staking.chosenAccount
+    activationEpoch = account.account?data?parsed?info?stake?delegation?activationEpoch
+    [rewards, setRewards] = react.useState([])
+    [isLoading, setLoading] = react.useState(true)
+    build-rewards = (item)->
+        {
+            epoch
+            rewardSlot
+            amount
+            newBalance
+            percentChange
+            apr
+        } = item
+        return null if epoch is store.staking.current-epoch   
+        $amount = amount `div` (10^9)
+        $newBalance = newBalance `div` (10^9)
+        if store.staking.current-epoch is epoch then
+            rewardSlot = $amount = $newBalance = percentChange = apr =  "Loading..."
+        $class = if epoch is store.staking.current-epoch then "syncing" else ""
+        $tr-class = if epoch is store.staking.current-epoch then "current-epoch " else ""
+        react.create-element 'tr', { key: "epoch#{epoch}", className: "#{$tr-class} #{epoch}" }, children = 
+            react.create-element 'td', { key: "epoch#{epoch}1", className: "#{$class}" }, ' ' + epoch
+            react.create-element 'td', { key: "epoch#{epoch}2", className: "#{$class}" }, ' ' + rewardSlot
+            react.create-element 'td', { key: "epoch#{epoch}3", className: "#{$class}" }, ' ' + $amount
+            react.create-element 'td', { key: "epoch#{epoch}4", className: "#{$class}" }, ' ' + $newBalance
+            react.create-element 'td', { key: "epoch#{epoch}5", className: "#{$class}" }, ' ' + percentChange
+            react.create-element 'td', { key: "epoch#{epoch}6", className: "#{$class}" }, ' ' + apr
+    staker-pool-style =
+        max-width: 200px
+        background: style.app.stats
+    stats=
+        background: style.app.stats
+    mountedRef = react.useRef(true)
+    return-fn = ->
+        mountedRef.current = no 
+          
+    fetchRewards = react.useCallback (!~>>
+        err, $rewards <- fetchEpochRewards(account.address, activationEpoch)
+        return null if not mountedRef.current 
+        setLoading(no)
+        setRewards($rewards)
+        store.staking.chosenAccount.rewards = $rewards
+        return ), [mountedRef]
+            
+    react.useEffect (->
+        fetchRewards!
+        return return-fn ), [fetchRewards]
+    react.create-element 'div', { className: 'section rewards' }, children = 
+        react.create-element 'div', { className: 'title' }, children = 
+            react.create-element 'h2', {}, ' ' + lang.uRewards
+        react.create-element 'div', { className: 'table-scroll' }, children = 
+            if isLoading then
+                react.create-element 'span', { className: 'entities-loader' }, children = 
+                    react.create-element 'span', { className: 'inner-section' }, children = 
+                        react.create-element 'h3', { className: 'item blink' }, ' Loading... '
+            else        
+                react.create-element 'table', {}, children = 
+                    react.create-element 'thead', {}, children = 
+                        react.create-element 'tr', {}, children = 
+                            react.create-element 'td', { width: "3%", style: staker-pool-style, title: "Epoch" }, ' ' + lang.epoch + ' (?)'
+                            react.create-element 'td', { width: "25%", style: stats, title: "Reward Slot" }, ' Reward Slot (?)'
+                            react.create-element 'td', { width: "25%", style: stats, title: "Amount" }, ' ' + lang.amount + ' (?)'
+                            react.create-element 'td', { width: "25%", style: stats, title: "New Balance" }, ' ' + lang.newBalance + ' (?)'
+                            react.create-element 'td', { width: "7%", style: stats, title: "Percent Change" }, ' Percent Change (?)'
+                            react.create-element 'td', { width: "7%", style: stats, title: "APR" }, ' APR (?)'
+                    react.create-element 'tbody', {}, children = 
+                        rewards |> map build-rewards 
+        react.create-element RewardsStats, { rewards: rewards }
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -849,34 +941,11 @@ staking-content = (store, web3t)->
     $status =
         | store.staking.chosenAccount.status is "inactive" and (not has-validator) => "Not Delegated"
         | store.staking.chosenAccount.status is "inactive" and has-validator => "Delegated (Inactive)"
-        | store.staking.chosenAccount.status is "activating" => ""
+        #| store.staking.chosenAccount.status is "activating" => ""
         | _ => store.staking.chosenAccount.status
     inactiveStakeLabel =
         | store.staking.chosenAccount.status is "activating" => lang.warminUp
-        | _ => lang.inactiveStake
-    build-rewards = (item)->
-        {
-            epoch
-            rewardSlot
-            amount
-            newBalance
-            percentChange
-            apr
-        } = item
-        return null if epoch is store.staking.current-epoch   
-        $amount = amount `div` (10^9)
-        $newBalance = newBalance `div` (10^9)
-        if store.staking.current-epoch is epoch then
-            rewardSlot = $amount = $newBalance = percentChange = apr =  "Loading..."
-        $class = if epoch is store.staking.current-epoch then "syncing" else ""
-        $tr-class = if epoch is store.staking.current-epoch then "current-epoch " else ""
-        react.create-element 'tr', { key: "epoch#{epoch}", className: "#{$tr-class}" }, children = 
-            react.create-element 'td', { className: "#{$class}" }, ' ' + epoch
-            react.create-element 'td', { className: "#{$class}" }, ' ' + rewardSlot
-            react.create-element 'td', { className: "#{$class}" }, ' ' + $amount
-            react.create-element 'td', { className: "#{$class}" }, ' ' + $newBalance
-            react.create-element 'td', { className: "#{$class}" }, ' ' + percentChange
-            react.create-element 'td', { className: "#{$class}" }, ' ' + apr
+        | _ => lang.inactiveStake   
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
             react.create-element 'div', { className: 'section' }, children = 
@@ -1002,22 +1071,7 @@ staking-content = (store, web3t)->
                         else if store.staking.chosenAccount.status isnt \deactivating then
                             button { store, on-click: undelegate , type: \secondary , text: lang.to_undelegate, icon : \arrowLeft, classes: "action-undelegate" }
                         button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }
-            react.create-element 'div', { className: 'section rewards' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h2', {}, ' ' + lang.uRewards
-                react.create-element 'div', { className: 'table-scroll' }, children = 
-                    react.create-element 'table', {}, children = 
-                        react.create-element 'thead', {}, children = 
-                            react.create-element 'tr', {}, children = 
-                                react.create-element 'td', { width: "3%", style: staker-pool-style, title: "Epoch" }, ' ' + lang.epoch + ' (?)'
-                                react.create-element 'td', { width: "25%", style: stats, title: "Reward Slot" }, ' Reward Slot (?)'
-                                react.create-element 'td', { width: "25%", style: stats, title: "Amount" }, ' ' + lang.amount + ' (?)'
-                                react.create-element 'td', { width: "25%", style: stats, title: "New Balance" }, ' ' + lang.newBalance + ' (?)'
-                                react.create-element 'td', { width: "7%", style: stats, title: "Percent Change" }, ' Percent Change (?)'
-                                react.create-element 'td', { width: "7%", style: stats, title: "APR" }, ' APR (?)'
-                        react.create-element 'tbody', {}, children = 
-                            store.staking.chosenAccount.rewards |> map build-rewards 
-                rewards-stats {store, web3t}
+            react.create-element Rewards, {}, '  '
 account-details = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -1049,9 +1103,10 @@ account-details = ({ store, web3t })->
     show-class =
         if store.current.open-menu then \hide else \ ""
     just-go-back = ->
+        store.staking.chosenAccount.stopLoadingRewards = yes
         store.staking.getAccountsFromCashe = yes
         go-back!    
-    react.create-element 'div', { className: 'staking staking-146665425' }, children = 
+    react.create-element 'div', { className: 'staking staking1828099731' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: just-go-back, className: 'close' }, children = 
@@ -1061,9 +1116,9 @@ account-details = ({ store, web3t })->
             switch-account store, web3t
         staking-content store, web3t
 account-details.init = ({ store, web3t }, cb)!->
-    console.log "account-details.init"
     account = store.staking.chosenAccount
     return null if not account?
+    store.staking.chosenAccount.stopLoadingRewards = no
     store.staking.chosenAccount.rewards = []
     stake-accounts = store.staking.parsedProgramAccounts
     err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
@@ -1075,15 +1130,6 @@ account-details.init = ({ store, web3t }, cb)!->
         store.staking.chosenAccount.active_stake = stakeActivation.active
         store.staking.chosenAccount.inactive_stake = stakeActivation.inactive
     return alert store, err, cb if err?
-    # Get rewards per prev epoch
-    err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
-    console.error err if err?
-    return cb null if err?
-    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
-    prev-epoch = epoch `minus` 1
-    activationEpoch = store.staking.chosenAccount.account?data?parsed?info?stake?delegation?activationEpoch
-    err, rewards <- fetchEpochRewards(account.address, activationEpoch)
-    store.staking.chosenAccount.rewards = rewards
     cb null
 stringify = (value) ->
     if value? then
@@ -1110,7 +1156,8 @@ fetchEpochRewards = (address, activationEpoch, cb)->
 prev-epoch-data = {epoch_start_time: null, rewards: null, first_confirmed_block: null}
 # 
 query-rewards-loop = (address, activationEpoch, firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstAvailableBlock, firstNormalEpoch, epoch, cb)->
-    return cb null, [] if epoch < (activationEpoch) or epoch < 0    
+    return cb null, [] if epoch < (activationEpoch) or epoch < 0
+    return cb null, [] if store.staking.chosenAccount.stopLoadingRewards is yes    
     # Get not skipped slot here!  
     err, firstSlotInEpoch <- get_first_slot_in_epoch(firstNormalSlot, slotsPerEpoch, slotsInEpoch, firstNormalEpoch, epoch)
     # Get first comfirmed block/slot in epoch
@@ -1131,7 +1178,7 @@ query-rewards-loop = (address, activationEpoch, firstNormalSlot, slotsPerEpoch, 
     wallclock_epoch_duration =
         | not epoch_end_time? => 0 
         | _ => epoch_end_time `minus` epoch_start_time
-    wallclock_epochs_per_year = (SECONDS_PER_DAY * 365) `div` wallclock_epoch_duration 
+    wallclock_epochs_per_year = (SECONDS_PER_DAY * 365.25) `div` wallclock_epoch_duration 
     all-rewards = (prev-epoch-data.rewards ? [])
     rewards = 
         all-rewards 

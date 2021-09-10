@@ -3,11 +3,11 @@
   var react, ref$, map, join, filter, head, getRecord, getNameMask, web3, getPrimaryInfo, getLang, installRecord, state;
   react = require('react');
   ref$ = require('prelude-ls'), map = ref$.map, join = ref$.join, filter = ref$.filter, head = ref$.head;
-  getRecord = require('../get-record.ls');
-  getNameMask = require('../get-name-mask.ls');
-  web3 = require('../web3.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
+  getRecord = require('../get-record.js');
+  getNameMask = require('../get-name-mask.js');
+  web3 = require('../web3.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
   installRecord = function(name, record){
     return "Please setup html element <meta property='web3space' value='" + record + "' /> on " + name + " to pass verification";
   };

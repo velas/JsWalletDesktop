@@ -2,13 +2,13 @@
 (function(){
   var react, getPrimaryInfo, round5, round, ref$, find, filter, times, keyboard, icons, getActualValues;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  round5 = require('../round5.ls');
-  round = require('../round.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  round5 = require('../round5.js');
+  round = require('../round.js');
   ref$ = require('prelude-ls'), find = ref$.find, filter = ref$.filter;
-  times = require('../math.ls').times;
-  keyboard = require('./keyboard.ls');
-  icons = require('../icons.ls');
+  times = require('../math.js').times;
+  keyboard = require('./keyboard.js');
+  icons = require('../icons.js');
   getActualValues = function(value){
     return function(item){
       if (value == null) {

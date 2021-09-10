@@ -6,4 +6,4 @@ module.exports = (store)-> (event)->
     clear-timeout(state.timeout)
     remove-notification = ->
         store.current.copied = ""
-    state.timeout = set-timeout remove-notification, 2000
+    state.timeout = set-timeout remove-notification, 1700

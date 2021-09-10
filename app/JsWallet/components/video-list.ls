@@ -30,9 +30,9 @@ module.exports = ({ store, web3t } )->
                             react.create-element 'span', {}, children = 
                                 react.create-element 'div', { className: 'header' }, ' ' + desc.file.name
                                 react.create-element 'ul', { className: 'stat' }, children = 
-                                    react.create-element 'li', {}, children = 
+                                    react.create-element 'li', { key: "views-1212" }, children = 
                                         react.create-element 'span', {}, ' 2K views'
-                                    react.create-element 'li', {}, children = 
+                                    react.create-element 'li', { key: "ago13232" }, children = 
                                         react.create-element 'span', {}, ' 5 days ago'
             return layout
     return videos

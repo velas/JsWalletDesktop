@@ -2,24 +2,24 @@
 (function(){
   var react, money, ref$, each, find, filter, foldl, map, walletFuncs, getLang, plus, icon, getPrimaryInfo, get, icons, roundHuman, alert, button, addressHolder, walletStats, cb;
   react = require('react');
-  money = require('../tools.ls').money;
+  money = require('../tools.js').money;
   ref$ = require('prelude-ls'), each = ref$.each, find = ref$.find, filter = ref$.filter, foldl = ref$.foldl, map = ref$.map;
-  walletFuncs = require('../wallet-funcs.ls');
-  getLang = require('../get-lang.ls');
-  plus = require('../math.ls').plus;
-  icon = require('./icon.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  get = require('../../web3t/providers/superagent.ls').get;
-  icons = require('../icons.ls');
-  roundHuman = require('../round-human.ls');
-  alert = require('./confirmation.ls').alert;
-  button = require('../components/button.ls');
-  addressHolder = require('../components/address-holder.ls');
-  walletStats = require('./wallet-stats.ls');
+  walletFuncs = require('../wallet-funcs.js');
+  getLang = require('../get-lang.js');
+  plus = require('../math.js').plus;
+  icon = require('./icon.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  get = require('../../web3t/providers/superagent.js').get;
+  icons = require('../icons.js');
+  roundHuman = require('../round-human.js');
+  alert = require('./confirmation.js').alert;
+  button = require('../components/button.js');
+  addressHolder = require('../components/address-holder.js');
+  walletStats = require('./wallet-stats.js');
   cb = bind$(console, 'log');
   module.exports = curry$(function(store, web3t, wallets, wallet){
-    var ref$, uninstall, balance, balanceUsd, pending, send, receive, usdRate, lang, style, labelUninstall, walletStyle, placeholder, placeholderCoin, name, receiveClick, sendClick, token, color1, color2, getTotal, totalSent, totalReceived, uninstallStyle, text, colorLabel, colorLabel2, children;
-    ref$ = walletFuncs(store, web3t, wallets, wallet), uninstall = ref$.uninstall, wallet = ref$.wallet, balance = ref$.balance, balanceUsd = ref$.balanceUsd, pending = ref$.pending, send = ref$.send, receive = ref$.receive, usdRate = ref$.usdRate;
+    var ref$, uninstall, balance, balanceUsd, pending, send, receive, swap, usdRate, lang, style, labelUninstall, walletStyle, placeholder, placeholderCoin, name, receiveClick, sendClick, swapClick, token, tokenDisplay, color1, color2, getTotal, totalSent, totalReceived, uninstallStyle, text, colorLabel, colorLabel2, makeDisabled, children;
+    ref$ = walletFuncs(store, web3t, wallets, wallet), uninstall = ref$.uninstall, wallet = ref$.wallet, balance = ref$.balance, balanceUsd = ref$.balanceUsd, pending = ref$.pending, send = ref$.send, receive = ref$.receive, swap = ref$.swap, usdRate = ref$.usdRate;
     lang = getLang(store);
     style = getPrimaryInfo(store);
     labelUninstall = (function(){
@@ -54,7 +54,9 @@
       : wallet.coin.token;
     receiveClick = receive(wallet);
     sendClick = send(wallet);
+    swapClick = swap(store, wallet);
     token = wallet.coin.token.toUpperCase();
+    tokenDisplay = ((ref$ = wallet.coin.nickname) != null ? ref$ : "").toUpperCase();
     style = getPrimaryInfo(store);
     color1 = {
       color: style.app.text,
@@ -70,13 +72,10 @@
       return roundHuman(
       foldl(plus, '0')(
       map(function(it){
-        if (it.from !== it.to) {
-          return it.amount;
-        }
-        return (-+it.fee) + '';
+        return it.amount;
       })(
       filter(function(it){
-        return it.type === type && it.pending == null;
+        return it.type === type && (it.pending == null || it.pending !== true);
       })(
       transactions))));
     };
@@ -95,17 +94,18 @@
       color: style.app.text
     };
     colorLabel = {
-      background: style.app.primary1,
-      backgroundColor: style.app.primary1Spare
-    };
-    colorLabel2 = {
       background: style.app.primary2,
       backgroundColor: style.app.primary2Spare
     };
+    colorLabel2 = {
+      background: style.app.primary1,
+      backgroundColor: style.app.primary1Spare
+    };
+    makeDisabled = store.current.refreshing;
     return react.createElement('div', {
       key: token + "",
       style: walletStyle,
-      className: 'wallet-detailed wallet-detailed399861167'
+      className: 'wallet-detailed wallet-detailed-1057132066'
     }, children = [
       react.createElement('div', {
         style: text,
@@ -125,7 +125,7 @@
             react.createElement('div', {}, children = [
               react.createElement('span', {
                 className: placeholder + " title"
-              }, ' ' + name), (ref$ = wallet.coin.token) !== 'btc' && ref$ !== 'vlx2' ? react.createElement('span', {
+              }, ' ' + name), (ref$ = wallet.coin.token) !== 'btc' && ref$ !== 'vlx' && ref$ !== 'vlx_native' && ref$ !== 'vlx2' ? react.createElement('span', {
                 onClick: uninstall,
                 style: uninstallStyle,
                 className: 'uninstall'
@@ -136,10 +136,10 @@
               react.createElement('div', {
                 title: wallet.balance + "",
                 className: 'token-balance'
-              }, children = [react.createElement('span', {}, ' ' + roundHuman(wallet.balance)), react.createElement('span', {}, ' ' + token)]), react.createElement('div', {
+              }, children = [react.createElement('span', {}, ' ' + roundHuman(wallet.balance)), react.createElement('span', {}, ' ' + tokenDisplay)]), react.createElement('div', {
                 title: balanceUsd + "",
                 className: placeholder + " usd-balance"
-              }, children = [react.createElement('span', {}, ' ' + roundHuman(balanceUsd)), react.createElement('span', {}, ' USD')]), +wallet.pendingSent > 0 ? react.createElement('div', {
+              }, children = [react.createElement('span', {}, ' ' + roundHuman(balanceUsd)), react.createElement('span', {}, ' USD')]), +wallet.pendingSent > 0 && false ? react.createElement('div', {
                 className: 'pending'
               }, children = react.createElement('span', {}, ' -' + pending)) : void 8
             ])
@@ -148,23 +148,65 @@
           store: store,
           wallet: wallet,
           type: 'bg'
-        }), react.createElement('div', {
-          className: 'buttons'
-        }, children = [
-          button({
-            store: store,
-            onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : sendClick,
-            text: 'send',
-            icon: 'send',
-            type: 'primary'
-          }), button({
-            store: store,
-            onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : receiveClick,
-            text: 'receive',
-            icon: 'get',
-            type: 'secondary'
-          })
-        ]), react.createElement('div', {
+        }), wallet.network.networks != null && Object.keys(wallet.network.networks).length > 0
+          ? react.createElement('div', {
+            className: 'buttons'
+          }, children = [
+            react.createElement('div', {
+              className: 'with-swap'
+            }, children = [
+              button({
+                store: store,
+                onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : sendClick,
+                text: 'send',
+                icon: 'send',
+                type: 'secondary',
+                id: "wallets-send",
+                makeDisabled: makeDisabled != null ? makeDisabled : false
+              }), button({
+                store: store,
+                onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : receiveClick,
+                text: 'receive',
+                icon: 'get',
+                type: 'primary',
+                id: "wallets-receive",
+                makeDisabled: makeDisabled != null ? makeDisabled : false
+              })
+            ]), react.createElement('div', {
+              className: 'with-swap'
+            }, children = button({
+              store: store,
+              onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : swapClick,
+              text: 'swap',
+              icon: 'swap',
+              id: "wallet-swap",
+              makeDisabled: makeDisabled != null ? makeDisabled : false,
+              classes: typeof classes != 'undefined' && classes !== null ? classes : "wallet-swap"
+            }))
+          ])
+          : react.createElement('div', {
+            className: 'buttons'
+          }, children = react.createElement('div', {
+            className: 'with-swap'
+          }, children = [
+            button({
+              store: store,
+              onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : sendClick,
+              text: 'send',
+              icon: 'send',
+              type: 'secondary',
+              id: "wallets-send",
+              makeDisabled: makeDisabled != null ? makeDisabled : false
+            }), button({
+              store: store,
+              onClick: typeof onClick != 'undefined' && onClick !== null ? onClick : receiveClick,
+              text: 'receive',
+              icon: 'get',
+              type: 'primary',
+              id: "wallets-receive",
+              makeDisabled: makeDisabled != null ? makeDisabled : false
+            })
+          ])), react.createElement('div', {
           className: 'details'
         }, children = [
           react.createElement('div', {
@@ -194,9 +236,9 @@
             react.createElement('img', {
               src: wallet.coin.image + "",
               className: placeholderCoin + " label-coin"
-            }), react.createElement('span', {
+            }), react.createElement('div', {
               className: placeholder + ""
-            }, ' ' + token), react.createElement('span', {
+            }, ' ' + tokenDisplay), react.createElement('div', {
               title: usdRate + "",
               className: placeholder + " course"
             }, ' $' + roundHuman(usdRate))
@@ -216,7 +258,7 @@
               className: 'icon-svg'
             })), react.createElement('div', {
               className: placeholder + ""
-            }, ' ' + totalSent + ' ', token), react.createElement('div', {
+            }, ' ' + totalSent + ' ', tokenDisplay), react.createElement('div', {
               style: color1,
               className: 'label'
             }, ' ' + lang.totalSent)
@@ -231,7 +273,7 @@
               className: 'icon-svg'
             })), react.createElement('div', {
               className: placeholder + ""
-            }, ' ' + totalReceived + ' ', token), react.createElement('div', {
+            }, ' ' + totalReceived + ' ', tokenDisplay), react.createElement('div', {
               style: color2,
               className: 'label'
             }, ' ' + lang.totalReceived)

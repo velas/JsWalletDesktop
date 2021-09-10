@@ -3,7 +3,7 @@
   var localStorage, md5, seedEncrypt, mem, getKey, del, setbkp, set, exists, encrypt, tryMigrate, check, out$ = typeof exports != 'undefined' && exports || this, toString$ = {}.toString;
   localStorage = require('localStorage');
   md5 = require('crypto-js/md5');
-  seedEncrypt = require('./seed-encrypt.ls');
+  seedEncrypt = require('./seed-encrypt.js');
   mem = {
     encrypt: null
   };

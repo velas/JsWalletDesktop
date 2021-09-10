@@ -33,11 +33,12 @@ build-data = (items)->
     labels: items |> map (.epoch)
 legend =
     display: false
-module.exports = ({store, web3t})->
+module.exports = (props)->
+    { rewards } = props    
     return null if not store.staking.chosenAccount?
-    return null if store.staking.chosenAccount.rewards.length < 2
+    return null if rewards.length < 2
     current-epoch = store.staking.current-epoch
-    rewards = store.staking.chosenAccount.rewards |> filter (.epoch isnt current-epoch) |> take 10 |> reverse
+    rewards = rewards |> filter (.epoch isnt current-epoch) |> take 10 |> reverse
     data = build-data rewards
     options = {
         scales: {

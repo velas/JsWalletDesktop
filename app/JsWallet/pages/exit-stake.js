@@ -3,15 +3,15 @@
   var react, reactDom, getPrimaryInfo, web3, getLang, icons, ref$, div, times, plus, minus, canMakeStaking, amountField, button, alert, cb, orderWithdrawProcess, fastWithdrawProcess, notAvailableRightNow, registry;
   react = require('react');
   reactDom = require('react-dom');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  web3 = require('../web3.ls');
-  getLang = require('../get-lang.ls');
-  icons = require('../icons.ls');
-  ref$ = require('../math.ls'), div = ref$.div, times = ref$.times, plus = ref$.plus, minus = ref$.minus;
-  canMakeStaking = require('../staking/can-make-staking.ls');
-  amountField = require('../components/amount-field.ls');
-  button = require('../components/button.ls');
-  alert = require('./confirmation.ls').alert;
+  getPrimaryInfo = require('../get-primary-info.js');
+  web3 = require('../web3.js');
+  getLang = require('../get-lang.js');
+  icons = require('../icons.js');
+  ref$ = require('../math.js'), div = ref$.div, times = ref$.times, plus = ref$.plus, minus = ref$.minus;
+  canMakeStaking = require('../staking/can-make-staking.js');
+  amountField = require('../components/amount-field.js');
+  button = require('../components/button.js');
+  alert = require('./confirmation.js').alert;
   cb = bind$(console, 'log');
   orderWithdrawProcess = function(store, web3t){
     var lang, activate, activateFirst, activateSecond, activateThird, activeClass, activeFirst, activeSecond, activeThird, order, exit, changeMax, epochNext, ref$, children;
@@ -49,7 +49,7 @@
           var amount, data, to;
           amount = times(store.staking.withdrawAmount, Math.pow(10, 18));
           if (+amount > +max.toFixed()) {
-            return alert(store, lang.max + " " + max.toFixed());
+            return alert(store, lang.max + " " + div(max.toFixed(), Math.pow(10, 18)));
           }
           if (+amount === 0) {
             return alert(store, lang.actionProhibited, cb);
@@ -98,7 +98,7 @@
       }, children = react.createElement('div', {
         className: 'left'
       }, children = react.createElement('div', {
-        className: 'steps steps691576041'
+        className: 'steps steps2030851689'
       }, children = [
         react.createElement('div', {
           onClickCommented: activateFirst,
@@ -158,17 +158,26 @@
     lang = getLang(store);
     exit = function(){
       return canMakeStaking(store, web3t, function(err){
-        var stakingAddress, poolAddress;
+        var myStake, stakingAddress, poolAddress;
         if (err != null) {
           return alert(store, err, cb);
         }
+        myStake = store.staking.chosenPool.myStake ? div(store.staking.chosenPool.myStake, Math.pow(10, 18)) : 0;
         stakingAddress = store.staking.keystore.staking.address;
         poolAddress = store.staking.chosenPool.address;
         return web3t.velas.Staking.maxWithdrawAllowed(poolAddress, stakingAddress, function(err, max){
-          var amount, data, to;
+          var myStake, amount, data, to;
+          if (!myStake) {
+            myStake = max;
+          }
           amount = times(store.staking.withdrawAmount, Math.pow(10, 18));
           if (+amount > +max.toFixed()) {
-            return alert(store, lang.max + " " + max.toFixed());
+            return alert(store, "Max amount to withdraw is " + div(max, Math.pow(10, 18)));
+          }
+          if (+myStake - +store.staking.withdrawAmount !== 0) {
+            if (+myStake - +store.staking.withdrawAmount < 10000) {
+              return alert(store, "The pool stake amount after withdraw " + store.staking.withdrawAmount + " VLX must be at least 10000 VLX or no stake at all.", cb);
+            }
           }
           if (+amount === 0) {
             return alert(store, lang.actionProhibited, cb);
@@ -273,7 +282,6 @@
           }
           store.staking.orderedWithdrawAmount = amount.toFixed();
           return web3t.velas.Staking.orderWithdrawEpoch(store.staking.chosenPool.address, stakingAddress, function(err, lastEpoch){
-            console.log("web3t.velas.Staking.orderWithdrawEpoch('" + store.staking.chosenPool.address + "', '" + stakingAddress + "')");
             if (err != null) {
               return cb(err + "");
             }

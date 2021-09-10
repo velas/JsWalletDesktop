@@ -2,11 +2,11 @@
 (function(){
   var ref$, each, map, pairsToObj, filter, find, getTransactions, run, task, getPendingTxs, removeTx, applyTransactions, addTask, same, extend, transformPtx, makeNotPending, checkTransactionTask, checkPtxInBackground, checkPtxsInBackground, rebuildHistory, buildLoader, loadAllTransactions, slice$ = [].slice, out$ = typeof exports != 'undefined' && exports || this;
   ref$ = require('prelude-ls'), each = ref$.each, map = ref$.map, pairsToObj = ref$.pairsToObj, filter = ref$.filter, map = ref$.map, find = ref$.find;
-  getTransactions = require('./api.ls').getTransactions;
-  ref$ = require('./workflow.ls'), run = ref$.run, task = ref$.task;
-  ref$ = require('./pending-tx.ls'), getPendingTxs = ref$.getPendingTxs, removeTx = ref$.removeTx;
-  applyTransactions = require('./apply-transactions.ls');
-  addTask = require('./background/background-task.ls').addTask;
+  getTransactions = require('./api.js').getTransactions;
+  ref$ = require('./workflow.js'), run = ref$.run, task = ref$.task;
+  ref$ = require('./pending-tx.js'), getPendingTxs = ref$.getPendingTxs, removeTx = ref$.removeTx;
+  applyTransactions = require('./apply-transactions.js');
+  addTask = require('./background/background-task.js').addTask;
   same = function(x, y){
     return (x != null ? typeof x.toUpperCase == 'function' ? x.toUpperCase() : void 8 : void 8) === (y != null ? typeof y.toUpperCase == 'function' ? y.toUpperCase() : void 8 : void 8);
   };
@@ -59,18 +59,15 @@
     };
   });
   makeNotPending = function(store, tx){
-    console.log('make-not-pending', tx);
     tx.pending = false;
-    each(function(it){
-      return it.pending = false;
-    })(
-    store.transactions.all);
-    each(function(it){
-      return it.pending = false;
-    })(
-    store.transactions.applied);
-    applyTransactions(store);
-    return console.log(store.transactions);
+    return removeTx({
+      store: store,
+      token: tx.token,
+      network: tx.network,
+      tx: tx.tx
+    }, function(err, result){
+      return applyTransactions(store);
+    });
   };
   checkTransactionTask = function(bgStore, web3, network, token, ptx){
     return function(store, cb){
@@ -97,7 +94,13 @@
         if ((data != null ? data.status : void 8) === 'confirmed') {
           makeNotPending(store, tx);
         }
+        if ((data != null ? data.status : void 8) === 'reverted') {
+          makeNotPending(store, tx);
+        }
         if ((data != null ? data.status : void 8) === 'confirmed') {
+          return cb(null);
+        }
+        if ((data != null ? data.status : void 8) === 'reverted') {
           return cb(null);
         }
         return cb('pending');
@@ -115,16 +118,18 @@
       return cb(null);
     }
     return checkPtxInBackground(store, web3, network, token, ptx, function(err){
-      if (err != null) {
-        return cb(err);
-      }
-      return setImmediate(function(){
+      console.log('err', err);
+      return setTimeout(function(){
+        if (err) {
+          rest.push(ptx);
+        }
         return checkPtxsInBackground(store, web3, network, token, rest, cb);
-      });
+      }, 1000);
     });
   };
   out$.rebuildHistory = rebuildHistory = function(store, web3, wallet, cb){
     var address, network, coin, privateKey;
+    console.log("[rebuild-history]");
     address = wallet.address, network = wallet.network, coin = wallet.coin, privateKey = wallet.privateKey;
     return getTransactions({
       address: address,
@@ -236,10 +241,7 @@
       return [loaders.indexOf(it).toString(), it];
     })(
     loaders));
-    return run([tasks]).then(function(err){
-      if (err != null) {
-        return cb(err);
-      }
+    return run([tasks]).then(function(){
       applyTransactions(store);
       return cb(null);
     });

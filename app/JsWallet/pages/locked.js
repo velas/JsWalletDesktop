@@ -3,19 +3,19 @@
   var react, map, ref$, set, check, exists, del, setbkp, navigate, getPrimaryInfo, getLang, notifyFormResult, seedmem, menuFuncs, chooseLanguage, icons, confirm, button, textField, exportImportSeed, wrongPin, checkPin, version, input, resetWallet, totalTrials, wrongTrials, setupButton, createWallet, locked, focus;
   react = require('react');
   map = require('prelude-ls').map;
-  ref$ = require('../pin.ls'), set = ref$.set, check = ref$.check, exists = ref$.exists, del = ref$.del, setbkp = ref$.setbkp;
-  navigate = require('../navigate.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  notifyFormResult = require('../send-form.ls').notifyFormResult;
-  seedmem = require('../seed.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  chooseLanguage = require('./choose-language.ls');
-  icons = require('../icons.ls');
-  confirm = require('./confirmation.ls').confirm;
-  button = require('../components/button.ls');
-  textField = require('../components/text-field.ls');
-  exportImportSeed = require('../components/export-import-seed.ls');
+  ref$ = require('../pin.js'), set = ref$.set, check = ref$.check, exists = ref$.exists, del = ref$.del, setbkp = ref$.setbkp;
+  navigate = require('../navigate.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  notifyFormResult = require('../send-form.js').notifyFormResult;
+  seedmem = require('../seed.js');
+  menuFuncs = require('../menu-funcs.js');
+  chooseLanguage = require('./choose-language.js');
+  icons = require('../icons.js');
+  confirm = require('./confirmation.js').confirm;
+  button = require('../components/button.js');
+  textField = require('../components/text-field.js');
+  exportImportSeed = require('../components/export-import-seed.js');
   wrongPin = function(store){
     var leftTrials;
     store.current.pin = "";
@@ -36,7 +36,7 @@
     store.current.pin = "";
     store.current.loading = true;
     if (store.current.pagePin != null) {
-      store.current.page = store.current.pagePin;
+      navigate(store, web3t, store.current.pagePin);
       return store.current.pagePin = null;
     } else {
       navigate(store, web3t, ':init');
@@ -49,7 +49,7 @@
     }, ' ' + store.version);
   };
   input = function(store, web3t){
-    var style, buttonPrimary1Style, buttonPrimary0Style, lockedStyle, enter, change, lang, catchKey, resetAccount, drag, children;
+    var style, buttonPrimary1Style, buttonPrimary0Style, lockedStyle, enter, change, lang, catchKey, resetAccount, drag, focusInput, children;
     style = getPrimaryInfo(store);
     buttonPrimary1Style = {
       border: "0",
@@ -103,14 +103,27 @@
       });
     };
     drag = store.current.pinTrial === 0 ? "" : 'drag';
+    focusInput = function(ref){
+      if (ref != null) {
+        ref.focus();
+      }
+    };
     return react.createElement('div', {}, children = [
       textField({
+        ref: function(c){
+          return {
+            a: typeof a != 'undefined' && a !== null
+              ? a
+              : focusInput(c)
+          };
+        },
         store: store,
         type: 'password',
         value: store.current.pin,
         placeholder: lang.pinPlaceholder,
         onChange: change,
-        onKeyDown: catchKey
+        onKeyDown: catchKey,
+        id: typeof id != 'undefined' && id !== null ? id : "locked-password"
       }), exists() ? react.createElement('div', {}, children = [
         button({
           store: store,
@@ -173,7 +186,9 @@
       });
     };
     wrongPinText = leftTrials + "/" + totalTrials + " " + lang.noticeReset + ".";
-    return react.createElement('div', {}, children = [
+    return react.createElement('div', {
+      className: 'wrong-pin-trial'
+    }, children = [
       react.createElement('div', {
         key: "wrong-trial",
         className: 'wrong'
@@ -222,6 +237,7 @@
       react.createElement('button', {
         onClick: setup,
         style: buttonStyle,
+        id: "locked-continue",
         className: 'setup'
       }, children = react.createElement('span', {}, children = [
         react.createElement('img', {
@@ -265,12 +281,13 @@
     ])));
   };
   locked = function(arg$){
-    var store, web3t, lang, title, footer, info, lockedStyle, txtStyle, logoStyle, children;
+    var store, web3t, lang, style, title, footer, info, lockedStyle, buttonPrimary2Style, txtStyle, logoStyle, download, children, ref$;
     store = arg$.store, web3t = arg$.web3t;
     if (store.current.loading === true) {
       return null;
     }
     lang = getLang(store);
+    style = getPrimaryInfo(store);
     title = (function(){
       switch (false) {
       case !!exists():
@@ -291,7 +308,14 @@
     lockedStyle = {
       color: info.app.text,
       backgroundImage: info.app.backgroundImage,
-      backgroundSize: "cover"
+      backgroundSize: "cover",
+      background: info.app.glitch
+    };
+    buttonPrimary2Style = {
+      border: "1px solid " + style.app.primary2,
+      color: style.app.text,
+      background: style.app.primary2,
+      backgroundColor: style.app.primary2Spare
     };
     txtStyle = {
       color: info.app.text
@@ -299,10 +323,15 @@
     logoStyle = {
       filter: info.app.filterLogo
     };
+    download = function(){
+      return navigate(store, web3t, 'downloadwallet');
+    };
     return react.createElement('div', {
       key: "locked",
       style: lockedStyle,
-      className: 'locked locked-2029362715'
+      className: 'locked locked-906198149'
+    }, children = react.createElement('div', {
+      className: 'locked-inner'
     }, children = [
       react.createElement('div', {
         className: 'logo'
@@ -319,8 +348,28 @@
       }, ' ' + title), react.createElement('div', {
         key: "locked-inputs",
         className: 'inputs'
-      }, children = input(store, web3t)), exportImportSeed(store), footer(store, web3t)
-    ]);
+      }, children = input(store, web3t)), exportImportSeed(store), footer(store, web3t), (typeof process != 'undefined' && process !== null ? (ref$ = process.versions) != null ? ref$.electron : void 8 : void 8) == null ? react.createElement('div', {
+        className: 'downloadwallet'
+      }, children = [
+        react.createElement('a', {
+          href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748",
+          target: "_blank"
+        }, children = react.createElement('img', {
+          src: icons['ios'] + "",
+          className: 'icon-download'
+        })), react.createElement('a', {
+          href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet",
+          target: "_blank"
+        }, children = react.createElement('img', {
+          src: icons['android'] + "",
+          className: 'icon-download'
+        })), react.createElement('span', {}, children = react.createElement('img', {
+          onClick: download,
+          src: icons['desktop'] + "",
+          className: 'icon-download'
+        }))
+      ]) : void 8
+    ]));
   };
   focus = function(arg$, cb){
     var store;

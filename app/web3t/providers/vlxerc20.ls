@@ -149,7 +149,6 @@ export push-tx = ({ network, rawtx } , cb)-->
     send = web3.eth.send-raw-transaction ? web3.eth.send-signed-transaction
     #console.log \push-tx
     err, txid <- send rawtx
-    console.log { err, txid }
     cb err, txid
 export check-tx-status = ({ network, tx }, cb)->
     cb "Not Implemented"

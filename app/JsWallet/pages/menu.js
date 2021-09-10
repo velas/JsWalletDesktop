@@ -2,19 +2,19 @@
 (function(){
   var react, ref$, cut, money, projectLinks, menuFuncs, yourAccount, getPrimaryInfo, getLang, icon, icons, header, navigate, roundHuman, addCoin, tor;
   react = require('react');
-  ref$ = require('../tools.ls'), cut = ref$.cut, money = ref$.money;
-  projectLinks = require('./project-links.ls');
-  menuFuncs = require('../menu-funcs.ls');
-  yourAccount = require('./your-account.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icon = require('./icon.ls');
-  icons = require('../icons.ls');
-  header = require('./header.ls');
-  navigate = require('../navigate.ls');
-  roundHuman = require('../round-human.ls');
-  addCoin = require('../add-coin.ls');
-  tor = require('./tor.ls');
+  ref$ = require('../tools.js'), cut = ref$.cut, money = ref$.money;
+  projectLinks = require('./project-links.js');
+  menuFuncs = require('../menu-funcs.js');
+  yourAccount = require('./your-account.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icon = require('./icon.js');
+  icons = require('../icons.js');
+  header = require('./header.js');
+  navigate = require('../navigate.js');
+  roundHuman = require('../round-human.js');
+  addCoin = require('../add-coin.js');
+  tor = require('./tor.js');
   module.exports = function(arg$){
     var store, web3t, ref$, current, openAccount, lock, walletStyle, info, activateS1, activateS2, activateS3, switchNetwork, refresh, style, menuStyle, iconStyle, gotoWallet, buttonAdd, buttonSyncing, logoStyle, lang, syncing, placeholder, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -77,7 +77,7 @@
     }());
     return react.createElement('div', {
       style: menuStyle,
-      className: 'menu wallet-main menu38900718'
+      className: 'menu wallet-main menu369227581'
     }, children = react.createElement('div', {
       className: 'menu-body'
     }, children = [
@@ -98,6 +98,7 @@
             className: 'symbol'
           }, ' $'), react.createElement('div', {
             title: current.balanceUsd + "",
+            id: 'balance-total',
             className: 'number'
           }, ' ' + roundHuman(current.balanceUsd))
         ]), react.createElement('div', {}, children = [

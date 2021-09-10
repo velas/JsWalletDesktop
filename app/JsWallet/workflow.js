@@ -38,6 +38,10 @@
       this.results = [];
       this.callbacks = [];
       this.done = false;
+      this.errors = null;
+      this.errorsCb = function(err){
+        return console.error("An error occured:", err);
+      };
       this.notify = function(){
         var res;
         if (this.done) {
@@ -60,17 +64,29 @@
     }
     Parallel.prototype.then = function(func){
       this.callbacks.push(func);
-      return this.notify();
+      this.notify();
+      return this;
+    };
+    Parallel.prototype['catch'] = function(cb){
+      if (cb != null) {
+        this.errorsCb = cb;
+      }
     };
     Parallel.prototype.run = function(val){
-      var i$, ref$, len$, pair, composition, array, results$ = [];
-      for (i$ = 0, len$ = (ref$ = this.tasks).length; i$ < len$; ++i$) {
-        pair = ref$[i$];
-        composition = (fn$());
-        array = composition.concat([this.success(pair[0])]);
-        results$.push(go(array, val));
+      var i$, ref$, len$, pair, composition, array, err, results$ = [];
+      try {
+        for (i$ = 0, len$ = (ref$ = this.tasks).length; i$ < len$; ++i$) {
+          pair = ref$[i$];
+          composition = (fn$());
+          array = composition.concat([this.success(pair[0])]);
+          results$.push(go(array, val));
+        }
+        return results$;
+      } catch (e$) {
+        err = e$;
+        this.errors = err;
+        return this.errorsCb(err);
       }
-      return results$;
       function fn$(){
         switch (toString$.call(pair[1]).slice(8, -1)) {
         case 'Function':
@@ -92,7 +108,10 @@
     }
     if (tasks.length <= max) {
       parallel = new Parallel(tasks);
-      parallel.then(success);
+      parallel.then(success)['catch'](function(err){
+        console.error("Caught error: ", err);
+        return success({});
+      });
       return parallel.run(val);
     } else {
       head = pairsToObj(

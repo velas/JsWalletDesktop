@@ -21,13 +21,15 @@ require! {
     \../components/amount-field.ls
     \../components/amount-fiat-field.ls
     \../components/sliders/network-slider.ls
-    \../math.ls : { times }
+    \../math.ls : { times, div }
     \ethereumjs-util : {BN}
     \../velas/addresses.ls
     \../contracts.ls
     \../swaping/networks.ls : \token-networks
+    "../../web3t/contracts/HomeBridgeNativeToErc.json" : \HomeBridgeNativeToErc    
+    "../../web3t/contracts/ForeignBridgeNativeToErc.json" : \ForeignBridgeNativeToErc
 }
-# .content879310472
+# .content-2039570494
 #     position: relative
 #     @import scheme
 #     $border-radius: var(--border-btn)
@@ -38,9 +40,10 @@ require! {
 #     max-width: none !important
 #     height: 100vh
 #     display: flex !important
-#     flex-direction: column
-#     justify-content: center
+#     flex-direction: column  
 #     align-items: center
+#     @media(min-height:900px)
+#         justify-content: center    
 #     @media(max-width:800px)
 #         margin-left: 0 !important
 #     .icon-svg
@@ -84,6 +87,10 @@ require! {
 #         width: 100%
 #         box-sizing: border-box
 #         border-radius: $border-radius
+#     .swap-notification
+#         p
+#             font-size: 12px
+#             opacity: 0.3
 #     .more-buttons
 #         top: 30px
 #         right: 0
@@ -411,7 +418,7 @@ form-group = (classes, title, style, content)->
         react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
         content!
 send = ({ store, web3t })->
-    { token, name, fee-token, bridge-fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, before-send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
+    { execute-contract-data, getBridgeInfo, token, name, homeFee, homeFeeUsd, fee-token, bridge-fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, before-send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
     return send-contract { store, web3t } if send.details is no
     theme = get-primary-info(store)
     send.sending = false
@@ -480,7 +487,8 @@ send = ({ store, web3t })->
         if store.current.open-menu then \hide else \ ""
     token-display = (wallet.coin.nickname ? "").to-upper-case!
     fee-token-display = 
-        | fee-token in <[ VLX2 VLX_EVM VLX_NATIVE ]> => \VLX
+        | fee-token in <[ VLX2 VLX_EVM VLX_NATIVE VLX_EVM_LEGACY ]> => \VLX
+        | fee-token in <[ ETH_LEGACY ]> => \ETH
         | bridge-fee-token? => bridge-fee-token
         | wallet.network.tx-fee-in? => wallet.network.tx-fee-in
         | _ => fee-token
@@ -495,14 +503,31 @@ send = ({ store, web3t })->
     token = store.current.send.coin.token
     is-swap = store.current.send.is-swap is yes
     send-func = before-send-anyway
-    disabled = not send.to? or send.to.trim!.length is 0 or (send.error.index-of "address") > -1     
+    disabled = not send.to? or send.to.trim!.length is 0 or ((send.error ? "").index-of "address") > -1     
     receiver-is-swap-contract = contracts.is-swap-contract(store, store.current.send.contract-address)
     visible-error = if send.error? and send.error.length > 0 then "visible" else ""
     get-recipient = (address)->
         address
     recipient = get-recipient(send.to)
-    title = if store.current.send.is-swap isnt yes then lang.send else \Swap
-    react.create-element 'div', { className: 'content content879310472' }, children = 
+    title = if store.current.send.is-swap isnt yes then \send else \swap
+    homeFeePercent = send.homeFeePercent `times` 100
+    
+    
+    is-swap-pair = ({from, to})->
+        { chosen-network, coin, wallet } = store.current.send
+        token = coin.token
+        token is from and chosen-network.refer-to is to
+    
+    network-on-change = ->
+        err <- getBridgeInfo!
+        return store.current.send.error = err if err?
+        err <- execute-contract-data!
+        return store.current.send.error = err if err?
+        
+       
+    
+    /* Render */
+    react.create-element 'div', { className: 'content content-2039570494' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
             react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
@@ -538,8 +563,8 @@ send = ({ store, web3t })->
                 form-group \sender, lang.from, icon-style, ->
                     react.create-element 'div', { style: border-style, className: 'address' }, children = 
                         address-holder { store, wallet }
-                react.create-element 'div', { className: 'slider network form-group' }, children = 
-                    network-slider { web3t, wallet, store}
+                react.create-element 'div', { className: 'network form-group' }, children = 
+                    network-slider { web3t, wallet, store, on-change: network-on-change}
                 form-group \receiver, lang.to, icon-style, ->
                     react.create-element 'div', {}, children = 
                         identicon { store, address: send.to }
@@ -553,7 +578,7 @@ send = ({ store, web3t })->
                                     """ #{token-display}"""
                                 amount-field { store, value: send.amount-send, on-change: amount-change, placeholder="0", id="send-amount", token, disabled }
                             if active-usd is \active
-                                amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: disabled }
+                                amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: no }
                             if active-eur is \active
                                 react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
                                     react.create-element 'div', { className: 'label lusd' }, ' €'
@@ -588,18 +613,34 @@ send = ({ store, web3t })->
                                     react.create-element 'img', { src: "#{fee-coin-image}", className: 'label-coin' }
                                     react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token-display
                                 react.create-element 'div', { className: 'usd' }, ' $ ' + round-human send.amount-send-fee-usd
+                        if send.homeFeePercent? and send.homeFeePercent > 0 
+                            react.create-element 'tr', { className: 'orange home-fee' }, children = 
+                                react.create-element 'td', {}, children = 
+                                    """ #{lang.home-fee} """
+                                    """ (#{homeFeePercent}%)"""
+                                react.create-element 'td', {}, children = 
+                                    react.create-element 'span', { title: "#{homeFee}" }, ' ' + round-human homeFee
+                                        react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
+                                        react.create-element 'span', { title: "#{homeFee}" }, ' ' + token-display
+                                    react.create-element 'div', { className: 'usd' }, ' $ ' + round-human homeFeeUsd
             react.create-element 'div', { className: 'button-container' }, children = 
                 react.create-element 'div', { className: 'buttons' }, children = 
-                    button { store, text: \send , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }
+                    button { store, text: "#{title}" , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
+                if store.current.send.is-swap is yes
+                    if not (is-swap-pair({from: \vlx_evm, to: \vlx_native}) or is-swap-pair({from: \vlx_native, to: \vlx_evm}) or is-swap-pair({from: \vlx2, to: \vlx_evm}) or is-swap-pair({from: \vlx_evm, to: \vlx2}) )
+                        react.create-element 'div', { className: 'swap-notification' }, children = 
+                            react.create-element 'p', {}, ' ' + lang.swapNotification
+
 module.exports = send
 module.exports.init = ({ store, web3t }, cb)->
-    { wallet } = send-funcs store, web3t
+    { execute-contract-data, wallet, getBridgeInfo } = send-funcs store, web3t
     return cb null if not wallet?
     return cb null if send.sending is yes
     store.current.send.foreign-network-fee = 0
     store.current.send.amountCharged = 0
     store.current.send.amountChargedUsd = 0
+    store.current.send.homeFeePercent = 0
     store.current.send.error = ''
     if store.current.send.is-swap isnt yes
         store.current.send.contract-address = null
@@ -614,10 +655,12 @@ module.exports.init = ({ store, web3t }, cb)->
         default-network = networks[network-keys.0].name
     /* If it is Swap! */
     if wallet.network.networks? and (store.current.send.isSwap is yes) then
+        $wallets = store.current.account.wallets |> map (-> [it.coin.token, it]) |> pairs-to-obj
         available-networks = 
             wallet.network.networks 
                 |> obj-to-pairs
-                |> filter (-> (not it[1].disabled?) or it[1].disabled is no)
+                |> filter (-> $wallets[it[1]?referTo]?)
+                |> filter (-> (not it[1]?disabled?) or it[1]?disabled is no)
                 |> pairs-to-obj
         wallet-swap-networks-ids = Object.keys(available-networks)
         if wallet-swap-networks-ids.length > 0
@@ -625,7 +668,17 @@ module.exports.init = ({ store, web3t }, cb)->
             store.current.send.chosenNetwork = default-network 
             store.current.send.to = token-networks.get-default-recipient-address(store)  
         else
-            console.error "networks prop in #{store.current.send.token} wallet is defined but is empty"    
+            console.error "networks prop in #{store.current.send.token} wallet is defined but is empty" 
+    
+    #err <- execute-contract-data
+    #console.log "err " err
+    #return cb err if err?
+    #try
+    err <- getBridgeInfo!
+    return cb err if err?
+    #catch err
+        #console.error err
+    
     { wallets } = wallets-funcs store, web3t
     current-wallet =
         wallets |> find (-> it.coin.token is wallet.coin.token)
@@ -634,16 +687,15 @@ module.exports.init = ({ store, web3t }, cb)->
     { wallet } = send-funcs store, web3t
     store.current.send.fee-coin-image = 
         | wallet.network.tx-fee-in? =>
-            console.log "wallet.network.tx-fee-in" wallet.network.tx-fee-in
             tx-fee-in-wallet = wallets |> find (-> it.coin.token is wallet.network.tx-fee-in)
             if not tx-fee-in-wallet then
                 store.current.send.error = "Please add #{((wallet.network.tx-fee-in ? "").to-upper-case!)} wallet in order to calculate transaction fee"
             tx-fee-in-wallet?coin?image ? ""   
         | _ => wallet.coin.image   
-    if wallet.network.txBridgeFeeIn? and (wallet.coin.token isnt wallet.network.txBridgeFeeIn) then
-        bridge-fee-token = wallet.network.txBridgeFeeIn
-        second-wallet = wallets |> find (-> it.coin.token is bridge-fee-token)
-        store.current.send.fee-coin-image = second-wallet.coin.image
+    #if wallet.network.txBridgeFeeIn? and (wallet.coin.token isnt wallet.network.txBridgeFeeIn) then
+        #bridge-fee-token = wallet.network.txBridgeFeeIn
+        #second-wallet = wallets |> find (-> it.coin.token is bridge-fee-token)
+        #store.current.send.fee-coin-image = second-wallet?coin?image if second-wallet?coin?image?
     return cb null if current-wallet.address is wallet.address
     return cb null if not wallet?
     return cb null if not web3t[wallet.coin.token]?   

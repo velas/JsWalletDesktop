@@ -2,7 +2,7 @@
 (function(){
   var react, getLang;
   react = require('react');
-  getLang = require('../get-lang.ls');
+  getLang = require('../get-lang.js');
   module.exports = function(addClass){
     var children;
     return react.createElement('div', {

@@ -2,15 +2,15 @@
 (function(){
   var react, get, ref$, map, keys, head, filter, sortBy, reverse, moment, switchAccount, icons, epoch, getPrimaryInfo, navigate, burger, hiddenFields, last_status_at, rpc_allowed, p2p_allowed, name, cells, buildCellDefault, buildCell, buildHeaderCell, buildRow, buildHeader, header;
   react = require('react');
-  get = require('../../web3t/providers/superagent.ls').get;
+  get = require('../../web3t/providers/superagent.js').get;
   ref$ = require('prelude-ls'), map = ref$.map, keys = ref$.keys, head = ref$.head, filter = ref$.filter, sortBy = ref$.sortBy, reverse = ref$.reverse;
   moment = require('moment');
-  switchAccount = require('./switch-account.ls');
-  icons = require('../icons.ls');
-  epoch = require('./epoch.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  navigate = require('../navigate.ls');
-  burger = require('../components/burger.ls');
+  switchAccount = require('./switch-account.js');
+  icons = require('../icons.js');
+  epoch = require('./epoch.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  navigate = require('../navigate.js');
+  burger = require('../components/burger.js');
   hiddenFields = ['expected_rpc_address', 'local_address', 'remote_address', 'key'];
   last_status_at = function(store, web3t, peer, cell){
     var time;

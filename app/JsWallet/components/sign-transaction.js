@@ -14,7 +14,8 @@
     });
     message = JSON.stringify({
       type: 'address',
-      address: vlx2.address
+      address: vlx2.address,
+      ethAddress: toEthAddress(vlx2.address)
     });
     window.parent.postMessage(message, window.store.interop.origin);
     return;

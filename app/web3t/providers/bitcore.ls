@@ -282,44 +282,40 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
 export get-balance = ({ address, network } , cb)->
     return cb "Url is not defined" if not network?api?url?
     err, data <- get "#{get-api-url network}/address/#{address}/balance" .timeout { deadline: 5000 } .end
-    console.log "#{get-api-url network}/address/#{address}/balance"
     return cb err if err? or data.text.length is 0
     #check that data.text has number
     try
         json = JSON.parse(data.text)
         dec = get-dec network
-        num = json.balance `div` dec
+        #num = (json.confirmed `minus` json.unconfirmed ) `div` dec
+        num = json.confirmed `div` dec
         return cb null, num
     catch e
-        return cb e.message
-    dec = get-dec network
-    num = data.text `div` dec
-    #return cb null, "2.00001"
-    cb null, num
+        return cb e.message 
 transform-in = ({ net, address }, t)->
     #tr = BitcoinLib.Transaction.fromHex(t.script)  
-    tx = t.mintTxid
+    tx = t.hash    
     pending = t.confirmations is 0
     dec = get-dec net
-    amount = t.value `div` dec
+    amount = "#{t.value}" `div` dec
     from = address
     to = t.address
     url = | net.api.linktx => net.api.linktx.replace \:hash, tx
         | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-in, t)
-    { tx, amount, url, to, from, pending, time: t.time, fee: t.fee, type: t.type  }
+    { tx, amount, url, to, from, pending, time: t.time, fee: t.fee, type: t.type, id: t._id  }
 transform-out = ({ net, address }, t)->
-    tx = t.mintTxid
+    tx = t.hash    
     time = t.time
     pending = t.confirmations is 0
     dec = get-dec net
-    amount = t.value `div` dec
+    amount = "#{t.value}" `div` dec
     to = t.address
     from = address
     url = | net.api.linktx => net.api.linktx.replace \:hash, tx
         | net.api.url => "#{net.api.url}/tx/#{data}"
     #console.log(\insight-out, t)
-    { tx, amount, url, to, pending, from, time: t.time, fee: t.fee, type: t.type }
+    { tx, amount, url, to, pending, from, time: t.time, fee: t.fee, type: t.type, id: t._id }
 transform-tx = (config, t)-->
     self-sender = t.address is config.address
     type = 
@@ -340,14 +336,15 @@ export get-transactions = ({ network, address}, cb)->
     return cb err if err?
     err, result <- json-parse data.text 
     return cb err if err?
-    _result = result |> uniqueBy (-> it.mintTxid) |> reverse     
+    _result = result |> reverse     
     err, all-txs <- prepare-raw-txs {txs: _result, network, address}
     return cb err if err?   
     return cb "Unexpected result" if typeof! all-txs isnt \Array
     txs =
         all-txs
-            |> map transform-tx { net: network, address }
-            |> filter (?)                
+            |> filter (?)
+            |> uniqueBy (-> it.hash)
+            |> map transform-tx { net: network, address }  
     cb null, txs
 prepare-raw-txs = ({ txs, network, address }, cb)->
     err, result <- prepare-txs network, txs, address
@@ -363,23 +360,29 @@ get-receiver = (account-address, sender, outputs)->
 get-value = (outputs, receiver)->
     receiver-data = outputs |> find (-> it.address is receiver)
     receiver-data?value ? 0
-prepare-txs = (network, [tx, ...rest], address, cb)->
-    return cb null, [] if not tx?
-    { mintTxid } = tx
+    
+cache = 
+    transactions: {}
+
+get-tx-data = ({network, mintTxid, address}, cb)->
+    return cb null, cache.transactions[mintTxid] if cache.transactions[mintTxid]?
+    
     err, _coins <- get "#{get-api-url network}/tx/#{mintTxid}/coins" .timeout { deadline: 15000 } .end
     console.error "prepare-txs Error: " + err if err?
-    return cb null, [] if err?
+    return cb null if err?
     err, result <- json-parse _coins.text
     return cb err if err?
     {inputs, outputs} = result
     sender = inputs[0].address
     receiver = get-receiver(address, sender, outputs)
     value = get-value(outputs, receiver)
-    err, data <- get "#{get-api-url network}/tx/#{mintTxid}" .timeout { deadline: 15000 } .end
+    
+    err, data <- get "#{get-api-url network}/tx/#{mintTxid}" .timeout { deadline: 5000 } .end
     console.error "prepare-txs Error: " + err if err?
-    return cb null, [] if err?
+    return cb null if err?    
     err, result <- json-parse data.text
-    return cb err if err? 
+    console.error "json-parse  Error: " + err if err?
+    return cb null if err? 
     { blockTime, txid, fee, confirmations, chain,  _id } = result 
     time = moment(blockTime).format("X")
     dec = get-dec network 
@@ -393,11 +396,18 @@ prepare-txs = (network, [tx, ...rest], address, cb)->
         confirmations
         _id 
         coinbase: no
-        mintTxid: txid,    
+        hash: txid    
     }
-    t = if _tx? then [_tx] else []
-    err, other <- prepare-txs network, rest, address
-    return cb err if err?
+    
+    cache.transactions[mintTxid] = _tx 
+    cb null, _tx 
+    
+prepare-txs = (network, [tx, ...rest], address, cb)->
+    return cb null, [] if not tx?
+    { mintTxid } = tx
+    err, tx-data <- get-tx-data({network, mintTxid, address})  
+    t = if tx-data? then [tx-data] else []
+    err, other <- prepare-txs network, rest, address    
     all =  t ++ other    
     cb null, all   
 export isValidAddress = ({ address, network }, cb)-> 
@@ -418,4 +428,13 @@ export get-transaction-info = (config, cb)->
         | tx.status is \0x1 => \reverted
         | _ => \pending
     result = { status, info: tx }
+    cb null, result
+    
+export get-market-history-prices = (config, cb)->
+    { network, coin } = config  
+    {market} = coin    
+    err, resp <- get market .timeout { deadline } .end
+    return cb "cannot execute query - err #{err.message ? err }" if err?
+    err, result <- json-parse resp.text
+    return cb err if err?
     cb null, result

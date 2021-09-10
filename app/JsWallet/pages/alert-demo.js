@@ -2,8 +2,8 @@
 (function(){
   var react, getPrimaryInfo, getLang;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
   module.exports = function(store, web3t){
     var lang, style, borderStyle2, children;
     lang = getLang(store);

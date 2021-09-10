@@ -121,8 +121,11 @@ class VelasStaking {
     async getStakingValidators() {
         const voteAccounts = await this.connection.getVoteAccounts();
 
+        for (var i in voteAccounts.delinquent) {
+            voteAccounts.delinquent[i].delinquent = true;
+        }
+
         const validators = voteAccounts.current.concat(voteAccounts.delinquent);
-        console.log("validators", validators);
 
         for (var i in validators) {
             validators[i].key   = validators[i].votePubkey;
@@ -331,9 +334,7 @@ class VelasStaking {
 
     async getStakingAccounts(accounts) {
         var  ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
-        console.log("[getStakingAccounts]")
         let owner = this.getAccountPublicKey();
-        console.log("owner", owner)
 
         accounts = accounts.filter(item => {
             if (deepEq$(typeof item != 'undefined' && item !== null ? (ref$ = item.account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? (ref5$ = ref4$.authorized) != null ? ref5$.staker : void 8 : void 8 : void 8 : void 8 : void 8 : void 8 : void 8, owner.toBase58(), '===')) {
@@ -371,8 +372,20 @@ class VelasStaking {
         return accounts;
     };
     
-    async getParsedProgramAccounts(){
-        const accounts = await this.connection.getParsedProgramAccounts(StakeProgram.programId);
+    async getParsedProgramAccounts(owner){
+        let params = {}
+        if(owner) {
+            params = {
+                filters:
+                    [{
+                        memcmp: {
+                            offset: 0xc,
+                            bytes: owner,
+                        }
+                    }]
+            }
+        }
+        const accounts = await this.connection.getParsedProgramAccounts(StakeProgram.programId, params);
         const delegators = {};
         for (var a in accounts) {
             var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
@@ -392,7 +405,6 @@ class VelasStaking {
     
     async getInfo() {
         const accounts = await this.connection.getParsedProgramAccounts(StakeProgram.programId);
-        console.log("accounts", accounts)
         const delegators = {};
         const stakes     = {};
 
@@ -454,7 +466,6 @@ class VelasStaking {
             transaction,
             [payAccount]
         );
-        console.log("result !", result);
          
         return result;
         

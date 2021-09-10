@@ -142,3 +142,12 @@ export get-balance = ({ network, address} , cb)->
     #    unspents-native |> map (.value) |> map (-> it `div` decimals ) |> foldl plus, 0
     balance = amount `div` decimals
     cb null, balance
+    
+export get-market-history-prices = (config, cb)->
+    { network, coin } = config  
+    {market} = coin    
+    err, resp <- get market .timeout { deadline } .end
+    return cb "cannot execute query - err #{err.message ? err }" if err?
+    err, result <- json-parse resp.text
+    return cb err if err?
+    cb null, result

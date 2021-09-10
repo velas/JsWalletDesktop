@@ -2,16 +2,16 @@
 (function(){
   var react, menuFuncs, getPrimaryInfo, getLang, addCoin, topup, icon, ref$, map, filter, localStorage, icons, tor, background;
   react = require('react');
-  menuFuncs = require('../menu-funcs.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  addCoin = require('../add-coin.ls');
-  topup = require('../topup.ls');
-  icon = require('./icon.ls');
+  menuFuncs = require('../menu-funcs.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  addCoin = require('../add-coin.js');
+  topup = require('../topup.js');
+  icon = require('./icon.js');
   ref$ = require('prelude-ls'), map = ref$.map, filter = ref$.filter;
   localStorage = require('localStorage');
-  icons = require('../icons.ls');
-  tor = require('./tor.ls');
+  icons = require('../icons.js');
+  tor = require('./tor.js');
   background = function(){
     var children;
     return react.createElement('svg', {
@@ -24,10 +24,13 @@
     })));
   };
   module.exports = function(store, web3t){
-    var ref$, openAccount, openMigration, current, accountName, refresh, lock, createAccount, style, buttonStyle, buttonPrimary1Style, buttonPrimary4Style, buttonPrimary2Style, buttonPrimary0Style, buttonPrimary3Style, filterBody, borderTop, iconStyle, lang, accountIndex, length, excludeCurrent, syncing, showClass, show, createAccountPosition, children;
+    var ref$, openAccount, openMigration, current, accountName, refresh, lock, createAccount, style, buttonStyle, buttonPrimary1Style, buttonPrimary4Style, buttonPrimary2Style, buttonPrimary0Style, buttonPrimary3Style, filterBody, borderTop, iconStyle, lang, accountIndex, length, excludeCurrent, syncing, showClass, show, disabledClass, createAccountPosition, children;
     ref$ = menuFuncs(store, web3t), openAccount = ref$.openAccount, openMigration = ref$.openMigration, current = ref$.current, accountName = ref$.accountName, refresh = ref$.refresh, lock = ref$.lock;
     createAccount = function(){
       var newLength;
+      if (store.current.refreshing === true) {
+        return;
+      }
       newLength = 1 + length;
       store.current.accountIndex = newLength;
       localStorage.setItem('Accounts', newLength);
@@ -115,11 +118,20 @@
     show = function(){
       return store.menu.show = !store.menu.show;
     };
+    disabledClass = store.current.refreshing === true ? "disabled" : "";
     createAccountPosition = function(index){
       var changeAccount, defaultAccountName, currentAccountName, accountName, positionStyle, children;
       changeAccount = function(){
+        if (store.current.refreshing === true) {
+          return;
+        }
+        if (store.current.accountIndex === index) {
+          store.current.switchAccount = false;
+          return;
+        }
         store.current.accountIndex = index;
         store.current.switchAccount = false;
+        store.staking.getAccountsFromCashe = false;
         return web3t.refresh(function(){});
       };
       defaultAccountName = function(){
@@ -139,13 +151,13 @@
         onClick: changeAccount,
         key: "account" + index,
         style: positionStyle,
-        className: 'table-row-menu'
+        className: disabledClass + " table-row-menu"
       }, children = react.createElement('div', {
         className: 'col folder-menu'
       }, children = react.createElement('div', {}, ' ' + accountName)));
     };
     return react.createElement('div', {
-      className: 'your-account your-account-239165891'
+      className: 'your-account your-account15090199'
     }, children = [
       store.preference.usernameVisible === true ? react.createElement('div', {
         className: 'username'
@@ -176,6 +188,7 @@
         })) : void 8, store.current.device === 'mobile' ? tor(store, web3t) : void 8, store.current.device === 'mobile' ? react.createElement('button', {
           onClick: show,
           style: buttonPrimary4Style,
+          id: "menu-hamb-mobile",
           className: showClass + " button lock mt-5"
         }, children = react.createElement('img', {
           src: icons.menu + "",
@@ -211,7 +224,8 @@
           onClick: createAccount,
           className: 'col buttons folder-menu'
         }, children = react.createElement('button', {
-          style: buttonPrimary2Style
+          style: buttonPrimary2Style,
+          className: disabledClass + ""
         }, children = react.createElement('span', {}, children = [
           react.createElement('img', {
             src: icons.createAcc + "",

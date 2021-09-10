@@ -2,7 +2,7 @@
 (function(){
   var react, icons;
   react = require('react');
-  icons = require('./icons.ls');
+  icons = require('./icons.js');
   module.exports = function(store){
     return react.createElement('img', {
       src: icons.copyIcon + "",

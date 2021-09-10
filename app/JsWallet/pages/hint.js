@@ -2,10 +2,10 @@
 (function(){
   var react, getPrimaryInfo, getLang, icons, icon;
   react = require('react');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  getLang = require('../get-lang.ls');
-  icons = require('../icons.ls');
-  icon = require('./icon.ls');
+  getPrimaryInfo = require('../get-primary-info.js');
+  getLang = require('../get-lang.js');
+  icons = require('../icons.js');
+  icon = require('./icon.js');
   module.exports = function(store, web3t){
     var lang, style, closed, children;
     if (store.current.hint !== true) {

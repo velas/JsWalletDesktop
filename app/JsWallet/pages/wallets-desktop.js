@@ -2,23 +2,23 @@
 (function(){
   var react, walletExpanded, wallet, ref$, map, take, drop, filter, find, menu, web3, walletsFuncs, manageAccount, tokenMigration, addCoinPage, getLang, getPrimaryInfo, history, yourAccount, icon, localStorage, icons, header, mobile;
   react = require('react');
-  walletExpanded = require('./wallet-expanded.ls');
-  wallet = require('./wallet.ls');
+  walletExpanded = require('./wallet-expanded.js');
+  wallet = require('./wallet.js');
   ref$ = require('prelude-ls'), map = ref$.map, take = ref$.take, drop = ref$.drop, filter = ref$.filter, find = ref$.find;
-  menu = require('./menu.ls');
-  web3 = require('../web3.ls');
-  walletsFuncs = require('../wallets-funcs.ls');
-  manageAccount = require('./manage-account.ls');
-  tokenMigration = require('./token-migration.ls');
-  addCoinPage = require('./add-coin.ls');
-  getLang = require('../get-lang.ls');
-  getPrimaryInfo = require('../get-primary-info.ls');
-  history = require('./history.ls');
-  yourAccount = require('./your-account.ls');
-  icon = require('./icon.ls');
+  menu = require('./menu.js');
+  web3 = require('../web3.js');
+  walletsFuncs = require('../wallets-funcs.js');
+  manageAccount = require('./manage-account.js');
+  tokenMigration = require('./token-migration.js');
+  addCoinPage = require('./add-coin.js');
+  getLang = require('../get-lang.js');
+  getPrimaryInfo = require('../get-primary-info.js');
+  history = require('./history.js');
+  yourAccount = require('./your-account.js');
+  icon = require('./icon.js');
   localStorage = require('localStorage');
-  icons = require('../icons.ls');
-  header = require('../components/header.ls');
+  icons = require('../icons.js');
+  header = require('../components/header.js');
   mobile = function(arg$){
     var store, web3t, ref$, wallets, goUp, canUp, goDown, canDown, style, lang, row, leftSide, rightSide, headerStyle, iconStyle, input, headerLeft, borderRight, openAccount, editAccountName, defaultAccountName, editAccount, doneEdit, cancelEditAccountName, currentAccountName, accountName, rotateClass, viewAccountTemplate, editAccountTemplate, chosenAccountTemplate, walletDetail, children;
     store = arg$.store, web3t = arg$.web3t;
@@ -35,11 +35,11 @@
     };
     leftSide = {
       minWidth: "200px",
-      width: "25%",
+      width: "30%",
       background: style.app.leftSide + ""
     };
     rightSide = {
-      width: "75%",
+      width: "70%",
       borderLeft: "1px solid " + style.app.border
     };
     headerStyle = {
@@ -145,7 +145,7 @@
     }
     return react.createElement('div', {
       key: "wallets",
-      className: 'wallets-container wallets-container1186533268'
+      className: 'wallets-container wallets-container-378698936'
     }, children = [
       header(store, web3t), react.createElement('div', {
         style: row,

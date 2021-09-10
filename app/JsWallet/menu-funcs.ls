@@ -133,7 +133,7 @@ module.exports = (store, web3t)->
         val = event.target.value
         return if not val.match(/[0-9]+/)?
         val = parse-int val
-        val = 1 if val < 1 or val > 999999999
+        val = 0 if val < 0 or val > 999999999
         store.current.account-index = val
         change-account-index.timer = clear-timeout change-account-index.timer
         change-account-index.timer = set-timeout refresh, 2000
