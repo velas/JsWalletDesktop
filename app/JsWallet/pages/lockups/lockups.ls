@@ -16,7 +16,6 @@ require! {
     \../../round-human.ls
     \./request-stake.ls
     \./request-unstake.ls
-    \./txs-history.ls
     \./pools-list.ls
     \../../components/checkbox.ls
     \../../icons.ls
@@ -341,7 +340,6 @@ lockups-content = (store, web3t)->
                                     if store.lockups.chosen-lockup-action is \choose then 
                                         react.create-element 'div', {}, children = 
                                             button {store, classes: "width-auto", text: "Select default pool", no-icon:yes, on-click: choose-pool-from-list, style: {width: \auto}}
-                #txs-history { store, web3t }                  
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
                         react.create-element 'h3', {}, ' ' + lang.withdraw

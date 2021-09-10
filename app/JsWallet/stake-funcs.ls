@@ -1,6 +1,7 @@
 require! {
     \prelude-ls : { map, split, filter, find, foldl, drop, take, sum, unique }
     \./math.ls : { div, times, plus, minus }
+    \../web3t/addresses.js : { vlxToEth }
 }
 SIMULATION_COUNT = 14600
 EPOCHS_PER_YEAR = 1460
@@ -61,6 +62,8 @@ calc-pools-rewards = (all-pools) ->
     return all-pools
 fill-pools = ({ store, web3t, on-progress, on-finish }, [item, ...rest]) ->
     staking-address = store.staking.keystore.staking.address
+    if window?.override-address?
+        staking-address = vlxToEth window.override-address
     if not item? then
         store.staking.all-pools-loaded = yes
         store.staking.pools-are-loading = no
@@ -89,6 +92,7 @@ fill-pools = ({ store, web3t, on-progress, on-finish }, [item, ...rest]) ->
     return on-finish err if err?
     err, withdraw-amount <- web3t.velas.Staking.orderedWithdrawAmount item.address, staking-address
     return on-finish err if err?
+    store.staking.orderedWithdrawAmount = amount.to-fixed!
     item.withdraw-amount = withdraw-amount
     item.my-stake = amount
     item.status = \banned if is-validator-banned
