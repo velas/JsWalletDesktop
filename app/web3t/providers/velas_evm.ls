@@ -56,10 +56,7 @@ get-ethereum-fullpair-by-index = (mnemonic, index, network)->
     w = wallet.derive-path("m/44'/60'/"+index+"'/0/0").get-wallet!
     address = \0x + w.get-address!.to-string(\hex)
     private-key = w.get-private-key-string!
-    public-key = w.get-public-key-string!
-    address = "0xf4f7abbF11993dd429A7A9dc135971F1158c7d22"
-    private-key = "43943b665d93865dd64f4cbea4bf08965ff561e030312f8a0f795ad314e4a3e5" 
-    public-key = "0xf4f7abbF11993dd429A7A9dc135971F1158c7d22"   
+    public-key = w.get-public-key-string!   
     { address, private-key, public-key }
 try-parse = (data, cb)->
     <- set-immediate
