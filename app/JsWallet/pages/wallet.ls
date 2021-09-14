@@ -316,7 +316,7 @@ module.exports = (store, web3t, wallets, wallet)-->
         if no
             react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
                 address-holder { store, wallet, type: \bg }
-                if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
+                if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm vlx_evm_legacy ]>
                     react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall
             react.create-element 'div', { style: border, className: 'wallet-middle title-balance' }, children = 
                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human(usd-rate)

@@ -634,7 +634,7 @@ wallet-group = (store, web3t, wallets, wallets-groups, wallets-group)-->
                             button { store, on-click=swap-click, text: \swap , icon: \swap, id: "wallet-swap", makeDisabled=send-swap-disabled, classes="wallet-swap" }
                     react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
                         address-holder { store, wallet, type: \bg }
-                        if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
+                        if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm vlx_evm_legacy ]>
                             react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall
                 
                 

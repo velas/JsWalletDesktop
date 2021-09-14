@@ -7,13 +7,15 @@ gobyte = require \../web3t/plugins/gobyte-coin.ls
 common = (store)->
     vlx2 = require \../web3t/plugins/vlx2-coin.ls
     btc  = require \../web3t/plugins/btc-coin.ls
-    native  = require \../web3t/plugins/sol-coin.ls
+    vlx_native  = require \../web3t/plugins/sol-coin.ls
     eth  = require \../web3t/plugins/eth-coin.ls
     vlx_evm = require \../web3t/plugins/vlx-coin.ls
-    coins = [ native, vlx_evm, vlx2, btc, eth]
+    vlx_evm_legacy = require \../web3t/plugins/vlx-evm-legacy-coin.ls
+    coins = [ vlx_native, vlx_evm, vlx2, btc, eth, vlx_evm_legacy]
     if store.url-params.gbx?
         coins.push gobyte
     coins
+base-array = <[ vlx_native, vlx_evm, vlx2, btc, eth, vlx_evm_legacy]>
 export get-coins = (store, cb)->
     network = store.current.network
     base =
@@ -26,6 +28,7 @@ export get-coins = (store, cb)->
         items
             |> filter (.type is \coin)
             |> filter (.enabled isnt no)
+            |> filter (.token not in base-array)
             #|> sort-by (.wallet-index)
             #|> reverse
     all =  base ++ installed

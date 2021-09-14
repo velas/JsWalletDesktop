@@ -225,7 +225,14 @@ staking-accounts-content = (store, web3t)->
             store.staking.chosen-account = item
             navigate store, web3t, \poolchoosing
             cb null
+            
+        stake-data = item?account?data?parsed?info?stake
+            
         withdraw = ->
+            if stake-data? and stake-data?delegation?
+                {activationEpoch, deactivationEpoch} = stake-data.delegation
+                if (deactivationEpoch? and activationEpoch?) and +deactivationEpoch >= +store.staking.current-epoch
+                    return
             agree <- confirm store, lang.areYouSureToWithdraw
             return if agree is no
             { balanceRaw, rent, address, account } = item
@@ -237,12 +244,17 @@ staking-accounts-content = (store, web3t)->
             <- notify store, lang.fundsWithdrawn
             store.staking.getAccountsFromCashe = no
             navigate store, web3t, \validators
-        stake-data = item?account?data?parsed?info?stake
+        
         $button =
             | item.status is \inactive =>
                 button { store, text: lang.to_delegate, on-click: choose, type: \secondary , icon : \arrowRight }
             | (+deactivationEpoch isnt +max-epoch) and (+store.staking.current-epoch >= +deactivationEpoch) =>
-                button { store, text: lang.withdraw, on-click: withdraw, type: \secondary , icon : \arrowLeft }
+                if stake-data? and stake-data?delegation?
+                    {activationEpoch, deactivationEpoch} = stake-data.delegation
+                disabled = 
+                    | (deactivationEpoch? and activationEpoch?) and +deactivationEpoch >= +store.staking.current-epoch => yes
+                    | _ => no
+                button { store, text: lang.withdraw, on-click: withdraw, type: \secondary , icon : \arrowLeft, makeDisabled:disabled }
             | _ => 
                 disabled = item.status in <[ deactivating ]>
                 if stake-data? and stake-data.delegation?

@@ -11,7 +11,7 @@ require! {
     \../icons.ls
     \./menu.ls
 }
-# .menu1524712243
+# .menu-1720431039
 #     @import scheme
 #     width: 100%
 #     text-align: right
@@ -158,7 +158,7 @@ require! {
 #             @keyframes spin
 #                 from
 #                     transform: rotate(0deg)
-#                 to
+#                 to 
 #                     transform: rotate(360deg)
 #             animation-name: spin
 #             animation-duration: 4000ms
@@ -264,7 +264,7 @@ module.exports = (store, web3t)->
         left: "-57px"
     lang = get-lang store
     info = get-primary-info store
-    syncing =
+    syncing = 
         | store.current.refreshing => "syncing"
         | _ => ""
     border-style =
@@ -277,10 +277,10 @@ module.exports = (store, web3t)->
     langs-menu-body =
         border: "1px solid #{style.app.border}"
         background: style.app.header
-    lock-icon =
+    lock-icon = 
         width: "14px"
         filter: style.app.icon-filter
-    wallet-icon =
+    wallet-icon = 
         width: "18px"
         filter: style.app.icon-filter
     icon-node =
@@ -333,7 +333,7 @@ module.exports = (store, web3t)->
         web3t.use \mainnet
     goto-wallet = ->
         navigate store, web3t, \wallets
-    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu1524712243' }, children = 
+    react.create-element 'div', { style: border-style, on-mouse-leave: menu-out, className: 'menu side-menu menu-1720431039' }, children = 
         react.create-element 'div', { className: 'logo' }, children = 
             react.create-element 'img', { src: "#{info.branding.logo-sm}", style: logo-style, on-click: goto-wallet }
         #menu { store, web3t }
@@ -347,7 +347,7 @@ module.exports = (store, web3t)->
                     react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
             if store.preference.settings-visible is yes
                 react.create-element 'div', { on-click: open-submenu, style: icon-style, className: "#{staking + ' ' + menu-staking} menu-item" }, children = 
-                    react.create-element 'div', { style: background-menu, className: 'menu arrow_box menu1524712243' }, children = 
+                    react.create-element 'div', { style: background-menu, className: 'menu arrow_box menu-1720431039' }, children = 
                         react.create-element 'ul', {}, children = 
                             react.create-element 'li', { on-click: goto-staking, style: icon-style, className: "#{staking-active}" }, children = 
                                 react.create-element 'img', { src: "#{icons.node}", style: icon-node }
