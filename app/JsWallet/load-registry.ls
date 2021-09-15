@@ -26,5 +26,5 @@ require! {
     #\../web3t/plugins/vlx-evm-legacy-coin.ls : vlx_evm_legacy
 }
 module.exports = (cb) ->
-    def = [ eth, eth_legacy, usdt, syx, syx2, usdt_erc20, ltc, vlx_erc20, vlx_evm, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt, vlx_eth, usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy  ]
+    def = [ eth, eth_legacy, usdt, syx, syx2, usdt_erc20, ltc, vlx_erc20, vlx_evm, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt, vlx_eth, usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx  ]
     cb null, def

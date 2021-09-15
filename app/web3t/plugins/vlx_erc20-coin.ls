@@ -13,7 +13,7 @@ mainnet-config =
     ERC20BridgeToken: "0x8C543AED163909142695f2d2aCd0D55791a9Edb9",
     api:
         provider: \velas_erc20    
-        web3Provider: 'https://mainnet.infura.io/v3/009278d1b77a4af48536f1f772926648',
+        web3Provider: 'https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106',
         url: 'https://etherscan.io',
         apiUrl: 'https://api.etherscan.io/api'
     group: "Ethereum"

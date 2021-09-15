@@ -7,7 +7,7 @@ export mainnet =
         cheap: \0.002
     api:
         provider: \usdc
-        web3Provider : \https://mainnet.infura.io/v3/009278d1b77a4af48536f1f772926648
+        web3Provider : \https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
         url : \https://etherscan.io
         apiUrl : \https://api.etherscan.io/api
     group: 'Ethereum'
@@ -35,7 +35,7 @@ export testnet =
         cheap: \0.002
     api:
         provider: \usdc 
-        web3Provider : \https://ropsten.infura.io/v3/009278d1b77a4af48536f1f772926648
+        web3Provider : \https://ropsten.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106
         url : \https://ropsten.etherscan.io
         apiUrl : \https://api-ropsten.etherscan.io/api
         
