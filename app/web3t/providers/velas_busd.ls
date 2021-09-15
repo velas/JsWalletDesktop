@@ -221,7 +221,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     dec = get-dec network
     err, $recipient <- to-eth-address recipient
     return cb err if err?
-    return cb "address is not correct ethereum address" if not is-address $recipient
+    return cb "address is not correct BUSD address" if not is-address $recipient
     private-key = new Buffer account.private-key.replace(/^0x/,''), \hex
     err, nonce <- get-nonce { account, network }
     return cb err if err?

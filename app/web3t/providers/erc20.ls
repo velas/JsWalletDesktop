@@ -132,9 +132,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     return cb "Balance is not enough to send this amount" if +erc-balance < +amount
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
-    gas-estimate = 
-        | data? and data isnt "0x" => 200000
-        | _ => 150000 
+    gas-estimate = 300000 
     #console.log "gas-estimate" gas-estimate    
     $data =
         | data? and data isnt "0x" => data    

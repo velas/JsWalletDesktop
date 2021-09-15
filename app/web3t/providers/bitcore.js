@@ -106,7 +106,7 @@
       if (toString$.call(data.rawTx).slice(8, -1) !== 'String') {
         return cb("raw-tx is expected");
       }
-      bytes = div(new bignumber(data.rawTx.length), 1);
+      bytes = data.rawTx.length / 2;
       infelicity = 1;
       return get(getApiUrl(network) + "/fee/6").timeout({
         deadline: deadline
@@ -123,8 +123,8 @@
             return vals[0];
           }
         }());
-        feePerByte = div(calcedFeePerKb, new bignumber(1000));
-        calcFee = times(plus(bytes, infelicity), feePerByte);
+        feePerByte = div(calcedFeePerKb, 2000);
+        calcFee = times(bytes + infelicity, feePerByte);
         calcFee = new bignumber(calcFee).toFixed(network.decimals);
         finalPrice = (function(){
           switch (false) {
@@ -612,12 +612,15 @@
       try {
         json = JSON.parse(data.text);
         dec = getDec(network);
-        num = div(json.confirmed, dec);
+        num = div(json.balance, dec);
         return cb(null, num);
       } catch (e$) {
         e = e$;
         return cb(e.message);
       }
+      dec = getDec(network);
+      num = div(data.text, dec);
+      return cb(null, num);
     });
   };
   transformIn = function(arg$, t){
