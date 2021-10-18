@@ -54,14 +54,18 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         return cb err if err?
     usd-rate = wallet?usd-rate ? ".."
     uninstall = (e)->
+        store.loading-wallet = yes
         e.stop-propagation!
         wallet-index =
             store.current.account.wallets.index-of(wallet) 
         group-index = store.current.group-index
-        return if wallet-index is -1 or group-index is -1
+        if wallet-index is -1 or group-index is -1
+            store.loading-wallet = no
+            return 
         store.current.account.wallets.splice wallet-index, 1
-        <- web3t.uninstall wallet.coin.token
-        <- web3t.refresh
+        err <- web3t.uninstall wallet.coin.token
+        #<- web3t.refresh
+        store.loading-wallet = no
         store.current.wallet-index = 0
         store.current.group-index = 0
     expand = (e)->

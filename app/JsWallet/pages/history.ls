@@ -5,7 +5,6 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \./icon.ls
-    \./loading.ls
     \react-copy-to-clipboard : { CopyToClipboard }
     \../copied-inform.ls
     \../copy.ls
@@ -1005,6 +1004,8 @@ module.exports = ({ store, web3t })->
                     |> take 30 
                     |> map render-transaction store, web3t
             if length is 0 and store.current.transactions-are-loading isnt yes
+                text-style = 
+                    opacity: 0.3
                 react.create-element 'div', { style: menu-style, className: 'nothin-to-show' }, children = 
                     react.create-element 'img', { style: nothing-icon, src: "#{icons.search-history}" }
-                    react.create-element 'div', { className: 'head' }, ' ' + lang.nothing-to-show
+                    react.create-element 'div', { style: text-style, className: 'head' }, ' ' + lang.nothing-to-show

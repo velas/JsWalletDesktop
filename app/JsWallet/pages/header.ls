@@ -5,7 +5,6 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \./icon.ls
-    \./loading.ls
     \../navigate.ls
     \../setup-pages.ls
     \../icons.ls

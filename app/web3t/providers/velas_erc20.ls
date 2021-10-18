@@ -105,9 +105,9 @@ export get-transaction-info = (config, cb)->
 get-gas-estimate = ({ network, query, gas, swap }, cb)->
     if ((network?api?web3Provider ? "").indexOf("ropsten") is -1)
         gas = 
-            | swap is yes => 200000 
+            | swap is yes => 300000 
             | _ => 200000 
-    return cb null, 200000   
+    return cb null, 300000   
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
     return cb null, 200000 if err?
     estimate-normal = from-hex(estimate)

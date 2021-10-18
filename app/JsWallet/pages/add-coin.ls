@@ -185,7 +185,7 @@ create-item = ({ store, web3t }, item)-->
         background: style.app.input
     menu-style=
         color: style.app.text
-    react.create-element 'div', { style: background, className: 'item' }, children = 
+    react.create-element 'div', { style: background,, id: "add-token-#{title}", className: 'item' }, children = 
         react.create-element 'img', { src: "#{item.image}" }
         react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
         react.create-element 'button', { on-click: add, style: button-style }, children = 
@@ -296,7 +296,7 @@ module.exports = ({ store, web3t } )->
             | _ => ''
         wallets = item.1
         
-        react.create-element 'div', { className: 'wallet-group' }, children = 
+        react.create-element 'div', { id: "wallet-group-add-#{group-name}", className: 'wallet-group' }, children = 
             react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network         '
             wallets |> map create-item { store, web3t }  
     

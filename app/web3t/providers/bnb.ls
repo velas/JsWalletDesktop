@@ -212,13 +212,12 @@ get-dec = (network)->
     10^decimals
 calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     return cb null, gas-price if gas-price?
-    return cb null, 22000 if fee-type is \cheap
-    #err, price <- web3.eth.get-gas-price
+    return cb null, 21000 if fee-type is \cheap
     err, price <- make-query network, \eth_gasPrice , []
-    return cb "calc gas price - err: #{err.message ? err}" if err?
+    console.log "BNB [calc-gas-price] error: #{err.message ? err}" if err?
+    return cb null, 21000 if err?   
     price = from-hex(price)
-    #console.log \price, price
-    return cb null, 22000 if +price < 22000
+    return cb null, 21000 if +price < 21000
     cb null, price
 try-get-latest = ({ network, account }, cb)->
     err, address <- to-eth-address account.address

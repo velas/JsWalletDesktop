@@ -269,6 +269,7 @@ mobile = ({ store, web3t })->
 
     wallets-groups =
         ^^wallets
+            |> filter (?)
             |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
             |> group-by (.network.group)
 
@@ -279,9 +280,10 @@ mobile = ({ store, web3t })->
             |> obj-to-pairs
             |> map (.1)
     group-wallets = groups-wallets[group-index]
-    return null if not group-wallets?
+    #return null if not group-wallets?
+    group-wallets = [] if not group-wallets?
     wallet-detail = group-wallets |> find (-> group-wallets.index-of(it) is store.current.wallet-index)
-    return null if not wallet-detail?
+    #return null if not wallet-detail?
 
     react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container-378698936' }, children = 
         header store, web3t
@@ -301,6 +303,7 @@ mobile = ({ store, web3t })->
                             your-account store, web3t
                     react.create-element 'div', { key: "wallets-viewport", className: 'wallet-container' }, children = 
                         wallets
+                            |> filter (?)
                             |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
                             |> group-by (.network.group)
                             |> obj-to-pairs

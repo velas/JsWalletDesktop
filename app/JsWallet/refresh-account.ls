@@ -47,6 +47,7 @@ export background-refresh-account = (web3, store, cb)->
             | store.current?filter?token? => 
                 bg-store.current.account.wallets |> findIndex (-> it.coin.token is store.current?filter?token)
             | _ => store.current.wallet-index 
+        wallet-index = 0 if not wallet-index?
         wallet = bg-store.current.account.wallets[wallet-index]
         return if not wallet?
         store.rates = bg-store.rates

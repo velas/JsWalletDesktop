@@ -7,6 +7,7 @@ require! {
     \../icons.ls
     \../navigate.ls
     \../components/burger.ls
+    \../seed.ls : seedmem
 }
 # .wallets1622211621
 #     @import scheme
@@ -118,7 +119,7 @@ build-version = (store, release)-->
     console.log "#{release.name}.md5"
     md5-file =
         store.releases |> find (-> it.name is "#{release.name}.md5")
-    react.create-element 'div', { style: resource, className: 'platform' }, children = 
+    react.create-element 'div', { style: resource, id: "platform-#{name}", className: 'platform' }, children = 
         react.create-element 'img', { src: "#{icon}", className: 'title-icons' }
         react.create-element 'div', { className: 'title' }, ' ' + name
         react.create-element 'div', { className: 'tag_name' }, ' ' + release.tag_name
@@ -142,7 +143,9 @@ header = (store, web3t)->
         background: info.app.background
         background-color: info.app.bgspare
     lock = ->
-        navigate store, web3t, \locked
+        saved-seed = seedmem.saved!
+        prev-page = if saved-seed then \locked else \chooseinit
+        navigate store, web3t, prev-page
     react.create-element 'div', { style: border-style, className: 'title' }, children = 
         react.create-element 'div', { className: 'header' }, ' Install Wallets'
         react.create-element 'div', { on-click: lock, className: 'close' }, children = 

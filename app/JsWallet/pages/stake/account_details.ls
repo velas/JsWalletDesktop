@@ -36,6 +36,7 @@ require! {
     \../../components/burger.ls
     \./error-funcs.ls : { get-error-message }
     \./rewards-stats.ls : RewardsStats
+    \moment
 }
 # .staking1828099731
 #     @import scheme
@@ -945,12 +946,36 @@ staking-content = (store, web3t)->
         | _ => store.staking.chosenAccount.status
     inactiveStakeLabel =
         | store.staking.chosenAccount.status is "activating" => lang.warminUp
-        | _ => lang.inactiveStake   
+        | _ => lang.inactiveStake 
+    is-locked = store.staking.chosenAccount.account?data?parsed?info?meta?lockup? and store.staking.chosenAccount.account?data?parsed?info?meta?lockup.unixTimestamp > moment!.unix!    
+    { unixTimestamp, epoch, custodian } = store.staking.chosenAccount.account?data?parsed?info?meta?lockup 
+    date-expires =
+        | is-locked is yes => moment.unix(unixTimestamp).format("MMMM D, YYYY"); 
+        | _ => ""
+    time-expires =
+        | is-locked is yes => moment.unix(unixTimestamp).format("hh:mm:ss"); 
+        | _ => ""  
+        
+    lockup-warning-style = 
+        padding: "20px"
+        background: "rgb(207, 149, 44)"
+        font-weight: "bold"
+        text-align: "center"
+        max-width: "500px"
+          
+    /* Render */    
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
                     react.create-element 'h2', {}, ' ' + lang.stakeAccount
+                if is-locked is yes
+                    react.create-element 'div', { className: 'description' }, children = 
+                        react.create-element 'div', { style: lockup-warning-style, className: 'locked-warning-table' }, children = 
+                            react.create-element 'span', {}, ' Account is locked! Lockup expires on '
+                                """ #{date-expires}"""
+                                """ at"""
+                                """ #{time-expires}"""
             react.create-element 'div', { className: 'section' }, children = 
                 react.create-element 'div', { className: 'title' }, children = 
                     react.create-element 'h3', {}, ' ' + lang.address
@@ -1067,7 +1092,8 @@ staking-content = (store, web3t)->
                         if (store.staking.chosenAccount.status is "inactive") 
                             react.create-element 'div', {}, children = 
                                 button { store, on-click: delegate , type: \secondary , text: lang.to_delegate, icon : \arrowRight }
-                                button { store, on-click: withdraw , type: \secondary , text: lang.withdraw, icon : \arrowLeft }
+                                if is-locked is no
+                                    button { store, on-click: withdraw , type: \secondary , text: lang.withdraw, icon : \arrowLeft }
                         else if store.staking.chosenAccount.status isnt \deactivating then
                             button { store, on-click: undelegate , type: \secondary , text: lang.to_undelegate, icon : \arrowLeft, classes: "action-undelegate" }
                         button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }

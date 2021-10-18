@@ -18879,7 +18879,8 @@ var solanaWeb3 = (function (exports) {
           account: {
             executable: result.account.executable,
             owner: new PublicKey(result.account.owner),
-            lamports: result.account.lamports,
+            // LamportsStr more precise!
+            lamports: result.account.lamportsStr || result.account.lamports,
             data
           }
         };

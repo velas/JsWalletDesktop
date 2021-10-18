@@ -6,6 +6,8 @@ require! {
     \../pages/switch-account.ls
     \../navigate.ls
     \../pages/add-wallet.ls
+    \../apply-transactions.ls
+    \prelude-ls : { map, find, filter, group-by, keys, obj-to-pairs }
 }
 # .header1840047076
 #     @import scheme
@@ -124,8 +126,32 @@ module.exports = (store, web3t)->
         if store.menu.show then \show else \ ""
     show = ->
         store.menu.show = not store.menu.show
+    
     search-on-change = (event) ->
         store.current.search = event.target.value
+        wallets-groups =
+            store.current.account.wallets
+                |> filter (?)
+                |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
+                |> group-by (.network.group)
+        groups = wallets-groups |> keys
+        group-index = store.current.group-index
+        groups-wallets =
+            wallets-groups
+                |> obj-to-pairs
+                |> map (.1)
+        group-wallets = groups-wallets[group-index]
+        #return null if not group-wallets?
+        group-wallets = [] if not group-wallets?
+        wallet = group-wallets |> find (-> group-wallets.index-of(it) is store.current.wallet-index)
+        if not wallet?
+            store.current.group-index = 0
+            store.current.wallet-index = 0
+     
+        store.current.filter.token = 
+            | wallet? => wallet.coin.token
+            | _ => ""
+        apply-transactions store 
     react.create-element 'div', { style: header, className: 'header header1840047076' }, children = 
         react.create-element 'div', { className: 'left-side' }, children = 
             react.create-element 'button', { style: button-add, on-click: show, id: "menu-hamb-tablet", className: "#{show-class} button menu" }, children = 

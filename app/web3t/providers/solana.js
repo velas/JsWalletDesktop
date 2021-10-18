@@ -476,7 +476,6 @@
         sender = '';
         receiver = '';
         hash = '';
-        senderIndex = '';
         amount = 0;
         ref$ = txData.meta, fee = ref$.fee, err = ref$.err, status = ref$.status;
         transaction = txData.transaction;
@@ -509,8 +508,8 @@
           }
           if (type === "withdraw") {
             sender = (ref2$ = instructions[0].parsed.info.stakeAccount) != null
-                ? ref2$
-                : instructions[0].parsed.info.stakeAccount;
+              ? ref2$
+              : instructions[0].parsed.info.stakeAccount;
             receiver = instructions[0].parsed.info.withdrawAuthority;
             amount = instructions[0].parsed.info.lamports;
             hash = transaction.signatures[0];

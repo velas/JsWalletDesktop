@@ -32,6 +32,8 @@ create-send =->
     amount-send-fee-usd: \0
     amount-obtain: \0
     data: ""
+    gas: null
+    gas-price: null    
     homeFee: 0
     homeFeePercent: 0
     is-swap: no 
@@ -52,6 +54,7 @@ url-hash-params =
     | window? => qs.parse window.location.hash.replace('#', '')
     | _ => {}
 store =
+    loading-wallet: no  
     inputCaretPosition: 0  
     url-params: url-params
     url-hash-params: url-hash-params
@@ -159,6 +162,8 @@ store =
         totalValidators: 0
         loadingValidatorIndex: 0
         get-accounts-last-time: null
+        cachedValidatorsNetwork: null
+        cachedAccountsNetwork: null
         cachedAccounts: null
         cachedValidators: null
         getAccountsFromCashe: yes
@@ -242,17 +247,20 @@ store =
         applied: []
     releases: []
     current:
+        switch-network: no  
         current-network-details: 
             show: no    
         network-details:
             show: no
-            dailyLimit: 0  
+            dailyLimit: 0
+            remainingDailyLimit: 0  
             homeFeePercent: 0  
             minPerTx: 0    
             maxPerTx: 0
         foreign-network-details:
             show: no 
-            dailyLimit: 0  
+            dailyLimit: 0
+            remainingDailyLimit: 0  
             homeFeePercent: 0  
             minPerTx: 0    
             maxPerTx: 0 

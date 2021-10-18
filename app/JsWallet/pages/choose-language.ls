@@ -323,11 +323,11 @@ language = (store, web3t)->
                         react.create-element 'img', { src: "#{icons.langs-vn}" }
                         react.create-element 'div', {}, ' Tiếng Việt'
             react.create-element 'div', { className: 'downloadwalletlist' }, children = 
-                react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank" }, children = 
+                react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank", id: "download-ios" }, children = 
                     react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
-                react.create-element 'a', { href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet", target: "_blank" }, children = 
+                react.create-element 'a', { href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet", target: "_blank", id: "download-android" }, children = 
                     react.create-element 'img', { src: "#{icons[\android]}", className: 'icon-download' }
-                react.create-element 'span', {}, children = 
+                react.create-element 'span', { id: "download-desktop" }, children = 
                     react.create-element 'img', { on-click: download, src: "#{icons[\desktop]}", className: 'icon-download' }
 module.exports = ({ store, web3t } )->
     return null if store.current.choose-language isnt yes

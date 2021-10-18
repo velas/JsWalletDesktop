@@ -266,7 +266,7 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         | _ => ''
     wallets = wallets-group.1
 
-    react.create-element 'div', { className: 'wallet-group wallet-group-849406194' }, children = 
+    react.create-element 'div', { id: "wallet-group-switch-#{(group-name)}", className: 'wallet-group wallet-group-849406194' }, children = 
         react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network'
 
         wallets |> map (wallet)->
@@ -286,7 +286,7 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
             send-swap-disabled = wallet-is-disabled or is-loading
 
             /* Render */
-            react.create-element 'div', { key: "#{token}", style: border-style, className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
+            react.create-element 'div', { key: "#{token}", style: border-style, id: "token-#{token}", className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
                 react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
                     react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                         react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 

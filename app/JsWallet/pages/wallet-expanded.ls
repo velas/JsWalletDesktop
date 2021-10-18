@@ -14,8 +14,9 @@ require! {
     \../components/button.ls
     \../components/address-holder.ls
     \./wallet-stats.ls
+    \./loading.ls
 }
-# .wallet-detailed-1057132066
+# .wallet-detailed1433559501
 #     @import scheme
 #     height: 240px
 #     box-sizing: border-box
@@ -37,6 +38,8 @@ require! {
 #                     margin-left: 0 !important
 #             .wallet-swap img
 #                 filter: invert(1)
+#         &.left
+#             text-align: center
 #         &.left
 #             text-align: left
 #             @media screen and (max-width: $tablet)
@@ -156,23 +159,36 @@ require! {
 #                 width: inherit
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
-    return null if not wallets? or not wallet?
-    wallets-groups =
-        (wallets ? [])
-            |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
-            |> group-by (.network.group)
-            |> keys
-
-    group-name = wallet.network.group
-
-    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet, wallets-groups, group-name
-    lang = get-lang store
     style = get-primary-info store
+    wallet-style=
+        color: style.app.text3
+    if (not wallets? or not wallet?)
+        no-result-text = 
+            font-size: "25px"
+            text-transform: "initial"
+            color: "white"
+        msg-txt-style = 
+            font-size: "20px"
+            color: "white"
+            opacity: 0.3
+        return 
+            react.create-element 'div', { key: "no-details", style: wallet-style, className: 'wallet-detailed wallet-detailed1433559501' }, children = 
+                react.create-element 'div', { style: text, className: 'wallet-part center' }, children = 
+                    react.create-element 'div', { className: 'wallet-header' }, children = 
+                        react.create-element 'div', {}, children = 
+                            if store.loading-wallet is yes
+                                loading(store.loading-wallet)
+                            else
+                                react.create-element 'h3', { style: msg-txt-style, className: 'text-message' }, ' No wallet found   '
+                          
+
+    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
+    lang = get-lang store
+    
     label-uninstall =
         | store.current.refreshing => \...
         | _ => "#{lang.hide}"
-    wallet-style=
-        color: style.app.text3
+    
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
@@ -229,7 +245,7 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed-1057132066' }, children = 
+    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed1433559501' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
                 react.create-element 'div', { className: 'wallet-header-part right' }, children = 

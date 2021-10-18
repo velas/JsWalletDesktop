@@ -530,26 +530,26 @@ manage-account = (store, web3t)->
     input-style2 = { ...input-style, width: "85px" }
     button-style2 = { ...button-primary2-style, width: "20px" }
     react.create-element 'div', {}, children = 
-        react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { id: "section-change-language", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.language
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 react.create-element 'span', {}, ' ' + lang.languageWebWallet
                 react.create-element 'span', {}, ' - ' + lang.language-type
-            react.create-element 'div', { className: 'content' }, children = 
+            react.create-element 'div', { id: "switch-language", className: 'content' }, children = 
                 switch-language store, web3t
-        react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { id: "section-switch-account-index", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.switch-account-index
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 react.create-element 'span', {}, ' ' + lang.switch-account-info 
             react.create-element 'div', { className: 'content' }, children = 
                 switch-account store, web3t
-        react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { id: "section-export-private-key", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.export-private-key
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 react.create-element 'span', {}, ' ' + lang.export-private-key-warning + '.'
             react.create-element 'div', { className: 'content' }, children = 
-                button { store, text: \showSecret , on-click: export-private-key, icon: \show, type: \secondary }
-        react.create-element 'div', { className: 'section' }, children = 
+                button { store, text: \showSecret , on-click: export-private-key, icon: \show, type: \secondary id: "btn-copy" }
+        react.create-element 'div', { id: "section-switch-network", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.network
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 if store.current.network is \testnet
@@ -560,13 +560,13 @@ manage-account = (store, web3t)->
                     react.create-element 'span', {}, ' ' + lang.network-description
             react.create-element 'div', { className: 'content' }, children = 
                 switch-network store, web3t
-        react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { id: "section-themes", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, ' ' + lang.themes
             react.create-element 'div', { style: color, className: 'description' }, children = 
                 react.create-element 'span', {}, ' ' + lang.themes-description
             react.create-element 'div', { className: 'content' }, children = 
                 choose-themes store, web3t
-        react.create-element 'div', { className: 'section' }, children = 
+        react.create-element 'div', { id: "section-build-info", className: 'section' }, children = 
             react.create-element 'div', { style: color, className: 'title' }, children = 
                 react.create-element 'div', { className: 'logo' }, children = 
                     react.create-element 'img', { src: "#{style.branding.logo}", style: logo-style }

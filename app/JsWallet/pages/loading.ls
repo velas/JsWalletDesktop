@@ -2,25 +2,20 @@ require! {
     \react
     \../get-lang.ls
 }
-# .loading-page-1026404408
+# .loading-page-1437163893
 #     @import scheme
 #     $gradient: $primary - 20
 #     text-align: center
 #     overflow: hidden
+#     min-height: 100px
 #     height: 100%
 #     $base-line-height: 34px
 #     $white: #7153e8
 #     $off-white: rgba($white, 0.2)
 #     $spin-duration: 1s
 #     $pulse-duration: 750ms
-#     @keyframes spin 
-#         0% 
-#             transform: rotate(0deg)
-#         100% 
-#             transform: rotate(360deg)
-#     @keyframes pulse 
-#         50%  
-#             background: $white;
+#     z-index: 1
+#     background: transparent
 #     .loading-pulse
 #         position: absolute
 #         top: calc(50% - 32px)
@@ -30,7 +25,7 @@ require! {
 #         background: $off-white
 #         animation: pulse $pulse-duration infinite
 #         animation-delay: ($pulse-duration / 3)
-#         &:before, &:after 
+#         &:before, &:after
 #             content: ''
 #             position: absolute
 #             display: block
@@ -45,83 +40,11 @@ require! {
 #         &:after
 #             left: ($base-line-height / 2)
 #             animation-delay: ($pulse-duration / 1.5)
-#     .loader-ios
-#         position: absolute
-#         top: 50%
-#         left: 50%
-#         display: inline-block
-#         vertical-align: middle
-#         -webkit-animation: iosIntro 0.6s
-#         animation: iosIntro 0.6s
-#         svg
-#             fill: #c5c5c5
-#             path
-#                 &:nth-of-type(1)
-#                     -webkit-animation: pulsed 1s infinite linear
-#                     animation: pulsed 1s infinite linear
-#                 &:nth-of-type(2)
-#                     -webkit-animation: pulsed 1s -0.083s infinite linear
-#                     animation: pulsed 1s -0.083s infinite linear
-#                 &:nth-of-type(3)
-#                     -webkit-animation: pulsed 1s -0.166s infinite linear
-#                     animation: pulsed 1s -0.166s infinite linear
-#                 &:nth-of-type(4)
-#                     -webkit-animation: pulsed 1s -0.249s infinite linear
-#                     animation: pulsed 1s -0.249s infinite linear
-#                 &:nth-of-type(5)
-#                     -webkit-animation: pulsed 1s -0.332s infinite linear
-#                     animation: pulsed 1s -0.332s infinite linear
-#                 &:nth-of-type(6)
-#                     -webkit-animation: pulsed 1s -0.415s infinite linear
-#                     animation: pulsed 1s -0.415s infinite linear
-#                 &:nth-of-type(7)
-#                     -webkit-animation: pulsed 1s -0.498s infinite linear
-#                     animation: pulsed 1s -0.498s infinite linear
-#                 &:nth-of-type(8)
-#                     -webkit-animation: pulsed 1s -0.581s infinite linear
-#                     animation: pulsed 1s -0.581s infinite linear
-#                 &:nth-of-type(9)
-#                     -webkit-animation: pulsed 1s -0.664s infinite linear
-#                     animation: pulsed 1s -0.664s infinite linear
-#                 &:nth-of-type(10)
-#                     -webkit-animation: pulsed 1s -0.747s infinite linear
-#                     animation: pulsed 1s -0.747s infinite linear
-#                 &:nth-of-type(11)
-#                     -webkit-animation: pulsed 1s -0.83s infinite linear
-#                     animation: pulsed 1s -0.83s infinite linear
-#                 &:nth-of-type(12)
-#                     -webkit-animation: pulsed 1s -0.913s infinite linear
-#                     animation: pulsed 1s -0.913s infinite linear
-#     @-webkit-keyframes pulsed
-#         50%
-#             fill: #868686
-#         to
-#             fill: rgba(134, 134, 134, 0.4)
-#     @keyframes pulsed
-#         50%
-#             fill: #868686
-#         to
-#             fill: rgba(134, 134, 134, 0.4)
-#     @-webkit-keyframes iosIntro
-#         from
-#             -webkit-transform: scale(1)
-#             transform: scale(1)
-#             opacity: 1
-#         to
-#             -webkit-transform: scale(1)
-#             transform: scale(1)
-#             opacity: 1
-#     @keyframes iosIntro
-#         from
-#             -webkit-transform: scale(1)
-#             transform: scale(1)
-#             opacity: 1
-#         to
-#             -webkit-transform: scale(1)
-#             transform: scale(1)
-#             opacity: 1
-module.exports = (add-class)->
-    react.create-element 'div', { key: "loading", className: 'loading-page loading-page-1026404408' }, children = 
+    
+    
+module.exports = (isLoading)->
+    return null if not isLoading
+    react.create-element 'div', { key: "loading", className: 'loading-page loading-page-1437163893' }, children = 
         react.create-element 'div', { className: 'loading-pulse' }
         if no
             react.create-element 'div', { className: 'loader-ios' }, children = 

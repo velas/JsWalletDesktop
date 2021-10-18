@@ -1,7 +1,8 @@
 require! {
-    \prelude-ls : { filter, sort-by, reverse }
-    \./install-plugin.ls : { get-install-list }
+    \prelude-ls : { filter, sort-by, reverse, map }
+    \./install-plugin.ls : { get-install-list, install-plugin }
     \./browser/window.ls
+    \localStorage
 }
 gobyte = require \../web3t/plugins/gobyte-coin.ls
 common = (store)->
@@ -10,12 +11,48 @@ common = (store)->
     vlx_native  = require \../web3t/plugins/sol-coin.ls
     eth  = require \../web3t/plugins/eth-coin.ls
     vlx_evm = require \../web3t/plugins/vlx-coin.ls
-    vlx_evm_legacy = require \../web3t/plugins/vlx-evm-legacy-coin.ls
-    coins = [ vlx_native, vlx_evm, vlx2, btc, eth, vlx_evm_legacy]
+    #vlx_evm_legacy = require \../web3t/plugins/vlx-evm-legacy-coin.ls
+    coins = [ vlx_native, vlx_evm, vlx2, btc, eth ]    
     if store.url-params.gbx?
         coins.push gobyte
     coins
-base-array = <[ vlx_native, vlx_evm, vlx2, btc, eth, vlx_evm_legacy]>
+    
+base-array = <[ vlx_native vlx_evm vlx2 btc eth ]>
+
+legacy-tokens = 
+    * require \../web3t/plugins/eth-legacy-coin.ls
+    * require \../web3t/plugins/usdt_erc20_legacy-coin.json
+    * require \../web3t/plugins/vlx-evm-legacy-coin.ls
+    * require \../web3t/plugins/vlx2-coin.ls 
+    
+legacy-arr = <[ vlx2 vlx_evm_legacy usdt_erc20_legacy eth_legacy ]>
+     
+
+legacy-is-hidden = (name)->
+    name = name ? ""
+    res = (local-storage.get-item "plugin-" + name)
+    res? and res is "" 
+    
+check-and-install = ([plugin, ...rest], cb)->
+    return cb null if not plugin?
+    err <- install-plugin(plugin)
+    console.error if err?
+    check-and-install(rest, cb)  
+
+decide-to-show-or-ignore-legacy-tokens = (store, items, cb)->
+    installed-items = items |> map (.token)
+    /* Check if legacy tokens were installed or legacy tokens were not hidden by user, so do not make balance check for them */
+    leg-tokens =
+        legacy-tokens 
+            |> filter (?token not in installed-items)
+            |> filter (?token not in base-array)
+            |> filter (it)-> not legacy-is-hidden(it.token) 
+    /* Check not installed tokens and install them */
+    err <- check-and-install(leg-tokens)
+    return cb err if err?
+          
+    cb null 
+
 export get-coins = (store, cb)->
     network = store.current.network
     base =
@@ -24,6 +61,11 @@ export get-coins = (store, cb)->
             |> filter (-> it[network]? and (it.type is \coin) and (it.enabled is yes) and (not (it[network]?disabled is yes)))
     err, items <- get-install-list
     return cb err if err?
+    
+    /* here we need to check legacy tokens if it is first load */
+    err, res <- decide-to-show-or-ignore-legacy-tokens(store, items)  
+    return cb err if err?
+    
     installed =
         items
             |> filter (.type is \coin)

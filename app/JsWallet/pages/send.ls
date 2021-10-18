@@ -29,7 +29,7 @@ require! {
     "../../web3t/contracts/HomeBridgeNativeToErc.json" : \HomeBridgeNativeToErc    
     "../../web3t/contracts/ForeignBridgeNativeToErc.json" : \ForeignBridgeNativeToErc
 }
-# .content-2039570494
+# .content1976402979
 #     position: relative
 #     @import scheme
 #     $border-radius: var(--border-btn)
@@ -66,7 +66,7 @@ require! {
 #         font-size: 22px
 #         padding: 10px
 #         height: 60px
-#         z-index: 2
+#         z-index: 3
 #         @media(max-width:800px)
 #             left: 0
 #         >.header
@@ -196,6 +196,7 @@ require! {
 #                             left: 0
 #                         &.right
 #                             right: 0
+#                             top: 3px
 #                         svg
 #                             vertical-align: inherit !important
 #                 margin-top: 4px
@@ -512,22 +513,30 @@ send = ({ store, web3t })->
     title = if store.current.send.is-swap isnt yes then \send else \swap
     homeFeePercent = send.homeFeePercent `times` 100
     
+    is-not-bridge = ->
+        { token } = store.current.send.wallet.coin  
+        { chosen-network } = store.current.send
+        chosen-network.refer-to in <[ vlx_evm vlx2 vlx_native ]> and token in <[ vlx_evm vlx2 vlx_native ]> 
     
     is-swap-pair = ({from, to})->
         { chosen-network, coin, wallet } = store.current.send
         token = coin.token
         token is from and chosen-network.refer-to is to
     
-    network-on-change = ->
+    network-on-change = (cb)->
         err <- getBridgeInfo!
-        return store.current.send.error = err if err?
+        if err?
+            store.current.send.error = err 
+            return cb err     
         err <- execute-contract-data!
-        return store.current.send.error = err if err?
-        
+        if err?
+            store.current.send.error = err
+            return cb err 
+        cb null
        
     
     /* Render */
-    react.create-element 'div', { className: 'content content-2039570494' }, children = 
+    react.create-element 'div', { className: 'content content1976402979' }, children = 
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
             react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
@@ -628,7 +637,7 @@ send = ({ store, web3t })->
                     button { store, text: "#{title}" , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
                 if store.current.send.is-swap is yes
-                    if not (is-swap-pair({from: \vlx_evm, to: \vlx_native}) or is-swap-pair({from: \vlx_native, to: \vlx_evm}) or is-swap-pair({from: \vlx2, to: \vlx_evm}) or is-swap-pair({from: \vlx_evm, to: \vlx2}) )
+                    if not is-not-bridge!
                         react.create-element 'div', { className: 'swap-notification' }, children = 
                             react.create-element 'p', {}, ' ' + lang.swapNotification
 

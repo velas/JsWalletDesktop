@@ -35,7 +35,7 @@ plugin-pairs = {
     busd: \bnb
     vlx_erc20: \eth 
     vlx_usdc: \usdc   
-     
+    bsc_vlx: \bnb 
 }    
 required-fields = <[ type token enabled ]>
 not-in = (arr, arr2)->
@@ -106,7 +106,7 @@ install-all-plugins = ([plugin, ...rest], cb)->
     return cb err if err?
     cb null   
       
-install-plugin = (plugin, cb)->
+export install-plugin = (plugin, cb)->
     err <- verify-plugin plugin
     return cb err if err?
     plugin.can-uninstall = yes

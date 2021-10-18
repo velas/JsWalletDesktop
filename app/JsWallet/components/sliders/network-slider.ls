@@ -11,7 +11,96 @@ require! {
     \../../send-funcs.ls   
     \../../pages/confirmation.ls : { network-details-modal }  
 }
-# .network-slider243580078
+# .network-slider-1989415310
+#     .switch-menu
+#         position: absolute !important
+#         right: -1px
+#         top: 45px
+#         width: 100%
+#         display: inline-grid
+#         z-index: 3
+#         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
+#         border-radius: 0 0 var(--border-btn) var(--border-btn)
+#         .folder-menu
+#             width: 100%
+#             div
+#                 text-overflow: ellipsis
+#                 white-space: nowrap
+#                 overflow: hidden
+#                 font-size: 12px
+#                 text-transform: uppercase
+#                 letter-spacing: 2px
+#         .col
+#             font-size: 12px
+#             padding: 10px
+#             margin: 0
+#             display: inline-block
+#             vertical-align: top
+#             box-sizing: border-box
+#             overflow-y: hidden
+#             &.folder-menu
+#                 text-align: left
+#                 display: inline-flex
+#                 span
+#                     margin-right: 10px
+#         .table-row-menu
+#             text-align: left
+#             &.disabled
+#                 opacity: 0.4
+#                 cursor: not-allowed
+#             &:hover
+#                 cursor: pointer
+#                 background: var(--bg-primary-light)
+#             &.active
+#                 background: var(--bg-primary-light)
+#         .middle
+#             padding: 11px 10px
+#             height: 37px
+#             &.account
+#                 padding: 10px
+#                 min-height: 155px
+#                 overflow: scroll
+#                 background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+#                 background-repeat: no-repeat
+#                 background-attachment: local, local, scroll, scroll
+#                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 animation: breathe 3s ease-in infinite
+#                 -moz-transition: breathe 3s ease-in infinite
+#                 -web-kit-transition: breathe 3s ease-in infinite
+#             @keyframes breathe
+#                 0%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 15%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 30%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 45%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 60%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 75%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 90%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 100%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#             @-webkit-keyframes breathe
+#                 0%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+#                 15%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 30%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 45%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 60%
+#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+#                 75%
+#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+#                 90%
+#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+#                 100%
+#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
 #     @keyframes animate-arrow-1  
 #         0%
 #             transform: translateX(-40px)
@@ -64,37 +153,22 @@ require! {
 #         text-transform: uppercase
 #         top: 30px
 #         z-index: 2
-#         cursor: help !important
-#         text-decoration: underline
+ 
 #         @media(max-width: 600px)
 #             font-size: 10px    
 #         &.network-from
-#             left: 40px
+#             left: 10px
             
-#             &:after
-#                 content: "→"
-#                 color: #61d6b0
-#                 font-size: 15px
-#                 font-weight: bold
-#                 position: absolute
-#                 top: -1px
-#                 right: 0%
-#                 margin-right: -20px
-#                 animation: blink 2000ms linear infinite 
-                
+          
 #         &.network-to
-#             right: 40px  
+#             right: 0  
 #             color: #ce942c 
-#             &:before
-#                 content: "→"
-#                 color: #61d6b0
-#                 font-size: 15px
-#                 font-weight: bold
-#                 position: absolute
-#                 top: -1px
-#                 left: 0%
-#                 margin-left: -30px
-#                 animation: blink 2000ms linear infinite 
+#             left: 0
+#             text-align: center
+#     .default-network-input
+#         position: relative
+        
+            
 #     .arrow-right
 #         font-size: 15px
 #         font-weight: bold
@@ -124,18 +198,32 @@ require! {
             
 #     .navigation-button
 #         transition: opacity 0.2
+#         z-index: 2
 #         &:hover
 #             opacity: 0.9
+#         &.inactive
+#             opacity: 0.6
+#             cursor: not-allowed !important
 #         .button-inner
 #             position: relative
 #             img
-#                 height: 15px !important
 #                 top: 0 !important
+#                 &.rotate
+#                     transform: rotate(180deg)
+#                     transition: transform .5s
+#                     display: inline-block
 module.exports = ({ web3t, wallet, store, id, on-change })->
     return null if not wallet.network.networks?
     #return null if not store.current.send.chosenNetwork?
     return null if not (store.current.send.isSwap? and store.current.send.isSwap is yes)
     return null if not wallet.network.networks? or Object.keys(wallet.network.networks).length is 0
+    { getHomeFee } = send-funcs store, web3t
+    
+    is-not-bridge = ->
+        { token } = store.current.send.wallet.coin  
+        { chosen-network } = store.current.send
+        chosen-network.refer-to in <[ vlx_evm vlx2 vlx_native ]> and token in <[ vlx_evm vlx2 vlx_native ]> 
+    
     wallets = store.current.account.wallets |> map (-> [it.coin.token, it]) |> pairs-to-obj 
     available-networks = 
         wallet.network.networks 
@@ -151,18 +239,61 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
     style = get-primary-info store
     style2 = 
         color: "#{style.app.icon}"
+    filter-body =
+        border: "1px solid #{style.app.border}"
+        background: style.app.account-bg
     input-style2 =
         background: style.app.input
-        color: style.app.text
+        color: "rgb(206 148 44)"
         border: "0"
-    button-primary2-style=
-        border: "1px solid #{style.app.wallet}"
-        color: style.app.text
-        background: style.app.primary2
-        background-color: style.app.primary2-spare
-    ###
+        opacity: 1
+        text-transform: "uppercase"
+    choose-network-style = 
+        | is-not-bridge! => {}
+        | _ =>
+            text-decoration: "underline"
+            cursor: "help"       
+    img-icon-style = 
+        width: "13px"
+        height: "8px"
+        margin-left: "-6px"
+        margin-top: "4px"
+        filter: "grayscale(100%) brightness(40%) sepia(100%) hue-rotate(14deg) saturate(790%) contrast(1.5)"
+    info-style =
+        width: "10px"
+        height: "10px"
+        font-size: "10px"
+        margin-left: "10px"
+        margin-top: "-1px"
+        float: "revert"
+        display: "block"
+        
+    tooltip-style =
+        position: "absolute"
+        right: "0"
+        bottom: "-21px"        
+        
+    limits-label-style =
+        font-size: "11px"
+        color: "rgb(206, 148, 44)" 
+        display: "block"
+        position: "relative"
+        left: "-24px"
+        text-transform: "uppercase"
+        text-decoration: "underline"
+        cursor: "help"   
+    pointer-style =    
+        | network-labels.length > 1 =>
+            cursor: "pointer" 
+            min-height: "36px"
+        | _ => 
+            cursor: "default"
+            min-height: "36px"
+    input-style2 <<<< pointer-style        
+    
+    
     display-value = store.current.send.chosen-network.name.to-upper-case!
-    ###   
+      
     go = (inc)-> ->
         current = network-labels.index-of(store.current.send.chosen-network.id)
         lenght = network-labels.length
@@ -179,32 +310,87 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
         store.current.send.data = null
         err <- on-change!
     
-    goback = go(-1)
-    goForw = go(1)
-    
+    dropdown-click = ->
+        return if network-labels.length <= 1
+        store.current.switch-network = !store.current.switch-network
     
     { name, referTo } = store.current.send.chosen-network
     wallet2 = store.current.account.wallets |> find (-> (it?coin?token ? "").to-lower-case! is (referTo ? "").to-lower-case!)
     network-from = (wallet?coin?name ? "") 
-    network-to   = (name ? "") 
+    network-to   = (name ? "")  
     
     network-to-details = ->
+        return if is-not-bridge!
         store.current.current-network-details = store.current.foreign-network-details <<<< { wallet: wallet2 }
         network-details-modal!
           
     network-from-details = ->
+        return if is-not-bridge!
         store.current.current-network-details = store.current.network-details <<<< { wallet }
         network-details-modal!
+        
+    create-network-position = (it)->
+        details = it?1
+        return if not details?
+        { referTo, name } = details
+        net-wallet = store.current.account.wallets |> find (-> it.coin.token is referTo)
+        return if not net-wallet?
+        
+        change-network = ->
+            return if store.current.refreshing is yes
+            if store.current.send.chosenNetwork.refer-to is referTo
+                store.current.switch-network = no
+                return
+            store.current.send.chosenNetwork = getNetworkById(referTo)
+            store.current.send.to = token-networks.get-default-recipient-address(store)
+            store.current.send.error = ''
+            store.current.send.data = null
+            err <- on-change!
+            store.current.refreshing = no
+            store.current.switch-network = no
+        
+        position-style =
+            color: if store.current.send.chosenNetwork.refer-to is referTo then '#3cd5af' else ''
+        react.create-element 'div', { on-click: change-network, key: "account#{referTo}", style: position-style, className: 'table-row-menu' }, children = 
+            react.create-element 'div', { className: 'col folder-menu' }, children = 
+                react.create-element 'div', {}, ' ' + name
+    
+    dropdown-class = 
+        | network-labels.length > 1 => ""
+        | _ => "inactive"           
+                
+    rotate-class =
+        | store.current.switch-network is yes => \rotate 
+        | _ => ""
     
     /* Render */
-    react.create-element 'div', { className: 'network-slider network-slider243580078' }, children = 
+    react.create-element 'div', { className: 'network-slider network-slider-1989415310' }, children = 
         react.create-element 'label', { style: style2, className: 'control-label' }, ' Choose Network'
+        if no
+            react.create-element 'span', { on-click: network-from-details, style: choose-network-style, className: 'chosen-network network-from' }, children = 
+                """ #{network-from} """
+        if no
+            react.create-element 'span', { style: choose-network-style, className: 'chosen-network network-to' }, children = 
+                """ #{network-to}"""
+                            
         react.create-element 'div', {}, children = 
-            react.create-element 'span', { on-click: goback, style: button-primary2-style, className: 'button navigation-button left' }, children = 
+            react.create-element 'span', { style: pointer-style, on-click: dropdown-click, className: 'bold default-network-input' }, children = 
+                react.create-element 'input', { value: "#{network-to}", style: input-style2, disabled: true, className: 'change-network' }
+            
+            react.create-element 'span', { on-click: dropdown-click, className: "#{dropdown-class} button navigation-button right" }, children = 
                 react.create-element 'div', { className: 'button-inner' }, children = 
-                    react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
-            react.create-element 'span', { className: 'bold' }, children = 
-                react.create-element 'input', { value: "#{display-value}", style: input-style2, disabled: true, className: 'change-network' }
-            react.create-element 'span', { on-click: goForw, style: button-primary2-style, className: 'button navigation-button right' }, children = 
-                react.create-element 'div', { className: 'button-inner' }, children = 
-                    react.create-element 'img', { src: "#{icons.arrow-right}", className: 'icon-svg' }
+                    react.create-element 'img', { src: "#{icons.arrow-down}", style: img-icon-style, className: "#{rotate-class} icon-svg" }
+            
+            if store.current.switch-network and network-labels.length > 1
+                react.create-element 'div', { style: filter-body, className: 'switch-menu' }, children = 
+                    react.create-element 'div', { className: 'middle account' }, children = 
+                        available-networks  
+                            |> obj-to-pairs 
+                            |> map create-network-position
+                            
+        if not is-not-bridge!
+            react.create-element 'div', { style: tooltip-style, on-click: network-from-details, className: 'limits-tooltip' }, children = 
+                react.create-element 'span', {}, children = 
+                    react.create-element 'img', { src: "#{icons.info}", style: info-style, className: 'icon-svg' }
+                    react.create-element 'span', { style: limits-label-style }, ' limits  '
+                        

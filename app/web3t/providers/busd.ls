@@ -325,6 +325,7 @@ export get-balance = ({ network, address} , cb)->
     number = contract.balance-of(address)
     dec = get-dec network
     balance = number `div` dec
+    console.log "balance" {address, balance}    
     cb null, balance
     
     

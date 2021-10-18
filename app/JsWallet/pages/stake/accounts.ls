@@ -180,8 +180,11 @@ staking-accounts-content = (store, web3t)->
         return if store.staking.all-accounts-loaded isnt yes
         store.staking.getAccountsFromCashe = no
         navigate store, web3t, "validators"
+    perPage =  store.staking.accounts_per_page
+    page = store.staking.current_accounts_page
+    _index = 1 + ((page - 1) * perPage)
     build = (store, web3t)-> (item)->
-        index = item.seed-index + 1
+        index = _index++
         return null if not item? or not item.key?
         { account, address, balance, balanceRaw, key, rent, seed, status, validator, active_stake, inactive_stake } = item
         activationEpoch = account?data?parsed?info?stake?delegation?activationEpoch
@@ -245,10 +248,14 @@ staking-accounts-content = (store, web3t)->
             store.staking.getAccountsFromCashe = no
             navigate store, web3t, \validators
         
+        now = moment!.unix!        
+        locked-and-can-withdraw = account?data?parsed?info?meta?lockup? and account?data?parsed?info?meta?lockup.unixTimestamp <= now
+        not-locked = not account?data?parsed?info?meta?lockup?
+        
         $button =
             | item.status is \inactive =>
                 button { store, text: lang.to_delegate, on-click: choose, type: \secondary , icon : \arrowRight }
-            | (+deactivationEpoch isnt +max-epoch) and (+store.staking.current-epoch >= +deactivationEpoch) =>
+            | (not-locked or locked-and-can-withdraw) and (+deactivationEpoch isnt +max-epoch) and (+store.staking.current-epoch >= +deactivationEpoch) =>
                 if stake-data? and stake-data?delegation?
                     {activationEpoch, deactivationEpoch} = stake-data.delegation
                 disabled = 
