@@ -1,5 +1,6 @@
 node_modules
 !node_modules/copy-to-clipboard
+!node_modules/copy-to-clipboard/*
 !app/JsWallet/node_modules/copy-to-clipboard/index.js
 apple.sh
 dist
