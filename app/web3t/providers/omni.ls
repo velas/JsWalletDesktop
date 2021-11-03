@@ -1,4 +1,5 @@
 require! {
+    \bip32
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, find, sum, values }
     \../math.js : { plus, minus, times, div }
@@ -6,15 +7,15 @@ require! {
     \../json-parse.js
     \../deadline.js
     \./deps.js : { BitcoinLib, bip39 }
-    #\multicoin-address-validator : \WAValidator 
-    \../embed_modules/bitcoin-address-validation : \validate 
+    #\multicoin-address-validator : \WAValidator
+    \../embed_modules/bitcoin-address-validation : \validate
 }
 get-bitcoin-fullpair-by-index = (mnemonic, index, network)->
-    seed = bip39.mnemonic-to-seed-hex mnemonic
-    hdnode = BitcoinLib.HDNode.from-seed-hex(seed, network).derive(index)
-    address = hdnode.get-address!
-    private-key = hdnode.key-pair.toWIF!
-    public-key = hdnode.get-public-key-buffer!.to-string(\hex)
+    seed = bip39.mnemonic-to-seed mnemonic
+    hdnode = bip32.from-seed(seed, network).derive(index)
+    address = BitcoinLib.payments.p2pkh({ pubkey: hdnode.publicKey, network }).address
+    private-key = hdnode.toWIF!
+    public-key = hdnode.public-key.to-string(\hex)
     { address, private-key, public-key }
 # https://api.omniexplorer.info/#request-v1-address-addr
 calc-fee-per-byte = (config, cb)->
@@ -259,15 +260,15 @@ export get-balance = ({ network, address} , cb)->
     dec = get-dec network
     value = balance.value `div` dec
     cb null, value
-export isValidAddress = ({ address, network }, cb)-> 
-    #addressIsValid = WAValidator.validate(address, 'BTC', 'both')   
-    addressIsValid = validate(address)   
-    return cb "Address is not valid" if not addressIsValid   
+export isValidAddress = ({ address, network }, cb)->
+    #addressIsValid = WAValidator.validate(address, 'BTC', 'both')
+    addressIsValid = validate(address)
+    return cb "Address is not valid" if not addressIsValid
     return cb null, address
-    
+
 export get-market-history-prices = (config, cb)->
-    { network, coin } = config  
-    {market} = coin    
+    { network, coin } = config
+    {market} = coin
     err, resp <- get market .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text

@@ -15,7 +15,8 @@ create-send =->
     id: ""
     to: ""
     chosen-network: null 
-    contract-address: null  
+    contract-address: null 
+    fee-calculating: no 
     details: yes
     propose-escrow: no
     address: ''
@@ -23,6 +24,9 @@ create-send =->
     fee-type: \auto
     fee-custom-amount: \0
     tx-type: \regular
+    amount-buffer:
+        val: "0"
+        usdVal: "0"    
     amount-send: \0
     amount-charged: \0
     amount-charged-usd: \0
@@ -33,7 +37,10 @@ create-send =->
     amount-obtain: \0
     data: ""
     gas: null
-    gas-price: null    
+    gas-price: null  
+    typing-amount-time-ms: 0
+    TYPING_THRESHOLD_MS: 500   
+    gasEstimate: \0    
     homeFee: 0
     homeFeePercent: 0
     is-swap: no 
@@ -67,6 +74,7 @@ store =
     terms: "Loading..."
     terms2: "Loading..."
     collapse: ""
+    just-added-token: null    
     development:
         proposals: []
         new-proposal:
@@ -75,6 +83,23 @@ store =
             opened: no
             progress: \0
             update-progress: null
+    custom-token:
+        add: no
+        isLoading: no   
+        contract-address: ""
+        decimals: 0
+        symbol: ""
+        symbol-display: ""
+        network: null
+        selected-network: network 
+        switch-network: false   
+        edit-symbol: no 
+        icon: "" 
+        errors:
+            contract-address: ""
+            network: ""  
+            decimals: ""
+            symbol: ""    
     preference:
         settings-visible: yes
         invoice-visible: yes

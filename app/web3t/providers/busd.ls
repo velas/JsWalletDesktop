@@ -98,32 +98,45 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx?from, tx?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas }, cb)->
-    return cb null, gas if gas?
+    
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data, swap } = config
+    return cb null, "0" if +amount is 0
+    return cb null, "0" if (+account?balance ? 0) is 0  
+    dec = get-dec network     
+    from = account.address
+    web3 = get-web3 network
+    contract = get-contract-instance web3, network.address
+    receiver = 
+        | data? and data isnt "0x" => to    
+        | _ => network.address 
+        
+    val = +(amount `times` dec)    
+    value = "0x" + val.toString(16)
+        
+    $data =
+        | data? and data isnt "0x" => data    
+        | contract.methods? => contract.methods.transfer(to, value).encodeABI!
+        | _ => contract.transfer.get-data to, value   
+        
+    query = { from, to: receiver, data: $data, value: "0x0" }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 1000000 if err?
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    estimate-normal = from-hex(estimate)
-    return cb null, 1000000 if +estimate-normal < 1000000
-    cb null, estimate-normal
-export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb null, "0" if err?    
+    cb null, from-hex(estimate)
+    
+export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas, swap }, cb)->
     return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
+    return cb err if err?   
+    err, gas-estimate <- get-gas-estimate { network, fee-type, account, amount, to, data, swap } 
     return cb err if err?
-    data-parsed =
-        | data? => data
-        | _ => '0x'
-    from = account.address
-    query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, gas }
-    return cb err if err?
-    res = gas-price `times` estimate
+    res = gas-price `times` gas-estimate
     val = res `div` dec
-    #min = 0.002
-    #return cb null, min if +val < min
     cb null, val
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -212,7 +225,7 @@ is-address = (address) ->
         false
     else
         true
-export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas } , cb)-->
+export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas, swap } , cb)-->
     #console.log \tx, { network, account, recipient, amount, amount-fee, data, fee-type, tx-type}
     dec = get-dec network
     err, $recipient <- to-eth-address recipient
@@ -238,15 +251,12 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     balance = balance `times` dec
             
     balance-eth = to-eth balance
-    #to-send = amount `plus` amount-fee
     to-send = amount
     return cb "Balance #{balance-eth} is not enough to send tx #{to-send}" if +balance-eth < +to-send
-    data-parsed =
-        | data? => data
-        | _ => '0x'
-    query = { from: address, to: $recipient, data: data-parsed }
-    err, gas-estimate <- get-gas-estimate { network, query, gas }
+
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data, swap }  
     return cb err if err?
+    
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
     err, networkId <- make-query network, \net_version , []
@@ -325,7 +335,6 @@ export get-balance = ({ network, address} , cb)->
     number = contract.balance-of(address)
     dec = get-dec network
     balance = number `div` dec
-    console.log "balance" {address, balance}    
     cb null, balance
     
     

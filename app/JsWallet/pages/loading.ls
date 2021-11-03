@@ -48,7 +48,7 @@ module.exports = (isLoading)->
         react.create-element 'div', { className: 'loading-pulse' }
         if no
             react.create-element 'div', { className: 'loader-ios' }, children = 
-                react.create-element 'svg', { xmlns: 'http://www.w3.org/2000/svg', width: '27', height: '27', viewbox: '0 0 27 27' }, children = 
+                react.create-element 'svg', { xmlns: 'http://www.w3.org/2000/svg', width: '27', height: '27', viewBox: '0 0 27 27' }, children = 
                     react.create-element 'path', { d: 'M18.696,10.5c-0.275-0.479-0.113-1.09,0.365-1.367l4.759-2.751c0.482-0.273,1.095-0.11,1.37,0.368 c0.276,0.479,0.115,1.092-0.364,1.364l-4.764,2.751C19.583,11.141,18.973,10.977,18.696,10.5z' }
                     react.create-element 'path', { d: 'M16.133,6.938l2.75-4.765c0.276-0.478,0.889-0.643,1.367-0.366c0.479,0.276,0.641,0.886,0.365,1.366l-2.748,4.762 C17.591,8.415,16.979,8.58,16.5,8.303C16.021,8.027,15.856,7.414,16.133,6.938z' }
                     react.create-element 'path', { d: 'M13.499,7.5c-0.552,0-1-0.448-1-1.001V1c0-0.554,0.448-1,1-1c0.554,0,1.003,0.447,1.003,1v5.499 C14.5,7.053,14.053,7.5,13.499,7.5z' }

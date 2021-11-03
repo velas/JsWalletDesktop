@@ -6,6 +6,7 @@ require! {
 action = (func)-> (config, cb)->
     return cb "provider is not defined" if not config?network?api?provider?
     provider = providers[config.network.api.provider]
+    console.error "providr not found for #{config.network.api.provider}" if not provider?
     return cb "providr not found for #{config.network.api.provider}" if not provider?
     func provider, config, cb
 export calc-fee = action (provider, config, cb)->

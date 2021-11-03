@@ -32,15 +32,22 @@ make-query = (network, method, params, cb)->
     cb null, data.body.result
     
 get-gas-estimate = (config, cb)->
-    { network, fee-type, account, amount, to, data, swap } = config
-    return cb null, 250000 if config.swap? and config.swap? is yes 
-    return cb null, 21000 if not config.data? or config.data is "0x"    
-    query = { from: config.account.address, to: config.account.address, config.data }
-    err, estimate <- make-query network, \eth_estimateGas , [ query ] 
-    res = 
-        | estimate? => from-hex(estimate) 
-        | _ => 21000
-    cb null, res  
+    { network, fee-type, account, amount, to, data } = config
+    return cb null, "0" if +amount is 0
+    return cb null, "0" if (+account?balance ? 0) is 0  
+    dec = get-dec network  
+    from = account.address
+   
+    $data =
+        | data? and data isnt "0x" => data    
+        | _ => "0x"
+    val = +(amount `times` dec)    
+    value = "0x" + val.toString(16)   
+    query = { from, to, data: $data, value }  
+    err, estimate <- make-query network, \eth_estimateGas , [ query ]
+    console.error "get-gas-estimate error:" err if err?
+    return cb null, "0" if err?     
+    cb null, from-hex(estimate)
     
 export calc-fee = ({ network, fee-type, account, amount, to, data, swap }, cb)->
     return cb null if fee-type isnt \auto
@@ -220,17 +227,18 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     value = to-wei amount
     err, gas-price <- calc-gas-price { fee-type, network }
     return cb err if err?
-    gas-estimate =
-        |  +gas-price is 0 => 0
-        | _ => round(to-wei(amount-fee) `div` gas-price)
+    #gas-estimate =
+        #|  +gas-price is 0 => 0
+        #| _ => round(to-wei(amount-fee) `div` gas-price)
     err, balance <- make-query network, \eth_getBalance , [ account.address, \latest ]
     return cb err if err?
     balance-eth = to-eth balance
     to-send = amount `plus` amount-fee
     return cb "Balance #{balance-eth} is not enough to send tx #{to-send}" if +balance-eth < +to-send
-    gas-estimate = 
-        | data? => 250000
-        | _ => 21000    
+ 
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  
+    return cb err if err?
+         
     #nonce = 0
     #console.log { nonce, gas-price, value, gas-estimate, recipient, account.address, data }
     err, chainId <- make-query network, \eth_chainId , []

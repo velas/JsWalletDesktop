@@ -5,6 +5,7 @@ require! {
     \prelude-ls : { find }
     \./round5.ls
     \./round-number.ls
+    \./contract-data.ls 
 }
 calc-crypto-generic = (name)-> (store, val)->
     return \0 if not val?
@@ -33,8 +34,26 @@ calc-fee-proxy = (input, cb)->
 #        calc-fee input, cb
 #    calc-fee-proxy.timer = clear-timeout calc-fee-proxy.timer
 #    calc-fee-proxy.timer = set-timeout fun, 500
+
+calc-fee-before-send = ({ store, query, fast }, cb)->
+    { store, token, to, data, network, amount, fee-type, tx-type, account, swap } = query
+    return cb "store isn`t defined"   if not store?
+    return cb "network isn`t defined" if not network?
+    return cb "amount isn`t defined"  if not amount?
+    return cb "account isn`t defined" if not account?
+    { send } = store.current
+    send.fee-calculating = yes
+    calc-fee-fun = if fast then calc-fee else calc-fee-proxy
+    err, calced-fee <- calc-fee-fun { store, token, to, data, network, amount, fee-type, tx-type, account, swap }
+    send.fee-calculating = no
+    send.error = "#{err.message ? err}" if err?
+    return cb "#{err.message ? err}" if err?
+    return cb null, calced-fee
+
 change-amount-generic = (field)-> (store, amount-send, fast, cb)->
     send = store.current[field]
+    /* Prevent call onChange twice */
+    amount-buffer = store.current.send.amount-buffer
     { wallet } = send
     { token } = send.coin
     { wallets } = store.current.account
@@ -62,18 +81,28 @@ change-amount-generic = (field)-> (store, amount-send, fast, cb)->
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
     fee-usd-rate = fee-wallet?usd-rate ? 0
-    account = { wallet.address, wallet.private-key }
+    account = { wallet.address, wallet.private-key, wallet.balance }
     send.amount-send = amount-send ? ""
     send.value = result-amount-send `times` (10 ^ send.network.decimals)
     send.amount-obtain = result-amount-send
     send.amount-obtain-usd = send.amount-obtain `times` usd-rate
     send.amount-send-usd = calc-usd store, amount-send
     send.amount-send-eur = calc-eur store, amount-send
-    calc-fee-fun = if fast then calc-fee else calc-fee-proxy
-    send-to = store.current.send.wallet.address
-    err, calced-fee <- calc-fee-fun { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    send.error = "#{err.message ? err}" if err?
-    return cb "#{err.message ? err}" if err?
+                
+    dataBuilder = contract-data({ store })
+    err <- dataBuilder.form-contract-data!
+    
+    send-to = 
+        | store.current.send.isSwap is yes => store.current.send.contract-address
+        | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
+        | _ => store.current.send.to
+    
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
+    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    console.error err if err?
+    send.error = err if err?
+    calced-fee = 0 if err?
+    #return cb err if err?
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
         | calced-fee? => calced-fee
@@ -121,16 +150,23 @@ export change-amount-send = (store, amount-send, fast, cb)->
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
     fee-usd-rate = fee-wallet?usd-rate ? 0
-    account = { wallet.address, wallet.private-key }
+    account = { wallet.address, wallet.private-key, wallet.balance }
     send.value = result-amount-send `times` (10 ^ send.network.decimals)
     send.amount-obtain = result-amount-send
     send.amount-obtain-usd = send.amount-obtain `times` usd-rate
-    calc-fee-fun = if fast then calc-fee else calc-fee-proxy
-    send-to = store.current.send.wallet.address
-    console.log "change-amount-send" {send.data} 
-    err, calced-fee <- calc-fee-fun { token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    send.error = "#{err.message ? err}" if err?
-    return cb "#{err.message ? err}" if err?
+    
+    dataBuilder = contract-data({ store })
+    err <- dataBuilder.form-contract-data!
+    
+    send-to = 
+        | store.current.send.isSwap is yes => store.current.send.contract-address
+        | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
+        | _ => store.current.send.to
+  
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
+    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    send.error = err if err?
+    return cb err if err?
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
         | calced-fee? => calced-fee
@@ -187,17 +223,25 @@ export change-amount-calc-fiat = (store, amount-send, fast, cb)->
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
     fee-usd-rate = fee-wallet?usd-rate ? 0
-    account = { wallet.address, wallet.private-key }
+    account = { wallet.address, wallet.private-key, wallet.balance }
     send.amount-send = amount-send ? ""
     send.amount-send = amount-send ? ""
     send.value = result-amount-send `times` (10 ^ send.network.decimals)
     send.amount-obtain = result-amount-send
     send.amount-obtain-usd = send.amount-obtain `times` usd-rate   
-    calc-fee-fun = if fast then calc-fee else calc-fee-proxy
-    send-to = store.current.send.wallet.address
-    err, calced-fee <- calc-fee-fun { token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    send.error = "#{err.message ? err}" if err?
-    return cb "#{err.message ? err}" if err?
+    
+    dataBuilder = contract-data({ store })
+    err <- dataBuilder.form-contract-data!
+    
+    send-to = 
+        | store.current.send.isSwap is yes => store.current.send.contract-address
+        | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
+        | _ => store.current.send.to
+    
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
+    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    send.error = err if err?
+    return cb err if err?
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
         | calced-fee? => calced-fee

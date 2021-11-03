@@ -7,8 +7,8 @@ mainnet-config =
         cheap: \0.00014
     message-prefix: 'Ethereum'
     mask: \0x0000000000000000000000000000000000000000
-    txBridgeFeeIn: "vlx2"
-    txFeeIn: "vlx2"
+    txBridgeFeeIn: "vlx_evm"
+    txFeeIn: "vlx_evm"
     
     address: "0x85219708c49aa701871Ad330A94EA0f41dFf24Ca"
     FOREIGN_BRIDGE       : "0x69Eb299cf9D9E09aD40630c691D65fF5B1B078e0"
@@ -36,8 +36,8 @@ testnet-config =
         cheap: \0.0020
     message-prefix: 'Ethereum'
     mask: \0x0000000000000000000000000000000000000000
-    txBridgeFeeIn: "vlx2"
-    txFeeIn: "vlx2"
+    txBridgeFeeIn: "vlx_evm"
+    txFeeIn: "vlx_evm"
     
     address: "0x3538C7f88aDbc8ad1F435f7EA70287e26b926344"    
     

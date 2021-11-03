@@ -5,7 +5,7 @@ require! {
     \localStorage
 }
 gobyte = require \../web3t/plugins/gobyte-coin.ls
-common = (store)->
+export common = (store)->
     vlx2 = require \../web3t/plugins/vlx2-coin.ls
     btc  = require \../web3t/plugins/btc-coin.ls
     vlx_native  = require \../web3t/plugins/sol-coin.ls

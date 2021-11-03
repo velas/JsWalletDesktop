@@ -2,7 +2,7 @@ require! {
     \react
     \../../get-lang.ls
 }
-# .loading-page-1744583922
+# .loader-page-564327252
 #     @import scheme
 #     $gradient: $primary - 20
 #     text-align: center
@@ -14,12 +14,13 @@ require! {
 #     $spin-duration: 1s
 #     $pulse-duration: 750ms
 #     z-index: 1
-#     background: black
-#     opacity: 0.3
-#     width: 100%
-#     height: 100%
-#     position: fixed
-#     z-index: 999
+#     opacity: 0.5;
+#     position: absolute
+#     top: 0 
+#     bottom: 0 
+#     left: 0 
+#     right: 0 
+#     background: rgba(0, 0, 0,  0.24)          
 #     .loading-pulse
 #         position: absolute
 #         top: calc(50% - 32px)
@@ -103,7 +104,7 @@ require! {
 #                 transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg)
 #             100%
 #                 transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg)
-module.exports = ({store})->
-    return null if store.current.network-slider-is-loading is no
-    react.create-element 'div', { key: "loading", className: 'loading-page loading-page-1744583922' }, children = 
+module.exports = ({loading})->
+    return null if not loading
+    react.create-element 'div', { key: "loading", className: 'loader-page loader-page-564327252' }, children = 
         react.create-element 'div', { className: 'loading-pulse' }

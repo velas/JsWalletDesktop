@@ -6,6 +6,7 @@ require! {
     \./apply-transactions.ls
     \./math.ls : { times }
     \mobx : { transaction }
+    \./icons.ls
 }
 module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     return null if not store? or not web3t? or not wallets? or not wallet?coin?token?
@@ -82,6 +83,9 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     balance = round5(wallet.balance) + ' ' + wallet.coin.token.to-upper-case!
     balance-usd = wallet.balance `times` usd-rate
     pending = round5(wallet.pending-sent) + ' ' + wallet.coin.token.to-upper-case!
+    wallet-icon = 
+        | wallet.coin?custom is yes and icons.customWalletIcon? => icons.customWalletIcon
+        | _ => wallet.coin.image 
     style = get-primary-info store
     button-style=
         color: style.app.text
@@ -90,4 +94,4 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     last = 
         | wallets.length < 4 and index + 1 is wallets.length => \last
         | _ => ""
-    { button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }
+    { wallet-icon, button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }

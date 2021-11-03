@@ -102,36 +102,43 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx-data?from, tx-data?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas, swap }, cb)->
-    if ((network?api?web3Provider ? "").indexOf("ropsten") is -1)
-        gas = 
-            | swap is yes => 300000 
-            | _ => 200000 
-    return cb null, 300000   
+    
+
+    
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data, swap } = config
+    return cb null, "0" if +amount is 0
+    return cb null, "0" if (+account?balance ? 0) is 0  
+    dec = get-dec network     
+    from = account.address
+    web3 = get-web3 network
+    contract = get-contract-instance web3, network.address
+    receiver = 
+        | data? and data isnt "0x" => to    
+        | _ => network.address 
+        
+    val = +(amount `times` dec)    
+    value = "0x" + val.toString(16)
+        
+    $data =
+        | data? and data isnt "0x" => data    
+        | contract.methods? => contract.methods.transfer(to, value).encodeABI!
+        | _ => contract.transfer.get-data to, value   
+        
+    query = { from, to: receiver, data: $data, value: "0x0" }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 200000 if err?
-    estimate-normal = from-hex(estimate)
-    return cb null, 150000 if estimate-normal < 150000     
-    cb null, estimate-normal
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb null, "0" if err?    
+    cb null, from-hex(estimate)
     
     
-export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas, swap }, cb)->
-    return cb null if typeof! to isnt \String or to.length is 0
+export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
+    #return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
-    return cb err if err?
-    data-parsed =
-        | data? => data
-        | _ => '0x'
-    err, from <- to-eth-address account.address
-    console.error "calc-fee from address #{err}" if err?
-    return cb "Given address is not valid Velas address" if err?
-    err, to <- to-eth-address to
-    console.error "calc-fee from address #{err}" if err?
-    return cb "Given address is not valid Velas address" if err?
-    query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, swap }
+    return cb err if err?   
+    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }
     res = gas-price `times` estimate
     val = res `div` dec
     cb null, val
@@ -233,7 +240,7 @@ export get-transactions = ({ network, address }, cb)->
     txs =
         result.result
             |> filter -> 
-                up(it.contract-address) is up(network.address) and up(it.tokenSymbol) is \VLX
+                up(it.contract-address) is up(network.address)
             |> uniqueBy (-> it.hash)
             |> map transform-tx network, 'external' 
     cb null, txs
@@ -261,14 +268,12 @@ export get-contract-transactions = ({ network, address }, cb)->
 get-dec = (network)->
     { decimals } = network
     10^decimals
-export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->
-    GAS_PRICE_AVERAGE = 69000000000
-    return cb null, gas-price if gas-price? and ((network?api?web3Provider ? "").indexOf("ropsten") is -1)
-    return cb null, GAS_PRICE_AVERAGE if ((network?api?web3Provider ? "").indexOf("ropsten") is -1)        
+    
+export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->           
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
-    cb null, price
+    cb null price
     
 try-get-latest = ({ network, account }, cb)->
     err, address <- to-eth-address account.address
@@ -290,7 +295,7 @@ is-address = (address) ->
         false
     else
         true
-get-contract-instance = (web3, network, swap)->
+get-contract-instance = (web3, network)->
     abi = ERC20BridgeToken.abi 
     web3.eth.contract(abi).at(network.address)
     
@@ -304,7 +309,7 @@ export create-transaction = (config, cb)-->
     err, nonce <- web3.eth.get-transaction-count account.address, \pending
     return cb err if err?
     return cb "nonce is required" if not nonce?
-    contract = get-contract-instance web3, network, swap  
+    contract = get-contract-instance web3, network  
     to-wei = -> it `times` dec
     to-wei-eth = -> it `times` (10^18)
     to-eth = -> it `div` (10^18)
@@ -312,9 +317,8 @@ export create-transaction = (config, cb)-->
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     
-    gas-estimate =                                      
-        |  +gas-price is 0 => 0
-        | _ => round(to-wei(amount-fee) `div` gas-price)
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  
+    return cb err if err?
     
     err, balance <- get-eth-balance { network, address: account.address }
     return cb err if err?
@@ -322,7 +326,6 @@ export create-transaction = (config, cb)-->
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?   
     return cb "Not enought balance on #{fee-in} wallet to send tx with fee #{amount-fee}" if +balance < +amount-fee
-    
     $data =
         | config.data? and config.data isnt "0x" => config.data    
         | swap? => contract.transferAndCall.get-data(recipient, value, "0x") 
@@ -337,7 +340,7 @@ export create-transaction = (config, cb)-->
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
-        gas: to-hex 300000
+        gas: to-hex gas-estimate
         to: $recipient
         from: account.address
         data:  $data
@@ -380,11 +383,11 @@ export get-unconfirmed-balance = ({ network, address} , cb)->
 get-web3 = (network)->
     { web3-provider } = network.api
     new Web3(new Web3.providers.HttpProvider(web3-provider))
-export get-balance = ({ network, address, swap} , cb)->
+export get-balance = ({ network, address } , cb)->
     #err, address <- to-eth-address address
     #return cb err if err?
     web3 = get-web3 network
-    contract = get-contract-instance web3, network, swap 
+    contract = get-contract-instance web3, network 
     number = contract.balance-of(address)
     dec = get-dec network
     balance = number `div` dec

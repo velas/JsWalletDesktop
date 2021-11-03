@@ -46,23 +46,27 @@ verify-plugin = (plugin, cb)->
     cb null
 get-registry = (cb)->
     registry-string = local-storage.get-item(\plugin-registry) ? "[]"
-    #console.log registry-string
     json-parse registry-string, cb
 get-plugin = (name, cb)->
     coin-name = name.substr("plugin-".length)
-    if current-configs[coin-name]
+    if current-configs[coin-name]?   
         item = JSON.stringify current-configs[coin-name]
     else
-        return cb null
+        /* try to search in local storage for custom token */    
+        item = local-storage.get-item(name)    
+        if not item? or (item ? "").trim!.length is 0   
+            console.error "[get-plugin] plugin #{name} not found"  
+            return cb null
     return cb null if typeof! item isnt \String
     json-parse item, cb
 get-plugin-one-by-one = ([item, ...rest], cb)->
     return cb null, [] if not item?
     err, plugin <- get-plugin item
+    console.error "[get-plugin-one-by-one] error:" err if err?   
     return cb err if err?
     err, other <- get-plugin-one-by-one rest
     return cb err if err?
-    all = all = if plugin then ([plugin] ++ other) else other
+    all = if plugin? then (other ++ [plugin] ) else other
     cb null, all
 export get-install-list = (cb)->
     err, data <- get-registry

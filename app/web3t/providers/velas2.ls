@@ -10,6 +10,7 @@ require! {
     \ethereumjs-common : { default: Common }
     \../addresses.js : { vlxToEth, ethToVlx }
     \crypto-js/sha3 : \sha3
+    \bignumber.js   
 }
 isChecksumAddress = (address) ->
     address = address.replace '0x', ''
@@ -106,14 +107,31 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx?from, tx?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas }, cb)->
-    return cb null, gas if gas?
+    
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data } = config
+    return cb null, "0" if +amount is 0
+    return cb null, "0" if (+account?balance ? 0) is 0  
+    err, from <- to-eth-address config.account.address 
+    return cb err if err?
+    err, $to <- to-eth-address to    
+    return cb err if err?
+    dec = get-dec network     
+        
+    val = +(amount `times` dec)    
+    value = "0x" + val.toString(16)
+        
+    $data =
+        | not data? => "0x"    
+        | data? and data isnt "0x" => data    
+        | _ => data  
+        
+    query = { from, to: $to, data: $data, value }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 1000000 if err?
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    estimate-normal = from-hex(estimate)
-    return cb null, 1000000 if +estimate-normal < 1000000
-    cb null, estimate-normal
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb null, "1000000" if err?    
+    cb null, from-hex(estimate)
+    
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
     return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
@@ -130,7 +148,7 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     console.error "calc-fee from address #{err}" if err?
     return cb "Given address is not valid Velas address" if err?
     query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, gas }
+    err, estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data }
     return cb err if err?
     res = gas-price `times` estimate
     val = res `div` dec
@@ -300,7 +318,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         | data? => data
         | _ => '0x'
     query = { from: address, to: $recipient, data: data-parsed }
-    err, gas-estimate <- get-gas-estimate { network, query, gas }
+    err, gas-estimate <- get-gas-estimate { network, fee-type, account, amount, to: $recipient, data }
     return cb err if err?
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
@@ -310,6 +328,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     gas-price = buffer.gas-price
     if fee-type is \custom or !gas-price
         gas-price = (amount-fee `times` dec) `div` gas-estimate
+        gas-price = new bignumber(gas-price).toFixed(0)
     tx-obj = {
         nonce: to-hex nonce
         gas-price: to-hex gas-price

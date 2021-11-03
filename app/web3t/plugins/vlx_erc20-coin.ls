@@ -53,7 +53,7 @@ testnet-config =
     
     api:
         provider: \velas_erc20 
-        web3Provider: 'https://geth.ropsten.velas.com',
+        web3Provider: 'https://ropsten.infura.io/v3/622100399ace495d92c1339f6be12b2b',
         url: 'https://ropsten.etherscan.io',
         apiUrl: 'https://api-ropsten.etherscan.io/api'
     group: "Ethereum"
