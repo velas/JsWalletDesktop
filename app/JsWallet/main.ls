@@ -15,6 +15,8 @@ require! {
     \./render-error.ls
     \./scam-warning.ls
     \./service-worker.ls
+    \@sentry/react : \Sentry
+    \@sentry/tracing : { Integrations }    
 }
 is-allowed-context = ->
     return yes if window == window.parent
@@ -41,6 +43,14 @@ for event in <[ mousemove click touchmove keydown ]>
     window.addEventListener event, reset-idle
 export web3t = web3 store
 export store
+
+Sentry.init(
+    {
+        dsn: "https://e796584d917545de9c0d85d7e403c32d@o1060902.ingest.sentry.io/6050843",
+        integrations: [new Integrations.BrowserTracing()]
+        tracesSampleRate: 1.0,
+    })
+
 safe-render = (func)->
     state =
         result: null
