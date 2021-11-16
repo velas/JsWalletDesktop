@@ -15,6 +15,7 @@ require! {
     \../components/address-holder.ls
     \./wallet-stats.ls
     \./loading.ls
+    \./confirmation.ls : { confirm }
 }
 # .wallet-detailed1433559501
 #     @import scheme
@@ -182,7 +183,7 @@ module.exports = (store, web3t, wallets, wallet)-->
                                 react.create-element 'h3', { style: msg-txt-style, className: 'text-message' }, ' No wallet found   '
                           
 
-    { uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
+    { wallet-icon, uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
     
     label-uninstall =
@@ -195,7 +196,8 @@ module.exports = (store, web3t, wallets, wallet)-->
     placeholder-coin =
         | store.current.refreshing => "placeholder-coin"
         | _ => ""
-        
+    
+    is-custom = wallet?coin?custom is yes    
     wallet-is-disabled = isNaN(wallet?balance)
     is-loading = store.current.refreshing is yes
     send-swap-disabled = wallet-is-disabled or is-loading
@@ -228,7 +230,14 @@ module.exports = (store, web3t, wallets, wallet)-->
         (wallet?network?networks ? []) 
             |> obj-to-pairs
             |> map (-> it.1 )
-            |> filter (-> it.disabled isnt yes and it.referTo in installed-networks)    
+            |> filter (-> it.disabled isnt yes and it.referTo in installed-networks)
+            
+    uninstall-action = (e)->
+        if is-custom isnt yes
+            return uninstall(e) 
+        agree <- confirm store, "You can add this token back in the future by going to “Add custom token”."
+        return if not agree
+        uninstall(e)    
     
     wallet-style=
         color: style.app.text3
@@ -252,14 +261,15 @@ module.exports = (store, web3t, wallets, wallet)-->
                     react.create-element 'div', {}, children = 
                         react.create-element 'span', { className: "#{placeholder} title" }, ' ' + name
                         if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm vlx_evm_legacy ]>
-                            react.create-element 'span', { on-click: uninstall, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
+                            react.create-element 'span', { on-click: uninstall-action, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
                     react.create-element 'div', { className: "#{placeholder} balance" }, children = 
                         react.create-element 'div', { title: "#{wallet?balance}", className: 'token-balance' }, children = 
                             react.create-element 'span', {}, ' ' +  round-human wallet?balance 
                             react.create-element 'span', {}, ' ' +  tokenDisplay 
-                        react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
-                            react.create-element 'span', {}, ' ' +  round-human balance-usd 
-                            react.create-element 'span', {}, ' USD'
+                        if not is-custom
+                            react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
+                                react.create-element 'span', {}, ' ' +  round-human balance-usd 
+                                react.create-element 'span', {}, ' USD'
                         if +wallet.pending-sent >0 and no
                             react.create-element 'div', { className: 'pending' }, children = 
                                 react.create-element 'span', {}, ' -' +  pending 
@@ -285,9 +295,10 @@ module.exports = (store, web3t, wallets, wallet)-->
                     react.create-element 'div', { className: 'stats' }, children = 
                         react.create-element 'span', { className: 'stats-style' }, children = 
                             react.create-element 'div', { style: text, className: 'coin' }, children = 
-                                react.create-element 'img', { src: "#{wallet?coin?image}", className: "#{placeholder-coin} label-coin" }
+                                react.create-element 'img', { src: "#{wallet-icon}", className: "#{placeholder-coin} label-coin" }
                                 react.create-element 'div', { className: "#{placeholder}" }, ' ' +  token-display 
-                                react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
+                                if not is-custom
+                                    react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
                         wallet-stats store, web3t
                 react.create-element 'div', { style: text, className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', { className: 'counts' }, children = 

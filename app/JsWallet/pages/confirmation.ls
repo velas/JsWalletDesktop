@@ -16,7 +16,7 @@ require! {
     \react-copy-to-clipboard : { CopyToClipboard }
     \../copied-pk-inform.ls
 }
-# .confirmation-145687721
+# .confirmation-1782791312
 #     backdrop-filter: blur(5px)
 #     @-webkit-keyframes appear
 #         from
@@ -64,6 +64,8 @@ require! {
 #     height: 100vh
 #     top: 0
 #     left: 0
+#     right: 0
+#     bottom: 0
 #     width: 100%
 #     box-sizing: border-box
 #     background: rgba(black, 0.7)
@@ -118,6 +120,7 @@ require! {
 #         margin-right: 3px
 #         filter: invert(22%) sepia(65%) saturate(7127%) hue-rotate(694deg) brightness(94%) contrast(115%)
 #     >.confirmation-body
+#         padding: 10px
 #         background: white
 #         text-align: center
 #         position: fixed
@@ -219,7 +222,7 @@ alert-modal = (store)->
     text-rows = text.split("\n")
     build-text = (txt)->
         react.create-element 'div', { className: 'text-block' }, ' ' + txt
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' '
@@ -251,7 +254,7 @@ notification-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.notification
@@ -292,9 +295,12 @@ confirmation-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    title = 
+        | (store.current.confirmation ? "").indexOf("You can add this token back in the future by going to “Add custom token”") > -1 => "Hide Token?"
+        | _ => lang.confirmation
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
-            react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
+            react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + title
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.confirmation
             if store.current.send.swap is yes
                 refer-to = store.current.send?chosen-network?refer-to
@@ -346,7 +352,7 @@ swap-confirmation-modal = (store)->
     { amount-send, tokenFrom, amount-receive, tokenTo, bridgeFee, homeBridge, foreignBridge, fromNetwork, toNetwork} = store.current.swap-confirmation
     # "Please confirm that you would like to send #{amount-send} #{token-display} from #{walletGroup} to receive #{amount-receive} #{token-display} on #{receiverGroup}." 
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' '
@@ -407,7 +413,7 @@ prompt-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt
@@ -479,7 +485,7 @@ prompt-modal2 = (store)->
         store.current.prompt-answer = 
             | not wallet? => 0
             | _ => Math.floor(wallet.balance `minus` 1)
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, store.current.prompt2
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }
@@ -557,7 +563,7 @@ prompt-modal3 = (store)->
         store.current.prompt-answer = 
             | not chosenAccount? => 0
             | _ => balanceRaw `minus` active_stake `minus` min_stake
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, store.current.prompt3
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }
@@ -705,7 +711,7 @@ prompt-choose-token-modal = (store)->
     btn-disabled = (typeof store.current.prompt-answer isnt "string") or (typeof store.current.prompt-answer is "string" and store.current.prompt-answer.length is 0)
     on-focus = ->
         (document.query-selector \.tokeninput).focus!
-    react.create-element 'div', { on-click: cancel, className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { on-click: cancel, className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, text
             react.create-element 'div', { className: 'token-select' }, children = 
@@ -756,7 +762,7 @@ prompt-password-modal = (store)->
     focus-input = (ref)!->
         ref.focus! if ref?
     lang = get-lang store
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt-password
@@ -819,7 +825,7 @@ $network-details-modal = (store)->
     from-network = (name ? "").to-upper-case!
     to-network   = (wallet-to.coin.name ? "").to-upper-case!
     title = "Swap from #{from-network} to #{to-network}"
-    react.create-element 'div', { className: 'confirmation confirmation-145687721' }, children = 
+    react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: cancel, style: close-button-style, id: "prompt-close" }, children = 

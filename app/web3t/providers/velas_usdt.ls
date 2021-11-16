@@ -34,8 +34,9 @@ export calc-fee = ({ network, tx, fee-type, account, amount, to, data }, cb)->
     from = account.address
     #err, nonce <- web3.eth.get-transaction-count from, \pending
     #return cb err if err?
-    err, estimate <- web3.eth.estimate-gas { from, to, data }
-    return cb err if err?
+    err, estimate <- web3.eth.estimate-gas { from, to: null, data: "0x" }
+    estimate = "0" if err?   
+    #return cb err if err?
     dec = get-dec network
     res = gas-price `times` estimate
     val = res `div` (10^18)
@@ -135,7 +136,6 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-eth = -> it `div` (10^18)
     value = to-wei amount
     err, gas-price-bn <- calc-gas-price { web3, fee-type }
-    #gas-price = round (gas-price-bn `plus` ( gas-price-bn `div` 100 ))
     gas-price = gas-price-bn.to-fixed!
     return cb err if err?
     gas-minimal = to-wei-eth(amount-fee) `div` gas-price
@@ -145,7 +145,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, balance <- web3.eth.get-balance from
     return cb err if err?
     balance-eth = to-eth balance
-    return cb "Balance is not enough to send tx" if +balance-eth < +amount-fee
+    return cb "Velas EVM balance (#{balance-eth}) is not enough to send tx" if +balance-eth < +amount-fee
     err, erc-balance <- get-balance { network, address: from }
     return cb err if err?
     return cb "Balance is not enough to send this amount" if +erc-balance < +amount
@@ -164,7 +164,6 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         from: from
         data: $data || \0x
         chainId: chainId 
-    console.log \sign
     tx.sign private-key
     rawtx = \0x + tx.serialize!.to-string \hex
     cb null, { rawtx }
@@ -174,9 +173,7 @@ export check-decoded-data = (decoded-data, data)->
 export push-tx = ({ network, rawtx } , cb)-->
     web3 = get-web3 network
     send = web3.eth.send-raw-transaction ? web3.eth.send-signed-transaction
-    console.log \push-tx
     err, txid <- send rawtx
-    console.log { err, txid }
     cb err, txid
 export check-tx-status = ({ network, tx }, cb)->
     cb "Not Implemented"

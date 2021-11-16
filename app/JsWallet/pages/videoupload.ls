@@ -6,7 +6,7 @@ require! {
     \../navigate.ls
     \../icons.ls
 }
-# .manage-account-488427639
+# .manage-account1779628587
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -18,6 +18,9 @@ require! {
 #     position: fixed
 #     width: 100%
 #     top: 0
+#     left: 0
+#     right: 0
+#     bottom: 0
 #     z-index: 999
 #     height: 100%
 #     min-height: 100vh
@@ -262,7 +265,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.header
         color: style.app.text
     lang = get-lang store
-    react.create-element 'div', { className: 'manage-account manage-account-488427639' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account1779628587' }, children = 
         react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
             react.create-element 'div', { style: border-style, className: 'title' }, children = 
                 react.create-element 'div', { className: 'subheader' }, ' Add'

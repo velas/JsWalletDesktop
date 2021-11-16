@@ -477,10 +477,6 @@
       ? ref$
       : web3.eth.sendSignedTransaction;
     return send(rawtx, function(err, txid){
-      console.log({
-        err: err,
-        txid: txid
-      });
       return cb(err, txid);
     });
   });

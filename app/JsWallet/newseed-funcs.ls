@@ -26,7 +26,7 @@ module.exports = (store, web3t)->
     verify-seed = (cb)->
         empty =
             store.current.seed-words
-                |> filter (.part.length is 0)
+                |> filter (.part.trim!.length is 0)
         if empty.length is not 0
             store.current.alert = "Please fill all words"
             return cb "cancelled"

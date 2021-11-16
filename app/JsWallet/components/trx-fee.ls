@@ -66,7 +66,7 @@ require! {
 #         box-shadow: none
 #         margin-bottom: -1px
 DECIMAL_SEPARATOR = '.'
-trx-fee = ({ store, web3t, wallet })->
+trx-fee = ({ store, web3t, wallet, fee-token })->
     style = get-primary-info store
     lang = get-lang store
     {send} = store.current
@@ -121,7 +121,9 @@ trx-fee = ({ store, web3t, wallet })->
         value = $value 
         choose-custom value
     fee-currency = wallet.network.tx-fee-in ? (wallet.coin.nickname ? "").to-upper-case!
-    token-display = if fee-currency == \vlx2 then \vlx else fee-currency
+    is-custom = wallet?coin?custom is yes 
+    token-display = fee-token.to-upper-case!
+    
     border-style = border: "1px solid #{style.app.border}"
     text = color: "#{style.app.icon}"
     input-style=

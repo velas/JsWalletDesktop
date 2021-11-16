@@ -13,7 +13,7 @@ require! {
     \../components/button.ls
     \../components/address-holder.ls
 }
-# .wallet-group-849406194
+# .wallet-group162870611
 #     @import scheme
 #     .group-name
 #         text-align: left
@@ -100,7 +100,7 @@ require! {
 #         >.wallet-top
 #             padding: 0 12px
 #             box-sizing: border-box
-#             $card-top-height: 50px
+#             $card-top-height: 55px
 #             width: 100%
 #             color: #677897
 #             font-size: 14px
@@ -253,6 +253,12 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         filter: style.app.btn-icon
     icon-color=
         filter: style.app.icon-filter
+    custom-style=
+        border: "1px solid #71f4c0"
+        border-radius: "13px"
+        padding: "2px 4px"
+        font-size: "8px"
+        color: "#71f4c0"
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
@@ -266,40 +272,47 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         | _ => ''
     wallets = wallets-group.1
 
-    react.create-element 'div', { id: "wallet-group-switch-#{(group-name)}", className: 'wallet-group wallet-group-849406194' }, children = 
+    react.create-element 'div', { id: "wallet-group-switch-#{(group-name)}", className: 'wallet-group wallet-group162870611' }, children = 
         react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network'
 
         wallets |> map (wallet)->
-            res = wallet-funcs store, web3t, wallets, wallet
 
-            { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, swap, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet, wallets-groups, group-name
+            { wallet-icon, button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, swap, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet, wallets-groups, group-name
             name = wallet.coin.name ? wallet.coin.token
             receive-click = receive(wallet)
             send-click = send(wallet)
             swap-click = swap(store, wallet)
             token = wallet.coin.token
-            token-display = (wallet.coin.nickname ? "").to-upper-case!
+            is-custom = wallet?coin?custom is yes
+            token-display = 
+                | is-custom is yes => (wallet.coin.name ? "").to-upper-case!
+                | _ => (wallet.coin.nickname ? "").to-upper-case!
             makeDisabled = store.current.refreshing
             wallet-is-disabled  = isNaN(wallet.balance)
             disabled-class = if not is-loading and wallet-is-disabled then "disabled-wallet-item" else ""
             wallet-is-disabled = isNaN(wallet.balance)
             send-swap-disabled = wallet-is-disabled or is-loading
+            is-custom = wallet.coin.custom is yes
 
             /* Render */
             react.create-element 'div', { key: "#{token}", style: border-style, id: "token-#{token}", className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
                 react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
                     react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                         react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
-                            react.create-element 'img', { src: "#{wallet.coin.image}" }
+                            react.create-element 'img', { src: "#{wallet-icon}" }
                         react.create-element 'div', { className: 'info' }, children = 
                             react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
                             if store.current.device is \desktop
                                 react.create-element 'div', { title: "#{wallet.balance}", className: "#{placeholder} price token" }, children = 
                                     react.create-element 'span', {}, ' ' +  round-human wallet.balance 
                                     react.create-element 'span', {}, ' ' +  token-display 
-                            react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
-                                react.create-element 'span', {}, ' ' +  round-human balance-usd
-                                react.create-element 'span', {}, ' USD'
+                            if is-custom
+                                react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
+                                    react.create-element 'span', { style: custom-style }, ' CUSTOM   '
+                            else
+                                react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
+                                    react.create-element 'span', {}, ' ' +  round-human balance-usd
+                                    react.create-element 'span', {}, ' USD'
                     if store.current.device is \mobile
                         react.create-element 'div', { style: wallet-style, className: 'top-middle' }, children = 
                             if +wallet.pending-sent is 0

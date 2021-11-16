@@ -16,8 +16,8 @@ export mainnet =
     HOME_BRIDGE: "0x902b79F10Ecc887AF6980fD13581A4d0e5db3788"
     HOME_BRIDGE_TOKEN:   "0xc111c29A988AE0C0087D97b33C6E6766808A3BD3" 
     
-    txFeeIn: "vlx2"
-    txBridgeFeeIn: "vlx2"
+    txFeeIn: "vlx_evm"
+    txBridgeFeeIn: "vlx_evm"
 
     networks:           
         busd:
@@ -42,8 +42,8 @@ export testnet =
     HOME_BRIDGE: "0x729900a7db6bC1dAb1C2c953791C232Fb2A996Cb"
     HOME_BRIDGE_TOKEN:   "0xe2172a8E1762ae9962A59EE88a731522A61a4cc9" 
     
-    txFeeIn: "vlx2"
-    txBridgeFeeIn: "vlx2"
+    txFeeIn: "vlx_evm"
+    txBridgeFeeIn: "vlx_evm"
     group: "Velas"
 
     networks:

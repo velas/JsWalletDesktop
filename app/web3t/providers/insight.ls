@@ -1,5 +1,6 @@
 require! {
     \moment
+    \bip32
     \prelude-ls : { map, foldl, any, each, find, sum, filter, head, values, join }
     \./superagent.js : { get, post }
     \../math.js : { plus, minus, div, times }
@@ -18,17 +19,17 @@ segwit-address2 = (public-key)->
     BitcoinLib.address.fromOutputScript(scriptPubKey)
 get-bitcoin-fullpair-by-index = (mnemonic, index, network)->
     #console.log \get-bitcoin-fullpair-by-index , mnemonic, index, network
-    seed = bip39.mnemonic-to-seed-hex mnemonic
-    hdnode = BitcoinLib.HDNode.from-seed-hex(seed, network).derive(index)
-    address = hdnode.get-address!
-    private-key = hdnode.key-pair.toWIF!
-    public-key = hdnode.get-public-key-buffer!.to-string(\hex)
+    seed = bip39.mnemonic-to-seed mnemonic
+    hdnode = bip32.from-seed(seed, network).derive(index)
+    address = BitcoinLib.payments.p2pkh({ pubkey: hdnode.publicKey, network }).address
+    private-key = hdnode.toWIF!
+    public-key = hdnode.public-key.to-string(\hex)
     #p2wpkh = BitcoinLib.payments.p2wpkh({ pubkey: public-key })
     #p2wpkh-address = p2wpkh.address
     #console.log p2wpkh-address, address
-    address2  = segwit-address public-key
-    address3 = segwit-address2 public-key
-    { address, private-key, public-key, address2, address3 }
+    #address2  = segwit-address public-key
+    #address3 = segwit-address2 public-key
+    { address, private-key, public-key }
 #0.25m + 0.05m * numberOfInputs
 #private send https://github.com/DeltaEngine/MyDashWallet/blob/master/Node/DashNode.cs#L18
 #https://github.com/StaminaDev/dash-insight-api/blob/master/lib/index.js#L244
@@ -253,28 +254,28 @@ export create-transaction = (config, cb)->
     outputs.for-each sign
     rawtx = tx.build!.to-hex!
     cb null, { rawtx }
-    
+
 prepare-error-msg = (error)->
-    return if not error? 
-    error = error + ""    
-    message = 
-        | error.index-of("insufficient priority. Code:-26") => 
+    return if not error?
+    error = error + ""
+    message =
+        | error.index-of("insufficient priority. Code:-26") =>
             "Insufficient priority. Code:-26. Please try to increase fee."
         | _ => error
-    message    
-    
+    message
+
 export push-tx = ({ network, rawtx, tx-type } , cb)-->
     send-type =
         | tx-type is \instant => \sendix
         | _ => \send
     err, res <- post "#{get-api-url network}/tx/#{send-type}", { rawtx } .end
     if err? and res?text? and not res?body?txid? then
-        err = prepare-error-msg(res?text)    
+        err = prepare-error-msg(res?text)
     return cb "Error: #{err}" if err?
     return cb "Error: #{res?error}" if res?error
     return cb "Error: #{res?text}" if not res?body?txid?
     cb null, res.body?txid
-    
+
 export get-total-received = ({ address, network }, cb)->
     return cb "Url is not defined" if not network?api?url?
     err, data <- get "#{get-api-url network}/addr/#{address}/totalReceived" .timeout { deadline } .end
@@ -297,23 +298,23 @@ export get-balance = ({ address, network } , cb)->
     num = data.text `div` dec
     #return cb null, "2.00001"
     cb null, num
-    
+
 incoming-vout = (address, vout)-->
     addrs = vout.script-pub-key?addresses
     return no if typeof! addrs isnt \Array
     addrs.index-of(address) > -1
-    
+
 outcoming-self-vout = (address, vout)-->
     addrs = vout.script-pub-key?addresses
     return no if typeof! addrs isnt \Array
     return { vout.value, address: addresses.join(",") } if addresses.index-of(address) > -1
     null
-    
+
 has-self-vout = (address, vout)-->
     addrs = vout.script-pub-key?addresses
     return no if typeof! addrs isnt \Array
     addrs.index-of(address) > -1
-       
+
 outcoming-vouts = (address, vout)-->
     addresses = vout.script-pub-key?addresses
     return null if typeof! addresses isnt \Array
@@ -326,45 +327,45 @@ transform-tx = ({ net, address }, t)-->
     time = t.time
     fee = t.fees ? 0
     vout = t.vout ? []
-    vin = t.vin ? []    
+    vin = t.vin ? []
     pending = t.confirmations is 0
     amount = 0
-    to = ''     
-            
+    to = ''
+
     from =
         | typeof! vin is \Array => vin.map(-> it.addr).0
-        | _ => vin.addr  
-    
-    senders = vin |> map -> it.addr 
-    sender_receiver = 
+        | _ => vin.addr
+
+    senders = vin |> map -> it.addr
+    sender_receiver =
         vout
             |> filter has-self-vout address
-    
-    type = 
+
+    type =
         | senders.indexOf(address) is -1 => \in
         | senders.indexOf(address) isnt -1 and (sender_receiver.length is vout.length) => \self
         | _ => \out
-    
+
     if type is \in
         unspend =
-            vout 
-                |> filter incoming-vout address    
-                |> head 
-        amount = unspend?value 
+            vout
+                |> filter incoming-vout address
+                |> head
+        amount = unspend?value
         to = address
-    
-    if type is \self     
+
+    if type is \self
         outcoming =
             vout
                 |> filter has-self-vout address
-        
+
         amount =
             outcoming
                 |> map (.value)
                 |> foldl plus, 0
-        to = address 
-        
-    if type is \out   
+        to = address
+
+    if type is \out
         outcoming =
             vout
                 |> map outcoming-vouts address
@@ -373,18 +374,18 @@ transform-tx = ({ net, address }, t)-->
             outcoming
                 |> map (.value)
                 |> foldl plus, 0
-        to = outcoming.map(-> it.address).join(",")      
+        to = outcoming.map(-> it.address).join(",")
     url = "#{net.api.url}/tx/#{tx}"
     { network, tx, amount, fee, time, url, to, pending, from }
 
-    
+
 get-api-url = (network)->
     api-name = network.api.api-name ? \api
     "#{network.api.url}/#{api-name}"
-    
+
 export check-tx-status = ({ network, tx }, cb)->
     cb "Not Implemented"
-    
+
 export get-transactions = ({ network, address}, cb)->
     return cb "Url is not defined" if not network?api?url?
     err, data <- get "#{get-api-url network}/txs/?address=#{address}" .timeout { deadline: 15000 } .end
@@ -392,26 +393,26 @@ export get-transactions = ({ network, address}, cb)->
     err, result <- json-parse data.text
     return cb err if err?
     return cb "Unexpected result" if typeof! result?txs isnt \Array
-    try    
+    try
         txs =
             result.txs
                 |> map transform-tx { net: network, address }
                 |> filter (?)
-        return cb null, txs  
+        return cb null, txs
     catch err
-        console.error err    
+        console.error err
     cb null, []
-    
-#export isValidAddress = ({ address, network, token }, cb)-> 
-#    token = token.to-upper-case! if token?    
-#    addressIsValid = WAValidator.validate(address, token, 'both')    
-#    return cb "Address is not valid" if not addressIsValid   
+
+#export isValidAddress = ({ address, network, token }, cb)->
+#    token = token.to-upper-case! if token?
+#    addressIsValid = WAValidator.validate(address, token, 'both')
+#    return cb "Address is not valid" if not addressIsValid
 #    return cb null, address
 
-    
+
 export get-market-history-prices = (config, cb)->
-    { network, coin } = config  
-    {market} = coin    
+    { network, coin } = config
+    {market} = coin
     err, resp <- get market .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text

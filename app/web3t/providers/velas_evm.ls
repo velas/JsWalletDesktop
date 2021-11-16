@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
-    \prelude-ls : { filter, map, foldl, each, sort-by, reverse }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \prelude-ls : { filter, map, foldl, each, sort-by, reverse, uniqueBy }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../json-parse.js
@@ -10,6 +10,7 @@ require! {
     \ethereumjs-common : { default: Common }
     \../addresses.js : { vlxToEth, ethToVlx }
     \crypto-js/sha3 : \sha3
+    \bignumber.js     
 }
 isChecksumAddress = (address) ->
     address = address.replace '0x', ''
@@ -96,14 +97,28 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx?from, tx?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas }, cb)->
-    return cb null, gas if gas?
+    
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data } = config
+    return cb null, "0" if +amount is 0
+    #return cb null, "0" if (+account?balance ? 0) is 0  
+    dec = get-dec network     
+    from = config.account.address
+        
+    val = (amount `times` dec)    
+    value = $toHex(val)
+        
+    $data =
+        | not data? => "0x"    
+        | data? and data isnt "0x" => data    
+        | _ => data  
+        
+    query = { from, to, data: $data, value }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 1000000 if err?
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    estimate-normal = from-hex(estimate)
-    return cb null, 1000000 if +estimate-normal < 1000000
-    cb null, estimate-normal
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb null, "1000000" if err?    
+    cb null, from-hex(estimate)
+    
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
     return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
@@ -115,7 +130,7 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
         | _ => '0x'
     from = account.address
     query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, gas }
+    err, estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data }  
     return cb err if err?
     res = gas-price `times` estimate
     val = res `div` dec
@@ -215,22 +230,24 @@ export get-transactions = ({ network, address }, cb)->
     all = external ++ internal
     ordered =
         all
+            |> uniqueBy (-> it.tx)
             |> sort-by (.time)
             |> reverse
     cb null, ordered
 get-dec = (network)->
     { decimals } = network
     10^decimals
+    
 calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     return cb null, gas-price if gas-price?
     return cb null, 22000 if fee-type is \cheap
-    #err, price <- web3.eth.get-gas-price
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
     #console.log \price, price
     return cb null, 22000 if +price < 22000
     cb null, price
+    
 try-get-latest = ({ network, account }, cb)->
     err, address <- to-eth-address account.address
     return cb err if err?
@@ -282,7 +299,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         | data? => data
         | _ => '0x'
     query = { from: address, to: $recipient, data: data-parsed }
-    err, gas-estimate <- get-gas-estimate { network, query, gas }
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: $recipient, data } 
     return cb err if err?
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
@@ -290,8 +307,10 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     return cb err if err?
     common = Common.forCustomChain 'mainnet', { networkId }
     gas-price = buffer.gas-price
-    if fee-type is \custom or !gas-price
+    if fee-type is \custom or !gas-price  
         gas-price = (amount-fee `times` dec) `div` gas-estimate
+        gas-price = new bignumber(gas-price).toFixed(0)    
+    #gas-price = "3000000000" if 3000000000 < gas-price
     tx-obj = {
         nonce: to-hex nonce
         gas-price: to-hex gas-price

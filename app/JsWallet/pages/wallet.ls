@@ -215,7 +215,7 @@ require! {
 #                     line-height: 30px
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
-    { button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, swap, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
+    { wallet-icon, button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, swap, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
     style = get-primary-info store
     label-uninstall =
@@ -269,7 +269,10 @@ module.exports = (store, web3t, wallets, wallet)-->
     send-click = send(wallet)
     swap-click = swap(store, wallet)
     token = wallet.coin.token
-    token-display = (wallet.coin.nickname ? "").to-upper-case!
+    is-custom = wallet?coin?custom is yes
+    token-display = 
+        | is-custom is yes => (wallet.coin.name ? "").to-upper-case!
+        | _ => (wallet.coin.nickname ? "").to-upper-case!
     makeDisabled = store.current.refreshing
     wallet-is-disabled  = isNaN(wallet.balance)
     is-loading = store.current.refreshing is yes
@@ -283,7 +286,7 @@ module.exports = (store, web3t, wallets, wallet)-->
         react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
                 react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
-                    react.create-element 'img', { src: "#{wallet.coin.image}" }
+                    react.create-element 'img', { src: "#{wallet-icon}" }
                 react.create-element 'div', { className: 'info' }, children = 
                     react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
                     if store.current.device is \desktop

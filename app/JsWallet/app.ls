@@ -17,7 +17,7 @@ require! {
     \./pages/hovered-address.ls
     \react-detect-offline : { Offline, Online }
 }
-# .app-1830253507
+# .app1777402657
 #     button
 #         border-radius: var(--border-btn) !important
 #     input
@@ -133,7 +133,6 @@ require! {
 #                     margin-left: 0
 #                     display: block
 #     .manage-account
-#         margin-left: -250px
 #         @media (max-width: $ipad)
 #             margin-left: 0
 #     .content
@@ -211,7 +210,7 @@ module.exports = ({ store, web3t })->
     react.create-element 'div', {}, children = 
         define-root store
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app-1830253507" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1777402657" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t

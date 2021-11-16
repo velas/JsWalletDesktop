@@ -4,8 +4,10 @@ require! {
     \./get-primary-info.ls
     \./navigate.ls
     \./apply-transactions.ls
+    \prelude-ls : { find }
     \./math.ls : { times }
     \mobx : { transaction }
+    \./icons.ls
 }
 module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     return null if not store? or not web3t? or not wallets? or not wallet?coin?token?
@@ -18,6 +20,29 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     #    | index + 1 is wallets.length => \bottom
     #    | _ => \middle
     return null if not store? or not wallet?
+    
+    get-plugin = (token, cb)->
+        load-coins = require("../web3t/load-coins.ls")
+        err, $web3t-tokens <- load-coins {plugins:[]}
+        console.error err if err?
+        return cb null if not $web3t-tokens?
+        found = $web3t-tokens[token]
+        return cb null, found
+    
+    add-fee-payer-coin = (cb)->
+        { coin, network } = wallet
+        { txFeeIn } = network
+        return cb null if not txFeeIn?
+        found = store.current.account.wallets |> find (-> it.coin.token is txFeeIn)
+        return cb null if found?
+        err, fee-payer-plugin <- get-plugin(txFeeIn)
+        console.error "[add-fee-payer-coin] error: ", "Plugin #{txFeeIn} is not found" if not fee-payer-plugin?
+        return cb null if not fee-payer-plugin?
+        err <- web3t.install-quick fee-payer-plugin
+        return cb err if err?
+        console.log "Fee payer plugin was installed succesfully"
+        cb null
+    
     send = (wallet, event)-->
         #event.stop-propagation!
         return alert "Not yet loaded" if not wallet?
@@ -25,6 +50,7 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         wallet-is-disabled = isNaN(wallet.balance)
         is-loading = store.current.refreshing is yes
         return if wallet-is-disabled or is-loading
+        err <- add-fee-payer-coin! 
         { send-transaction } = web3t[wallet.coin.token]
         to = ""
         value = 0
@@ -47,8 +73,9 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         store.current.send.is-swap = yes
         return alert "Not yet loaded" if not wallet?
         return alert "Not yet loaded" if not web3t[wallet.coin.token]?
+        err <- add-fee-payer-coin! 
         { send-transaction } = web3t[wallet.coin.token]
-        config = { to: "", value: 0, swap: yes, gas: 500000 }
+        config = { to: "", value: 0, swap: yes }
         err <- send-transaction config  
         store.current.send.error = err if err?
         return cb err if err?
@@ -82,6 +109,9 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     balance = round5(wallet.balance) + ' ' + wallet.coin.token.to-upper-case!
     balance-usd = wallet.balance `times` usd-rate
     pending = round5(wallet.pending-sent) + ' ' + wallet.coin.token.to-upper-case!
+    wallet-icon = 
+        | wallet.coin?custom is yes and icons.customWalletIcon? => icons.customWalletIcon
+        | _ => wallet.coin.image 
     style = get-primary-info store
     button-style=
         color: style.app.text
@@ -90,4 +120,4 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     last = 
         | wallets.length < 4 and index + 1 is wallets.length => \last
         | _ => ""
-    { button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }
+    { wallet-icon, button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }

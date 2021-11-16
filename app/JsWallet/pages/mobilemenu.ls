@@ -9,7 +9,7 @@ require! {
     \../setup-pages.ls
     \../icons.ls
 }
-# .mobile-menu1180085679
+# .mobile-menu-416769987
 #     &.active
 #         width: 100%
 #         height: 100vh
@@ -19,6 +19,8 @@ require! {
 #         backdrop-filter: blur(5px)
 #         top: 0
 #         right: 0
+#         left: 0
+#         bottom: 0
 #         z-index: 12
 #         transition: all .5s
 #     .content
@@ -380,7 +382,7 @@ module.exports = (store, web3)->
         if store.menu.show then \active else \ ""
     close = ->
         store.menu.show = no
-    react.create-element 'div', { className: "#{show-mobile} mobile-menu mobile-menu1180085679" }, children = 
+    react.create-element 'div', { className: "#{show-mobile} mobile-menu mobile-menu-416769987" }, children = 
         react.create-element 'div', { style: border-style, className: "#{show-mobile} content" }, children = 
             react.create-element 'div', { on-click: close, className: 'closed' }, children = 
                 icon \X, 20

@@ -10,13 +10,14 @@ export mainnet =
         web3Provider: 'https://evmexplorer.velas.com/rpc'
         url: 'https://evmexplorer.velas.com'
         apiUrl: 'https://evmexplorer.velas.com/api'
+        apikey: \KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9
 
     address: "0xe2C120f188eBd5389F71Cf4d9C16d05b62A58993"   
     HOME_BRIDGE: "0xe60728c7669107aeDfA20b7C9486A4Be169EBcA1"
     HOME_BRIDGE_TOKEN:   "0xe2C120f188eBd5389F71Cf4d9C16d05b62A58993" 
     
-    txFeeIn: "vlx2"
-    txBridgeFeeIn: "vlx2"
+    txFeeIn: "vlx_evm"
+    txBridgeFeeIn: "vlx_evm"
     group: "Velas"
 
     networks:
@@ -37,13 +38,14 @@ export testnet =
         web3Provider : \https://evmexplorer.testnet.velas.com/rpc
         url: 'https://evmexplorer.testnet.velas.com',
         apiUrl: 'https://evmexplorer.testnet.velas.com/api'
+        apikey: \KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9
     
     address: "0x6b82bDB5a1AdFfa3816D1F942D60f0269647C646"  #HOME_BRIDGEABLE_TOKEN  
     HOME_BRIDGE: "0xd8Aa969E1B6435FaBF100C9243B8243fFac28Cfd"
     HOME_BRIDGE_TOKEN:   "0x6b82bDB5a1AdFfa3816D1F942D60f0269647C646" 
     
-    txFeeIn: "vlx2"
-    txBridgeFeeIn: "vlx2"
+    txFeeIn: "vlx_evm"
+    txBridgeFeeIn: "vlx_evm"
     group: "Velas"
 
     networks:
