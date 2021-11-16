@@ -5,6 +5,8 @@
   "main": "",
   "dependencies": {
     "@primer/octicons-react": "9.1.1",
+    "@sentry/react": "^6.15.0",
+    "@sentry/tracing": "^6.15.0",
     "atob": "2.1.2",
     "bignumber.js": "6.0.0",
     "bitgo-utxo-lib": "^1.8.0",
