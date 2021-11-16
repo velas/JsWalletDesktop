@@ -10,6 +10,7 @@ require! {
     \./web3.ls
     \./autodetect-lang.ls
     \./get-device.ls
+    \./get-size.ls
     \./background/background-task.ls : { start-service }
     \./render-error.ls
     \./scam-warning.ls
@@ -26,6 +27,7 @@ store = observable data-scheme
 start-service store
 change-device = ->
     store.current.device = get-device!
+    store.current.size = get-size!
 lock-wallet = ->
     return if window.nolock is yes or store.current.page isnt \wallets
     store.current.page = \locked
