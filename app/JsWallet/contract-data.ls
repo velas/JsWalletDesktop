@@ -133,11 +133,11 @@ module.exports = ({store})->
         contract = web3.eth.contract(abis.ForeignBridgeErcToErc).at(FOREIGN_BRIDGE)         
         
         data = 
-            | is-self-send is yes => contract.transfer.get-data(FOREIGN_BRIDGE, value)
+            | up(wallet.address) is up(store.current.send.to) => contract.transfer.get-data(FOREIGN_BRIDGE, value)
             | _ => contract.relayTokens.get-data(receiver, value) 
         
         contract-address =
-            | is-self-send is yes => FOREIGN_BRIDGE_TOKEN
+            | up(wallet.address) is up(store.current.send.to) => FOREIGN_BRIDGE_TOKEN
             | _ => FOREIGN_BRIDGE  
         
         store.current.send.contract-address = contract-address
@@ -319,7 +319,7 @@ module.exports = ({store})->
             web3 = new Web3(new Web3.providers.HttpProvider(wallet?network?api?web3Provider))
             web3.eth.provider-url = wallet?network?api?web3Provider      
             contract = web3.eth.contract(abis.ForeignBridgeNativeToErc).at(FOREIGN_BRIDGE_TOKEN) 
-            debugger
+            #debugger
             data = 
                 | up(wallet.address) is up(store.current.send.to) => contract.transfer.get-data(FOREIGN_BRIDGE, to-hex(value), send.to)
                 | _ => contract.transferAndCall.get-data(FOREIGN_BRIDGE, value, send.to)                   

@@ -141,12 +141,13 @@ export change-amount-send = (store, amount-send, fast, cb)->
     decimals = amountSend.toString!.split(".").1
     result-amount-send = amount-send ? 0
     if decimals? and (decimals.length > decimalsConfig) then
-        send.amount-send = round-number send.amount-send, {decimals: decimalsConfig}
+        send.amount-send = round-number result-amount-send, {decimals: decimalsConfig}
         amount-send = send.amount-send
     if amount-send? then
         balance = +wallet.balance
         max-amount = Math.max 1e10, balance
         amountSend = max-amount if +amountSend > max-amount
+    send.amount-send = amountSend
     { fee-type, tx-type, fee-custom-amount } = store.current.send
     usd-rate = wallet?usd-rate ? 0
     fee-usd-rate = fee-wallet?usd-rate ? 0

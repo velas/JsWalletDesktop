@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, sort-by, reverse }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../json-parse.js
@@ -100,9 +100,9 @@ export get-transaction-info = (config, cb)->
     cb null, result
     
 get-gas-estimate = (config, cb)->
-    { network, fee-type, account, amount, to, data, swap } = config
+    { network, fee-type, account, amount, to, data } = config
     return cb null, "0" if +amount is 0
-    return cb null, "0" if (+account?balance ? 0) is 0  
+    #return cb null, "0" if (+account?balance ? 0) is 0  
     dec = get-dec network     
     from = account.address
     web3 = get-web3 network
@@ -111,8 +111,8 @@ get-gas-estimate = (config, cb)->
         | data? and data isnt "0x" => to    
         | _ => network.address 
         
-    val = +(amount `times` dec)    
-    value = "0x" + val.toString(16)
+    val = (amount `times` dec)    
+    value = $toHex(val)
         
     $data =
         | data? and data isnt "0x" => data    
@@ -125,13 +125,13 @@ get-gas-estimate = (config, cb)->
     return cb null, "0" if err?    
     cb null, from-hex(estimate)
     
-export calc-fee = ({ network, tx, fee-type, account, amount, to, data, swap, gas-price }, cb)->
+export calc-fee = ({ network, tx, fee-type, account, amount, to, data, gas-price }, cb)->
     return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?  
-    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data, swap }  
+    err, gas-estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }  
     return cb err if err?
     res = gas-price `times` gas-estimate
     val = res `div` dec
@@ -253,13 +253,27 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     
     balance-eth = to-eth balance
     to-send = amount
-    return cb "Balance #{balance-eth} is not enough to send tx #{to-send}" if +balance-eth < +to-send 
+    return cb "Balance is not enough to send tx #{to-send}" if +balance-eth < +to-send 
+    
+    web3 = get-web3 network
+    err, vlx-evm-balance <- web3.eth.get-balance account.address
+    return cb err if err?
+    vlx-evm-balance-eth = to-eth vlx-evm-balance
+    return cb "Velas EVM balance (#{vlx-evm-balance-eth}) is not enough to send tx" if +vlx-evm-balance-eth < +amount-fee
+    
     data-parsed =
         | data? => data
         | _ => '0x'
     
-    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data, swap }  
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  
     return cb err if err?
+    
+    one-percent = gas-estimate `times` "0.01"    
+    $gas-estimate = gas-estimate `plus` one-percent
+    res = $gas-estimate.split(".")   
+    $gas-estimate = 
+        | res.length is 2 => res.0
+        | _ => $gas-estimate
     
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
@@ -281,7 +295,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
-        gas: to-hex gas-estimate
+        gas: to-hex $gas-estimate
         to: $recipient
         from: address
         data: $data
@@ -323,14 +337,13 @@ get-web3 = (network)->
     new Web3(new Web3.providers.HttpProvider(web3-provider))
     
 abi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}]
-get-contract-instance = (web3, addr, swap)->
+get-contract-instance = (web3, addr)->
     | typeof! web3.eth.contract is \Function => web3.eth.contract(abi).at(addr)
     | _ => new web3.eth.Contract(abi, addr)
     
 export get-balance = ({ network, address} , cb)->
     web3 = get-web3 network
-    swap = null    
-    contract = get-contract-instance web3, network.address, swap     
+    contract = get-contract-instance web3, network.address     
     number = contract.balance-of(address)
     dec = get-dec network
     balance = number `div` dec

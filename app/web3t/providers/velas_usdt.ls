@@ -136,7 +136,6 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-eth = -> it `div` (10^18)
     value = to-wei amount
     err, gas-price-bn <- calc-gas-price { web3, fee-type }
-    #gas-price = round (gas-price-bn `plus` ( gas-price-bn `div` 100 ))
     gas-price = gas-price-bn.to-fixed!
     return cb err if err?
     gas-minimal = to-wei-eth(amount-fee) `div` gas-price
@@ -146,7 +145,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, balance <- web3.eth.get-balance from
     return cb err if err?
     balance-eth = to-eth balance
-    return cb "Balance is not enough to send tx" if +balance-eth < +amount-fee
+    return cb "Velas EVM balance (#{balance-eth}) is not enough to send tx" if +balance-eth < +amount-fee
     err, erc-balance <- get-balance { network, address: from }
     return cb err if err?
     return cb "Balance is not enough to send this amount" if +erc-balance < +amount

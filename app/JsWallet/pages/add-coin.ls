@@ -219,11 +219,11 @@ create-item = ({ store, web3t }, item)-->
     menu-style=
         color: style.app.text
     react.create-element 'div', { className: 'outer-item' }, children = 
-        react.create-element 'div', { style: background,, id: "add-token-#{title}", className: 'item' }, children = 
-            react.create-element 'img', { src: "#{item.image}" }
-            react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
-            react.create-element 'button', { on-click: add, style: button-style }, children = 
-                icon \Plus, 20
+      react.create-element 'div', { style: background,, id: "add-token-#{item.token}", className: 'item' }, children = 
+          react.create-element 'img', { src: "#{item.image}" }
+          react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
+          react.create-element 'button', { on-click: add, style: button-style }, children = 
+              icon \Plus, 20
 filter-item = (store)-> (item)->
     return yes if (store.current.filter-plugins ? "").length is 0
     (item.token ? "").index-of(store.current.filter-plugins) > -1

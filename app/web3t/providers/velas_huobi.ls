@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, sort-by, reverse, uniqueBy }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39, ERC20BridgeToken }
     \../json-parse.js
@@ -103,9 +103,9 @@ export get-transaction-info = (config, cb)->
     cb null, result
     
 get-gas-estimate = (config, cb)->
-    { network, fee-type, account, amount, to, data, swap } = config
+    { network, fee-type, account, amount, to, data, gas } = config    
+    return cb null, gas if gas?
     return cb null, "0" if +amount is 0
-    return cb null, "0" if (+account?balance ? 0) is 0  
     dec = get-dec network     
     from = account.address
     web3 = get-web3 network
@@ -114,8 +114,8 @@ get-gas-estimate = (config, cb)->
         | data? and data isnt "0x" => to    
         | _ => network.address 
         
-    val = +(amount `times` dec)    
-    value = "0x" + val.toString(16)
+    val = (amount `times` dec)    
+    value = $toHex(val)
         
     $data =
         | data? and data isnt "0x" => data    
@@ -125,7 +125,7 @@ get-gas-estimate = (config, cb)->
     query = { from, to: receiver, data: $data, value: "0x0" }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
     console.error "[getGasEstimate] error:" err if err?   
-    return cb null, "0" if err?    
+    return cb err if err?    
     cb null, from-hex(estimate)
     
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
@@ -134,7 +134,8 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?   
-    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }
+    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data, gas }
+    return cb null, network.tx-fee if err?   
     res = gas-price `times` estimate
     val = res `div` dec
     cb null, val
@@ -318,8 +319,15 @@ export create-transaction = (config, cb)-->
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     
-    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data, gas }  
     return cb err if err?
+    
+    one-percent = gas-estimate `times` "0.01"    
+    $gas-estimate = gas-estimate `plus` one-percent
+    res = $gas-estimate.split(".")   
+    $gas-estimate = 
+        | res.length is 2 => res.0
+        | _ => $gas-estimate
     
     err, balance <- get-eth-balance { network, address: account.address }
     return cb err if err?
@@ -341,7 +349,7 @@ export create-transaction = (config, cb)-->
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
-        gas: to-hex gas-estimate
+        gas: to-hex $gas-estimate
         to: $recipient 
         from: account.address
         data: $data 

@@ -12,7 +12,7 @@
     
     "testnet": {
         "decimals": 6,
-        "txFee": "0.0050",
+        "txFee": "0.0005",
         "txFeeOptions": {
             "cheap": "0.0005",
             "auto": "0.001"
@@ -45,7 +45,7 @@
     
     "mainnet": {
         "decimals": 6,
-        "txFee": "0.0050",
+        "txFee": "0.0005",
         "txFeeOptions": {
             "cheap": "0.0005",
             "auto": "0.001"

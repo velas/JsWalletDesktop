@@ -1,7 +1,7 @@
 require! {
     \mobx : { toJS }
     \./math.ls : { times, minus, div, plus }
-    \./api.ls : { create-transaction, push-tx }
+    \./api.ls : { create-transaction, push-tx, get-transaction-info }
     \./calc-amount.ls : { change-amount-calc-fiat, change-amount-send, change-amount, calc-crypto-from-eur, calc-crypto-from-usd, change-amount-without-fee }
     \./send-form.ls : { notify-form-result }
     \./get-name-mask.ls
@@ -63,6 +63,7 @@ module.exports = (store, web3t)->
     amount-buffer = send.amount-buffer  
     send-tx = ({ to, wallet, network, amount-send, amount-send-fee, data, coin, tx-type, gas, gas-price, swap }, cb)->
         { token } = send.coin
+        return cb "Fee amount must be more than 0" if +amount-send-fee is 0    
         current-network = store.current.network 
         chosen-network = store.current.send.chosen-network
         receiver = store.current.send.contract-address ? to    
@@ -307,7 +308,9 @@ module.exports = (store, web3t)->
         
         /* Check for allowed amount for contract */
         allowedRaw = contract.allowance(wallet.address, FOREIGN_BRIDGE)
-        allowed = allowedRaw `div` (10 ^ 0)   
+        #console.log {wallet.address, FOREIGN_BRIDGE, allowedRaw}    
+        allowed = allowedRaw `div` (10 ^ 0) 
+        #console.log {allowed, send.amountSend}      
  
         contract = web3.eth.contract(abis.ForeignBridgeErcToErc).at(FOREIGN_BRIDGE)         
         minPerTxRaw = contract.minPerTx!         
@@ -333,21 +336,21 @@ module.exports = (store, web3t)->
         store.current.send.contract-address = contract-address
         store.current.send.data = data    
         cb null, data    
-    checking-allowed = no   
+      
     /* Check for allowed amount for contract */
     check-allowed-amount = ({ contract, wallet, amount, allowed, bridge, bridgeToken }, cb)->
-        return if checking-allowed
+        return if store.current.send.checking-allowed is yes 
         return cb null if is-self-send is yes 
         return cb "bridge is not defined" if not bridge? 
         return cb "bridgeToken is not defined" if not bridgeToken? 
+        console.log {allowed, amount}   
+        return cb null if not (new bignumber(allowed).lt(amount))
 
-        return cb null if allowed >= amount
-        
         token = (wallet?coin?nickname ? "").to-upper-case!    
-        
+
         agree <- confirm store, "To execute this swap please approve that bridge contract can withdraw your #{token} and automate payments for you."
         return cb "Canceled by user" if not agree   
-        
+
         UINT_MAX_NUMBER = 4294967295 `times` (10 ^ wallet.network.decimals)
         { coin, gas, gas-price, amount-send, amount-send-fee, fee-type, network, tx-type } = send 
         data = contract.approve.get-data(bridge, UINT_MAX_NUMBER) 
@@ -358,21 +361,38 @@ module.exports = (store, web3t)->
             token: token
             coin: coin
             amount: "0"
-            amount-fee: "0.002"    
+            amount-fee: "0.0002"    
             data: data
-            gas: 50000
+            gas: 150000
             gas-price: gas-price   
             fee-type: fee-type
-        
+
         err, tx-data <- create-transaction tx-obj
-        return cb err if err?
-        checking-allowed = yes   
+        return cb "[check-allowed-amount / create-transaction] err:" + err if err?
+        store.current.send.checking-allowed = yes   
         err, tx <- push-tx { token, tx-type, network, ...tx-data }
-        return cb err if err?
-        checking-allowed = no 
+        if err?
+            store.current.send.checking-allowed = no        
+            return cb err
+        err, res <- check-approve({start: Date.now!, token: wallet?coin.token, network: wallet.network, tx})
+        store.current.send.checking-allowed = no 
+        return cb err if err?    
         cb null
-        
-   
+    
+    check-tx-confirmation = ({start, token, network, tx}, cb)->
+        ->
+            if Date.now! > (start + 60000)         
+                return cb "Transaction approve timeout has expired. Try to repeat later."   
+            err, more-info <- get-transaction-info { token, network, tx }
+            if more-info?status is \confirmed or more-info?info?status is "0x1"
+                cb null 
+            console.log {err, more-info}    
+    
+    check-approve = ({start, token, network, tx}, cb)-> 
+        timer-cb = (err, res)->
+            clearInterval(check-approve.timer) 
+            return cb err, res             
+        check-approve.timer = set-interval check-tx-confirmation({start, token, network, tx}, timer-cb), 1000   
     /* 
     * Swap from USDT ETHEREUM to USDT VELAS 
     */     
@@ -848,13 +868,14 @@ module.exports = (store, web3t)->
     amount-change = (event)->                   
         value = get-value event
         /* Prevent call onChange twice */
-        if (value ? "0").toString() is (amount-buffer.val).toString() then
-            return no  
+        if (value ? "0").toString() is (amount-buffer.val).toString() and amount-buffer.address is store.current.send.to  then 
+            return store.current.send.amount-send = value  
         # if empty string return zero!    
         value = "0" if not value? or isNaN(value)   
         <- change-amount store, value, no
         store.current.send.fee-calculating = no
         amount-buffer.val = (value ? "0").toString()
+        amount-buffer.address = store.current.send.to   
     perform-amount-eur-change = (value)->
         to-send = calc-crypto-from-eur store, value
         <- change-amount store, to-send , no

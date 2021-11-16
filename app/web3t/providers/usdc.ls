@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../addresses.js : { ethToVlx, vlxToEth }
@@ -31,9 +31,10 @@ is-address = (address) ->
         
         
 get-gas-estimate = (config, cb)->
-    { network, fee-type, account, amount, to, data, swap } = config
+    { network, fee-type, account, amount, to, data, gas } = config
+    return cb null, gas if gas?    
     return cb null, "0" if +amount is 0
-    return cb null, "0" if (+account?balance ? 0) is 0  
+    #return cb null, "0" if (+account?balance ? 0) is 0  
     dec = get-dec network     
     from = account.address
     web3 = get-web3 network
@@ -42,8 +43,8 @@ get-gas-estimate = (config, cb)->
         | data? and data isnt "0x" => to    
         | _ => network.address 
         
-    val = +(amount `times` dec)    
-    value = "0x" + val.toString(16)
+    val = (amount `times` dec)    
+    value = $toHex(val)
         
     $data =
         | data? and data isnt "0x" => data    
@@ -53,7 +54,7 @@ get-gas-estimate = (config, cb)->
     query = { from, to: receiver, data: $data, value: "0x0" }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
     console.error "[getGasEstimate] error:" err if err?   
-    return cb null, "0" if err?    
+    return cb err if err?  
     cb null, from-hex(estimate)
         
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
@@ -63,6 +64,7 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?   
     err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }
+    return cb null, network.tx-fee if err?
     res = gas-price `times` estimate
     val = res `div` (10^18)
     cb null, val
@@ -149,7 +151,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     #gas-minimal = to-wei-eth(amount-fee) `div` gas-price
     #gas-estimate = round ( gas-minimal `times` 5 )
     
-    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data, gas }  
     return cb err if err?
     
     return cb "getBalance is not a function" if typeof! web3.eth.get-balance isnt \Function   

@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, sort-by, reverse, uniqueBy }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39, ERC20BridgeToken }
     \../json-parse.js
@@ -105,7 +105,7 @@ export get-transaction-info = (config, cb)->
 get-gas-estimate = (config, cb)->
     { network, fee-type, account, amount, to, data, swap } = config
     return cb null, "0" if +amount is 0
-    return cb null, "0" if (+account?balance ? 0) is 0  
+    #return cb null, "0" if (+account?balance ? 0) is 0  
     dec = get-dec network     
     from = account.address
     web3 = get-web3 network
@@ -114,8 +114,8 @@ get-gas-estimate = (config, cb)->
         | data? and data isnt "0x" => to    
         | _ => network.address 
         
-    val = +(amount `times` dec)    
-    value = "0x" + val.toString(16)
+    val = (amount `times` dec)    
+    value = $toHex(val)
         
     $data =
         | data? and data isnt "0x" => data    
@@ -134,7 +134,7 @@ export calc-fee = ({ network, tx, fee-type, account, amount, to, data }, cb)->
     err, gas-price <- calc-gas-price { network, web3, fee-type }
     return cb err if err?    
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data }  
-    return cb err if err?
+    return cb null, network.tx-fee if err?
     dec = get-dec network
     res = gas-price `times` gas-estimate
     val = res `div` (10^18)
@@ -335,13 +335,20 @@ export create-transaction = (config, cb)-->
         | _ => network.address
         
     err, estimate <- get-gas-estimate { network, fee-type, account, amount, to: recipient, data, swap }
-    return cb err if err? 
+    return cb err if err?
+    
+    one-percent = estimate `times` "0.01"    
+    $estimate = estimate `plus` one-percent
+    res = $estimate.split(".")   
+    $estimate = 
+        | res.length is 2 => res.0
+        | _ => $estimate  
           
     configs = 
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
-        gas: to-hex estimate
+        gas: to-hex $estimate
         to: to
         from: account.address
         data: $data   

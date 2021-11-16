@@ -30,6 +30,7 @@ require! {
     "../../web3t/contracts/ForeignBridgeNativeToErc.json" : \ForeignBridgeNativeToErc
     \../contract-data.ls
     \moment
+    \../components/popups/loader.ls
 }
 # .content-1881242726
 #     position: relative
@@ -574,6 +575,7 @@ send = ({ store, web3t })->
     
     /* Render */
     react.create-element 'div', { className: 'content content-1881242726' }, children = 
+        loader {loading: store.current.send.checking-allowed, text: "Please wait, approving bridge contract..."}
         react.create-element 'div', { style: border-header, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
             react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
@@ -687,6 +689,7 @@ module.exports.init = ({ store, web3t }, cb)->
     return cb null if not wallet?
     return cb null if send.sending is yes
     store.current.send.fee-calculating = no
+    store.current.send.checking-allowed = no
     store.current.send.foreign-network-fee = 0
     store.current.send.amountCharged = 0
     store.current.send.amountChargedUsd = 0

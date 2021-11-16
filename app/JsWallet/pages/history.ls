@@ -849,7 +849,7 @@ render-transaction = (store, web3t, tran)-->
                             """ #{time-ago}"""
                         if pending is yes
                             react.create-element 'span', {}, children = 
-                                react.create-element 'span', { className: 'bold' }, ' ' + lang.created
+                                react.create-element 'span', { on-click: delete-pending-tx(tran), className: 'bold delete' }, ' ' + lang.delete
                         else
                             react.create-element 'span', { className: 'bold confirmed done' }, ' ' + lang.confirmed
                         react.create-element 'span', { className: 'smart-contract' }, children = 

@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../addresses.js : { ethToVlx, vlxToEth }
@@ -32,7 +32,7 @@ is-address = (address) ->
 get-gas-estimate = (config, cb)->
     { network, fee-type, account, amount, to, data, swap } = config
     return cb null, "0" if +amount is 0
-    return cb null, "0" if (+account?balance ? 0) is 0  
+    #return cb null, "0" if (+account?balance ? 0) is 0  
     dec = get-dec network     
     from = account.address
     web3 = get-web3 network
@@ -41,8 +41,8 @@ get-gas-estimate = (config, cb)->
         | data? and data isnt "0x" => to    
         | _ => network.address 
         
-    val = +(amount `times` dec)    
-    value = "0x" + val.toString(16)
+    val = (amount `times` dec)    
+    value = $toHex(val)
         
     $data =
         | data? and data isnt "0x" => data    
@@ -51,9 +51,10 @@ get-gas-estimate = (config, cb)->
         
     query = { from, to: receiver, data: $data, value: "0x0" }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    console.error "[getGasEstimate] error:" err if err?   
-    return cb null, "1000000" if err?    
-    cb null, from-hex(estimate) `div` '2'     
+    console.error "[getGasEstimate] error:" err if err?  
+    return cb null, "1000000" 
+    #return cb null, "1000000" if err?    
+    #cb null, from-hex(estimate) `div` '2'     
     
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
     #return cb null if typeof! to isnt \String or to.length is 0
@@ -162,6 +163,13 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, gas-estimate <- get-gas-estimate { network, fee-type, account, amount, to: recipient, data }  
     return cb err if err?
     
+    one-percent = gas-estimate `times` "0.01"    
+    $gas-estimate = gas-estimate `plus` one-percent
+    res = $gas-estimate.split(".")   
+    $gas-estimate = 
+        | res.length is 2 => res.0
+        | _ => $gas-estimate 
+    
     gas-price = buffer.gas-price
     
     if fee-type is \custom or !gas-price  
@@ -172,7 +180,10 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, balance <- web3.eth.get-balance from
     return cb err if err?
     balance-eth = to-eth balance
-    return cb "Balance is not enough to send tx" if +balance-eth < +amount-fee
+    parent-token = 
+        | network?txFeeIn is \vlx2 => "Velas Legacy" 
+        | _ => "Velas EVM"   
+    return cb "#{parent-token} balance (#{balance-eth}) is not enough to send tx" if +balance-eth < +amount-fee
     err, erc-balance <- get-balance { network, address: from }
     return cb err if err?
     return cb "Balance is not enough to send this amount" if +erc-balance < +amount
@@ -191,7 +202,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         nonce: to-hex nonce
         gas-price: to-hex gas-price
         value: to-hex "0"
-        gas: to-hex gas-estimate
+        gas: to-hex $gas-estimate
         to: $recipient
         from: from
         data: $data || \0x

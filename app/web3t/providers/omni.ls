@@ -2,7 +2,7 @@ require! {
     \bip32
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, find, sum, values }
-    \../math.js : { plus, minus, times, div }
+    \../math.js : { plus, minus, times, div, $toHex }
     \./superagent.js : { get, post }
     \../json-parse.js
     \../deadline.js
