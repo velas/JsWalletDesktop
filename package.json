@@ -1,7 +1,7 @@
 {
   "name": "Velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.74",
+  "version": "0.14.75",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -70,8 +70,6 @@
   },
   "dependencies": {
     "@primer/octicons-react": "^9.6.0",
-    "@sentry/react": "6.14.0",
-    "@sentry/tracing": "6.14.0",
     "atob": "^2.1.2",
     "big-integer": "^1.6.48",
     "bignumber": "^1.1.0",
