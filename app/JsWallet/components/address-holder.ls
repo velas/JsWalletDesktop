@@ -8,7 +8,7 @@ require! {
     \./copy.ls
     \../contracts.ls
 }
-# .address-holder431607113
+# .address-holder315309714
 #     @import scheme
 #     $card-top-height: 50px
 #     width: 100%
@@ -91,8 +91,6 @@ require! {
 #             display: inline-block
 #             cursor: pointer
 #             user-select: text !important
-#             &.active
-#                 color: orange
 module.exports = ({ store, wallet, type, text })->
     style = get-primary-info store
     address-suffix = store.current.address-suffix
@@ -131,7 +129,7 @@ module.exports = ({ store, wallet, type, text })->
         wallet["address#{address-suffix}"]
     address = get-address(wallet, address-suffix)
     is-contract = contracts.is-contract(store, address)
-    react.create-element 'div', { className: 'address-holder address-holder431607113' }, children = 
+    react.create-element 'div', { className: 'address-holder address-holder315309714' }, children = 
         identicon { store, address: address-title }
         react.create-element 'span', { style: input, className: 'inner-address-holder' }, children = 
             if store.url-params.internal?

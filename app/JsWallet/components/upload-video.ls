@@ -3,7 +3,7 @@ require! {
     \prelude-ls : { map, find }
     \../icons.ls
     \../get-primary-info.ls
-    \../../web3t/json-parse.ls
+    \../../web3t/json-parse.js
 }
 #TODO: move to utils
 as-callback = (p, cb)->

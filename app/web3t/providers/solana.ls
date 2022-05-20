@@ -35,7 +35,7 @@ export calc-fee = (config, cb)->
     fee = 
         | lamportsPerSignature? => lamportsPerSignature `div` dec
         | _ => txFee      
-    cb null, fee   
+    cb null,  { calced-fee: fee }  
 make-query = (network, method, params, cb)->
     { web3-provider } = network.api
     query = {

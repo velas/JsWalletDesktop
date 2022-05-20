@@ -3,7 +3,7 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \./icon.ls
-    \../icons.ls 
+    \../icons.ls
     \../components/text-field.ls
     \../components/button.ls
     \../copy.ls
@@ -196,6 +196,13 @@ require! {
 #             @media screen and (max-width: 800px)
 #                 padding: 7px 0
 #                 text-align: center
+subtitle-notify-msg = (store)->
+    | store.staking.webSocketAvailable is no =>
+        if store.current.page in <[ validators account_details poolchoosing ]>
+            "This action may take some time to reflect on the staking dashboard."
+        else
+            null
+    | _ => null
 alert-modal = (store)->
     return null if typeof! store.current.alert isnt \String
     cancel = ->
@@ -225,7 +232,7 @@ alert-modal = (store)->
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
-            react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' '
+            react.create-element 'div', { style: confirmation-style2, className: 'text' }, children = 
                 text-rows |> map build-text
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: cancel, style: button-style, id: "alert-close", className: 'button' }, children = 
@@ -246,6 +253,7 @@ notification-modal = (store)->
         color: style.app.text
     confirmation-style2 =
         color: style.app.text
+        user-select: "text"
     button-style=
         color: style.app.text
     confirmation=
@@ -254,10 +262,16 @@ notification-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
+    subtitle-msg = subtitle-notify-msg(store)
+    subtitle-style =
+        opacity: 0.3
+        font-size: "13px"
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' Alert'
             react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' ' + store.current.notification
+            if subtitle-msg?
+                react.create-element 'div', { style: subtitle-style, className: 'subitile-msg' }, ' ' + subtitle-msg
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: cancel, style: button-style, id: "notification-close", className: 'button' }, children = 
                     react.create-element 'span', { className: 'cancel' }, children = 
@@ -295,7 +309,7 @@ confirmation-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     lang = get-lang store
-    title = 
+    title =
         | (store.current.confirmation ? "").indexOf("You can add this token back in the future by going to “Add custom token”") > -1 => "Hide Token?"
         | _ => lang.confirmation
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
@@ -307,10 +321,10 @@ confirmation-modal = (store)->
                 minutes =
                     | refer-to in <[ eth vlx_erc20 ]> => 30
                     | refer-to in <[ bsc_vlx busd ]> => 10
-                    | refer-to is \vlx_huobi => 10     
+                    | refer-to is \vlx_huobi => 10
                     | _ => 0
-                if minutes > 0 
-                    text = "Depending on the network congestions it may take a long time to finish swap. Average confirmation time is ~#{minutes} min."  
+                if minutes > 0
+                    text = "Depending on the network congestions it may take a long time to finish swap. Average confirmation time is ~#{minutes} min."
                     react.create-element 'div', { style: notification-style, className: 'notification' }, children = 
                         react.create-element 'p', { style: text-style }, '  ' + text
             react.create-element 'div', { className: 'buttons' }, children = 
@@ -322,7 +336,6 @@ confirmation-modal = (store)->
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""
-                        
 swap-confirmation-modal = (store)->
     return null if typeof! store.current.swap-confirmation isnt \String
     confirm = ->
@@ -342,6 +355,7 @@ swap-confirmation-modal = (store)->
         color: style.app.text
     confirmation-style2 =
         color: style.app.text
+        user-select: "text"
     button-style=
         color: style.app.text
     confirmation=
@@ -350,24 +364,22 @@ swap-confirmation-modal = (store)->
         color: style.app.text
         border-bottom: "1px solid #{style.app.border}"
     { amount-send, tokenFrom, amount-receive, tokenTo, bridgeFee, homeBridge, foreignBridge, fromNetwork, toNetwork} = store.current.swap-confirmation
-    # "Please confirm that you would like to send #{amount-send} #{token-display} from #{walletGroup} to receive #{amount-receive} #{token-display} on #{receiverGroup}." 
+    # "Please confirm that you would like to send #{amount-send} #{token-display} from #{walletGroup} to receive #{amount-receive} #{token-display} on #{receiverGroup}."
     lang = get-lang store
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { style: confirmation-style, className: 'header' }, ' ' + lang.confirmation
-            react.create-element 'div', { style: confirmation-style2, className: 'text' }, ' '
+            react.create-element 'div', { style: confirmation-style2, className: 'text' }, children = 
                 react.create-element 'span', {}, ' Please confirm that you would like to send'
-                react.create-element 'span', { className: 'amount' }, ' ' + amount-send + ' '
+                react.create-element 'span', { className: 'amount' }, ' ' + amount-send
                 react.create-element 'span', { className: 'token' }, ' ' + tokenFrom
                 react.create-element 'span', {}, ' from'
                 react.create-element 'span', { className: 'network' }, ' ' + fromNetwork
                 react.create-element 'span', {}, ' to receive'
-                react.create-element 'span', { className: 'amount' }, ' ' + amount-receive + ' '
+                react.create-element 'span', { className: 'amount' }, ' ' + amount-receive
                 react.create-element 'span', { className: 'token' }, ' ' + tokenTo
                 react.create-element 'span', {}, ' on'
                 react.create-element 'span', { className: 'network' }, ' ' + toNetwork
-                 
-                
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: confirm, style: button-style, id: "confirmation-confirm", className: 'button' }, children = 
                     react.create-element 'span', { className: 'apply' }, children = 
@@ -377,7 +389,6 @@ swap-confirmation-modal = (store)->
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""
-                        
 prompt-modal = (store)->
     return null if typeof! store.current.prompt isnt \String
     confirm = ->
@@ -400,6 +411,7 @@ prompt-modal = (store)->
         background: style.app.background
         background-color: style.app.bgspare
         color: style.app.text
+        user-select: "text"
     input-style =
         background: style.app.input
         color: style.app.text
@@ -458,11 +470,12 @@ prompt-modal2 = (store)->
         background: style.app.background
         background-color: style.app.bgspare
         color: style.app.text
+        user-select: "text"
     input-style =
         background: style.app.input
         color: style.app.text
         border: "0"
-    input-holder-style = 
+    input-holder-style =
         max-width: '250px'
         margin: 'auto'
     button-style=
@@ -482,7 +495,7 @@ prompt-modal2 = (store)->
     max-amount-container =
         text-align: "left"
     use-max-amount = !->
-        store.current.prompt-answer = 
+        store.current.prompt-answer =
             | not wallet? => 0
             | _ => Math.floor(wallet.balance `minus` 1)
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
@@ -525,7 +538,7 @@ prompt-modal3 = (store)->
         callback null if typeof! callback is \Function
         store.current.prompt-answer = ""
     amount-change = (e)->
-        balance = chosenAccount.balanceRaw `div` (10^9)      
+        balance = chosenAccount.balanceRaw `div` (10^9)
         max-amount = Math.floor(balance `minus` min_stake)
         amount =
             | e.target.value > max-amount => max-amount
@@ -536,11 +549,12 @@ prompt-modal3 = (store)->
         background: style.app.background
         background-color: style.app.bgspare
         color: style.app.text
+        user-select: "text"
     input-style =
         background: style.app.input
         color: style.app.text
         border: "0"
-    input-holder-style = 
+    input-holder-style =
         max-width: '250px'
         margin: 'auto'
     button-style=
@@ -560,7 +574,7 @@ prompt-modal3 = (store)->
     max-amount-container =
         text-align: "left"
     use-max-amount = !->
-        store.current.prompt-answer = 
+        store.current.prompt-answer =
             | not chosenAccount? => 0
             | _ => balanceRaw `minus` active_stake `minus` min_stake
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
@@ -569,8 +583,6 @@ prompt-modal3 = (store)->
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }
             react.create-element 'div', { style: input-holder-style }, children = 
                 amount-field { store, token: "vlx_native", value: "#{round5edit store.current.prompt-answer}", on-change: amount-change, placeholder="0", id="prompt-input" }
-                react.create-element 'div', { style: max-amount-container, className: 'max-amount' }, children = 
-                    react.create-element 'button', { on-click: use-max-amount, style: button-primary3-style, type: "button", id: "send-max", className: 'send-all' }, ' ' + lang.use-max
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: confirm, style: button-style, id: "prompt-confirm", className: 'button' }, children = 
                     react.create-element 'span', { className: 'apply' }, children = 
@@ -670,29 +682,30 @@ prompt-choose-token-modal = (store)->
         {image, name, token} = item.coin
         wallet = wallets |> find (-> it.coin.token is token)
         return null if not wallet?
-        #on-click = ->
-            #store.current.prompt-answer = token
-            #data.token = name
-            #copy-to-clipboard wallet.private-key 
-            #notify store, "Your Private KEY is copied into your clipboard", cb
         token-network = item?network?group
         active-class = if store.current.prompt-answer is token then "active" else ""
         token = (wallet?coin?name ? "").to-upper-case!
+        elId = "cpc-wallet-#{token}"
+        onCopy = (event) ->
+            # fixes the issue with no copied value after one click https://github.com/nkbt/react-copy-to-clipboard/issues/100#issuecomment-524057405
+            el = document.getElementById elId
+            el.click!
+            copied-pk-inform(store)(event)
         react.create-element 'li', { style: optionStyle, className: "#{active-class} lang-item" }, children = 
-            react.create-element 'div', {}, '        '
-                react.create-element CopyToClipboard, { text: "#{wallet.private-key}", on-copy: copied-pk-inform(store), style: icon2-style }, children = 
+            react.create-element 'div', {}, children = 
+                react.create-element CopyToClipboard, { text: "#{wallet.private-key}", on-copy: onCopy, style: icon2-style }, children = 
                     react.create-element 'div', {}, children = 
-                        react.create-element 'img', { src: "#{image}", style: imgStyle }
-                        react.create-element 'span', { className: 'token-name' }, ' ' + name + ' '
+                        react.create-element 'img', { id: "#{elId}", src: "#{image}", style: imgStyle }
+                        react.create-element 'span', { className: 'token-name' }, ' ' + name
                         react.create-element 'span', { className: 'network' }, ' ' + token-network + ' Network'
-    input-style = 
+    input-style =
         position: "relative"
         text-align: "center"
         display: "block"
         color: "rgb(70 70 70)"
         width: "100% !important"
     disabled-layout-style =
-        z-index: 1 
+        z-index: 1
         background: "transparent"
         position: "absolute"
         top: 0
@@ -700,10 +713,10 @@ prompt-choose-token-modal = (store)->
         left: 0
         right: 0
         width: "100%"
-    tokens-drop-style = 
+    tokens-drop-style =
         max-height: "300px"
         overflow: "scroll"
-    button-section-style = 
+    button-section-style =
         max-width: "500px"
         margin: "auto"
     prompt-answer = store.current.prompt-answer ? null
@@ -767,7 +780,7 @@ prompt-password-modal = (store)->
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + lang.confirmation
             react.create-element 'div', { style: style=confirmation-style, className: 'text' }, ' ' + store.current.prompt-password
             react.create-element 'div', { className: 'pin-input' }, children = 
-                text-field { ref:(c)->{ a = focus-input(c)}, store, type: 'password' value: store.current.prompt-password-answer, placeholder: "", on-change: change-input , on-key-down: catch-key, id="prompt-input" }  
+                text-field { ref:(c)->{ a = focus-input(c)}, store, type: 'password' value: store.current.prompt-password-answer, placeholder: "", on-change: change-input , on-key-down: catch-key, id="prompt-input" }
             react.create-element 'div', { className: 'buttons' }, children = 
                 react.create-element 'button', { on-click: confirm, style: button-style, id: "prompt-confirm", className: 'button' }, children = 
                     react.create-element 'span', { className: 'apply' }, children = 
@@ -777,12 +790,10 @@ prompt-password-modal = (store)->
                     react.create-element 'span', { className: 'cancel' }, children = 
                         react.create-element 'img', { src: "#{icons.close}", className: 'icon-svg-cancel' }
                         """ #{lang.cancel}"""
-                        
 $network-details-modal = (store)->
-    return null if store.current.current-network-details.show isnt yes 
+    return null if store.current.current-network-details.show isnt yes
     cancel = ->
         store.current.current-network-details.show = no
-    
     style = get-primary-info store
     table-item-style-title=
         flex: 1
@@ -790,9 +801,9 @@ $network-details-modal = (store)->
         background: style.app.background
         background-color: style.app.bgspare
         color: style.app.text
-        padding: "20px" 
+        padding: "20px"
         text-align: "left"
-    close-button-style = 
+    close-button-style =
         float: "right"
         padding: "5px"
         background: "transparent"
@@ -821,10 +832,12 @@ $network-details-modal = (store)->
     maxPerTx   = round-human(maxPerTx,   {decimals: 2})
     remaining  = round-human(remainingDailyLimit,   {decimals: 2})
     currency = (nickname ? "").to-upper-case!
-      
     from-network = (name ? "").to-upper-case!
     to-network   = (wallet-to.coin.name ? "").to-upper-case!
     title = "Swap from #{from-network} to #{to-network}"
+    bridgeFeePercentLabel =
+        | store.current.send.feeMode is "fixed" => round-human(homeFeePercent) + " " + currency
+        | _ => "#{bridgeFeePercent} %"
     react.create-element 'div', { className: 'confirmation confirmation-1782791312' }, children = 
         react.create-element 'div', { style: confirmation, className: 'confirmation-body' }, children = 
             react.create-element 'div', { className: 'buttons' }, children = 
@@ -834,7 +847,7 @@ $network-details-modal = (store)->
             react.create-element 'div', { style: style=confirmation-style, className: 'header' }, ' ' + title
             react.create-element 'div', { style: style=confirmation-style, className: 'table' }, children = 
                 react.create-element 'div', { style: table-item-style, className: 'table-item' }, children = 
-                    react.create-element 'div', { style: table-item-style-title, className: 'title h5' }, ' Remaining Daily Quota '
+                    react.create-element 'div', { style: table-item-style-title, className: 'title h5' }, ' Remaining Daily Quota'
                     react.create-element 'div', { className: 'value' }, children = 
                         """ #{remaining}"""
                         """ #{currency}"""
@@ -846,15 +859,12 @@ $network-details-modal = (store)->
                 react.create-element 'div', { style: table-item-style, className: 'table-item' }, children = 
                     react.create-element 'div', { style: table-item-style-title, className: 'title h5' }, ' Minimum Amount Per Transaction'
                     react.create-element 'div', { className: 'value' }, children = 
-                        """ #{minPerTx} """
+                        """ #{minPerTx}"""
                         """ #{currency}"""
                 if +homeFeePercent > 0
                     react.create-element 'div', { style: table-item-style, className: 'table-item' }, children = 
                         react.create-element 'div', { style: table-item-style-title, className: 'title h5' }, ' Bridge fee'
-                        react.create-element 'div', { style: bridge-fee-style, className: 'value' }, ' ' + bridgeFeePercent + ' %   '
-            
-                        
-                        
+                        react.create-element 'div', { style: bridge-fee-style, className: 'value' }, ' ' + bridgeFeePercentLabel
 export confirmation-control = (store)->
     #for situation when we ask peen before action. this window should be hidden
     return null if store.current.page-pin?
@@ -900,5 +910,4 @@ export alert = (store, text, cb)->
     state.callback = cb
 export network-details-modal = ->
     store.current.current-network-details.show = yes
-   
 window.confirm-state = state

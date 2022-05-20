@@ -40,8 +40,6 @@ require! {
 #         &:after
 #             left: ($base-line-height / 2)
 #             animation-delay: ($pulse-duration / 1.5)
-    
-    
 module.exports = (isLoading)->
     return null if not isLoading
     react.create-element 'div', { key: "loading", className: 'loading-page loading-page-1437163893' }, children = 

@@ -19,8 +19,42 @@ require! {
     \../icons.ls
     \../components/header.ls
 }
-# .wallets-container-378698936
+# .wallets-container-923505056
 #     @import scheme
+#     >.tooltipContent
+#         z-index: 100;
+#         width: 19vw;
+#         position: absolute;
+#         padding: 15px;
+#         font-size: 12px
+#         font-weight: 100
+#         color: #fff
+#         margin-left: 25px
+#         margin-top: -16px
+#         background: #1f1f1f
+#         box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.34)
+#         text-align: left
+#         pointer-events: none
+#         opacity: 0;
+#         display: none;
+#         @media screen and (max-width: 1400px)
+#             width: 16vw;
+#         @media screen and (max-width: 1000px)
+#             width: 19vw;
+#         .inner-tooltip
+#             position: relative
+#             .triangle
+#                 width: 0
+#                 height: 0
+#                 border-top: 5px solid transparent
+#                 border-right: 8px solid #1f1f1f
+#                 border-bottom: 5px solid transparent
+#                 position: absolute
+#                 left: -22.5px
+#                 top: 0%
+
+#             @media (max-width: 735px)
+#                 display: none
 #     >.left-side
 #         margin-left: $menu
 #         @media(max-width: $ipad)
@@ -232,6 +266,14 @@ mobile = ({ store, web3t })->
         margin-left: "10px"
     border-right=
         border-right: "1px solid #{style.app.border}"
+    tooltipVisibility = if (store.showTooltip) then
+        top: "#{store.tooltipCoordinates.y}px"
+        left: "#{store.tooltipCoordinates.x}px"
+        opacity: 1
+        display: "block"
+    else
+        opacity: 0
+        display: "none"
     open-account = ->
         store.current.switch-account = not store.current.switch-account
     edit-account-name = ->
@@ -266,13 +308,11 @@ mobile = ({ store, web3t })->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-
     wallets-groups =
         ^^wallets
             |> filter (?)
             |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
             |> group-by (.network.group)
-
     groups = wallets-groups |> keys
     group-index = store.current.group-index
     groups-wallets =
@@ -284,8 +324,11 @@ mobile = ({ store, web3t })->
     group-wallets = [] if not group-wallets?
     wallet-detail = group-wallets |> find (-> group-wallets.index-of(it) is store.current.wallet-index)
     #return null if not wallet-detail?
-
-    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container-378698936' }, children = 
+    react.create-element 'div', { key: "wallets", className: 'wallets-container wallets-container-923505056' }, children = 
+        react.create-element 'div', { style: tooltipVisibility, className: 'tooltipContent' }, children = 
+            react.create-element 'div', { className: 'inner-tooltip' }, children = 
+                react.create-element 'div', {}, ' ' + store.tooltipMessage
+                react.create-element 'div', { className: 'triangle' }
         header store, web3t
         react.create-element 'div', { style: row, className: 'left-side' }, children = 
             react.create-element 'div', { style: left-side }, children = 

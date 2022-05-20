@@ -8,7 +8,7 @@ require! {
     \../../icon.ls
     \../../icons.ls
     \../../swaping/networks.ls : "token-networks" 
-    \../../send-funcs.ls   
+    \../../send-funcs.ls
     \../../pages/confirmation.ls : { network-details-modal }  
 }
 # .network-slider-1989415310
@@ -108,7 +108,6 @@ require! {
 #         70%
 #             transform: translateX(0px)
 #             opacity: 1
-     
 #     @keyframes animate-arrow-2  
 #         0%
 #             transform: translateX(-20px)
@@ -116,7 +115,6 @@ require! {
 #         70%,100%
 #             transform: translateX(0px)
 #             opacity: 0.5
-     
 #     @keyframes animate-arrow-3  
 #         0%
 #             transform: translateX(-10px)
@@ -124,7 +122,6 @@ require! {
 #         70%,100%
 #             transform: translateX(0px)
 #             opacity: 0.3
-     
 #     @-webkit-keyframes blink
 #         0%     
 #             opacity: 0
@@ -153,13 +150,10 @@ require! {
 #         text-transform: uppercase
 #         top: 30px
 #         z-index: 2
- 
 #         @media(max-width: 600px)
 #             font-size: 10px    
 #         &.network-from
 #             left: 10px
-            
-          
 #         &.network-to
 #             right: 0  
 #             color: #ce942c 
@@ -167,8 +161,6 @@ require! {
 #             text-align: center
 #     .default-network-input
 #         position: relative
-        
-            
 #     .arrow-right
 #         font-size: 15px
 #         font-weight: bold
@@ -194,8 +186,6 @@ require! {
 #             animation-delay: 1.3s
 #         &:nth-child(5)
 #             animation-delay: 1.4s
-        
-            
 #     .navigation-button
 #         transition: opacity 0.2
 #         z-index: 2
@@ -218,12 +208,10 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
     return null if not (store.current.send.isSwap? and store.current.send.isSwap is yes)
     return null if not wallet.network.networks? or Object.keys(wallet.network.networks).length is 0
     { getHomeFee } = send-funcs store, web3t
-    
     is-not-bridge = ->
         { token } = store.current.send.wallet.coin  
         { chosen-network } = store.current.send
         chosen-network.refer-to in <[ vlx_evm vlx2 vlx_native ]> and token in <[ vlx_evm vlx2 vlx_native ]> 
-    
     wallets = store.current.account.wallets |> map (-> [it.coin.token, it]) |> pairs-to-obj 
     available-networks = 
         wallet.network.networks 
@@ -267,12 +255,10 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
         margin-top: "-1px"
         float: "revert"
         display: "block"
-        
     tooltip-style =
         position: "absolute"
         right: "0"
         bottom: "-21px"        
-        
     limits-label-style =
         font-size: "11px"
         color: "rgb(206, 148, 44)" 
@@ -290,10 +276,7 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
             cursor: "default"
             min-height: "36px"
     input-style2 <<<< pointer-style        
-    
-    
     display-value = store.current.send.chosen-network.name.to-upper-case!
-      
     go = (inc)-> ->
         current = network-labels.index-of(store.current.send.chosen-network.id)
         lenght = network-labels.length
@@ -309,33 +292,27 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
         store.current.send.error = ''
         store.current.send.data = null
         err <- on-change!
-    
     dropdown-click = ->
         return if network-labels.length <= 1
         store.current.switch-network = !store.current.switch-network
-    
     { name, referTo } = store.current.send.chosen-network
     wallet2 = store.current.account.wallets |> find (-> (it?coin?token ? "").to-lower-case! is (referTo ? "").to-lower-case!)
     network-from = (wallet?coin?name ? "") 
     network-to   = (name ? "")  
-    
     network-to-details = ->
         return if is-not-bridge!
         store.current.current-network-details = store.current.foreign-network-details <<<< { wallet: wallet2 }
         network-details-modal!
-          
     network-from-details = ->
         return if is-not-bridge!
         store.current.current-network-details = store.current.network-details <<<< { wallet }
         network-details-modal!
-        
     create-network-position = (it)->
         details = it?1
         return if not details?
         { referTo, name } = details
         net-wallet = store.current.account.wallets |> find (-> it.coin.token is referTo)
         return if not net-wallet?
-        
         change-network = ->
             return if store.current.refreshing is yes
             if store.current.send.chosenNetwork.refer-to is referTo
@@ -348,21 +325,17 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
             err <- on-change!
             store.current.refreshing = no
             store.current.switch-network = no
-        
         position-style =
             color: if store.current.send.chosenNetwork.refer-to is referTo then '#3cd5af' else ''
         react.create-element 'div', { on-click: change-network, key: "account#{referTo}", style: position-style, className: 'table-row-menu' }, children = 
             react.create-element 'div', { className: 'col folder-menu' }, children = 
                 react.create-element 'div', {}, ' ' + name
-    
     dropdown-class = 
         | network-labels.length > 1 => ""
         | _ => "inactive"           
-                
     rotate-class =
         | store.current.switch-network is yes => \rotate 
         | _ => ""
-    
     /* Render */
     react.create-element 'div', { className: 'network-slider network-slider-1989415310' }, children = 
         react.create-element 'label', { style: style2, className: 'control-label' }, ' Choose Network'
@@ -372,25 +345,20 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
         if no
             react.create-element 'span', { style: choose-network-style, className: 'chosen-network network-to' }, children = 
                 """ #{network-to}"""
-                            
         react.create-element 'div', {}, children = 
             react.create-element 'span', { style: pointer-style, on-click: dropdown-click, className: 'bold default-network-input' }, children = 
                 react.create-element 'input', { value: "#{network-to}", style: input-style2, disabled: true, className: 'change-network' }
-            
             react.create-element 'span', { on-click: dropdown-click, className: "#{dropdown-class} button navigation-button right" }, children = 
                 react.create-element 'div', { className: 'button-inner' }, children = 
                     react.create-element 'img', { src: "#{icons.arrow-down}", style: img-icon-style, className: "#{rotate-class} icon-svg" }
-            
             if store.current.switch-network and network-labels.length > 1
                 react.create-element 'div', { style: filter-body, className: 'switch-menu' }, children = 
                     react.create-element 'div', { className: 'middle account' }, children = 
                         available-networks  
                             |> obj-to-pairs 
                             |> map create-network-position
-                            
         if not is-not-bridge!
             react.create-element 'div', { style: tooltip-style, on-click: network-from-details, className: 'limits-tooltip' }, children = 
                 react.create-element 'span', {}, children = 
                     react.create-element 'img', { src: "#{icons.info}", style: info-style, className: 'icon-svg' }
                     react.create-element 'span', { style: limits-label-style }, ' limits  '
-                        

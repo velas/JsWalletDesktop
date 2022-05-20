@@ -1,41 +1,41 @@
 require! {
     \localStorage
-    \prelude-ls : { any, map, filter }
+    \prelude-ls : { keys, any, map, filter, obj-to-pairs }
     #react controls
     \./modal.ls : { install, replace }
-    \../web3t/providers/superagent.ls : { get }
+    \../web3t/providers/superagent.js : { get }
     \./json-parse.ls
     \./providers.ls
-    \../web3t/plugins/eth-coin.ls : eth
-    \../web3t/plugins/eth-legacy-coin.ls : eth_legacy
-    \../web3t/plugins/symblox.ls : syx
-    \../web3t/plugins/symblox-v2.ls : syx2
-    \../web3t/plugins/ltc-coin.ls : ltc
-    \../web3t/plugins/usdt-coin.ls : usdt
+    \../web3t/plugins/eth-coin.js : eth
+    \../web3t/plugins/eth-legacy-coin.js : eth_legacy
+    \../web3t/plugins/symblox.js : syx
+    \../web3t/plugins/symblox-v2.js : syx2
+    \../web3t/plugins/ltc-coin.js : ltc
+    \../web3t/plugins/usdt-coin.js : usdt
     \../web3t/plugins/usdt_erc20.json : usdt_erc20
-    #\../web3t/plugins/vlx-coin.ls : vlx_evm
-    \../web3t/plugins/vlx_erc20-coin.ls : vlx_erc20
-    \../web3t/plugins/bnb-coin.ls : bnb 
-    \../web3t/plugins/vlx_busd-coin.ls : vlx_busd 
-    \../web3t/plugins/busd-coin.ls : busd 
-    \../web3t/plugins/huobi-coin.ls : huobi  
-    \../web3t/plugins/vlx-huobi-coin.ls : vlx_huobi 
-    \../web3t/plugins/vlx-usdt-coin.ls : vlx_usdt  
-    \../web3t/plugins/vlx-eth-coin.ls : vlx_eth
-    \../web3t/plugins/usdc-coin.ls : usdc  
-    \../web3t/plugins/vlx_usdc-coin.ls : vlx_usdc  
+    #\../web3t/plugins/vlx-coin.js : vlx_evm
+    \../web3t/plugins/vlx_erc20-coin.js : vlx_erc20
+    \../web3t/plugins/bnb-coin.js : bnb 
+    \../web3t/plugins/vlx_busd-coin.js : vlx_busd 
+    \../web3t/plugins/busd-coin.js : busd 
+    \../web3t/plugins/huobi-coin.js : huobi  
+    \../web3t/plugins/vlx-huobi-coin.js : vlx_huobi 
+    \../web3t/plugins/vlx-usdt-coin.js : vlx_usdt  
+    \../web3t/plugins/vlx-eth-coin.js : vlx_eth
+    \../web3t/plugins/usdc-coin.js : usdc  
+    \../web3t/plugins/vlx_usdc-coin.js : vlx_usdc  
     \../web3t/plugins/usdt_erc20_legacy-coin.json : usdt_erc20_legacy
-    \../web3t/plugins/bsc-vlx-coin.ls : bsc_vlx 
-    \../web3t/plugins/vlx-evm-legacy-coin.ls : vlx_evm_legacy   
-      
+    \../web3t/plugins/bsc-vlx-coin.js : bsc_vlx 
+    \../web3t/plugins/vlx-evm-legacy-coin.js : vlx_evm_legacy   
 }
 current-configs = { vlx_eth, eth_legacy, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt,  usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }
 plugin-pairs = {
     vlx_huobi: \huobi
     busd: \bnb
     vlx_erc20: \eth 
-    vlx_usdc: \usdc   
+    #vlx_usdc: \usdc   
     bsc_vlx: \bnb 
+    #usdc: <[ vlx_usdc ]>  
 }    
 required-fields = <[ type token enabled ]>
 not-in = (arr, arr2)->
@@ -93,15 +93,21 @@ remove-from-registry = (name, cb)->
     save-registry registry
     cb null
 build-name = (token)-> "plugin-#{token}"
-
 install-plugins = (plugin, cb)->
     result-plugins = 
+        | plugin-pairs[plugin.token]? and typeof! plugin-pairs[plugin.token] is \Array =>
+            rest = 
+                current-configs
+                    |> obj-to-pairs 
+                    |> filter (it)->
+                        it?1?token in plugin-pairs[plugin.token] 
+                    |> map (-> it?1)                            
+            [plugin] ++ rest      
         | plugin-pairs[plugin.token]? => [plugin, current-configs[plugin-pairs[plugin.token]]]
-        | _ => [plugin]  
+        | _ => [plugin]
     err <- install-all-plugins result-plugins
     return cb err if err?
     cb null 
- 
 install-all-plugins = ([plugin, ...rest], cb)->
     return cb null if not plugin?
     err <- install-plugin(plugin)
@@ -109,7 +115,6 @@ install-all-plugins = ([plugin, ...rest], cb)->
     err <- install-all-plugins(rest)
     return cb err if err?
     cb null   
-      
 export install-plugin = (plugin, cb)->
     err <- verify-plugin plugin
     return cb err if err?
@@ -126,7 +131,10 @@ uninstall-plugin = (cweb3, token, cb)->
     err <- remove-from-registry name
     return cb err if err?
     local-storage.set-item name, ""
-    cweb3.refresh cb
+    store.forceReload = yes
+    <- cweb3.refresh
+    store.forceReload = no
+    cb null
 ask-user = (cweb3, store, plugin, cb)->
     err, registry <- get-registry
     return cb err if err?
@@ -144,6 +152,8 @@ export build-install = (cweb3, store)-> (plugin, cb)->
     return cb err if err?
     cweb3.refresh cb
 export build-quick-install = (cweb3, store)-> (plugin, cb)->
+    store.forceReload = yes
+    store.forceReloadTxs = yes
     return cb "Please unlock the wallet" if store.current.page is \locked
     err <- verify-plugin plugin
     return cb err if err?

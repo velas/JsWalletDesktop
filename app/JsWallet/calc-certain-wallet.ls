@@ -38,23 +38,33 @@ calc-wallet = (store, token, cb)->
         wallet.btc-rate =
             | usd-rate is \.. => \..
             | _ => round5 (usd-rate `times` btc-rate)
-        err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
-        console.error "#{token} get-balance error:" err if err?
-        balance = "0" if err?
-        pending-sent = 0
-        wallet.pending-sent = pending-sent
-        wallet.balance = balance
-        wallet.balance-usd =
-            | usd-rate is \.. => 0
-            | _ => balance `times` usd-rate
-        balance-usd-current =
-            | wallet.balance-usd is \.. => 0
-            | _ => wallet.balance-usd
-        state-before = state.balance-usd
-        #convert state.balance-usd to string as bignumber can throw exception for numbers
-        state.balance-usd = state.balance-usd + ''
-        state.balance-usd = state.balance-usd `plus` balance-usd-current
-        cb!   
+        wallet.status = \loading
+        try
+            err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
+            console.error "#{token} get-balance error:" err if err?
+            pending-sent = 0
+            wallet.pending-sent = pending-sent
+            wallet.balance =
+                | isNaN(balance) => ".."
+                | _ => balance
+            wallet.balance-usd =
+                | isNaN(usd-rate) or isNaN(balance) => ".."
+                | _ => balance `times` usd-rate
+            balance-usd-current =
+                | isNaN(wallet.balance-usd) => 0
+                | _ => wallet.balance-usd
+            wallet.status =
+                | isNaN(balance) || err? => 'error'
+                | _ => 'loaded'
+            wallet.state =
+                | err? => 'error'
+                | _ => 'success'
+            cb!
+        catch err
+            wallet.status = "error"
+            wallet.state = "error"
+            cb!
+
     loaders =
         [wallet] |> map build-loader
     tasks =
@@ -62,7 +72,7 @@ calc-wallet = (store, token, cb)->
             |> map -> [loaders.index-of(it).to-string!, it]
             |> pairs-to-obj
     <- run [tasks] .then
-    #store.current.balance-usd = state.balance-usd
+
     if store.current.account.wallets[current.token-index]?
         store.current.account.wallets[current.token-index] = wallet
     cb null

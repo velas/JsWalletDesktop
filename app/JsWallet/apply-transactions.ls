@@ -10,7 +10,7 @@ filter-txs = (store, tx)-->
         store.current.filter[prop] is tx[prop] 
     found.length is filter-props.length
 module.exports = (store)->
-    return store.transactions.applied.length = 0 if store.transactions.all.length is 0
+    #return store.transactions.applied.length = 0 if store.transactions.all.length is 0
     store.transactions.applied = 
         store.transactions.all
             |> filter (it)-> (it.type in store.current.filter-txs-types) 

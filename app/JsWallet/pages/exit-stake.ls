@@ -160,7 +160,7 @@ fast-withdraw-process = (store, web3t)->
             return alert store, "Max amount to withdraw is #{max `div` (10^18)}"
         # If try to move NOT FULL stake
         if (+my-stake - +store.staking.withdrawAmount) isnt 0 then
-            # if after withdraw stake amount, pool FROM amount become LESS then 10k
+            # if after withdraw stake amount, pool FROM amount become LESS than 10k
             if (+my-stake - +store.staking.withdrawAmount) < 10000 then
                 return alert store, "The pool stake amount after withdraw #{store.staking.withdrawAmount} VLX must be at least 10000 VLX or no stake at all.", cb
         return alert store, lang.actionProhibited, cb if +amount is 0

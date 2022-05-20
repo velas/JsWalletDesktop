@@ -37,7 +37,7 @@ module.exports = (store)->
     web3Solana = velas-solana-web3 store
     networks =
         mainnet: \https://api.velas.com
-        testnet: \https://explorer.testnet.velas.com/rpc
+        testnet: \https://api.testnet.velas.com/rpc
         devnet: \https://api.devnet.velas.com
     api =
         Staking      : web3.eth.contract(abis.Staking).at(staking-address) if staking-address?

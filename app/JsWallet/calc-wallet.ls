@@ -11,12 +11,13 @@ calc-wallet = (store, cb)->
     return cb "Store is required" if not store?
     { wallets } = store.current.account
     { rates } = store
-    state =
-        balance-usd: 0
-    build-loader = (wallet)-> task (cb)->
+    return if calc-wallet.loading is yes
+    calc-wallet.loading = yes
+
+    build-loader = (wallet)->
+        <- set-timeout _, 1
+        wallet.status = 'loading'
         { token } = wallet.coin
-        #wallet.balance = \..
-        #wallet.balance-usd = 0
         token = wallet.coin.token.to-lower-case!
         usd-rate = 
             | not rates[token]? =>  \..
@@ -24,10 +25,6 @@ calc-wallet = (store, cb)->
             | _ => rates[token]
         # convert usd-rate to string because bigint does not like number type and can throw exception
         usd-rate = usd-rate + ''
-        #coin =
-        #    coins |> find (.token is wallet.coin.token)
-        #return cb "Coin Not Found" if not coin?
-        #coin.wallet = wallet
         wallet.usd-rate =
             | usd-rate is \.. => \..
             | _ => usd-rate
@@ -39,39 +36,32 @@ calc-wallet = (store, cb)->
         wallet.btc-rate =
             | usd-rate is \.. => \..
             | _ => round5 (usd-rate `times` btc-rate)
-        err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
-        console.error "#{token} get-balance error:" err if err?
-        #balance = "0" if err?
-        pending-sent = 0
-        #    store.transactions.all
-        #        |> filter (.token is token)
-        #        |> filter (.pending is yes)
-        #        |> map (.amount)
-        #        |> foldl plus, 0
-        #err, pending-sent <- get-pending-amount { store, token, wallet.network }
-        #console.log { err, pending-sent }
-        wallet.pending-sent = pending-sent
-        wallet.balance = 
-            | isNaN(balance) => ".."
-            | _ => balance
-        wallet.balance-usd =
-            | isNaN(usd-rate) or isNaN(balance) => ".."
-            | _ => balance `times` usd-rate
-        balance-usd-current =
-            | isNaN(wallet.balance-usd) => 0
-            | _ => wallet.balance-usd
-        #convert state.balance-usd to string as bignumber can throw exception for numbers
-        state.balance-usd = state.balance-usd + ''
-        #console.log "balance of #{token} is: " balance-usd-current
-        state.balance-usd = state.balance-usd `plus` balance-usd-current
+        try
+            err, balance <- get-balance { wallet.address, wallet.network, token, account: { wallet.address, wallet.private-key } }
+            console.error "#{token} get-balance error:" err if err?
+            pending-sent = 0
+            wallet.pending-sent = pending-sent
+            wallet.balance =
+                | isNaN(balance) => ".."
+                | _ => balance
+            wallet.balance-usd =
+                | isNaN(usd-rate) or isNaN(balance) => ".."
+                | _ => balance `times` usd-rate
+            balance-usd-current =
+                | isNaN(wallet.balance-usd) => 0
+                | _ => wallet.balance-usd
+            wallet.status =
+                | isNaN(balance) => 'error'
+                | _ => 'loaded'
+            wallet.state =
+                | err? => 'error'
+                | _ => 'success'
+        catch err
+            wallet.status = "error"
+            wallet.state = 'error'
+            cb!
         cb!
-    loaders =
-        wallets |> map build-loader
-    tasks =
-        loaders
-            |> map -> [loaders.index-of(it).to-string!, it]
-            |> pairs-to-obj
-    <- run [tasks] .then
-    store.current.balance-usd = state.balance-usd
+    store.current.account.wallets |> map build-loader
+    calc-wallet.loading = no
     cb null
 module.exports = calc-wallet

@@ -1,7 +1,7 @@
 require! {
     \./navigate.ls
     \./seed.ls : seedmem
-    \../web3t/providers/deps.ls : { bip39 }
+    \../web3t/providers/deps.js : { bip39 }
     \./pages/confirmation.ls : { alert }
     \prelude-ls : { words, map, filter, join }
     \./get-lang.ls
@@ -41,7 +41,6 @@ module.exports = (store, web3t)->
             bip39.mnemonic-to-entropy store.current.seed-words.map(-> it.part).join(" ")
             return cb null
         catch e
-
         /* If check fails continue to verify mnemonic generated with two 128 bits length seed phrases */
         try
             for i from 0 to store.current.seed-words.length-11 by 12

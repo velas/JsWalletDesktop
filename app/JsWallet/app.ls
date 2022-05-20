@@ -5,6 +5,7 @@ require! {
     \./pages.ls
     \./pages/header.ls
     \./pages/mobilemenu.ls
+    \./components/default-alert.ls
     #\./pages/side-menu.ls
     \./pages/left-menu.ls
     #\./pages/banner.ls
@@ -15,9 +16,9 @@ require! {
     \./get-primary-info.ls
     \./pages/confirmation.ls : { confirmation-control }
     \./pages/hovered-address.ls
-    \react-detect-offline : { Offline, Online }
+    \./components/react-detect-offline : { Offline, Online }
 }
-# .app1777402657
+# .app873713319
 #     button
 #         border-radius: var(--border-btn) !important
 #     input
@@ -46,7 +47,7 @@ require! {
 #         border-radius: 10px
 #     .table-scroll::-webkit-scrollbar-thumb
 #         border-radius: 10px
-#         background: #71748f 
+#         background: #71748f
 #     .table-scroll::-webkit-scrollbar-thumb:hover
 #         background: #ffffff
 #         border-radius: 10px
@@ -210,10 +211,11 @@ module.exports = ({ store, web3t })->
     react.create-element 'div', {}, children = 
         define-root store
         description store
-        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app1777402657" }, children = 
+        react.create-element 'div', { key: "content", style: style, className: "#{syncing} app app873713319" }, children = 
             modal-control store, web3t
             confirmation-control store, web3t
             copy-message store, web3t
+            default-alert store
             #banner store, web3t
             if no
                 if store.current.device is \mobile

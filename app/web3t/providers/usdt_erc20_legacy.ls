@@ -25,17 +25,17 @@ is-address = (address) ->
         false
     else
         true
-export calc-fee = ({ network, tx, fee-type, account, amount, to, data, gas }, cb)->
+export calc-fee = ({ network, tx, fee-type, account, amount, to, data, gas, gas-price }, cb)->
     return cb null if fee-type isnt \auto
     web3 = get-web3 network
-    err, gas-price <- calc-gas-price { network, web3, fee-type }
+    err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?    
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data, gas }  
-    return cb null, network.tx-fee if err?
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     dec = get-dec network
     res = gas-price `times` gas-estimate
     val = res `div` (10^18)
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate }
     
 get-gas-estimate = (config, cb)->
     { network, fee-type, account, amount, to, data, gas } = config    
@@ -109,7 +109,8 @@ get-dec = (network)->
     { decimals } = network
     10^decimals
     
-calc-gas-price = ({ network, web3, fee-type }, cb)->  
+calc-gas-price = ({ network, fee-type, gas-price }, cb)->  
+    return cb null, gas-price if gas-price?    
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
@@ -138,7 +139,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-wei-eth = -> it `times` (10^18)
     to-eth = -> it `div` (10^18)
     value = to-wei amount
-    err, gas-price <- calc-gas-price { network, web3, fee-type }
+    err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?
    
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }  

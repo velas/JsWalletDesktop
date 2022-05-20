@@ -23,7 +23,6 @@ require! {
     \../install-plugin.ls : { get-install-list }
     \../plugin-loader.ls : { common }
     \lodash/cloneDeep
-    
 }
 # .custom-token-content254250696
 #     position: relative
@@ -124,7 +123,6 @@ require! {
 #             margin-top: -5px  
 #         a
 #             color: #6f6fe2
-        
 #         .table-row-menu
 #             border-bottom: 1px solid rgba(238, 238, 238, 0.07)
 #             &:hover
@@ -149,8 +147,6 @@ require! {
 #                         opacity: 1
 #                     &.testnet-network
 #                         background: #343434
-                        
-            
 #         >form
 #             >table
 #                 background: transparent
@@ -177,7 +173,6 @@ require! {
 #                             text-align: right
 #             text-align: left
 #             margin: auto 10px
-            
 #             .switch-menu
 #                 .network-item
 #                     padding: 2px 5px
@@ -193,7 +188,6 @@ require! {
 #                     display: inline-block
 #                     &.testnet
 #                         background: rgb(31, 31, 31)
-            
 #             >.form-group
 #                 margin-bottom: 10px
 #                 min-height: 80px
@@ -213,7 +207,6 @@ require! {
 #                 .identicon
 #                     ~ span
 #                         background: var(--input)
-                
 #                 .control-label
 #                     padding-top: 5px
 #                     font-size: $label-font
@@ -443,8 +436,7 @@ form-group = (classes, title, style, content)->
         content!
 custom-token = ({ store, web3t })->
     return null if store.custom-token.add is no
-    
-    load-coins = require("../../web3t/load-coins.ls")
+    load-coins = require("../../web3t/load-coins.js")
     load-coins-keys = load-coins |> keys
     err, $web3t-tokens <- load-coins {plugins:[]}
     console.error err if err?
@@ -457,29 +449,21 @@ custom-token = ({ store, web3t })->
             |> map (-> it[1])
     base-plugins = common
     all-tokens = ((web3t-tokens ? []) ++ (custom-tokens ? [])) ++ base-plugins
-    
     { symbol, symbol-display, icon, contract-address, decimals, edit-symbol, network, switch-network, errors, selected-network } = store.custom-token
-       
-        
     WALLETS_FOR_NETWORKS = <[ vlx_eth vlx_erc20 bsc_vlx vlx_huobi ]>
     wallets = all-tokens
         |> filter (?token in WALLETS_FOR_NETWORKS) 
         |> filter (-> it?[store.current.network]?disabled isnt yes) 
-        
     get-wallet = (token)->
         all-tokens |> find(-> it.token is token)
-    
     if not network? then
         evm-wallet = get-wallet(WALLETS_FOR_NETWORKS[0])
         store.custom-token.network = { evm-wallet?token, ...evm-wallet?[store.current.network] }
-    
     close = ->
         store.current.add-coin = no
         store.custom-token.add = no
         clear-chosen-token-data!
-        
     is-exiting = store.custom-token.add is no || store.current.add-coin is no   
-    
     theme = get-primary-info(store)
     round-money = (val)->
         +val |> (-> it * 100) |> Math.round |> (-> it / 100)
@@ -529,52 +513,43 @@ custom-token = ({ store, web3t })->
         background-color: style.app.bgspare
     lang = get-lang store
     open-invoice = ->
- 
-    
     show-class =
         if store.current.open-menu then \hide else \ ""
     token-display = (symbol ? "").to-upper-case!
     token-icon = icon
-    
     get-number = (val)->
         number = (val ? "").toString!
         return \0 if number is ""
         val
-    
     go-back-from-send = ->
         store.custom-token.add = no
-    
     up = (str)->
         (str ? "").to-upper-case!
-    
     network-type = (store.current.network ? "").to-upper-case!
     token = store.customToken.network.token
     group = store.customToken.network.group  
     subtitle = up(store.custom-token.selected-network ? "")
     display-network = group + " " + up(subtitle)
-        
     /* Contract address */    
     contract-address-exists = (address)->
         address = address.trim!
         console.log "check1", custom-tokens
         found = 
             all-tokens
+                |> filter (-> it?[store.current.network]?group is group)
                 |> find (it)-> 
                     up(it?[store.current.network]?address) is up(address)
         console.log "found" found
         found?
-        
     check-token-unique = (token)->
         token-network = store.customToken.network?group
         selected-network = store.customToken.selected-network
         plugins = all-tokens
         found = plugins |> find(-> (it.token is token) and (up(it[selected-network]?group) is up(token-network))) 
         not found?
-        
     getParentWallet = (token)-> 
         wallet = all-tokens |> find (-> it.token is token)
         wallet 
-    
     save-custom-token = ->
         return set-error "contractAddress", "Please fill all required fields" if not (contract-address isnt "" or symbol isnt "" or symbol-display isnt "" or decimals isnt "")
         store.custom-token.isLoading = yes
@@ -582,7 +557,6 @@ custom-token = ({ store, web3t })->
         prototype-token = store.customToken.network.token
         found-plugin = plugins |> find (-> it.token is prototype-token)
         proto-plugin = cloneDeep(found-plugin) 
-        
         { symbol, decimals, selectedNetwork } = store.customToken
         err <- get-contract-symbol(contract-address)
         return set-error "symbol", "Contract not found for chosen network" if err?
@@ -594,7 +568,6 @@ custom-token = ({ store, web3t })->
             $token = $token + ":" + Date.now()       
             #store.custom-token.isLoading = no
             #return set-error "symbol", "This symbol is already taken. Please choose another one."
-        
         mainnet = proto-plugin?mainnet
         delete mainnet?networks
         delete mainnet?FOREIGN_BRIDGE
@@ -602,7 +575,6 @@ custom-token = ({ store, web3t })->
         delete mainnet?HOME_BRIDGE
         delete mainnet?HOME_BRIDGE_TOKEN
         mainnet <<<< { decimals, address: contract-address }
-        
         testnet = proto-plugin?testnet
         delete testnet?networks
         delete testnet?FOREIGN_BRIDGE
@@ -610,15 +582,12 @@ custom-token = ({ store, web3t })->
         delete testnet?HOME_BRIDGE
         delete testnet?HOME_BRIDGE_TOKEN        
         testnet <<<< { decimals, address: contract-address }        
-        
         result-network = 
             | up(store.customToken.selected-network) is "MAINNET" => { mainnet, testnet: null }
             | _ => { mainnet: null, testnet }
-            
         parentWallet = getParentWallet(proto-plugin?[store.current.network]?txFeeIn)
         nickname = if parentWallet then parentWallet.nickname else proto-plugin.nickname
         image = icons.customWalletIcon ? parentWallet?image ? proto-plugin.image
-        
         res = { 
             token: $token, 
             custom: yes, 
@@ -637,11 +606,10 @@ custom-token = ({ store, web3t })->
         store.just-added-token = $token
         timer = {}
         clear-task = ->
-             store.just-added-token = null
-             clear-timeout timer.id
+            store.just-added-token = null
+            clear-timeout timer.id
         timer.id = set-timeout clear-task, 1500
         close! if not err?
-    
     decimals-change = (event)->
         value = event.target.value
         value = (+get-number(value)).toString()
@@ -655,7 +623,6 @@ custom-token = ({ store, web3t })->
         #return if not valid
         #return if +value > 36
         store.custom-token.decimals = value
-        
     token-symbol-change = (event)->
         $symbol = (event?target?value ? "").trimLeft!
         if $symbol.match(/[^a-zA-Z0-9\-_\s]+/g)
@@ -666,7 +633,6 @@ custom-token = ({ store, web3t })->
             store.custom-token.errors.symbol = ""        
         store.custom-token.symbol-display = $symbol
         store.custom-token.symbol = $symbol if (store.custom-token.symbol ? "").trim!.length is 0
-        
     contract-address-change = (event)->
         store.custom-token.errors.contract-address = ""
         address = (event?target?value ? "").trim!
@@ -685,10 +651,8 @@ custom-token = ({ store, web3t })->
             | typeof! err in <[ Object Error ]> => err?message ? "Error occured while fetching contract data"
             | _ => (err ? "").toString!
         return store.custom-token.errors.contract-address = err-msg if err? 
-
     get-contract-symbol = (address, cb)->
         { web3Provider } = store.custom-token.network?api
-        
         web3 = new Web3(new Web3.providers.HttpProvider(web3Provider))
         web3.eth.provider-url = web3Provider
         abi = 
@@ -697,12 +661,10 @@ custom-token = ({ store, web3t })->
         contract = web3.eth.contract(abi).at(address)   
         error, symbol <- contract.symbol!
         cb null, symbol 
-        
     retrieve-info-by-token-address = (address)->
         return null if (address ? "").length is 0
         clear-errors! 
         store.custom-token.isLoading = yes   
-        
         { web3Provider } = store.custom-token.network?api
         return cb "web3Provider is not found!" if not web3Provider?
         web3 = new Web3(new Web3.providers.HttpProvider(web3Provider))
@@ -711,7 +673,6 @@ custom-token = ({ store, web3t })->
             * {"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"}
             * {"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}
         contract = web3.eth.contract(abi).at(address)
-        
         error, symbol <- contract.symbol!
         if error?
             set-default-chosen-token-data! 
@@ -719,7 +680,6 @@ custom-token = ({ store, web3t })->
             return set-error "symbol", error       
         store.custom-token.symbol = symbol
         store.custom-token.symbol-display = symbol
-        
         err, decimals-hex <- contract.decimals!
         if err?
             store.custom-token.isLoading = no
@@ -728,7 +688,6 @@ custom-token = ({ store, web3t })->
         decimals = new bignumber(decimals-hex + '').to-fixed!
         store.custom-token.decimals = decimals         
         store.custom-token.isLoading = no
-
     set-error = (initiator, error)->
         return if not store.custom-token.errors[initiator]?
         return if not error?
@@ -737,32 +696,24 @@ custom-token = ({ store, web3t })->
             | typeof! error in <[ Object Error ]> => error?message ? "Contract not found for chosen network"
             | _ => (error ? "").toString!
         store.custom-token.errors[initiator] = err-msg                        
-    
     run-async-task = (name, task)->
         console.log "run #{name} task"
         tt = set-timeout task, 1
         if is-exiting then
             stop-async-task(name, tt)        
-        
-       
     stop-async-task = (name, task-id)->
         clear-timeout(task-id)    
-    
     cancel = ->
         store.custom-token.add = no
         clear-chosen-token-data!
-        
     has-contract-error = (store.custom-token.errors.contract-address ? "").trim!.length > 0
     has-symbol-error   = (store.custom-token.errors.symbol ? "").trim!.length > 0
     has-decimals-error = (store.custom-token.errors.decimals ? "").trim!.length > 0
     has-network-error   = (store.custom-token.errors.network ? "").trim!.length > 0
-
     disabled = 
         | store.custom-token.decimals is 0 or store.custom-token.symbol.trim!.length is 0 or store.custom-token.contract-address.trim!.length is 0 => yes
         | has-contract-error || has-symbol-error || has-decimals-error => yes
         | _ => no  
-
-    
     /* Network dropdown */
     network-dropdown-click = ->
         store.custom-token.switch-network = !store.custom-token.switch-network
@@ -778,7 +729,6 @@ custom-token = ({ store, web3t })->
             |> filter (-> it?[store.current.network]?disabled isnt yes) 
             |> uniqueBy (-> it?[store.current.network]?api?web3Provider)
             |> map (-> { token: it?token, api: it?[store.current.network]?api, group: it?[store.current.network]?group })
-    
     change-network = (token, network) ->
         return ->
             return if not token? or not network?
@@ -789,31 +739,25 @@ custom-token = ({ store, web3t })->
             store.custom-token.network = { token, ...found-wallet?[network] }
             clear-chosen-token-data!
             clear-default-errors!
-            
     set-default-chosen-token-data = ->
         store.custom-token.decimals = 0
         store.custom-token.symbol = ""
         store.custom-token.symbol-display = ""
-        
     clear-chosen-token-data = ->
         store.custom-token.decimals = 0
         store.custom-token.symbol = ""
         store.custom-token.symbol-display = ""
         store.custom-token.contract-address = ""
-        
     clear-errors = ->
         store.custom-token.errors.contract-address = ""
         store.custom-token.errors.symbol = ""
         store.custom-token.errors.decimals = ""
         store.custom-token.errors.network = ""
-        
     clear-default-errors = ->
         store.custom-token.errors.contract-address = ""
         store.custom-token.errors.decimals = ""
         store.custom-token.errors.network = ""
-
     input-disabled = (store.custom-token.symbol ? "".trim!).length is 0        
-            
     create-network-position = (data)-->
         { api, group, token } = data
         { apiUrl, url, web3Provider, provider } = api
@@ -836,21 +780,16 @@ custom-token = ({ store, web3t })->
                 react.create-element 'span', { className: 'networks' }, children = 
                     react.create-element 'span', { on-click: change-mainnet-network, style: button-style-mainnet, className: 'network-item-button mainnet-network' }, ' Mainnet'
                     react.create-element 'span', { on-click: change-testnet-network, style: button-style-testnet, className: 'network-item-button testnet-network' }, ' Testnet'
-                
-    
-        
-    
     /* Render */
     react.create-element 'div', { className: 'custom-token-content custom-token-content254250696' }, children = 
         react.create-element 'div', { style: content-body-style, className: 'content-body' }, children = 
-                    
             react.create-element 'form', {}, children = 
                 form-group \sender, "Network", icon-style, ->
                     react.create-element 'div', {}, children = 
                         react.create-element 'div', { style: styles.input-network, on-click: network-dropdown-click, className: 'bold default-network-input' }, children = 
                             react.create-element 'div', { className: 'change-network-screen' }, ' ' + display-network
                             react.create-element 'div', { style: styles.navigation-button, className: 'button navigation-button right' }, children = 
-                                 react.create-element 'img', { src: "#{icons.arrow-down}", style: styles.img-icon-style, className: "#{rotate-class} icon-svg" }
+                                react.create-element 'img', { src: "#{icons.arrow-down}", style: styles.img-icon-style, className: "#{rotate-class} icon-svg" }
                             if store.custom-token.switch-network
                                 react.create-element 'div', { style: styles.filter-body, className: 'switch-menu' }, children = 
                                     react.create-element 'div', { className: 'middle' }, children = 
@@ -878,12 +817,7 @@ custom-token = ({ store, web3t })->
                 react.create-element 'div', { className: 'buttons' }, children = 
                     button { store, text: "Add token" , on-click: save-custom-token , type: \primary, no-icon:yes, makeDisabled: disabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
-
-
-        
-        
 module.exports = custom-token
-
 $styles = (style)->
     {
         input-network:

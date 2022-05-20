@@ -51,7 +51,7 @@ module.exports = (store, web3t)->
             return alert store, "Your stake must be more than 10000 VLX in order to move stake to another pool", cb
         # If try to move NOT FULL stake
         if (+my-stake - +store.staking.add.move-stake) isnt 0 then
-            # if after moving stake amount, pool FROM amount become LESS then 10k 
+            # if after moving stake amount, pool FROM amount become LESS than 10k 
             if (+my-stake - +store.staking.add.move-stake) < 10000 then
                 max-move-amount = Math.max (+my-stake - +store.staking.add.move-stake), 0
                 return alert store, "The pool stake amount after moving #{store.staking.add.move-stake} VLX must be at least 10000 VLX or no stake at all.", cb             

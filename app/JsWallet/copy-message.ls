@@ -56,7 +56,6 @@ module.exports = (store)->
             t
         else
             t.substr(0, 10) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 10, 10)
-        
         #r.to-upper-case!
     copy-style=
         color: style.app.text

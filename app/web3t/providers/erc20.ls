@@ -51,17 +51,18 @@ get-gas-estimate = (config, cb)->
     return cb err if err?     
     cb null, from-hex(estimate)
         
-export calc-fee = ({ network, tx, fee-type, account, amount, to, data, gas }, cb)->
+export calc-fee = ({ network, tx, fee-type, account, amount, to, data, gas, gas-price }, cb)->
     return cb null if fee-type isnt \auto
     web3 = get-web3 network
-    err, gas-price <- calc-gas-price { network, web3, fee-type }
+    err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?    
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data, gas }  
-    return cb null, network.tx-fee if err?
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     dec = get-dec network
     res = gas-price `times` gas-estimate
     val = res `div` (10^18)
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate }
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -122,7 +123,8 @@ get-web3 = (network)->
 get-dec = (network)->
     { decimals } = network
     10^decimals
-calc-gas-price = ({ network, web3, fee-type }, cb)->  
+calc-gas-price = ({ network, fee-type, gas-price }, cb)->  
+    return cb null, gas-price if gas-price?    
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
@@ -151,11 +153,8 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-wei-eth = -> it `times` (10^18)
     to-eth = -> it `div` (10^18)
     value = to-wei amount
-    err, gas-price <- calc-gas-price { network, web3, fee-type }
+    err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?
-    #gas-price = gas-price-bn.to-fixed!
-    gas-minimal = to-wei-eth(amount-fee) `div` gas-price
-    #gas-estimate = round ( gas-minimal `times` 5 )
    
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data, swap }  
     return cb err if err?

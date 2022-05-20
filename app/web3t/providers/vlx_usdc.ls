@@ -63,9 +63,10 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
     val = res `div` (10^18)
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
     
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
@@ -96,7 +97,7 @@ transform-tx = (network, description, t)-->
         | up(t.to) is up(HOME_BRIDGE) => "EVM → ETHEREUM Swap"    
         | t.from is \0x0000000000000000000000000000000000000000 => "ETHEREUM → EVM Swap"
         | _ => null 
-    fee = (gas-used `times` (gas-price + "")) `div` dec
+    fee = (gas-used `times` (gas-price + "")) `div` (10^18)
     recipient-type = if (t.input ? "").length > 3 then \contract else \regular
     res = { network, tx, amount, fee, time, url, t.from, t.to, recipient-type, description, tx-type }
     res    
@@ -133,7 +134,8 @@ get-dec = (network)->
     { decimals } = network
     10^decimals
     
-export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->           
+export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->
+    return cb null, gas-price if gas-price?           
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)

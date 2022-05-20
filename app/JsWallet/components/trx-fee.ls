@@ -8,7 +8,7 @@ require! {
     \../numbers.js : {parseNum}
     \react-currency-input-field : { default: CurrencyInput }
 }
-# .trx-fee125099688
+# .trx-fee-1294478930
 #     @import scheme
 #     $border-radius: var(--border-btn)
 #     &.disabled
@@ -16,7 +16,7 @@ require! {
 #     table
 #         margin-bottom: -1px
 #         border-radius: $border-radius $border-radius 0 0
-#     td
+#     .tx-fee-mode
 #         cursor: pointer
 #         padding: 2px 5px 10px
 #         transition: all .5s
@@ -37,6 +37,9 @@ require! {
 #                     &:after
 #                         opacity: 1
 #                         filter: none
+#         &.disabled
+#             opacity: 0.2;
+#             cursor: not-allowed;
 #         .type
 #             &:after
 #                 content: $check-xs
@@ -79,8 +82,9 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
     decimalsLimit = wallet?network?decimals ? 4
     { choose-cheap, choose-custom, choose-auto, has-send-error} = send-funcs store, web3t
     disabled-class = if has-send-error! then "disabled" else ""
+    custom-is-disabled = wallet.coin.token in <[ vlx_native ]>
     select-custom = ->
-        return if has-send-error!
+        return if has-send-error! or custom-is-disabled
         choose-custom send.amount-send-fee
     get-number = (val)->
         number = (val ? "").toString!
@@ -123,7 +127,6 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
     fee-currency = wallet.network.tx-fee-in ? (wallet.coin.nickname ? "").to-upper-case!
     is-custom = wallet?coin?custom is yes 
     token-display = fee-token.to-upper-case!
-    
     border-style = border: "1px solid #{style.app.border}"
     text = color: "#{style.app.icon}"
     input-style=
@@ -141,14 +144,20 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
             react.create-element 'div', { className: 'field type' }, ' ' + lang.cheap
             react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.cheap then send.amount-send-fee-options.cheap + " " + token-display else ""
     custom-option = ->
-        react.create-element 'td', { on-click: select-custom, className: "#{active-class \custom}" }, children = 
+        disabled = 
+            | custom-is-disabled => yes
+            | _ => no
+        disabled-class = 
+            | custom-is-disabled => "disabled"
+            | _ => ""
+        react.create-element 'td', { on-click: select-custom, disabled: disabled, className: "tx-fee-mode #{active-class \custom} #{disabled-class}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.custom
             react.create-element 'div', { className: 'field coin' }, ' ' + custom-fee-value! + " " + token-display
     auto-option = ->
-        react.create-element 'td', { on-click: choose-auto, className: "#{active-class \auto}" }, children = 
+        react.create-element 'td', { on-click: choose-auto, className: "tx-fee-mode #{active-class \auto}" }, children = 
             react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
             react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""
-    react.create-element 'div', { className: "#{disabled-class} trx-fee trx-fee125099688" }, children = 
+    react.create-element 'div', { className: "#{disabled-class} trx-fee trx-fee-1294478930" }, children = 
         react.create-element 'label', { style: text }, ' Transaction Fee'
         react.create-element 'table', { style: border-style, className: 'fee' }, children = 
             react.create-element 'tbody', {}, children = 

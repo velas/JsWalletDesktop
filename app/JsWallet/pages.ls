@@ -38,6 +38,7 @@ require! {
     \./pages/util.ls
     \./pages/poolchoosing.ls
     \./pages/stake/account_details.ls
+    \./pages/staking2.ls
 }
 is-in-iframe = window != window.parent
 if is-in-iframe
@@ -62,6 +63,7 @@ else
     export monitor
     export resources
     export staking
+    export staking2
     export verifyseed
     export loading
     export loading2

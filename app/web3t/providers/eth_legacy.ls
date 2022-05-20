@@ -48,29 +48,26 @@ get-gas-estimate = (config, cb)->
     return cb null, "0" if err?     
     cb null, from-hex(estimate)
     
-export calc-fee = ({ network, fee-type, account, amount, to, data }, cb)->
+export calc-fee = ({ network, fee-type, account, amount, to, data, gas, gas-price }, cb)->
     return cb null if fee-type isnt \auto
     dec = get-dec network
-    err, gas-price <- calc-gas-price { fee-type, network }
+    err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     value =
         | amount? => amount `times` dec
         | _ => 0
-    #err, nonce <- get-nonce { account, network }
-    #return cb err if err?
     data-parsed =
         | data? => data
         | _ => '0x'
     from = account.address
     query = { from, to: account.address, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data: data-parsed }
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    return cb "estimate gas err: #{err.message ? err}" if err?
+    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data: data-parsed, gas } 
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
-    #res = if +res1 is 0 then 21000 * 8 else res1
     val = res `div` dec
     fee = new bignumber(val).to-fixed(18)
-    cb null, fee
+    cb null, { calced-fee: fee, gas-price, gas-estimate: estimate }
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -117,9 +114,9 @@ export get-transactions = ({ network, address }, cb)->
 get-dec = (network)->
     { decimals } = network
     10^decimals
-calc-gas-price = ({ fee-type, network }, cb)->
+calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     return cb null, \3000000000 if fee-type is \cheap
-    #err, price <- web3.eth.get-gas-price
+    return cb null, gas-price if gas-price?    
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
@@ -141,7 +138,7 @@ is-address = (address) ->
         false
     else
         true
-export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, chainId} , cb)-->
+export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, chainId, gas-price} , cb)-->
     #console.log \tx, { network, account, recipient, amount, amount-fee, data, fee-type, tx-type}
     dec = get-dec network
     return cb "address is not correct ethereum address" if not is-address recipient
@@ -151,11 +148,11 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-wei = -> it `times` dec
     to-eth = -> it `div` dec
     value = to-wei amount
-    err, gas-price <- calc-gas-price { fee-type, network }
+    
+    err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     
     err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data }
-    console.log  {err, gas-estimate}   
     return cb err if err?
     
     err, balance <- make-query network, \eth_getBalance , [ account.address, \latest ]
@@ -165,7 +162,6 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     return cb "Balance #{balance-eth} is not enough to send tx #{to-send}" if +balance-eth < +to-send
     
     
-    console.log { nonce, gas-price, value, gas-estimate, recipient, account.address, data }
     tx = new Tx do
         nonce: to-hex nonce
         gas-price: to-hex gas-price

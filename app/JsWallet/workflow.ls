@@ -42,20 +42,19 @@ class Parallel
         return @
     catch : (cb) !->
         @errors-cb = cb if not !cb? 
-    run : (val) ->
-        try    
-            for pair in @tasks
-                const composition = 
-                    switch typeof! pair[1]
-                        case \Function
-                            [  pair[1] ]
-                        case \Array
-                            pair[1]
+    run : (val) ->          
+        for pair in @tasks
+            const composition = 
+                switch typeof! pair[1]
+                    case \Function
+                        [  pair[1] ]
+                    case \Array
+                        pair[1]
+            try            
                 const array = composition ++ [ @success pair[0] ]
                 go array, val
-        catch err
-            @errors = err 
-            @errors-cb err
+            catch err
+                @errors-cb err    
 max = 50
 #create the parallel process from the object 
 make-parallel = (o, val, success)->

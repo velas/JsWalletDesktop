@@ -45,8 +45,9 @@ module.exports = (store, web3t, page, ask-pin, cb) !->
             if (store.pages.index-of(page) > -1)
                 index = store.pages.index-of(page)
                 store.pages.splice(-(store.pages.length - index), 1)
-            store.pages.push(page) 
-    store.pages = [\wallets] if page is \wallets
+            store.pages.push(page)
+    store.pages = [\locked] if page is \locked 
+    store.pages = [\wallets] if page is \wallets or page is \:init
     prev = store.current.page
     store.current.page = \loading
     store.current.loading = yes

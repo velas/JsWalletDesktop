@@ -2,7 +2,7 @@ require! {
     \react
     \../../get-lang.ls
 }
-# .loader-page-1950627868
+# .loader-page-1095036118
 #     @import scheme
 #     $gradient: $primary - 20
 #     text-align: center
@@ -13,7 +13,7 @@ require! {
 #     $off-white: rgba($white, 0.2)
 #     $spin-duration: 1s
 #     $pulse-duration: 750ms
-#     z-index: 1
+#     z-index: 111
 #     opacity: 1;
 #     position: fixed
 #     top: 0 
@@ -53,7 +53,7 @@ require! {
 #         left: 50%
 #         width: ($base-line-height / 4)
 #         height: $base-line-height
-#         background: $off-white
+#         background: rgba(43, 140, 116,  0.64)
 #         animation: pulse $pulse-duration infinite
 #         animation-delay: ($pulse-duration / 3)
 #         &:before, &:after
@@ -62,7 +62,7 @@ require! {
 #             display: block
 #             height: ($base-line-height / 1.5)
 #             width: ($base-line-height / 4)
-#             background: $off-white
+#             background: rgba(43, 140, 116,  0.64)
 #             top: 50%
 #             transform: translateY(-50%)
 #             animation: pulse $pulse-duration infinite
@@ -130,9 +130,10 @@ require! {
 #                 transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg)
 #             100%
 #                 transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg)
-module.exports = ({loading, text})->
+module.exports = ({loading, text, styles})->
     return null if not loading
-    react.create-element 'div', { key: "loading", className: 'loader-page loader-page-1950627868' }, children = 
+    loaderPageStyles = styles?loaderPage ? {}
+    react.create-element 'div', { key: "loading", style: loaderPageStyles, className: 'loader-page loader-page-1095036118' }, children = 
         if text? and (text ? "").length > 0
             react.create-element 'div', { className: 'h3 loader-text' }, ' ' + text + ' '
         react.create-element 'div', { className: 'loading-pulse' }

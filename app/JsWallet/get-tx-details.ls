@@ -4,7 +4,6 @@ require! {
     \./round-human.ls
     \./round-number.ls
     \./math.ls : { times, minus, div, plus }
-    
 }
 module.exports = (store, web3t)->
     { send } = store.current
@@ -31,9 +30,11 @@ module.exports = (store, web3t)->
                 | (wallet-receiver?network?group ? "").to-lower-case! is \velas => "Velas EVM" 
                 | _ => wallet-receiver?network?group
             homeFeePercent = store.current.send.homeFeePercent
-            homeFee = store.current.send.amount-send `times` store.current.send.homeFeePercent 
+            homeFee =
+                | store.current.send.feeMode is "fixed" => store.current.send.homeFeePercent
+                | _ => store.current.send.amount-send `times` store.current.send.homeFeePercent
             amount-receive = round-human (send.amount-send `minus` homeFee), {decimals: decimalsConfig}
-            "Please confirm that you would like to send #{amount-send} #{token-display} from #{walletGroup} to receive #{amount-receive} #{token-display} on #{receiverGroup}." 
+            "Please confirm that you would like to send #{amount-send} #{token-display} from #{walletGroup} to receive #{amount-receive} #{token-display} on #{receiverGroup}."
         |  +send.amount-send > 0 => 
             "Send #{amount-send} #{token-display} to #{contract} contract." 
         | _ =>  
@@ -47,7 +48,6 @@ module.exports = (store, web3t)->
     text-parts-swap =
         * "Swap #{amount-send} #{token-display} to #{send.to}"
         * "You are allowed to spend your resources on execution #{round-number send.amount-send-fee, {decimals: decimalsConfig}} #{token-display}."
-    
     text =
         | is-data => text-parts-contract
         | swap is yes => text-parts-swap 

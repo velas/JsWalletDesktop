@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each }
-    \../math.js : { plus, minus, times, div }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../addresses.js : { ethToVlx, vlxToEth }
@@ -26,21 +26,47 @@ is-address = (address) ->
         false
     else
         true
-export calc-fee = ({ network, tx, fee-type, account, amount, to, data }, cb)->
-    return cb null if fee-type isnt \auto
-    web3 = get-web3 network
-    err, gas-price <- calc-gas-price { web3, fee-type }
-    return cb err if err?
+        
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data, gas } = config    
+    return cb null, gas if gas?
+    return cb null, "0" if +amount is 0
+    dec = get-dec network     
     from = account.address
-    #err, nonce <- web3.eth.get-transaction-count from, \pending
-    #return cb err if err?
-    err, estimate <- web3.eth.estimate-gas { from, to: null, data: "0x" }
-    estimate = "0" if err?   
-    #return cb err if err?
+    web3 = get-web3 network
+    contract = get-contract-instance web3, network.address
+    receiver = 
+        | data? and data isnt "0x" => to    
+        | _ => network.address 
+        
+    val = (amount `times` dec)    
+    value = $toHex(val)
+        
+    $data =
+        | data? and data isnt "0x" => data    
+        | contract.methods? => contract.methods.transfer(to, value).encodeABI!
+        | _ => contract.transfer.get-data to, value
+    query = { from, to: receiver, data: $data, value: "0x0" }  
+    err, estimate <- make-query network, \eth_estimateGas , [ query ]
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb err if err?    
+    cb null, from-hex(estimate) 
+
+export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
+    #return cb null if typeof! to isnt \String or to.length is 0
+    return cb null if fee-type isnt \auto
     dec = get-dec network
+    err, gas-price <- calc-gas-price { fee-type, network, gas-price }
+    return cb err if err? 
+    console.log "gas price calc!"  
+    web3 = get-web3 network    
+    #err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data, gas }
+    err, estimate <- web3.eth.estimate-gas { from: account.address, to: null, data: "0x" }
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
     val = res `div` (10^18)
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -116,12 +142,17 @@ get-web3 = (network)->
 get-dec = (network)->
     { decimals } = network
     10^decimals
-calc-gas-price = ({ web3, fee-type }, cb)->
-    return cb null, \3000000000 if fee-type is \cheap
-    web3.eth.get-gas-price cb
+    
+calc-gas-price = ({ network, fee-type, gas-price }, cb)->
+    return cb null, gas-price if gas-price?
+    err, price <- make-query network, \eth_gasPrice , []
+    return cb "calc gas price - err: #{err.message ? err}" if err?
+    price = from-hex(price)
+    cb null price
+    
 round = (num)->
     Math.round +num
-export create-transaction = ({ network, account, recipient, amount, amount-fee, fee-type, tx-type, data} , cb)-->
+export create-transaction = ({ network, account, recipient, amount, amount-fee, fee-type, tx-type, data, gas, gas-price} , cb)-->
     return cb "address in not correct ethereum address" if not is-address recipient
     web3 = get-web3 network
     dec = get-dec network
@@ -135,8 +166,7 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     to-wei-eth = -> it `times` (10^18)
     to-eth = -> it `div` (10^18)
     value = to-wei amount
-    err, gas-price-bn <- calc-gas-price { web3, fee-type }
-    gas-price = gas-price-bn.to-fixed!
+    err, gas-price <- calc-gas-price { network, fee-type, gas-price }
     return cb err if err?
     gas-minimal = to-wei-eth(amount-fee) `div` gas-price
     gas-estimate = round ( gas-minimal `times` 5 )

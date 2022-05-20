@@ -7,7 +7,6 @@ export get-error-message = (err, result)->
                 topic = (error.split(":").0 ? "")
                 firstLetter = topic.substr(0, 1)
                 topic = firstLetter.toUpperCase() + topic.substr(1);
-                
             else
                 error
         | err.toString().index-of("Insufficient funds for fee") > -1 =>

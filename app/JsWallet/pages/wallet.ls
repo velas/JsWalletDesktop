@@ -6,7 +6,7 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../get-primary-info.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../icons.ls
     \../round-human.ls
     \./confirmation.ls : { alert }
@@ -277,11 +277,9 @@ module.exports = (store, web3t, wallets, wallet)-->
     wallet-is-disabled  = isNaN(wallet.balance)
     is-loading = store.current.refreshing is yes
     disabled-class = if not is-loading and wallet-is-disabled then "disabled-wallet-item" else ""
-    
     wallet-is-disabled = isNaN(wallet.balance)
     is-loading = store.current.refreshing is yes
     send-swap-disabled = wallet-is-disabled or is-loading
-    
     react.create-element 'div', { key: "#{token}", style: border-style, className: "#{big} #{disabled-class} wallet wallet-item wallet358667874" }, children = 
         react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
             react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
@@ -319,7 +317,7 @@ module.exports = (store, web3t, wallets, wallet)-->
         if no
             react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
                 address-holder { store, wallet, type: \bg }
-                if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm vlx_evm_legacy ]>
+                if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm  ]>
                     react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall
             react.create-element 'div', { style: border, className: 'wallet-middle title-balance' }, children = 
                 react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human(usd-rate)

@@ -1,4 +1,5 @@
-const velasSolanaWeb3 = require("../../web3t/providers/solana/index.cjs");
+//const velasSolanaWeb3 = require("../../web3t/providers/solana/index.cjs");
+const velasSolanaWeb3 = require("@velas/web3");
 let PublicKey, Connection, StakeProgram, Authorized, Lockup, STAKE_INSTRUCTION_LAYOUTS, TransactionInstruction;
 PublicKey = velasSolanaWeb3.PublicKey;
 Connection = velasSolanaWeb3.Connection;
@@ -10,12 +11,13 @@ Transaction = velasSolanaWeb3.Transaction;
 Account = velasSolanaWeb3.Account;
 STAKE_INSTRUCTION_LAYOUTS = velasSolanaWeb3.STAKE_INSTRUCTION_LAYOUTS;
 TransactionInstruction = velasSolanaWeb3.TransactionInstruction;
+const BN = require('bn.js');
 
 class VelasStaking {
 
     // validate options.authorization;
     constructor(options) {
-        this.connection    = new Connection(options.NODE_HOST, 'singleGossip');
+        this.connection    = new Connection(options.NODE_HOST, 'confirmed');
         this.authorization = {}
         this.sol           = 1000000000;
         this.min_stake     = 1;
@@ -28,6 +30,10 @@ class VelasStaking {
     getAccountPublicKey() {
         return new PublicKey(this.authorization.publicKey)
     };
+
+    setAccounts(accs) {
+      this.accounts = accs;
+    }
 
     setAccountPublicKey(publicKey) {
         this.authorization.publicKey = publicKey;
@@ -96,13 +102,12 @@ class VelasStaking {
             stakePubkey,
             authorizedPubkey,
             splitStakePubkey,
-            lamports: lamports + rent,
+            lamports: new BN((lamports + rent), 10),
             seed,
-            base: authorizedPubkey
+            basePubkey: authorizedPubkey
         };
-        
         try {
-            transaction.add(StakeProgram.split(params));
+            transaction.add(StakeProgram.splitWithSeed(params));
         } catch (e) {
             return {
                 error: "split_stake_account_error",
@@ -111,6 +116,12 @@ class VelasStaking {
         }
         return this.sendTransaction(transaction);
     }
+
+    async getAccountInfo(publicKey) {
+        const pubkey = new PublicKey(publicKey);
+        const info = await this.connection.getParsedAccountInfo(pubkey);
+        return info;
+    };
 
     async getVoteAccounts() {
         const voteAccounts = await this.connection.getVoteAccounts();
@@ -215,18 +226,22 @@ class VelasStaking {
                 StakeProgram.programId,
             );
 
-            if (this.accounts.filter(item => { return item.address === stakeAccountWithSeed.toBase58()}).length === 0) {
+            if (this.accounts.filter(item => {
+                return (item.address || item.pubkey).toLowerCase() === stakeAccountWithSeed.toBase58().toLowerCase()}
+            ).length === 0) {
                 return i.toString();
             };
         };
     };
     
     async createNewStakeAccountWithSeed(){
+        console.log("[createNewStakeAccountWithSeed]",  this.getAccountPublicKey().toBase58());
 
         let stakeAccountWithSeed;
 
         try {
             const seed       = await this.getNextSeed();
+            console.log("seed", seed);
 
             stakeAccountWithSeed = await PublicKey.createWithSeed(
                 this.getAccountPublicKey(),
@@ -253,9 +268,13 @@ class VelasStaking {
         try {
             const rent       = await this.connection.getMinimumBalanceForRentExemption(200);
             const fromPubkey = this.getAccountPublicKey();
+             console.log("[createAccount]1");
             const authorized = new Authorized(fromPubkey, fromPubkey);
+             console.log("[createAccount]2");
             const lamports   = amount_sol + rent;
+             console.log("[createAccount]3");
             const seed       = await this.getNextSeed();
+            console.log("[createAccount]4", {seed, rent, fromPubkey, authorized, lamports});
 
             const stakeAccountWithSeed = await PublicKey.createWithSeed(
                 fromPubkey,
@@ -294,19 +313,15 @@ class VelasStaking {
                 i.toString(),
                 StakeProgram.programId,
             );
-            if (stakeAccountWithSeed.toBase58() === base58PublicKey) return `stake:${i}`;
+            if (stakeAccountWithSeed.toBase58().toLowerCase() === base58PublicKey.toLowerCase()) return `stake:${i}`;
         };
         return base58PublicKey.slice(0,6);
     };
 
     async getOwnStakingAccounts(accounts) {
-        var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
         let owner = this.getAccountPublicKey();
         accounts = accounts.filter(item => {
-            if (deepEq$(typeof item != 'undefined' && item !== null ? (ref$ = item.account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? (ref5$ = ref4$.authorized) != null ? ref5$.staker : void 8 : void 8 : void 8 : void 8 : void 8 : void 8 : void 8, owner.toBase58(), '===')) {
-                return true;
-            }
-            return false;
+            return item.staker === owner.toBase58();
         });
         return accounts;
     }
@@ -337,7 +352,7 @@ class VelasStaking {
         let owner = this.getAccountPublicKey();
 
         accounts = accounts.filter(item => {
-            if (deepEq$(typeof item != 'undefined' && item !== null ? (ref$ = item.account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? (ref5$ = ref4$.authorized) != null ? ref5$.staker : void 8 : void 8 : void 8 : void 8 : void 8 : void 8 : void 8, owner.toBase58(), '===')) {
+            if (deepEq$(item.staker, owner.toBase58(), '===')) {
                 return true;
             }
             return false;
@@ -345,23 +360,21 @@ class VelasStaking {
 
         for (var i in accounts) {
             var rent, ref$, ref1$, ref2$, ref3$, ref4$;
-            rent = (ref$ = accounts[i].account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? (ref4$ = ref3$.meta) != null ? ref4$.rentExemptReserve : void 8 : void 8 : void 8 : void 8 : void 8;
-            accounts[i].seed    = await this.checkSeed(accounts[i].pubkey.toBase58());
-            accounts[i].address = accounts[i].pubkey.toBase58();
-            accounts[i].key     = accounts[i].address;
-            accounts[i].balance = rent ? `${(Math.round((accounts[i].account.lamports - rent) / this.sol) * 100) / 100 } VLX` : `-`;
-            accounts[i].rent    = rent ? `${ Math.round((rent / this.sol) * 100) / 100 } VLX` : `-`;
+            rent = accounts[i].rent;
+            accounts[i].seed    = await this.checkSeed(accounts[i].pubkey);
+            accounts[i].address = accounts[i].pubkey;
+            accounts[i].key     = accounts[i].pubkey;
+            accounts[i].balance = rent ? `${(Math.round((accounts[i].lamports - rent) / this.sol) * 100) / 100 }` : `-`;
+            accounts[i].rent    = rent ? `${ Math.round((rent / this.sol) * 100) / 100 }` : `-`;
             accounts[i].status  = `inactive`;
             accounts[i].validator = `-`;
 
-            if ((ref$ = accounts[i].account) != null && ((ref1$ = ref$.data) != null && ((ref2$ = ref1$.parsed) != null && ((ref3$ = ref2$.info) != null && ref3$.stake)))) {
-                const activationEpoch = Number((ref$ = accounts[i].account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? ref3$.stake.delegation.activationEpoch : void 8 : void 8 : void 8 : void 8);
-                const deactivationEpoch = Number((ref$ = accounts[i].account) != null ? (ref1$ = ref$.data) != null ? (ref2$ = ref1$.parsed) != null ? (ref3$ = ref2$.info) != null ? ref3$.stake.delegation.deactivationEpoch : void 8 : void 8 : void 8 : void 8);
-
-                if (deactivationEpoch > activationEpoch || activationEpoch === this.max_epoch) {
+            const { activationEpoch, deactivationEpoch, voter } = accounts[i];
+            if (activationEpoch && deactivationEpoch) {
+                if (+deactivationEpoch > +activationEpoch || activationEpoch === this.max_epoch) {
                     accounts[i].status    = `loading`;
-                    if((ref4$ = ref3$.delegation) != null) {
-                        accounts[i].validator = ref4$.voter;
+                    if(voter != null) {
+                        accounts[i].validator = voter;
                     }
                 };
             };

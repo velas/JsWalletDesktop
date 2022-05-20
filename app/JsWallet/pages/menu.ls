@@ -1,6 +1,8 @@
 require! {
     \react
     \../tools.ls : { cut, money }
+    \../math.ls : { times, plus }
+    \prelude-ls : { map, foldl, filter, find }
     \./project-links.ls
     \../menu-funcs.ls
     \./your-account.ls
@@ -14,7 +16,7 @@ require! {
     \../add-coin.ls
     \./tor.ls
 }
-# .menu369227581
+# .menu345890219
 #     height: 199px
 #     line-height: 200px
 #     $mobile: 425px
@@ -72,6 +74,66 @@ require! {
 #                 svg
 #                     width: 20px
 #                     cursor: pointer
+#             .balance-warning-container
+#                 display: inline-block
+#                 font-size: 8px
+#                 letter-spacing: 1px
+#                 text-transform: capitalize
+#                 background: #f6931a5e
+#                 margin: auto
+#                 color: white
+#                 border-radius: 69px
+#                 border: 1px solid #f6931a
+#                 padding: 0 5px
+#                 line-height: 17px
+
+#                 .total-balance-warning-icon
+#                     cursor: help
+#                     &:hover
+#                         .balance-warning-notification
+#                             display: block
+#                 .full-warning-notification-text
+#                     text-transform: initial
+
+#                 .balance-warning-notification
+#                     z-index: 2
+#                     display: none
+#                     position: absolute
+#                     box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.34)
+#                     left: 100%
+#                     top: 20%
+#                     padding: 10px
+#                     font-size: 11px
+#                     min-width: 200px
+#                     background: #1f1f1f
+#                     text-align: left
+#                     z-index: 9
+
+#                     @media (max-width: 800px)
+#                         left: 80%
+
+#                     @media (max-width: 735px)
+#                         left: 50%
+#                         top: 130%
+
+#                     @media (max-width: 400px)
+#                         left: 10%
+
+#                     .triangle
+#                         width: 0
+#                         height: 0
+#                         border-top: 5px solid transparent
+#                         border-right: 8px solid #1f1f1f
+#                         border-bottom: 5px solid transparent
+#                         position: relative
+#                         left: -18px
+#                         top: -50px
+
+#                         @media (max-width: 735px)
+#                             display: none
+
+#             .balance-text
+#                 display: inline-block
 #             >.menu
 #                 position: absolute
 #                 right: 0
@@ -103,7 +165,6 @@ require! {
 #                     text-transform: uppercase
 #                     letter-spacing: 2px
 #                     line-height: 24px
-#                     opacity: .8
 #                     margin-top: 5px
 #             >.amount
 #                 font-size: 25px
@@ -170,18 +231,49 @@ module.exports = ({ store, web3t })->
     syncing =
         | store.current.refreshing => \syncing
         | _ => ""
+
     placeholder =
-        | store.current.refreshing => "placeholder"
+        | store.current.account.wallets |> find (-> it.status is "loading") => "placeholder"
         | _ => ""
-    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu369227581' }, children = 
+
+    usdBalances = store.current.account.wallets
+        |> filter (-> not isNaN(it.balanceUsd))
+        |> map (-> it.balanceUsd)
+        |> foldl plus, 0
+
+    not-loaded-balances-exists = store.current.account.wallets |> find (-> it.state in <[ error ]> )
+
+    totalBalance =
+        | not-loaded-balances-exists => "..."
+        | _ => round-human usdBalances
+
+    icon-style =
+        width: "15px"
+        height: "15px"
+        float: "right"
+        top: "1px"
+        position: "relative"
+        margin-left: 3px
+
+    react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu345890219' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'branding' }, children = 
                 react.create-element 'img', { src: "#{info.branding.logo-sm}", on-click: goto-wallet }
             react.create-element 'div', { className: 'balance' }, children = 
-                react.create-element 'div', { className: 'currency h1' }, ' ' + lang.balance
+                react.create-element 'div', { className: 'currency h1' }, children = 
+                    react.create-element 'div', { className: 'balance-text' }, ' ' + lang.balance
                 react.create-element 'div', { className: "#{placeholder} amount" }, children = 
                     react.create-element 'div', { className: 'symbol' }, ' $'
-                    react.create-element 'div', { title: "#{current.balance-usd}", id: 'balance-total', className: 'number' }, ' ' + round-human current.balance-usd
+                    react.create-element 'div', { title: "#{current.balance-usd}", id: 'balance-total', className: 'number' }, ' ' + totalBalance
+                if not-loaded-balances-exists
+                    react.create-element 'div', {}, children = 
+                        react.create-element 'div', { className: 'balance-warning-container' }, children = 
+                            react.create-element 'span', { className: 'warning-text' }, ' The total balance is unavailable now'
+                            react.create-element 'span', { className: 'total-balance-warning-icon' }, children = 
+                                react.create-element 'img', { src: "#{icons.warning2}", style: icon-style, className: 'total-balance-warning-icon' }
+                                react.create-element 'div', { className: 'balance-warning-notification' }, children = 
+                                    react.create-element 'div', { className: 'full-warning-notification-text' }, ' The total balance is unavailable now because some of the tokens` balances could not be loaded.'
+                                    react.create-element 'div', { className: 'triangle' }
                 react.create-element 'div', {}, children = 
                     if store.current.device is \desktop
                         if store.preference.refresh-visible is yes

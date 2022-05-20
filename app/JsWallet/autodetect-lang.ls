@@ -1,5 +1,5 @@
 require! {
-    \../web3t/providers/superagent.ls : { get }
+    \../web3t/providers/superagent.js : { get }
 }
 module.exports = (store)->
     return

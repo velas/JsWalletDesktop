@@ -35,20 +35,26 @@ calc-fee-proxy = (input, cb)->
 #    calc-fee-proxy.timer = clear-timeout calc-fee-proxy.timer
 #    calc-fee-proxy.timer = set-timeout fun, 500
 
-calc-fee-before-send = ({ store, query, fast }, cb)->
+export calc-fee-before-send = ({ store, query, fast }, cb)->
     { store, token, to, data, network, amount, fee-type, tx-type, account, swap } = query
     return cb "store isn`t defined"   if not store?
     return cb "network isn`t defined" if not network?
     return cb "amount isn`t defined"  if not amount?
     return cb "account isn`t defined" if not account?
+    return cb "token isn`t defined" if not token? 
     { send } = store.current
     send.fee-calculating = yes
     calc-fee-fun = if fast then calc-fee else calc-fee-proxy
-    err, calced-fee <- calc-fee-fun { store, token, to, data, network, amount, fee-type, tx-type, account, swap }
+    gas-price = 
+        | send?gas-price-type is \custom => (send?gas-price-custom-amount `times` (10^9))
+        | _ => send.gas-price-auto
+    
+    err, result <- calc-fee-fun { store, token, to, data, network, amount, fee-type, tx-type, account, gas-price, swap }
     send.fee-calculating = no
     send.error = "#{err.message ? err}" if err?
     return cb "#{err.message ? err}" if err?
-    return cb null, calced-fee
+    #{ calced-fee, gas-price, gas-estimate } = result
+    return cb null, result
 
 change-amount-generic = (field)-> (store, amount-send, fast, cb)->
     send = store.current[field]
@@ -97,15 +103,21 @@ change-amount-generic = (field)-> (store, amount-send, fast, cb)->
         | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
         | _ => store.current.send.to
     
-    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap, send.gas-price }
+    err, result <- calc-fee-before-send { store, query, fast }
     console.error err if err?
     send.error = err if err?
-    calced-fee = 0 if err?
-    #return cb err if err?
+    return send.amount-send-fee = 0 if err?
+    #calced-fee = 0 if err?
+    return cb err if err?
+    if result?
+        { calced-fee, gas-price, gas-estimate } = result
+        if send.gas-price-type isnt \custom then
+            send.gas-price-auto = gas-price
+    send.gas-estimate = gas-estimate
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
-        | calced-fee? => calced-fee
+        | result?calced-fee? => result.calced-fee
         | send.network?tx-fee-options? => send.network.tx-fee-options[fee-type] ? send.network.tx-fee
         | _ => send.network.tx-fee
     send.amount-send-fee = tx-fee
@@ -164,13 +176,18 @@ export change-amount-send = (store, amount-send, fast, cb)->
         | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
         | _ => store.current.send.to
   
-    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap, send.gas-price }
+    err, result <- calc-fee-before-send { store, query, fast }
     send.error = err if err?
     return cb err if err?
+    if result?
+        { calced-fee, gas-price, gas-estimate } = result
+        if send.gas-price-type isnt \custom then
+            send.gas-price-auto = gas-price
+    send.gas-estimate = gas-estimate
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
-        | calced-fee? => calced-fee
+        | result?calced-fee? => result.calced-fee
         | send.network?tx-fee-options? => send.network.tx-fee-options[fee-type] ? send.network.tx-fee
         | _ => send.network.tx-fee
     
@@ -239,13 +256,18 @@ export change-amount-calc-fiat = (store, amount-send, fast, cb)->
         | store.current.send.to.trim!.length is 0 => store.current.send.wallet.address
         | _ => store.current.send.to
     
-    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap }
-    err, calced-fee <- calc-fee-before-send { store, query, fast }
+    query = { store, token, to: send-to, send.data, send.network, amount: result-amount-send, fee-type, tx-type, account, send.swap, send.gas-price }
+    err, result <- calc-fee-before-send { store, query, fast }
     send.error = err if err?
     return cb err if err?
+    if result?
+        { calced-fee, gas-price, gas-estimate } = result
+        if send.gas-price-type isnt \custom then
+             send.gas-price-auto = gas-price
+    send.gas-estimate = gas-estimate
     tx-fee =
         | fee-type is \custom => send.amount-send-fee
-        | calced-fee? => calced-fee
+        | result?calced-fee? => result.calced-fee
         | send.network?tx-fee-options? => send.network.tx-fee-options[fee-type] ? send.network.tx-fee
         | _ => send.network.tx-fee
     send.amount-send-fee = tx-fee

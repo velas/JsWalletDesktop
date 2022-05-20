@@ -7,7 +7,7 @@ require! {
     \../../get-lang.ls
     \../../history-funcs.ls
     \../icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, findIndex }
     \../../math.ls : { div, times, plus, minus }
     \safe-buffer : { Buffer }
     \../../../web3t/addresses.js : { ethToVlx }
@@ -26,12 +26,15 @@ require! {
     \../confirmation.ls : { prompt2, prompt-stake-account-amount, alert, confirm, notify }
     \../../components/pagination.ls
     \./error-funcs.ls : { get-error-message }
+    #'@solana/web3.js' : web3Solana
+    \../../staking-funcs.ls : { creation-account-subscribe }
+    \../../components/popups/loader.ls
 }
 as-callback = (p, cb)->
     p.catch (err) -> cb err
     p.then (data)->
         cb null, data
-# .staking-accounts-content-1295497501
+# .staking-accounts-content711009742
 #     @keyframes blink-animation
 #         50%
 #             opacity: 0.3
@@ -52,7 +55,7 @@ as-callback = (p, cb)->
 #     .notification-entity
 #         @media(max-width: 540px)
 #             display: block
-#             margin-top: 20px !important 
+#             margin-top: 20px !important
 #     .hint
 #         .tooltip
 #             position: absolute
@@ -133,6 +136,9 @@ as-callback = (p, cb)->
 #                     &.validator-address
 #                         text-align: center
 #                     border: none
+#     .stake-account-item
+#         &.highlight
+#             box-shadow: 1px 2px 12px inset rgba(60, 213, 175, 0.35)
 cb = console.log
 show-validator = (store, web3t)-> (validator)->
     react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
@@ -177,6 +183,8 @@ staking-accounts-content = (store, web3t)->
         store.staking-accounts.add.add-validator-stake = Math.max (balance `minus` 0.1), 0
     isSpinned = if ((store.staking.all-accounts-loaded is no or !store.staking.all-accounts-loaded?) and store.staking.accounts-are-loading is yes) then "spin disabled" else ""
     refresh = ->
+        store.errors.fetchAccounts = null
+        store.errors.fetchValidators = null
         return if store.staking.all-accounts-loaded isnt yes
         store.staking.getAccountsFromCashe = no
         navigate store, web3t, "validators"
@@ -186,13 +194,28 @@ staking-accounts-content = (store, web3t)->
     build = (store, web3t)-> (item)->
         index = _index++
         return null if not item? or not item.key?
-        { account, address, balance, balanceRaw, key, rent, seed, status, validator, active_stake, inactive_stake } = item
-        activationEpoch = account?data?parsed?info?stake?delegation?activationEpoch
-        deactivationEpoch = account?data?parsed?info?stake?delegation?deactivationEpoch
+        {
+            account,
+            lamports,
+            address,
+            key,
+            rent,
+            seed,
+            status,
+            validator,
+            activationEpoch,
+            deactivationEpoch,
+            active_stake,
+            lockupUnixTimestamp,
+            inactive_stake
+        } = item
+        balance = if rent? then (Math.round((lamports `minus` rent) `div` (10^9)) `times` 100) `div` 100  else "-"
+        balanceRaw = if rent? then lamports `minus` rent else lamports
+        highlight = item.highlight
         activeBalanceIsZero =  +active_stake is 0
         max-epoch = web3t.velas.NativeStaking.max_epoch
-        is-activating = activeBalanceIsZero and validator isnt ""
-        has-validator = item.validator.toString!.trim! isnt ""
+        is-activating = activeBalanceIsZero and validator?
+        has-validator = (item.validator? and item.validator isnt '') and (activationEpoch? and deactivationEpoch?) and (activationEpoch isnt deactivationEpoch)
         $status =
             | item.status is "inactive" and (not has-validator) => "Not Delegated"
             | item.status is "inactive" and has-validator => "Delegated (Inactive)"
@@ -223,64 +246,72 @@ staking-accounts-content = (store, web3t)->
             return alert store, err.toString! if err?
             <- notify store, lang.fundsUndelegated
             store.staking.getAccountsFromCashe = no
-            navigate store, web3t, \validators
+            if store.staking.webSocketAvailable is no
+                navigate store, web3t, \validators
         choose = ->
             store.staking.chosen-account = item
             navigate store, web3t, \poolchoosing
             cb null
-            
-        stake-data = item?account?data?parsed?info?stake
-            
+        remove-stake-acc = (public_key)->
+            index = store.staking.accounts |> findIndex (-> it.pubkey is public_key)
+            if index > -1
+                store.staking.accounts.splice(index,1)
+            accountIndex = store.current.accountIndex
+            index2 = (store.staking.accountsCached[accountIndex] ? []) |> findIndex (-> it.pubkey is public_key)
+            if index2 > -1
+                (store.staking.accountsCached[accountIndex] ? []).splice(index2,1)
         withdraw = ->
-            if stake-data? and stake-data?delegation?
-                {activationEpoch, deactivationEpoch} = stake-data.delegation
-                if (deactivationEpoch? and activationEpoch?) and +deactivationEpoch >= +store.staking.current-epoch
-                    return
+            if (deactivationEpoch? and activationEpoch?) and +deactivationEpoch >= +store.staking.current-epoch
+                return
             agree <- confirm store, lang.areYouSureToWithdraw
             return if agree is no
-            { balanceRaw, rent, address, account } = item
-            amount = account.lamports `plus` rent
+            { balanceRaw, rent, address, account, pubkey } = item
+            amount = lamports `plus` rent
             err, result <- as-callback web3t.velas.NativeStaking.withdraw(address, amount)
             err-message = get-error-message(err, result)
             return alert store, err-message if err-message?
             <- set-timeout _, 1000
             <- notify store, lang.fundsWithdrawn
             store.staking.getAccountsFromCashe = no
-            navigate store, web3t, \validators
-        
+            store.current.page = \validators
+            remove-stake-acc(pubkey)
         now = moment!.unix!        
-        locked-and-can-withdraw = account?data?parsed?info?meta?lockup? and account?data?parsed?info?meta?lockup.unixTimestamp <= now
-        not-locked = not account?data?parsed?info?meta?lockup?
-        
+        locked-and-can-withdraw = lockupUnixTimestamp? and (lockupUnixTimestamp <= now)
+        not-locked = not lockupUnixTimestamp? || +lockupUnixTimestamp is 0 || +lockupUnixTimestamp < now
+        can-delegate =
+            | has-validator => no
+            | _ => yes
         $button =
-            | item.status is \inactive =>
-                button { store, text: lang.to_delegate, on-click: choose, type: \secondary , icon : \arrowRight }
+            | can-delegate =>
+                button { classes: "action-delegate", store, text: lang.to_delegate, on-click: choose, type: \secondary , icon : \arrowRight }
             | (not-locked or locked-and-can-withdraw) and (+deactivationEpoch isnt +max-epoch) and (+store.staking.current-epoch >= +deactivationEpoch) =>
-                if stake-data? and stake-data?delegation?
-                    {activationEpoch, deactivationEpoch} = stake-data.delegation
-                disabled = 
+                disabled =
                     | (deactivationEpoch? and activationEpoch?) and +deactivationEpoch >= +store.staking.current-epoch => yes
                     | _ => no
-                button { store, text: lang.withdraw, on-click: withdraw, type: \secondary , icon : \arrowLeft, makeDisabled:disabled }
-            | _ => 
+                button { classes: "action-withdraw", store, text: lang.withdraw, on-click: withdraw, type: \secondary , icon : \arrowLeft, makeDisabled:disabled }
+            | _ =>
                 disabled = item.status in <[ deactivating ]>
-                if stake-data? and stake-data.delegation?
-                    {activationEpoch, deactivationEpoch} = stake-data.delegation
+                icon =
+                    | not-locked => 'arrowLeft'
+                    | _ => 'lock'
+                if activationEpoch? and deactivationEpoch? and (activationEpoch !== deactivationEpoch)
                     if +activationEpoch < +deactivationEpoch and +deactivationEpoch isnt +max-epoch
-                        disabled = yes     
-                button { store, classes: "action-undelegate" text: lang.to_undelegate, on-click: undelegate , type: \secondary , icon : \arrowLeft, makeDisabled: disabled }
-        react.create-element 'tr', { key: "#{address}", className: "#{item.status}" }, children = 
+                        disabled = yes
+                button { store, classes: "action-undelegate" text: lang.to_undelegate, on-click: undelegate , type: \secondary , icon, makeDisabled: disabled }
+        highlighted = if highlight is yes then "highlight" else ""
+        react.create-element 'tr', { key: "#{address}", className: "stake-account-item #{item.status} #{highlighted}" }, children = 
             react.create-element 'td', {}, children = 
                 react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
             react.create-element 'td', { datacolumn: 'Staker Address', title: "#{address}" }, children = 
                 address-holder-popup { store, wallet, item}
             react.create-element 'td', {}, ' ' + balance
             react.create-element 'td', { title: "#{validator}", className: "validator-address" }, children = 
-                if validator? and validator isnt ""
+                if has-validator
                     address-holder-popup { store, wallet: wallet-validator, item }
                 else
                     "---"
-            react.create-element 'td', {}, ' ' + seed
+            react.create-element 'td', {}, children = 
+                react.create-element 'div', { className: 'seed' }, ' ' + seed
             if no
                 react.create-element 'td', { className: "account-status #{status}" }, ' ' + $status
             react.create-element 'td', {}, children = 
@@ -306,45 +337,82 @@ staking-accounts-content = (store, web3t)->
     block-style = 
         display: "block"
     create-staking-account = ->
-        cb = console.log 
-        err <- as-callback web3t.velas.NativeStaking.getStakingAccounts(store.staking.parsedProgramAccounts)
-        console.error err if err?
+        cb = console.log
+        buffer = {}
         amount <- prompt2 store, lang.howMuchToDeposit
         return if not amount?
         return if amount+"".trim!.length is 0
+        buffer.amount = amount
+        create-staking-account.InProcess = yes
+        store.staking.creating-staking-account = yes
         min_stake = web3t.velas.NativeStaking.min_stake
         main_balance = get-balance!
         tx-fee = 5000 `div` (10^9)
         rest = 0.1
         amount = amount `minus` (store.staking.rent `plus` tx-fee `plus` rest) if +(main_balance `minus` amount) <= 0
-        return alert store, lang.balanceIsNotEnoughToCreateStakingAccount  if +min_stake > +main_balance
-        return alert store, lang.minimalStakeMustBe + " #{(min_stake)} VLX" if +min_stake  > +(amount)
-        return alert store, lang.balanceIsNotEnoughToSpend + " #{(amount)} VLX" if +main_balance < +amount
-        amount = amount * 10^9
+        if +min_stake > +main_balance
+            store.staking.creating-staking-account = no
+            create-staking-account.InProcess = no
+            return alert store, lang.balanceIsNotEnoughToCreateStakingAccount
+        if +min_stake  > +(amount)
+            store.staking.creating-staking-account = no
+            create-staking-account.InProcess = no
+            return alert store, lang.minimalStakeMustBe + " #{(min_stake)} VLX"
+        if +main_balance < +amount
+            store.staking.creating-staking-account = no
+            create-staking-account.InProcess = no
+            return alert store, lang.balanceIsNotEnoughToSpend + " #{(amount)} VLX"
+        amount = buffer.amount * 10^9
         err, result <- as-callback web3t.velas.NativeStaking.createAccount(amount)
-        console.error "Result sending:" err if err?
         if err?
-            err = lang.balanceIsNotEnoughToCreateStakingAccount if ((err.toString! ? "").index-of("custom program error: 0x1")) > -1
-        return alert store, err.toString! if err?
-        store.staking.getAccountsFromCashe = no
-        #checkAccountWasCreated
-        <- set-timeout _, 1000
-        <- notify store, lang.accountCreatedAndFundsDeposited
-        navigate store, web3t, "validators"
+            create-staking-account.InProcess = no
+            store.staking.creating-staking-account = no
+            if ((err.toString! ? "").index-of("custom program error: 0x1")) > -1
+                err = lang.balanceIsNotEnoughToCreateStakingAccount
+            return alert store, err.toString!
+        if result.error? then
+            create-staking-account.InProcess = no
+            store.staking.creating-staking-account = no
+            error-msg = result.description ? "An unexpected error occurred during account creation."
+            return alert store, error-msg, cb
+        signature = result
+        err <- creation-account-subscribe({ store, web3t, signature, acc_type: "create", inProcess: create-staking-account.InProcess })
+        if err?
+            console.log "creation-account-subscribe err"
+            create-staking-account.InProcess = no
+            store.staking.creating-staking-account = no
+            return alert store, err, cb
+        create-staking-account.InProcess = no
+        store.staking.creating-staking-account = no
+        if store.staking.webSocketAvailable is no
+            <- notify store, lang.accountCreatedAndFundsDeposited
     totalOwnStakingAccounts = store.staking.totalOwnStakingAccounts ? 0
     loadingAccountIndex = Math.min(totalOwnStakingAccounts, store.staking.loadingAccountIndex)
     perPage =  store.staking.accounts_per_page
     page = store.staking.current_accounts_page
     pagination-disabled = store.staking.accounts-are-loading is yes
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1295497501' }, children = 
+    fetch-error-occurred =
+        | store.errors.fetchAccounts? and store.staking.accounts-are-loading is no => yes
+        | _ => no
+    svg-icon =
+        react.create-element 'svg', { width: '15px', height: '15px', viewBox: '0 0 15 15', version: '1.1', xmlns: 'http://www.w3.org/2000/svg' }, children = 
+            react.create-element 'g', { xmlns: "http://www.w3.org/2000/svg", transform: "matrix(0.026385223 0 0 0.026385223 -0 0.029023906)" }, children = 
+                react.create-element 'g', { xmlns: "http://www.w3.org/2000/svg", transform: "matrix(0.1 0 -0 -0.1 0 340)" }, children = 
+                    react.create-element 'path', { xmlns: "http://www.w3.org/2000/svg", d: "M1796 2907C 1749 2827 1701 2743 1515 2420C 1407 2230 1275 2001 1222 1910C 1170 1819 1110 1716 1090 1680C 950 1438 891 1334 845 1255C 816 1206 747 1084 690 985C 633 886 554 749 514 680L514 680L441 555L1130 552C 1510 551 2130 551 2508 552L2508 552L3197 555L3102 720C 3050 811 2991 914 2970 950C 2950 986 2856 1150 2761 1315C 2665 1480 2510 1750 2415 1915C 1758 3060 1827 2940 1820 2940C 1817 2940 1806 2925 1796 2907z", stroke: "none", fill: "rgb(255 215 0)", fill-rule: "nonzero" }
+    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content711009742' }, children = 
+        loader { loading: store.staking.creating-staking-account, text: "Creating staking account..." }
         react.create-element 'div', {}, children = 
             react.create-element 'div', { id: "create-staking-account", className: 'form-group' }, children = 
                 react.create-element 'div', { className: 'section create-staking-account' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
                         react.create-element 'h3', {}, ' ' + lang.createStakingAccount
                     react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'span', {}, children = 
-                            button {store, classes: "width-auto", text: lang.createAccount, no-icon:yes, on-click: create-staking-account, style: {width: \auto, display: \block}}
+                        if store.staking.creating-staking-account is yes
+                            react.create-element 'span', {}, children = 
+                                button {store, classes: "width-auto", text: "Creating...", no-icon:yes, on-click: create-staking-account, makeDisabled: yes, style: {width: \auto, display: \block}}
+                        else
+                            react.create-element 'span', {}, children = 
+                                button {store, classes: "width-auto", text: lang.createAccount, no-icon:yes, on-click: create-staking-account, style: {width: \auto, display: \block}}
                         if store.staking.accounts.length is 0
                             react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' Please create a staking account before you stake'
                         else 
@@ -354,38 +422,50 @@ staking-accounts-content = (store, web3t)->
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
                         react.create-element 'h3', { className: 'section-title' }, ' ' + lang.yourStakingAccounts + ' '
-                            react.create-element 'span', { className: 'amount' }, ' (' + store.staking.accounts.length + ') '
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
-                                icon \Sync, 25
+                            react.create-element 'span', { className: 'amount' }, ' (' + store.staking.accounts.length + ')'
+                        if not store.staking.webSocketAvailable or fetch-error-occurred or (store.errors.fetchValidators? and store.staking.pools-are-loading is no)
+                            react.create-element 'div', {}, children = 
+                                react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
+                                    icon \Sync, 25
+                        if fetch-error-occurred
+                            react.create-element 'div', { className: 'pointer-container' }, children = 
+                                svg-icon
+                                react.create-element 'div', { className: 'shadow-icon' }
                     react.create-element 'div', { className: 'description' }, children = 
-                        if store.staking.accounts-are-loading is no then
-                            react.create-element 'div', { className: 'table-scroll' }, children = 
-                                react.create-element 'table', {}, children = 
-                                    react.create-element 'thead', {}, children = 
-                                        react.create-element 'tr', {}, children = 
-                                            react.create-element 'td', { width: "3%", style: stats }, ' #'
-                                            react.create-element 'td', { width: "40%", style: staker-pool-style, title: "Your Staking Account" }, ' ' + lang.account + ' (?)'
-                                            react.create-element 'td', { width: "10%", style: stats, title: "Your Deposited Balance" }, ' ' + lang.balance + ' (?)'
-                                            react.create-element 'td', { width: "30%", style: stats, title: "Where you staked" }, ' ' + lang.validator + ' (?)'
-                                            react.create-element 'td', { width: "7%", style: stats, title: "The ID of your stake. This is made to simplify the search of your stake in validator list" }, ' ' + lang.seed + ' (?)'
-                                            if no
-                                                react.create-element 'td', { width: "10%", style: stats, title: "Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by staking and unstaking spam." }, ' ' + lang.status + ' (?)'
-                                            react.create-element 'td', { width: "10%", style: stats }, ' ' + (lang.action ? "Action")
-                                    react.create-element 'tbody', {}, children = 
-                                        paginate( (store.staking.accounts |> sort-by (.seed-index)), perPage, page)
-                                            |> map build store, web3t
+                        if store.errors.fetchAccounts?
+                            react.create-element 'div', { className: 'error' }, children = 
+                                react.create-element 'span', { className: 'warning-icon' }, ' ⚠️'
+                                react.create-element 'div', { className: 'message' }, ' An error occurred during fetching stake accounts. Please try one more time...'
                         else
-                            react.create-element 'div', { className: 'table-scroll' }, children = 
-                                react.create-element 'span', { className: 'entities-loader' }, children = 
-                                    react.create-element 'span', { className: 'inner-section' }, children = 
-                                        react.create-element 'h3', { className: 'item blink' }, ' Loading...'
-                                            react.create-element 'span', { className: 'item' }, '  ' + loadingAccountIndex
-                                            react.create-element 'span', { className: 'item' }, ' of'
-                                            react.create-element 'span', { className: 'item' }, '  ' + totalOwnStakingAccounts
-                        pagination {store, type: \accounts, disabled: pagination-disabled, config: {array: store.staking.accounts }}
+                            react.create-element 'div', { className: 'cont' }, children = 
+                                if store.staking.accounts-are-loading is no then
+                                    react.create-element 'div', { className: 'table-scroll' }, children = 
+                                        react.create-element 'table', {}, children = 
+                                            react.create-element 'thead', {}, children = 
+                                                react.create-element 'tr', {}, children = 
+                                                    react.create-element 'td', { width: "3%", style: stats }, ' #'
+                                                    react.create-element 'td', { width: "40%", style: staker-pool-style, title: "Your Staking Account" }, ' ' + lang.account + ' (?)'
+                                                    react.create-element 'td', { width: "10%", style: stats, title: "Your Deposited Balance" }, ' ' + lang.balance + ' (?)'
+                                                    react.create-element 'td', { width: "30%", style: stats, title: "Where you staked" }, ' ' + lang.validator + ' (?)'
+                                                    react.create-element 'td', { width: "7%", style: stats, title: "The ID of your stake. This is made to simplify the search of your stake in validator list" }, ' ID (?)'
+                                                    if no
+                                                        react.create-element 'td', { width: "10%", style: stats, title: "Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by staking and unstaking spam." }, ' ' + lang.status + ' (?)'
+                                                    react.create-element 'td', { width: "10%", style: stats }, ' ' + (lang.action ? "Action")
+                                            react.create-element 'tbody', {}, children = 
+                                                paginate( (store.staking.accounts |> sort-by (.seed-index)), perPage, page)
+                                                    |> map build store, web3t
+                                if store.staking.accounts-are-loading is no then
+                                    pagination {store, type: \accounts, disabled: pagination-disabled, config: {array: store.staking.accounts }}
+                                else
+                                    react.create-element 'div', { className: 'table-scroll' }, children = 
+                                        react.create-element 'span', { className: 'entities-loader' }, children = 
+                                            react.create-element 'span', { className: 'inner-section' }, children = 
+                                                react.create-element 'h3', { className: 'item blink' }, ' Loading...'
+                                                    react.create-element 'span', { className: 'item' }, '  ' + loadingAccountIndex
+                                                    react.create-element 'span', { className: 'item' }, ' of'
+                                                    react.create-element 'span', { className: 'item' }, '  ' + totalOwnStakingAccounts
 staking-accounts = ({ store, web3t })->
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content-1295497501' }, children = 
+    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content711009742' }, children = 
         staking-accounts-content store, web3t
 stringify = (value) ->
     if value? then

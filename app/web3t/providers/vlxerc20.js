@@ -10,6 +10,7 @@
   jsonParse = require('../json-parse.js');
   deadline = require('../deadline.js');
   sha3 = require('crypto-js/sha3');
+  commonProvider = require("./common/provider");
   getEthereumFullpairByIndex = function(mnemonic, index, network){
     var seed, wallet, w, address, privateKey, publicKey;
     seed = bip39.mnemonicToSeed(mnemonic);
@@ -24,196 +25,9 @@
       publicKey: publicKey
     };
   };
-  abi = [
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "name",
-      "outputs": [{
-        "name": "",
-        "type": "string"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_spender",
-          "type": "address"
-        }, {
-          "name": "_value",
-          "type": "uint256"
-        }
-      ],
-      "name": "approve",
-      "outputs": [{
-        "name": "",
-        "type": "bool"
-      }],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }, {
-      "constant": true,
-      "inputs": [],
-      "name": "totalSupply",
-      "outputs": [{
-        "name": "",
-        "type": "uint256"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_from",
-          "type": "address"
-        }, {
-          "name": "_to",
-          "type": "address"
-        }, {
-          "name": "_value",
-          "type": "uint256"
-        }
-      ],
-      "name": "transferFrom",
-      "outputs": [{
-        "name": "",
-        "type": "bool"
-      }],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }, {
-      "constant": true,
-      "inputs": [],
-      "name": "decimals",
-      "outputs": [{
-        "name": "",
-        "type": "uint8"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "constant": true,
-      "inputs": [{
-        "name": "_owner",
-        "type": "address"
-      }],
-      "name": "balanceOf",
-      "outputs": [{
-        "name": "balance",
-        "type": "uint256"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "constant": true,
-      "inputs": [],
-      "name": "symbol",
-      "outputs": [{
-        "name": "",
-        "type": "string"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_to",
-          "type": "address"
-        }, {
-          "name": "_value",
-          "type": "uint256"
-        }
-      ],
-      "name": "transfer",
-      "outputs": [{
-        "name": "",
-        "type": "bool"
-      }],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }, {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_owner",
-          "type": "address"
-        }, {
-          "name": "_spender",
-          "type": "address"
-        }
-      ],
-      "name": "allowance",
-      "outputs": [{
-        "name": "",
-        "type": "uint256"
-      }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }, {
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "fallback"
-    }, {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "owner",
-          "type": "address"
-        }, {
-          "indexed": true,
-          "name": "spender",
-          "type": "address"
-        }, {
-          "indexed": false,
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Approval",
-      "type": "event"
-    }, {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "from",
-          "type": "address"
-        }, {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        }, {
-          "indexed": false,
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Transfer",
-      "type": "event"
-    }
-  ];
-  getContractInstance = function(web3, addr){
-    switch (false) {
-    case toString$.call(web3.eth.contract).slice(8, -1) !== 'Function':
-      return web3.eth.contract(abi).at(addr);
-    default:
-      return new web3.eth.Contract(abi, addr);
-    }
-  };
+  getContractInstance = commonProvider.getContractInstanceWithAbi(
+    commonProvider.ABI
+  );
   isAddress = function(address){
     if (address.startsWith('V')) {
       address = vlxToEth(address);
@@ -258,7 +72,10 @@
         }, function(err, estimate){
           var dec, res, val;
           if (err != null) {
-            return cb(err);
+            return cb(null, {
+              calcedFee: network.txFee,
+              gasPrice: gasPrice
+            });
           }
           dec = getDec(network);
           res = times(gasPrice, estimate);
@@ -344,16 +161,8 @@
       });
     });
   };
-  getWeb3 = function(network){
-    var web3Provider;
-    web3Provider = network.api.web3Provider;
-    return new Web3(new Web3.providers.HttpProvider(web3Provider));
-  };
-  getDec = function(network){
-    var decimals;
-    decimals = network.decimals;
-    return Math.pow(10, decimals);
-  };
+  getWeb3 = commonProvider.getWeb3;
+  getDec = commonProvider.getDec;
   calcGasPrice = function(arg$, cb){
     var web3, feeType;
     web3 = arg$.web3, feeType = arg$.feeType;
@@ -366,12 +175,11 @@
     return Math.round(+num);
   };
   out$.createTransaction = createTransaction = curry$(function(arg$, cb){
-    var network, account, recipient, amount, amountFee, feeType, txType, web3, dec, privateKey, from;
+    var network, account, recipient, amount, amountFee, feeType, txType, dec, privateKey, from;
     network = arg$.network, account = arg$.account, recipient = arg$.recipient, amount = arg$.amount, amountFee = arg$.amountFee, feeType = arg$.feeType, txType = arg$.txType;
     if (!isAddress(recipient)) {
       return cb("address in not correct ethereum address");
     }
-    web3 = getWeb3(network);
     dec = getDec(network);
     privateKey = new Buffer(account.privateKey.replace(/^0x/, ''), 'hex');
     from = account.address;
@@ -381,7 +189,9 @@
     if (recipient != null && recipient.startsWith('V')) {
       recipient = vlxToEth(recipient);
     }
-    return web3.eth.getTransactionCount(from, 'pending', function(err, nonce){
+    return commonProvider.web3EthGetTransactionCount(
+      { address: from, status: 'pending', network },
+      function (err, { nonce, web3 }) {
       var contract, toWei, toWeiEth, toEth, value;
       if (err != null) {
         return cb(err);
@@ -414,7 +224,10 @@
         if (toString$.call(web3.eth.getBalance).slice(8, -1) !== 'Function') {
           return cb("getBalance is not a function");
         }
-        return web3.eth.getBalance(from, function(err, balance){
+        return commonProvider.web3EthGetBalance(
+          from,
+          network,
+          function (err, balance) {
           var balanceEth;
           if (err != null) {
             return cb(err);
@@ -509,36 +322,7 @@
     network = arg$.network, address = arg$.address;
     return cb("Not Implemented");
   };
-  out$.getBalance = getBalance = function(arg$, cb){
-    var network, address, web3, contract, balanceOf;
-    network = arg$.network, address = arg$.address;
-    if (address.startsWith('V')) {
-      address = vlxToEth(address);
-    }
-    web3 = getWeb3(network);
-    contract = getContractInstance(web3, network.address);
-    balanceOf = (function(){
-      switch (false) {
-      case contract.methods == null:
-        return function(address, cb){
-          return contract.methods.balanceOf(address).call(cb);
-        };
-      default:
-        return function(address, cb){
-          return contract.balanceOf(address, cb);
-        };
-      }
-    }());
-    return balanceOf(address, function(err, number){
-      var dec, balance;
-      if (err != null) {
-        return cb(err);
-      }
-      dec = getDec(network);
-      balance = div(number, dec);
-      return cb(null, balance);
-    });
-  };
+  out$.getBalance = getBalance = commonProvider.getBalance;
   out$.isValidAddress = isValidAddress = function(arg$, cb){
     var address, network, e, valid;
     address = arg$.address, network = arg$.network;

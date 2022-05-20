@@ -8,8 +8,9 @@ require! {
     \../math.ls : { times }
     \./keyboard.ls
     \../numbers.js : {parseNum}
-    \react-currency-input-field : { default: CurrencyInput }
+    \./react-currency-input-field : { default: CurrencyInput }
     \../icons.ls
+    \bignumber.js
 }
 # .input-area-2107940614
 #     @import scheme
@@ -96,7 +97,7 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, toke
             | _ => ".."
     value = 0 if value is "" or not value?
     # Input validation #
-    decimalsLimit = wallet?network?decimals ? 4
+    decimalsLimit = Math.min(wallet?network?decimals, 8)
     decimals = value.toString!.split(DECIMAL_SEPARATOR).1
     if decimals? and (decimals.length > decimalsLimit) then
         value = round-number(value, {decimals: decimalsLimit})
@@ -149,7 +150,7 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, toke
         | wallet.coin?custom is yes and icons.customWalletIcon? => icons.customWalletIcon
         | _ => wallet.coin.image
     react.create-element 'div', { className: 'input-area input-area-2107940614' }, children = 
-        react.create-element CurrencyInput, { style: input-style, key: "amount", allowDecimals: yes, allowNegativeValue: no, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield" }
+        react.create-element CurrencyInput, { id: "value-input", style: input-style, key: "amount", allowDecimals: yes, allowNegativeValue: no, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield" }
         react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
             react.create-element 'img', { src: "#{wallet-icon}", className: 'icon' }
             react.create-element 'span', {}, ' ' + token-label

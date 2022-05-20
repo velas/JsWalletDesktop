@@ -15,8 +15,7 @@ require! {
     \./render-error.ls
     \./scam-warning.ls
     \./service-worker.ls
-#    \@sentry/react : \Sentry
-#    \@sentry/tracing : { Integratisons }    
+    \./navigate.ls
 }
 is-allowed-context = ->
     return yes if window == window.parent
@@ -30,11 +29,6 @@ start-service store
 change-device = ->
     store.current.device = get-device!
     store.current.size = get-size!
-lock-wallet = ->
-    return if window.nolock is yes or store.current.page isnt \wallets
-    store.current.page = \locked
-new-idle = ->
-    set-timeout lock-wallet, 90000
 reset-idle = ->
     clear-timeout state.timeout
     state.timeout = new-idle!
@@ -42,15 +36,12 @@ window.addEventListener "resize", change-device
 for event in <[ mousemove click touchmove keydown ]>
     window.addEventListener event, reset-idle
 export web3t = web3 store
+lock-wallet = ->
+    return if window.nolock is yes or store.current.page isnt \wallets
+    navigate store, web3t, \locked
+new-idle = ->
+    set-timeout lock-wallet, 120000
 export store
-
-#Sentry.init(
-#    {
-#        dsn: "https://e796584d917545de9c0d85d7e403c32d@o1060902.ingest.sentry.io/6050843",
-#        integrations: [new Integrations.BrowserTracing()]
-#        tracesSampleRate: 1.0,
-#    })
-
 safe-render = (func)->
     state =
         result: null

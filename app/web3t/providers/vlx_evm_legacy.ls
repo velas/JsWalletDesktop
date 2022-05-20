@@ -1,7 +1,7 @@
 require! {
     \qs : { stringify }
     \prelude-ls : { filter, map, foldl, each, sort-by, reverse }
-    \../math.js : { plus, minus, times, div, from-hex }
+    \../math.js : { plus, minus, times, div, from-hex, $toHex }
     \./superagent.js : { get, post }
     \./deps.js : { Web3, Tx, BN, hdkey, bip39 }
     \../json-parse.js
@@ -63,7 +63,6 @@ try-parse = (data, cb)->
     return cb null, data if typeof! data.body is \Object
     return cb "expected text" if typeof! data?text isnt \String
     try
-        сonsole.log \try-parse, data.text, JSON.parse
         data.body = JSON.parse data.text
         cb null, data
     catch err
@@ -84,6 +83,7 @@ make-query = (network, method, params, cb)->
     return cb "expected object" if typeof! data.body isnt \Object
     return cb data.body.error if data.body?error?
     cb null, data.body.result
+    
 export get-transaction-info = (config, cb)->
     { network, tx } = config
     query = [tx]
@@ -96,32 +96,39 @@ export get-transaction-info = (config, cb)->
         | _ => \pending
     result = { tx?from, tx?to, status, info: tx }
     cb null, result
-get-gas-estimate = ({ network, query, gas }, cb)->
-    return cb null, gas if gas?
+
+get-gas-estimate = (config, cb)->
+    { network, fee-type, account, amount, to, data } = config
+    return cb null, "0" if +amount is 0
+    dec = get-dec network     
+    from = config.account.address
+        
+    val = (amount `times` dec)    
+    value = $toHex(val)
+        
+    $data =
+        | not data? => "0x"    
+        | data? and data isnt "0x" => data    
+        | _ => data  
+        
+    query = { from, to, data: $data, value }  
     err, estimate <- make-query network, \eth_estimateGas , [ query ]
-    return cb null, 1000000 if err?
-    #err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    estimate-normal = from-hex(estimate)
-    return cb null, 1000000 if +estimate-normal < 1000000
-    cb null, estimate-normal
+    console.error "[getGasEstimate] error:" err if err?   
+    return cb null, "1000000" if err?    
+    cb null, from-hex(estimate)
+    
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
-    return cb null if typeof! to isnt \String or to.length is 0
+    #return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
-    return cb err if err?
-    data-parsed =
-        | data? => data
-        | _ => '0x'
-    from = account.address
-    query = { from, to, data: data-parsed }
-    err, estimate <- get-gas-estimate { network, query, gas }
-    return cb err if err?
+    return cb err if err?   
+    err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data, gas }
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?     
     res = gas-price `times` estimate
     val = res `div` dec
-    #min = 0.002
-    #return cb null, min if +val < min
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -163,7 +170,7 @@ get-internal-transactions = (config, cb)->
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
     page = 1
     offset = 20
-    query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
+    query = stringify { module, action, apikey, address, sort, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text
@@ -182,7 +189,7 @@ get-external-transactions = ({ network, address }, cb)->
     offset = 20
     sort = \desc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
-    query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
+    query = stringify { module, action, apikey, address, sort, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text
@@ -261,15 +268,12 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     balance-eth = to-eth balance
     to-send = amount `plus` amount-fee
     return cb "Balance #{balance-eth} is not enough to send tx #{to-send}" if +balance-eth < +to-send
-    # gas-estimate =
-    #     |  gas? => gas
-    #     |  +gas-price is 0 => 21000
-    #     | _ => round(to-wei(amount-fee) `div` gas-price)
+
     data-parsed =
         | data? => data
         | _ => '0x'
-    query = { from: address, to: $recipient, data: data-parsed }
-    err, gas-estimate <- get-gas-estimate { network, query, gas }
+    
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data } 
     return cb err if err?
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?

@@ -7,6 +7,8 @@ require! {
     \../icons.ls
     \../navigate.ls
     \./choose-language.ls
+    \../pin.ls : { set, check, exists, del, setbkp }
+    \../seed.ls : seedmem
 }
 # ss
 # .newseed1477500738
@@ -179,6 +181,12 @@ newseed = ({ store, web3t })->
         opacity: ".3"
         cursor: "no-drop"
     new-wallet = ->
+        setbkp!
+        del!
+        seedmem.setbkp!
+        seedmem.del!
+        store.current.pin = ""
+        store.current.pin-trial = 0
         generate-seed!
         store.current.seed-generated = yes
         next!

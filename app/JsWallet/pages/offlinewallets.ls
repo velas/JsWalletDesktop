@@ -2,7 +2,7 @@ require! {
     \react
     \../components/button.ls
     \prelude-ls : { map, filter, head, find } 
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../get-primary-info.ls
     \../icons.ls
     \../navigate.ls

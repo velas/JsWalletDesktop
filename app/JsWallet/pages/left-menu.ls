@@ -253,7 +253,7 @@ module.exports = (store, web3t)->
     settings = if store.current.page is \settings then \active else \not-active
     filestorage = if store.current.page is \filestorage then \active else \not-active
     staking = if store.current.page is \staking then \active else \not-active
-    staking-active = if store.current.page is \validators then \active else \not-active
+    staking-active = if store.current.page is \staking2 then \active else \not-active
     info-active = if store.current.page is \info then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
     faq = if store.current.page is \faq then \active else \not-active
@@ -317,12 +317,16 @@ module.exports = (store, web3t)->
     goto-file-storage = ->
         navigate store, web3t, \filestorage
     goto-staking = ->
-        navigate store, web3t, \staking
+        navigate store, web3t, \staking2
+        store.menu.show = no
+    goto-choose-staker2 = ->
+        navigate store, web3t, \staking2
         store.menu.show = no
     goto-resources = ->
         navigate store, web3t, \resources
     goto-choose-staker = ->
-        navigate store, web3t, \validators
+        return null if store.current.page is \staking2
+        navigate store, web3t, \staking2
         store.menu.show = no
     goto-info = ->
         navigate store, web3t, \info
@@ -347,6 +351,9 @@ module.exports = (store, web3t)->
     color =
         color: style.app.text
     goto-mainnet = ->
+        return if store.current.refreshing is yes
+        store.transactions.all = []
+        store.transactions.applied = []
         web3t.use \mainnet
         store.current.wallet-index = 0
         store.current.group-index = 0    
@@ -358,6 +365,9 @@ module.exports = (store, web3t)->
         if store.menu.show then \active else \ ""
     close = ->
         store.menu.show = no
+    network-button-style =
+        | store.current.refreshing is yes => {color: style.app.text, opacity: 0.2, cursor: 'no-pointer'}
+        | _ => {color: style.app.text, opacity: 1}
     react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu855995223" }, children = 
         react.create-element 'div', { on-click: close, className: "#{show-mobile} closed" }, children = 
             icon \X, 20
@@ -366,30 +376,27 @@ module.exports = (store, web3t)->
         menu { store, web3t }
         react.create-element 'div', { className: 'menu-items' }, children = 
             if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: wallet, style: icon-style, id: "menu-wallets", className: "#{wallets} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
-                    react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{staking-active} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
-                    react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-search, style: icon-style, id: "menu-search", className: "#{search} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.search
-                    react.create-element 'img', { src: "#{icons.search}", style: icon-color }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-settings, style: icon-style, id: "menu-settings", className: "#{settings} menu-item" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
-                    react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
-            if store.preference.settings-visible is yes
-                react.create-element 'div', { on-click: goto-support, style: icon-style, id: "menu-support", className: 'menu-item' }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
-                    react.create-element 'img', { src: "#{icons.support}", style: icon-color }
+                react.create-element 'div', { className: 'left-menu-items' }, children = 
+                    react.create-element 'div', { on-click: wallet, style: icon-style, id: "menu-wallets", className: "#{wallets} menu-item" }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
+                        react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
+                    react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{staking-active} menu-item" }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
+                        react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
+                    react.create-element 'div', { on-click: goto-search, style: icon-style, id: "menu-search", className: "#{search} menu-item" }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.dapps
+                        react.create-element 'img', { src: "#{icons.search}", style: icon-color }
+                    react.create-element 'div', { on-click: goto-settings, style: icon-style, id: "menu-settings", className: "#{settings} menu-item" }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
+                        react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
+                    react.create-element 'div', { on-click: goto-support, style: icon-style, id: "menu-support", className: 'menu-item' }, children = 
+                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
+                        react.create-element 'img', { src: "#{icons.support}", style: icon-color }
             if store.current.network is \devnet
-                react.create-element 'div', { on-click: goto-mainnet, style: icon-style, id: "menu-devnet", className: "#{settings} menu-item testnet" }, children = 
+                react.create-element 'div', { on-click: goto-mainnet, style: network-button-style, id: "menu-devnet", className: "#{settings} menu-item testnet" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' Devnet'
                     react.create-element 'img', { src: "#{icons.test}", style: icon-color }
             if store.current.network is \testnet
-                react.create-element 'div', { on-click: goto-mainnet, style: icon-style, id: "menu-testnet", className: "#{settings} menu-item testnet" }, children = 
+                react.create-element 'div', { on-click: goto-mainnet, style: network-button-style, id: "menu-testnet", className: "#{settings} menu-item testnet" }, children = 
                     react.create-element 'span', { className: 'arrow_box' }, ' Testnet'
                     react.create-element 'img', { src: "#{icons.test}", style: icon-color }

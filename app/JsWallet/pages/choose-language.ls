@@ -6,8 +6,8 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../navigate.ls
-    \../../web3t/providers/superagent.ls : { get }
-    \prelude-ls : { find }
+    \../../web3t/providers/superagent.js : { get }
+    \prelude-ls : { each, map, find }
     \../menu-funcs.ls
     \../icons.ls
     \../navigate.ls
@@ -38,7 +38,6 @@ require! {
 #     .title
 #         color: #ebf6f8
 #         font-size: 22px
-        
 #     .version
 #         letter-spacing: 1px
 #         font-size: 8px
@@ -227,39 +226,32 @@ language = (store, web3t)->
         filter: style.app.filterIcon
     text-style =
         color: style.app.text
+    country-codes = 
+        en: \English
+        ru: \Русский
+        ua: \Українська
+        cn: \中文語言
+        kr: \한국어
+        fr: \Français
+        es: \Español
+        ar: \عربى
+        in: "हिंदी"
+        id: \Indonesian
+        ph: \Pilipino
+        yr: \Yoruba
+        vn: "Tiếng Việt"
+    order =
+        * <[ fr en cn kr ]>
+        * <[ ru ua es ar ]>
+        * <[ in id ph yr ]>
+        * <[ vn ]>
     set-lang = (lang)->
-        #return alert "lang is not available" if not store.langs[store.lang]?
         store.lang = lang
         store.current.choose-language = no
-    change-lang-en = ->
-        return set-lang \en
-    change-lang-ru = ->
-        return set-lang \ru
-    change-lang-ua = ->
-        return set-lang \uk
-    change-lang-cn = ->
-        return set-lang \zh
-    change-lang-kr = ->
-        return set-lang \ko
-    change-lang-fr = ->
-        return set-lang \fr
-    change-lang-es = ->
-        return set-lang \es
-    change-lang-ar = ->
-        return set-lang \ar
-    change-lang-id = ->
-        return set-lang \id
-    change-lang-ph = ->
-        return set-lang \ph
-    change-lang-yr = ->
-        return set-lang \yr
-    change-lang-vn = ->
-        return set-lang \vn
-    change-lang-in = ->
-        return set-lang \in
-    comming-soon =
-        opacity: ".3"
-        cursor: "no-drop"
+    change-lang = (code)->
+        ->
+            store.current.language-menu = no
+            return set-lang code    
     download = ->
         navigate store, web3t, \downloadwallet
     react.create-element 'div', {}, children = 
@@ -270,65 +262,25 @@ language = (store, web3t)->
                 react.create-element 'span', { className: 'version low' }, ' ' + store.version
             react.create-element 'div', { style: text-style, className: 'welcome' }, ' ' + lang.language
             react.create-element 'div', { className: 'langs' }, children = 
-                react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { key: "lang-gr", style: comming-soon, id: "lang-gr", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-gr}" }
-                        react.create-element 'div', {}, ' Deutsch'
-                    react.create-element 'li', { key: "lang-fr", on-click: change-lang-fr, style: color, id: "lang-fr", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-fr}" }
-                        react.create-element 'div', {}, ' Français'
-                    react.create-element 'li', { key: "lang-en", on-click: change-lang-en, style: color, id: "lang-en", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-en}" }
-                        react.create-element 'div', {}, ' English'
-                    react.create-element 'li', { key: "lang-kr", on-click: change-lang-kr, style: color, id: "lang-kr", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-cn}" }
-                        react.create-element 'div', {}, ' 한국어'
-                react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { key: "lang-cn", on-click: change-lang-cn, style: color, id: "lang-cn", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-kr}" }
-                        react.create-element 'div', {}, ' 中文語言'
-                    react.create-element 'li', { key: "lang-jp", style: comming-soon, id: "lang-jp", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-jp}" }
-                        react.create-element 'div', {}, ' 日本語'
-                    react.create-element 'li', { key: "lang-in", on-click: change-lang-in, style: color, id: "lang-in", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-hn}" }
-                        react.create-element 'div', {}, ' हिंदी'
-                    react.create-element 'li', { key: "lang-sp", on-click: change-lang-es, style: color, id: "lang-sp", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-sp}" }
-                        react.create-element 'div', {}, ' Español'
-                react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { key: "lang-ua", on-click: change-lang-ua, style: color, id: "lang-ua", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-ua}" }
-                        react.create-element 'div', {}, ' Українська'
-                    react.create-element 'li', { key: "lang-ru", on-click: change-lang-ru, style: color, id: "lang-ru", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-ru}" }
-                        react.create-element 'div', {}, ' Русский'
-                    react.create-element 'li', { key: "lang-kz", style: comming-soon, id: "lang-kz", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-kz}" }
-                        react.create-element 'div', {}, ' Қазақ'
-                    react.create-element 'li', { key: "lang-ar", on-click: change-lang-ar, style: color, id: "lang-ar", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-ar}" }
-                        react.create-element 'div', {}, ' عربى'
-                react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { key: "lang-id", on-click: change-lang-id, style: color, id: "lang-id", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-id}" }
-                        react.create-element 'div', {}, ' Indonesian'
-                    react.create-element 'li', { key: "lang-ph", on-click: change-lang-ph, style: color, id: "lang-ph", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-ph}" }
-                        react.create-element 'div', {}, ' Pilipino'
-                    react.create-element 'li', { key: "lang-yr", on-click: change-lang-yr, style: color, id: "lang-yr", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-yr}" }
-                        react.create-element 'div', {}, ' Yoruba'
-                    react.create-element 'li', { key: "lang-vn", on-click: change-lang-vn, style: color, id: "lang-vn", className: 'lang-item' }, children = 
-                        react.create-element 'img', { src: "#{icons.langs-vn}" }
-                        react.create-element 'div', {}, ' Tiếng Việt'
-            react.create-element 'div', { className: 'downloadwalletlist' }, children = 
-                react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank", id: "download-ios" }, children = 
-                    react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
-                react.create-element 'a', { href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet", target: "_blank", id: "download-android" }, children = 
-                    react.create-element 'img', { src: "#{icons[\android]}", className: 'icon-download' }
-                react.create-element 'span', { id: "download-desktop" }, children = 
-                    react.create-element 'img', { on-click: download, src: "#{icons[\desktop]}", className: 'icon-download' }
+                order
+                    |> map (arr)->
+                        react.create-element 'ul', {}, children = 
+                            arr
+                                |> map (code) ->
+                                    lang-style = color
+                                    name = country-codes[code]
+                                    tag = "langs_#{code}"
+                                    react.create-element 'li', { key: "lang_#{code}", on-click: change-lang(code), style: color, id: "lang-#{code}", className: 'lang-item' }, children = 
+                                        react.create-element 'img', { src: "#{icons[tag]}" }
+                                        react.create-element 'div', {}, ' ' + name
+            if not process?versions?electron?    
+                react.create-element 'div', { className: 'downloadwalletlist' }, children = 
+                    react.create-element 'a', { href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748", target: "_blank", id: "download-ios" }, children = 
+                        react.create-element 'img', { src: "#{icons[\ios]}", className: 'icon-download' }
+                    react.create-element 'a', { href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet", target: "_blank", id: "download-android" }, children = 
+                        react.create-element 'img', { src: "#{icons[\android]}", className: 'icon-download' }
+                    react.create-element 'span', { id: "download-desktop" }, children = 
+                        react.create-element 'img', { on-click: download, src: "#{icons[\desktop]}", className: 'icon-download' }
 module.exports = ({ store, web3t } )->
     return null if store.current.choose-language isnt yes
     { close-language } = menu-funcs store, web3t

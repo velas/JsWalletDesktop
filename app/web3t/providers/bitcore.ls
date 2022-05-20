@@ -127,7 +127,9 @@ export calc-fee = (config, cb)->
     return calc-fee-private config, cb if tx-type is \private
     return calc-fee-instantx config, cb if tx-type is \instant
     calc-fee = get-calc-fee-func network
-    calc-fee config, cb
+    err, calced-fee <- calc-fee config
+    return cb err if err?
+    cb null, { calced-fee }    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-bitcoin-fullpair-by-index mnemonic, index, network
     cb null, result

@@ -6,7 +6,7 @@ require! {
     \prelude-ls : { map, sort-by, filter }
     \../navigate.ls
     \../icons.ls
-    \../../web3t/providers/deps.ls : { bip39 }
+    \../../web3t/providers/deps.js : { bip39 }
     \../components/typeahead.ls
 }
 # .newseed-1527643649
@@ -210,6 +210,8 @@ restore-words-panel = (store, web3t)->
         color: style.app.text2
         background: style.app.primary3
         background-color: style.app.primary3-spare
+    icon-style=
+        filter: style.app.filter
     btn-icon =
         filter: style.app.btn-icon
     text-style =
@@ -237,7 +239,7 @@ restore-words-panel = (store, web3t)->
                 react.create-element 'img', { src: "#{icons.close2}", style: btn-icon, className: 'icon-svg' }
                 """ #{lang.cancel }"""
             react.create-element 'button', { on-click: next, style: button-primary1-style, id: "seed-phrase-next", className: 'right' }, children = 
-                react.create-element 'img', { src: "#{icons.right}", className: 'icon-svg' }
+                react.create-element 'img', { src: "#{icons.right}", style: icon-style, className: 'icon-svg' }
                 """ #{lang.next }"""
         react.create-element 'div', { style: text-style, className: 'hint' }, ' ' + lang.new-seed-warning-restore
 newseed = ({ store, web3t })->

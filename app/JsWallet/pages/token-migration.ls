@@ -6,7 +6,7 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../navigate.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \prelude-ls : { find }
     \react-copy-to-clipboard : { CopyToClipboard }
     \../copied-inform.ls

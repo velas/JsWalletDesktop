@@ -1,6 +1,6 @@
 require! {
     \react
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \prelude-ls : { map, keys, head, filter, sort-by, reverse }
     \moment
     \./switch-account.ls

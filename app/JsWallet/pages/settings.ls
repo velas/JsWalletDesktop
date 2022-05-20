@@ -11,9 +11,9 @@ require! {
     \../components/button.ls
     \../components/burger.ls
     \./choose-themes.ls
-    \prelude-ls : { obj-to-pairs, pairs-to-obj, map }
+    \prelude-ls : { keys, obj-to-pairs, pairs-to-obj, map, filter }
 }
-# .settings-menu1478476306
+# .settings-menu220366167
 #     @import scheme
 #     position: relative
 #     display: block
@@ -202,7 +202,7 @@ require! {
 #                 right: 0
 #                 padding: 0
 #                 top: 25px
-#                 height: 300px
+#                 height: auto
 #                 margin: 5px
 #                 width: 180px
 #                 box-sizing: border-box
@@ -211,6 +211,7 @@ require! {
 #                 box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
 #                 ul
 #                     padding: 15px
+#                     max-height: 250px
 #                     margin: 0
 #                     overflow: scroll
 #                     background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
@@ -340,103 +341,46 @@ require! {
 list-language = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
+    country-codes = 
+        en: \English
+        ru: \Русский
+        ua: \Українська
+        cn: \中文語言
+        kr: \한국어
+        fr: \Français
+        es: \Español
+        ar: \عربى
+        in: "हिंदी"
+        id: \Indonesian
+        ph: \Pilipino
+        yr: \Yoruba
+        vn: "Tiếng Việt"
     set-lang = (lang)->
-        #return alert "lang is not available" if not store.langs[store.lang]?
         local-storage.set-item \lang, lang
         store.lang = lang
-    change-lang-en = ->
-        store.current.language-menu = no
-        return set-lang \en
-    change-lang-ru = ->
-        store.current.language-menu = no
-        return set-lang \ru
-    change-lang-ua = ->
-        store.current.language-menu = no
-        return set-lang \uk
-    change-lang-cn = ->
-        store.current.language-menu = no
-        return set-lang \zh
-    change-lang-kr = ->
-        store.current.language-menu = no
-        return set-lang \ko
-    change-lang-fr = ->
-        store.current.language-menu = no
-        return set-lang \fr
-    change-lang-es = ->
-        store.current.language-menu = no
-        return set-lang \es
-    change-lang-ar = ->
-        store.current.language-menu = no
-        return set-lang \ar
-    change-lang-in = ->
-        store.current.language-menu = no
-        return set-lang \in
-    change-lang-id = ->
-        store.current.language-menu = no
-        return set-lang \id
-    change-lang-ph = ->
-        store.current.language-menu = no
-        return set-lang \ph
-    change-lang-yr = ->
-        store.current.language-menu = no
-        return set-lang \yr
-    change-lang-vn = ->
-        store.current.language-menu = no
-        return set-lang \vn
+    change-lang = (code)->
+        ->
+            store.current.language-menu = no
+            return set-lang code
     color =
         color: style.app.text
-    comming-soon =
-        opacity: ".3"
-        cursor: "no-drop"
+    up = (it)->
+        it.to-upper-case!
     react.create-element 'ul', {}, children = 
-        react.create-element 'li', { key: "langs-gr", style: comming-soon, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-gr}" }
-            """ Deutsch"""
-        react.create-element 'li', { key: "langs-fr", on-click: change-lang-fr, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-fr}" }
-            """ Français"""
-        react.create-element 'li', { key: "langs-en", on-click: change-lang-en, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-en}" }
-            """ English"""
-        react.create-element 'li', { key: "langs-kr", on-click: change-lang-kr, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-cn}" }
-            """ 한국어"""
-        react.create-element 'li', { key: "langs-cn", on-click: change-lang-cn, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-kr}" }
-            """ 中文語言"""
-        react.create-element 'li', { key: "langs-ar", on-click: change-lang-ar, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-ar}" }
-            """ عربى"""
-        react.create-element 'li', { key: "langs-jp", style: comming-soon, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-jp}" }
-            """ 日本語"""
-        react.create-element 'li', { key: "langs-in", on-click: change-lang-in, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-in}" }
-            """ हिंदी"""
-        react.create-element 'li', { key: "langs-es", on-click: change-lang-es, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-sp}" }
-            """ Español"""
-        react.create-element 'li', { key: "langs-ua", on-click: change-lang-ua, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-ua}" }
-            """ Українська"""
-        react.create-element 'li', { key: "langs-ru", on-click: change-lang-ru, style: color, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-ru}" }
-            """ Русский"""
-        react.create-element 'li', { key: "langs-kz", style: comming-soon, className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-kz}" }
-            """ Қазақ"""
-        react.create-element 'li', { key: "langs-id", on-click: change-lang-id, style: color, id: "lang-id", className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-id}" }
-            react.create-element 'div', {}, ' Indonesian'
-        react.create-element 'li', { key: "langs-ph", on-click: change-lang-ph, style: color, id: "lang-ph", className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-ph}" }
-            react.create-element 'div', {}, ' Pilipino'
-        react.create-element 'li', { key: "langs-yr", on-click: change-lang-yr, style: color, id: "lang-yr", className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-yr}" }
-            react.create-element 'div', {}, ' Yoruba'
-        react.create-element 'li', { key: "langs-vn", on-click: change-lang-vn, style: color, id: "lang-vn", className: 'lang-item' }, children = 
-            react.create-element 'img', { src: "#{icons.langs-vn}" }
-            react.create-element 'div', {}, ' Tiếng Việt'
+        country-codes
+            |> keys
+            |> filter (it)->
+                name = country-codes[it]
+                (store.current.search-language.trim!.length is 0) or 
+                    up(name).startsWith(up(store.current.search-language)) or
+                    up(it).startsWith(up(store.current.search-language))    
+            |> map (code) ->
+                lang-style = color
+                name = country-codes[code]
+                tag = "langs_#{code}"
+                react.create-element 'li', { key: "langs_#{code}", on-click: change-lang(code), style: lang-style, className: "#{code} lang-item" }, children = 
+                    react.create-element 'img', { src: "#{icons[tag]}" }
+                    """ #{name}"""
 switch-language = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -451,11 +395,14 @@ switch-language = (store, web3t)->
         store.current.language-menu = not store.current.language-menu
     menu-out = ->
         store.current.language-menu = no
+    search-lang = (event)->
+        input = (event.target.value ? "")
+        store.current.search-language = input
     react.create-element 'span', {}, children = 
         button { store, on-click: open-language , type: \secondary , icon : \arrowRight, text: \languageType }
         if store.current.language-menu
             react.create-element 'div', { style: filter-body, on-mouse-leave: menu-out, className: 'langs-drop' }, children = 
-                react.create-element 'input', { value: '', style: input-style, placeholder: "#{lang.search}", className: 'search' }
+                react.create-element 'input', { value: "#{store.current.search-language}", style: input-style, placeholder: "#{lang.search}", on-change: search-lang, className: 'search' }
                 list-language store, web3t
 switch-account = (store, web3t)->
     {  account-left, account-right, change-account-index } = menu-funcs store, web3t
@@ -492,13 +439,21 @@ switch-network = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
     change-network = ->
+        return if store.current.refreshing is yes
         value = it.target.value is \true
+        store.forceReload = yes
+        store.forceReloadTxs = yes
+        store.transactions.all = []
+        store.transactions.applied = []
         web3t.use networks-reverted[not value]
         store.current.wallet-index = 0
         store.current.group-index = 0
     value= networks[store.current.network]
     isChecked = store.current.network is "testnet"
-    react.create-element 'label', { className: 'active-network' }, children = 
+    checkbox-style =
+        | store.current.refreshing is yes => {opacity: 0.2}
+        | _ => {opacity: 1}
+    react.create-element 'label', { style: checkbox-style, className: 'active-network' }, children = 
         react.create-element 'input', { type: 'checkbox', on-change: change-network, value: value, id: "settings-testnet", checked: isChecked }
         react.create-element 'div', { className: 'track thumb' }
 naming-part = ({ store, web3t })->
@@ -597,7 +552,7 @@ module.exports = ({ store, web3t } )->
         overflow: "auto"
         max-height: "100vh"
     lang = get-lang store
-    react.create-element 'div', { className: 'settings-menu settings-menu1478476306' }, children = 
+    react.create-element 'div', { className: 'settings-menu settings-menu220366167' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: 'header' }, ' ' + lang.manage-account
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

@@ -2,7 +2,7 @@ require! {
     \react
     \../components/button.ls
     \prelude-ls : { map, filter, head, find } 
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../get-primary-info.ls
     \../icons.ls
     \../navigate.ls
@@ -113,12 +113,17 @@ build-version = (store, release)-->
         | last is 'exe' => \Windows
         | last is 'snap' => \Linux
     icon = 
-        | last is 'dmg' => \ "#{icons.macos}"
-        | last is 'exe' => \ "#{icons.windows}"
-        | last is 'snap' => \ "#{icons.linux}"
+        | last is 'dmg' => "#{icons.macos}"
+        | last is 'exe' => "#{icons.windows}"
+        | last is 'snap' => "#{icons.linux}"
     console.log "#{release.name}.md5"
     md5-file =
-        store.releases |> find (-> it.name is "#{release.name}.md5")
+        store.releases
+            |> map (it)->
+                if it.name.endsWith(".exe")
+                    it.name = it.name.replace("-Setup-", ".Setup.")
+                it
+            |> find (-> it.name is "#{release.name}.md5")
     react.create-element 'div', { style: resource, id: "platform-#{name}", className: 'platform' }, children = 
         react.create-element 'img', { src: "#{icon}", className: 'title-icons' }
         react.create-element 'div', { className: 'title' }, ' ' + name
@@ -163,21 +168,15 @@ module.exports = ({ store, web3t })->
 #    release.content = data.text 
 #    update-md5 releases, cb
 module.exports.init = ({ store, web3t}, cb)->
-    console.log \init
     #https://github.com/velas/JsWalletDesktop/releases/download/v0.12.111/velas-desktop-wallet-0.12.111-mac.zip
     #https://uploads.github.com/repos/velas/JsWalletDesktop/releases/27269358/assets{?name,label}
     err, data <- get \https://api.github.com/repos/velas/JsWalletDesktop/releases .end
     return cb err if err?
-    console.log \init, err, data
     latest-release =
         data.body |> head
     return cb "latest release is not found" if not latest-release? 
-    console.log \latest-release.assets_url , latest-release.assets_url
     err, data <- get latest-release.assets_url .end
-    console.log \init, err, data
     return cb err if err?
-    store.releases = data.body |> map (-> { ...it, latest-release.tag_name })
-    #md5-items = 
-    #    store.releases |> filter only-md5
-    #<- update-md5 md5-items
+    store.releases = data.body |> map (it)->
+        { ...it, latest-release.tag_name }
     cb null

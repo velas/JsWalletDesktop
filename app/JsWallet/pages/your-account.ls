@@ -199,9 +199,11 @@ background = ->
         react.create-element 'g', {}, children = 
             react.create-element 'path', { d: 'M86.785,109.878   c-8.188,4.317-16.533,5.962-26.515,5.962c-24.428,0-45.133-17.879-45.133-46.479c0-30.687,21.299-57.201,54.376-57.201   c25.918,0,43.348,18.175,43.348,43.052c0,22.342-12.517,35.448-26.514,35.448c-5.968,0-11.475-4.021-11.025-13.105h-0.594   C69.514,86.342,62.66,90.66,53.721,90.66c-8.636,0-16.083-7-16.083-18.764c0-18.473,14.591-35.309,35.296-35.309   c6.403,0,12.067,1.34,15.937,3.13L83.813,66.68c-2.232,11.323-0.45,16.532,4.463,16.685c7.604,0.146,16.095-9.982,16.095-27.261   c0-21.602-12.964-37.09-36.06-37.09c-24.27,0-44.684,19.212-44.684,49.456c0,24.877,16.241,40.215,38.28,40.215   c8.491,0,16.387-1.783,22.499-5.21L86.785,109.878z M78.598,45.527c-1.493-0.449-4.027-1.043-7.446-1.043   c-13.112,0-23.689,12.366-23.689,26.812c0,6.556,3.275,11.322,9.836,11.322c8.637,0,16.532-11.025,18.169-20.256L78.598,45.527z' }
 module.exports = (store, web3t)->
-    { open-account, open-migration, current, account-name, refresh, lock } = menu-funcs store, web3t
+    { current, account-name, refresh, lock } = menu-funcs store, web3t
     create-account = ->
         return if store.current.refreshing is yes
+        store.forceReload = yes
+        store.forceReloadTxs = yes
         new-length = 1 + length
         store.current.account-index = new-length
         localStorage.set-item('Accounts', new-length)
@@ -271,19 +273,26 @@ module.exports = (store, web3t)->
     show-class =
         if store.menu.show then \show else \ ""
     show = ->
+        return if store.current.page in  <[ account_details staking2 ]>
         store.menu.show = not store.menu.show
-    disabled-class = if store.current.refreshing is yes then "disabled" else ""
+    disabled-class = if store.current.refreshing is yes or store.staking.accounts-are-loading is yes then "disabled" else ""
     create-account-position = (index)->        
         change-account = ->
-            return if store.current.refreshing is yes
+            return if store.current.page in  <[ account_details staking2 ]>
+            return if store.current.refreshing is yes or store.staking.accounts-are-loading is yes
             if store.current.account-index is index 
                 store.current.switch-account = no
                 return
+            store.forceReload = yes
+            store.forceReloadTxs = yes
             store.current.account-index = index
             store.current.switch-account = no
+            store.staking.fetchAccounts = yes
             store.staking.getAccountsFromCashe = no
+            store.transactions.all = []
+            store.transactions.applied = []
             <- web3t.refresh
-        default-account-name = -> "#{lang.account} #{index}"
+        default-account-name = -> "Account #{index}"
         current-account-name = ->
             local-storage.get-item(default-account-name!) ? default-account-name!
         account-name = current-account-name!

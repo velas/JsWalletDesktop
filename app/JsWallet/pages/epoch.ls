@@ -16,7 +16,7 @@ require! {
     \moment
     \../navigate.ls
 }
-# .choose-account-1977626109
+# .choose-account-893138308
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -153,6 +153,8 @@ require! {
 #             cursor: default
 #             display: inline-block
 #             vertical-align: middle
+#             &:hover
+#                 cursor: pointer
 #         input
 #             outline: none
 #             width: 100px
@@ -306,7 +308,7 @@ module.exports = (store, web3t)->
     on-exit = ->
         store.current.current-epoch = no
     if store.current.device is \desktop
-        react.create-element 'div', { className: 'choose-account choose-account-1977626109' }, children = 
+        react.create-element 'div', { className: 'choose-account choose-account-893138308' }, children = 
             react.create-element 'div', { on-mouse-leave: on-exit, className: "#{show-class} current-epoch h1" }, children = 
                 react.create-element 'span', { on-click: open-epoch, className: 'name' }, ' ' + lang.epoch
                 react.create-element 'span', { on-click: open-epoch, className: "#{rotate-class} icon" }, children = 

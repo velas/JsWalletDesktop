@@ -7,12 +7,12 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../icons.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../components/button.ls
     \./custom-token.ls : \CustomToken
     \../components/popups/loader.ls    
 }
-# .manage-account-379659977
+# .manage-account-635636907
 #     @import scheme
 #     @keyframes bounceIn
 #         from
@@ -59,7 +59,6 @@ require! {
 #         .add-custom-token
 #             float: right  
 #         >.title
-#             background-color: var(--bgspare)
 #             box-sizing: border-box
 #             font-size: 22px
 #             padding: 10px
@@ -203,7 +202,6 @@ require! {
 #                                     vertical-align: middle
 #                 &.legacy-tokens
 #                     margin-top: 10px
-
 create-item = ({ store, web3t }, item)-->
     add = ->
         store.current.add-coin = no
@@ -219,11 +217,11 @@ create-item = ({ store, web3t }, item)-->
     menu-style=
         color: style.app.text
     react.create-element 'div', { className: 'outer-item' }, children = 
-      react.create-element 'div', { style: background,, id: "add-token-#{item.token}", className: 'item' }, children = 
-          react.create-element 'img', { src: "#{item.image}" }
-          react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
-          react.create-element 'button', { on-click: add, style: button-style }, children = 
-              icon \Plus, 20
+        react.create-element 'div', { style: background,, id: "add-token-#{item.token}", className: 'item' }, children = 
+            react.create-element 'img', { src: "#{item.image}" }
+            react.create-element 'span', { style: menu-style, className: 'title' }, ' ' + title
+            react.create-element 'button', { on-click: add, style: button-style }, children = 
+                icon \Plus, 20
 filter-item = (store)-> (item)->
     return yes if (store.current.filter-plugins ? "").length is 0
     (item.token ? "").index-of(store.current.filter-plugins) > -1
@@ -285,8 +283,6 @@ add-by-vlxaddress = (store, web3t)->
         react.create-element 'input', { placeholder: "V....", value: "#{store.contract-vlxaddress}", on-change: coin-contract, style: input-style, className: 'search' }
         react.create-element 'button', { on-click: add, style: button-style }, children = 
             icon \Plus, 20
-            
-            
 module.exports = ({ store, web3t } )->
     return null if store.current.add-coin isnt yes
     current-network = store.current.network   
@@ -316,10 +312,7 @@ module.exports = ({ store, web3t } )->
         background: style.app.input
         border: "0"
         width: "calc(100%) - 100"    
-
     plugins = store.registry
-          
-    
     groups =    
         plugins
             |> filter (it)->
@@ -328,24 +321,20 @@ module.exports = ({ store, web3t } )->
                 (it[current-network]?disabled is no) or (not it[current-network]?disabled?)
             |> filter filter-item store
             |> group-by (-> it[current-network].group)
-    
     velas-group = 
         | groups.Velas? => { groups.Velas } 
         | _ => null   
     delete groups.Velas    
-    
     create-group = ({ store, web3t }, item)--> 
         group-name =
             | item?0? => item.0
             | _ => ''
         wallets = item.1
-        
         react.create-element 'div', { id: "wallet-group-add-#{group-name}", className: 'wallet-group' }, children = 
             react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network'
             react.create-element 'div', { className: 'network-wallets' }, children = 
                 react.create-element 'div', {}, '         '
                     wallets |> map create-item { store, web3t }  
-    
     add-custom-token = ->
         store.custom-token.add = yes
         store.custom-token.network = null  
@@ -362,11 +351,9 @@ module.exports = ({ store, web3t } )->
     title-style = 
         font-weight: "bold"
         opacity: ".9"    
- 
     go-back-from-custom-token = ->
         store.custom-token.add = no   
-    
-    react.create-element 'div', { className: 'manage-account manage-account-379659977' }, children = 
+    react.create-element 'div', { className: 'manage-account manage-account-635636907' }, children = 
         if not store.custom-token.add    
             react.create-element 'div', { style: account-body-style, className: 'account-body' }, children = 
                 react.create-element 'div', { style: color, className: 'title' }, children = 
@@ -379,10 +366,8 @@ module.exports = ({ store, web3t } )->
                             react.create-element 'input', { placeholder: "#{lang.search}", on-change: filter-registery, style: input-style, className: 'search' }
                             react.create-element 'div', { className: 'icon' }, children = 
                                 icon \Search, 15
-                        
                     react.create-element 'div', { className: 'add-custom-token' }, children = 
                         button { store, on-click=add-custom-token, text: "Add custom token" , icon: \plus , type: \secondary, id: "add-custom-token", makeDisabled=no }                 
-                                 
                 react.create-element 'div', { className: 'settings' }, children = 
                     if store.registry.length > 0
                         react.create-element 'div', { className: 'section' }, children = 
@@ -394,8 +379,6 @@ module.exports = ({ store, web3t } )->
                                 groups
                                     |> obj-to-pairs
                                     |> map create-group { store, web3t }
-    
-                    
         else
             react.create-element 'div', { style: account-body-style-custom, className: 'account-body' }, children = 
                 loader { loading: store.custom-token.isLoading }

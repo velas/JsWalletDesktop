@@ -10,12 +10,9 @@ require! {
 get-market-coins-history = (store, cb)->
     return cb "Store is required" if not store?
     { wallets } = store.current.account
-
     build-loader = (wallet)-> task (cb)->
         { token } = wallet.coin
-
         token = wallet.coin.token.to-lower-case!
-
         err, history-prices <- get-market-history-prices { wallet.network, wallet.coin }
         console.error "#{token} get-market-history-prices error:" err if err?
         wallet.market-history-prices = history-prices if history-prices?data?points?

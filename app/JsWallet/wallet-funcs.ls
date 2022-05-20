@@ -20,15 +20,13 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     #    | index + 1 is wallets.length => \bottom
     #    | _ => \middle
     return null if not store? or not wallet?
-    
     get-plugin = (token, cb)->
-        load-coins = require("../web3t/load-coins.ls")
+        load-coins = require("../web3t/load-coins.js")
         err, $web3t-tokens <- load-coins {plugins:[]}
         console.error err if err?
         return cb null if not $web3t-tokens?
         found = $web3t-tokens[token]
         return cb null, found
-    
     add-fee-payer-coin = (cb)->
         { coin, network } = wallet
         { txFeeIn } = network
@@ -42,7 +40,6 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         return cb err if err?
         console.log "Fee payer plugin was installed succesfully"
         cb null
-    
     send = (wallet, event)-->
         #event.stop-propagation!
         return alert "Not yet loaded" if not wallet?
@@ -97,7 +94,7 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         store.current.group-index = 0
     expand = (e)->
         e.stop-propagation!
-        return send(wallet, {}) if store.current.wallet-index is index and group-index is store.current.group-index
+        # return send(wallet, {}) if store.current.wallet-index is index and group-index is store.current.group-index
         store.current.wallet-index = index
         store.current.group-index = group-index
         store.current.filter = { token: wallet.coin.token}
@@ -106,6 +103,8 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     big = 
         | index is store.current.wallet-index and group-index is store.current.group-index=> \big
         | _ => ""
+    status = wallet.status
+
     balance = round5(wallet.balance) + ' ' + wallet.coin.token.to-upper-case!
     balance-usd = wallet.balance `times` usd-rate
     pending = round5(wallet.pending-sent) + ' ' + wallet.coin.token.to-upper-case!
@@ -120,4 +119,4 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
     last = 
         | wallets.length < 4 and index + 1 is wallets.length => \last
         | _ => ""
-    { wallet-icon, button-style, wallet, active, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }
+    { wallet-icon, button-style, wallet, active, status, big, balance, balance-usd, pending, send, swap, expand, usd-rate, last, receive, uninstall }

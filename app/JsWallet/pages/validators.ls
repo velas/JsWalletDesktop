@@ -7,9 +7,9 @@ require! {
     \bignumber.js
     \../get-lang.ls
     \../history-funcs.ls
-    \../staking-funcs.ls : { query-pools, get-my-stakes, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model }
+    \../staking-funcs.ls : { query-pools, get-my-stakes, query-accounts, convert-pools-to-view-model, convert-accounts-to-view-model, filter-pools, subscribe-to-stake-account }
     \./icon.ls
-    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse }
+    \prelude-ls : { map, split, filter, find, foldl, sort-by, unique, head, each, obj-to-pairs, take, reverse, findIndex }
     \../math.ls : { div, times, plus, minus }
     \../../web3t/providers/deps.js : { hdkey, bip39 }
     \md5
@@ -36,8 +36,11 @@ require! {
     \../components/burger.ls
     \./stake/accounts.ls : \stake-accounts
     \../calc-certain-wallet.ls
+    \../calc-wallet.ls
+    \bs58 : { decode }
+    "../../web3t/providers/solana/index.cjs" : \velasWeb3
 }
-# .staking287952458
+# .staking-1524468490
 #     @import scheme
 #     position: relative
 #     display: block
@@ -56,9 +59,69 @@ require! {
 #     @-webkit-keyframes blink-animation
 #         50%
 #             opacity: 0.3
+#     @keyframes MoveUpDown
+#         0%, 100%
+#             top: -39px
+#         50%
+#             top: -34px
+#     @keyframes showAndHide
+#         0%
+#             opacity: 0
+#         20%
+#             opacity: 1
+#         80%
+#             opacity: 1
+#         100%
+#             opacity: 0
+#     .main-sections
+#         margin-bottom: 50px
 #     .blink
 #         animation: 1s linear blink-animation  infinite
 #         -webkit-animation: 1s linear blink-animation  infinite
+#     .pointer-container
+#         opacity: 0
+#         width: auto
+#         display: inline-block
+#         position: relative
+#         top: -39px;
+#         left: -5px;
+#         transform: rotate(58deg)
+#         animation: MoveUpDown 1s linear, showAndHide 3s linear
+#         animation-iteration-count: 4, 1
+#         animation-delay: 1s
+#         .shadow-icon
+#             position: absolute
+#             top: 3px;
+#             left: 2.4px;
+#             right: 0;
+#             box-shadow: 1px 2px 12px gold;
+#             width: 6px
+#             height: 4px
+#             background: rgba(255, 215, 0, 0.13);
+#     .error
+#         background: rgba(255, 255, 255, 0.06)
+#         text-align: center
+#         .warning-icon
+#             float: left;
+#             margin-top: -8px
+#             margin-left: -5px
+#         .message
+#             font-size: 12px
+#             color: red
+#             padding: 20px 10px
+#     .helper.pointer
+#         opacity: 0
+#         width: 0;
+#         height: 0;
+#         border-style: solid;
+#         border-width: 7px 5px 0 5px;
+#         border-color: #ebca00 transparent transparent transparent;
+#         box-shadow: 1px 2px 12px gold;
+#         position: relative;
+#         left: 1px;
+#         animation: MoveUpDown 1s linear, showAndHide 3s linear
+#         animation-iteration-count: 4, 1
+#         animation-delay: 1s
 #     .entities-loader
 #         display: block
 #         padding: 40px
@@ -153,11 +216,8 @@ require! {
 #                 margin: 5px 0
 #                 outline: none
 #             .section
-#                 &:last-of-type
-#                     margin-bottom: 50px
 #                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
 #                 padding: 30px 20px
-#                 display: flex
 #                 .chosen-pool
 #                     .buttons
 #                         text-align: left
@@ -200,8 +260,7 @@ require! {
 #                     @media(max-width: 540px)
 #                         background-image: none
 #                 .title
-#                     padding: 0px 10px 0 0
-#                     width: 17%
+#                     padding: 0px 10px 10px 0
 #                     min-width: 150px
 #                     text-align: left
 #                     text-transform: uppercase
@@ -216,7 +275,7 @@ require! {
 #                 .description
 #                     padding: 0px
 #                     font-size: 14px
-#                     width: 80%
+#                     width: 100%
 #                     text-align: left
 #                     hr
 #                         margin: 15px auto
@@ -246,6 +305,7 @@ require! {
 #                         -web-kit-transition: breathe 3s ease-in infinite
 #                         position: relative
 #                         max-height: 80vh
+#                         background: rgba(255, 255, 255, 0.04)
 #                         .stake-pointer
 #                             background: rgb(37, 87, 127)
 #                         &.lockup
@@ -274,11 +334,10 @@ require! {
 #                             &.with-stake
 #                                 filter: saturate(6.5)
 #                         tr
+#                             border-bottom: 1px solid rgba(255, 255, 255, 0.07)
 #                             animation: appear .1s ease-in
 #                             &.activating, &.active
 #                                 color: var(--color-td)
-#                             &.inactive
-#                                 color: orange
 #                             &.banned
 #                                 color: red
 #                             .inner-address-holder
@@ -308,13 +367,6 @@ require! {
 #                                 color: white
 #                                 line-height: 1.6
 #                                 border-radius: 4px
-#                                 background: gray
-#                                 &.active, &.activating
-#                                     background: rgb(38, 219, 85)
-#                                 &.inactive
-#                                     background: orange
-#                                 &.banned
-#                                     background: red
 #                         button
 #                             width: 100%
 #                             height: 36px
@@ -323,8 +375,6 @@ require! {
 #                         width: 100%
 #                         border-collapse: collapse
 #                         margin: 0px auto
-#                     tr:nth-of-type(odd)
-#                         background: rgba(gray, 0.2)
 #                     th
 #                         font-weight: 400
 #                         &:first-child
@@ -788,7 +838,7 @@ staking-content = (store, web3t)->
                 react.create-element 'div', { className: 'title' }, children = 
                     react.create-element 'h2', {}, ' ' + lang.balance
                 react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, ' ' + your-balance + ' VLX'
+                    react.create-element 'span', { id: "vlx-native-balance" }, ' ' + your-balance + ' VLX'
             stake-accounts {store, web3t}
             react.create-element 'div', { id: "pools", className: 'form-group' }, children = 
                 alert-txn { store }
@@ -797,30 +847,37 @@ staking-content = (store, web3t)->
                         react.create-element 'h3', { className: 'section-title' }, ' ' + lang.validators + ' '
                             react.create-element 'span', { className: 'amount' }, ' (' + store.staking.pools.length + ')'
                     react.create-element 'div', { className: 'description' }, children = 
-                        if store.staking.pools-are-loading is no then
-                            react.create-element 'div', { className: 'table-scroll' }, children = 
-                                react.create-element 'table', {}, children = 
-                                    react.create-element 'thead', {}, children = 
-                                        react.create-element 'tr', {}, children = 
-                                            react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
-                                            react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-active-stake + ' (?)'
-                                            react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
-                                            react.create-element 'td', { width: "10%", style: stats, title: "Last Staking Amount" }, ' ' + lang.lastVote + ' (?)'
-                                            react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
-                                            react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
-                                    react.create-element 'tbody', {}, children = 
-                                        paginate(store.staking.pools, per-page, store.staking.current_validators_page) 
-                                            |> map build-staker store, web3t
+                        if store.errors.fetchValidators?
+                            react.create-element 'div', { className: 'error' }, children = 
+                                react.create-element 'span', { className: 'warning-icon' }, ' ⚠️'
+                                react.create-element 'div', { className: 'message' }, ' An error occurred during fetching validators. Please try one more time...'
                         else
-                            react.create-element 'div', { className: 'table-scroll' }, children = 
-                                react.create-element 'span', { className: 'entities-loader' }, children = 
-                                    react.create-element 'span', { className: 'inner-section' }, children = 
-                                        react.create-element 'h3', { className: 'item blink' }, ' Loading...'
-                                            if no
-                                                react.create-element 'span', { className: 'item' }, '  ' + store.staking.loadingValidatorIndex
-                                                react.create-element 'span', { className: 'item' }, ' of'
-                                                react.create-element 'span', { className: 'item' }, '  ' + totalValidators
-                        pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
+                            react.create-element 'div', { className: 'cont' }, children = 
+                                if store.staking.pools-are-loading is no then
+                                    react.create-element 'div', { className: 'table-scroll' }, children = 
+                                        react.create-element 'table', {}, children = 
+                                            react.create-element 'thead', {}, children = 
+                                                react.create-element 'tr', {}, children = 
+                                                    react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
+                                                    react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-active-stake + ' (?)'
+                                                    react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
+                                                    react.create-element 'td', { width: "10%", style: stats, title: "Last Staking Amount" }, ' ' + lang.lastVote + ' (?)'
+                                                    react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
+                                                    react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
+                                            react.create-element 'tbody', {}, children = 
+                                                paginate(store.staking.pools, per-page, store.staking.current_validators_page)
+                                                    |> map build-staker store, web3t
+                                if store.staking.pools-are-loading is no then
+                                    pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
+                                else
+                                    react.create-element 'div', { className: 'table-scroll' }, children = 
+                                        react.create-element 'span', { className: 'entities-loader' }, children = 
+                                            react.create-element 'span', { className: 'inner-section' }, children = 
+                                                react.create-element 'h3', { className: 'item blink' }, ' Loading...'
+                                                    if no
+                                                        react.create-element 'span', { className: 'item' }, '  ' + store.staking.loadingValidatorIndex
+                                                        react.create-element 'span', { className: 'item' }, ' of'
+                                                        react.create-element 'span', { className: 'item' }, '  ' + totalValidators
 validators = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -832,6 +889,12 @@ validators = ({ store, web3t })->
     style=
         background: info.app.wallet
         color: info.app.text
+    title-style =
+        z-index: 3
+        color: info.app.text
+        border-bottom: "1px solid #{info.app.border}"
+        background: info.app.background
+        background-color: info.app.bgspare
     border-style =
         color: info.app.text
         border-bottom: "1px solid #{info.app.border}"
@@ -853,8 +916,8 @@ validators = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking287952458' }, children = 
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
+    react.create-element 'div', { className: 'staking staking-1524468490' }, children = 
+        react.create-element 'div', { style: title-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
@@ -868,8 +931,11 @@ stringify = (value) ->
     else
         '..'
 validators.init = ({ store, web3t }, cb)!->
-    err <- calc-certain-wallet(store, "vlx_native")
+    err <- calc-certain-wallet(store, 'vlx_native')
     #return cb null if store.staking.pools-are-loading is yes
+    if store.staking.fetchAccounts is no then
+        store.staking.fetchAccounts = yes
+        return cb null
     store.staking.max-withdraw = 0
     random = ->
         Math.random!
@@ -890,61 +956,72 @@ validators.init = ({ store, web3t }, cb)!->
     store.staking.add.add-validator-stake = 0
     store.staking.loadingAccountIndex = 0
     store.staking.loadingValidatorIndex = 0
+    store.staking.splitting-staking-account = no
+    store.staking.creating-staking-account = no
+    store.staking.subscribedAccounts = {}
+    wallet = store.current.account.wallets |> find (-> it.coin.token is \vlx_native)
+    try
+        publicKey = new velasWeb3.PublicKey(wallet.publicKey)
+        callback = (res)->
+        commitment = 'finalized'
+        id = web3t.velas.NativeStaking.connection.onAccountChange(publicKey, callback, commitment)
+        store.staking.webSocketAvailable = yes
+    catch err
+        console.log "ws onAccountChange err: " err
+        store.staking.webSocketAvailable = no
     index-is-different = store.current.accountIndex isnt store.staking.accountIndex
     if store.staking.pools-network is store.current.network then
         if (store.staking.all-pools-loaded? and store.staking.all-pools-loaded is yes and not index-is-different)
             return cb null
     else
         store.staking.pools-network = store.current.network
-        
     err, epochInfo <- as-callback web3t.velas.NativeStaking.getCurrentEpochInfo()
     console.error err if err?
-    { epoch, blockHeight, slotIndex, slotsInEpoch, transactionCount } = epochInfo
-    store.staking.current-epoch = epochInfo.epoch
-    #<- web3t.refresh
-    #err, voteAccounts <- as-callback web3t.velas.NativeStaking.getVoteAccounts()
-    #console.log "Vote accounts" err, voteAccounts
-    #voteAccounts = [] if err?
-    #store.staking.totalValidators = voteAccounts.length
-    #console.log "acc length must be more then 0" voteAccounts.length
+    epoch = epochInfo?epoch
+    store.staking.current-epoch = epoch
     store.staking.pools = []
     err, rent <- as-callback web3t.velas.NativeStaking.connection.getMinimumBalanceForRentExemption(200)
     rent = 2282880 if err?
     rent = rent `div` (10^9)
     store.staking.rent = rent   
-    wallet = store.current.account.wallets |> find (-> it.coin.token is \vlx_native)
     return cb null if not wallet?
     web3t.velas.NativeStaking.setAccountPublicKey(wallet.publicKey)
     web3t.velas.NativeStaking.setAccountSecretKey(wallet.secretKey)
-    #err, parsedProgramAccounts <- as-callback web3t.velas.NativeStaking.getParsedProgramAccounts()
-    #parsedProgramAccounts = [] if err?
-    #store.staking.parsedProgramAccounts = parsedProgramAccounts
-    # get validators array
     on-progress = ->
-        store.staking.accounts = convert-accounts-to-view-model [...it]
+        #store.staking.accounts = convert-accounts-to-view-model [...it]
     err, result <- query-accounts store, web3t, on-progress
-    return cb err if err?
-    store.staking.accounts = convert-accounts-to-view-model result
-    # Normalize currrent page for accounts in pagination
+    if err? then
+        store.staking.all-accounts-loaded = yes
+        store.staking.accounts-are-loading = no
+        console.error "[query-accounts] err", err
+        result = [] if err?
+        store.errors.fetchAccounts = { message: err }
+    #store.staking.accounts = convert-accounts-to-view-model(result)
+    store.staking.accounts = result
+    try
+        store.staking.accounts |> each (account)->
+            publicKey  = account.pubKey
+            subscribe-to-stake-account({store, web3t, account, publicKey})
+    catch err
+        console.log "err" err
+        store.staking.webSocketAvailable = no
+    # Normalize current page for accounts in pagination
     type = "accounts"
     page = store.staking["current_#{type}_page"] ? 1
     per-page = store.staking["#{type}_per_page"]
     if +(page `times` per-page) >= store.staking.accounts.length
         store.staking["current_#{type}_page"] = 1 
-    #<- set-timeout _, 4000
     on-progress = ->
         store.staking.pools = convert-pools-to-view-model [...it]
     err, pools <- query-pools {store, web3t, on-progress}
-    return cb err if err?
-    store.staking.pools = convert-pools-to-view-model pools
-        |> sort-by (-> it.myStake.length )
-    delinquent = store.staking.pools |> filter (-> it.status is "delinquent")
-    running = store.staking.pools
-        |> filter (it)->
-            delinquent.index-of(it) < 0
-        |> reverse
-    store.staking.pools = running ++ delinquent
+    if err? then
+        store.staking.all-pools-loaded = yes
+        store.staking.pools-are-loading = no
+        console.log "[query-pools] err", err
+        pools = [] if err?
+        store.errors.fetchValidators = { message: err }
+    filter-pools(pools)
     store.staking.poolsFiltered = store.staking.pools
     store.staking.getAccountsFromCashe = no
-    err <- calc-certain-wallet(store, "vlx_native")
+    #err <- calc-certain-wallet(store, "vlx_native")
 module.exports = validators

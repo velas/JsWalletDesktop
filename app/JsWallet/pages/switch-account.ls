@@ -16,7 +16,7 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .choose-account1926374493
+# .choose-account1198269607
 #     @import scheme
 #     $real-height: 300px
 #     $cards-height: 296px
@@ -66,6 +66,8 @@ require! {
 #             &.show
 #                 .name, .icon
 #                     visibility: visible
+#         .disabled
+#             opacity: 0.3
 #         .ckeck
 #             color: #3cd5af
 #         .cancel
@@ -73,19 +75,17 @@ require! {
 #         .name
 #             white-space: nowrap
 #             overflow: hidden
-#             width: 90px
+#             width: 100px
 #             text-align: right
 #             cursor: default
 #             display: contents
 #             vertical-align: middle
 #             display: inline-block
 #             overflow-x: auto
-#             background: var(--background)
+#             background: transparent
 #             &:hover
 #                 width: auto
-#                 max-width: 330px
-#                 padding: 3px
-                
+#                 cursor: pointer
 #         input
 #             outline: none
 #             width: 70px
@@ -187,15 +187,21 @@ module.exports = (store, web3t)->
         margin-left: "10px"
     border-right=
         border-right: "1px solid #{style.app.border}"
+    make-disabled = store.current.page in <[ account_details poolchoosing staking2 ]>
+    disabled-class = if make-disabled then "disabled" else ""
     open-account = ->
+        return if make-disabled
         store.current.switch-account = not store.current.switch-account
     open-menu = ->
+        return if make-disabled
         store.current.open-menu = not store.current.open-menu
     edit-account-name = ->
+        return if make-disabled
         store.current.edit-account-name = current-account-name!
     default-account-name = -> "Account #{store.current.account-index}"
     edit-account = (e)->
         #console.log e
+        return if make-disabled
         store.current.edit-account-name = e.target.value
     done-edit = ->
         local-storage.set-item default-account-name!, store.current.edit-account-name
@@ -212,11 +218,11 @@ module.exports = (store, web3t)->
     view-account-template = ->
         react.create-element 'div', { className: "#{show-class} switch-account h1" }, children = 
             react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
-            react.create-element 'span', { on-click: edit-account-name, className: 'icon' }, children = 
+            react.create-element 'span', { on-click: edit-account-name, className: "#{disabled-class} icon" }, children = 
                 react.create-element 'img', { src: "#{icons.create}", style: icon2, className: 'icon-svg-edit' }
-            react.create-element 'span', { on-click: open-account, className: "#{rotate-class} icon" }, children = 
+            react.create-element 'span', { on-click: open-account, className: "#{disabled-class} icon" }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-down}", style: icon3, className: 'icon-svg-create' }
-            react.create-element 'span', { on-click: open-menu, className: "#{show-class} icon menus" }, children = 
+            react.create-element 'span', { on-click: open-menu, className: "#{disabled-class} icon menus" }, children = 
                 react.create-element 'img', { src: "#{icons.menu}", style: icon-color, className: 'icon-svg-create' }
     edit-account-template = ->
         react.create-element 'div', { className: 'switch-account h1' }, children = 
@@ -227,6 +233,6 @@ module.exports = (store, web3t)->
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { className: 'choose-account choose-account1926374493' }, children = 
+    react.create-element 'div', { className: 'choose-account choose-account1198269607' }, children = 
         chosen-account-template
         your-account store, web3t

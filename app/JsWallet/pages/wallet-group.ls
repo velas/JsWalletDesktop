@@ -6,14 +6,16 @@ require! {
     \../get-lang.ls
     \./icon.ls
     \../get-primary-info.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../icons.ls
     \../round-human.ls
     \./confirmation.ls : { alert }
     \../components/button.ls
     \../components/address-holder.ls
+    \../transactions.ls : { load-wallet-transactions }
+    \../calc-certain-wallet.ls
 }
-# .wallet-group162870611
+# .wallet-group2089655129
 #     @import scheme
 #     .group-name
 #         text-align: left
@@ -26,7 +28,37 @@ require! {
 #         position: sticky
 #         top: 0
 #         z-index: 1
-
+#     .wallet-item
+#         .retry-button
+#             cursor: pointer
+#             background: rgba(0, 0, 0, 0.16)
+#             border-radius: 50% !important
+#             color: rgb(39, 106, 159)
+#             border-radius: 50px
+#             border: 0
+#             padding: 5px
+#             width: 30px
+#             height: 30px
+#             margin: 0px 5px 0
+#             position: absolute
+#             top: 0
+#             right: 5px
+#             bottom: 0
+#             margin: auto
+#             z-index: 3
+#             transition: padding .5s
+#             &:hover
+#                 filter: hue-rotate(323deg)
+#             &.syncing
+#                 @keyframes spin
+#                     from
+#                         transform: rotate(0deg)
+#                     to
+#                         transform: rotate(360deg)
+#                 animation-name: spin
+#                 animation-duration: 4000ms
+#                 animation-iteration-count: infinite
+#                 animation-timing-function: linear
 #     .wallet
 #         @import scheme
 #         $cards-height: 324px
@@ -36,16 +68,17 @@ require! {
 #         cursor: pointer
 #         $card-height: 60px
 #         height: $card-height
-#         &.disabled-wallet-item
+#         .disabled-wallet-item
 #             opacity: 0.24
 #             cursor: no-drop
 #         &.last
 #             height: 60px
 #         $mt: 20px
 #         box-sizing: border-box
-#         overflow: hidden
 #         transition: height .5s
 #         border: 0px
+#         &:not(.big):hover
+#             background: rgba(255, 255, 255,  0.04)
 #         &:first-child
 #             margin-top: 0
 #             box-shadow: none
@@ -97,7 +130,7 @@ require! {
 #                 padding-left: 10px
 #             a
 #                 text-align: left
-#         >.wallet-top
+#         .wallet-top
 #             padding: 0 12px
 #             box-sizing: border-box
 #             $card-top-height: 55px
@@ -105,19 +138,44 @@ require! {
 #             color: #677897
 #             font-size: 14px
 #             text-align: center
-#             overflow: hidden
+#             overflow: visible
 #             >*
 #                 display: inline-block
 #                 box-sizing: border-box
 #                 vertical-align: top
 #                 padding-top: 12px
-#                 height: $card-top-height
 #                 line-height: 16px
-#             >.top-left
+#             .name-holder
+#                 display: inline-block;
+#                 &:hover
+#                     color: #dddddd
+#                 .balance.title
+#                     float: left
+#             .tooltips
+#                 display: inline-block
+#                 margin-left: 3px
+#                 margin-bottom: -2px
+#                 >.tooltip
+#                     text-align: center
+#                     top: 37%;
+#                     right: 40px;
+#                     z-index: 1;
+#                     >.tooltipIcon
+#                         width: 12px;
+#                         height: 12px;
+#                         font-size: 12px;
+#                         line-height: 15px;
+#                         border-radius: 30px;
+#                         color: var(--bgspare)
+#                         opacity: 0.55;
+#             .top-left
 #                 width: 30%
 #                 text-align: left
 #                 overflow: hidden
 #                 text-overflow: ellipsis
+#                 transition: all .2s ease-in-out
+#                 opacity: 1
+
 #                 @media screen and (min-width: 801px)
 #                     padding-top: 5px
 #                 @media screen and (max-width: 800px)
@@ -158,7 +216,7 @@ require! {
 #                         &.token
 #                             opacity: 1
 #                             font-size: 12px
-#             >.top-middle
+#             .top-middle
 #                 width: 30%
 #                 text-align: center
 #                 .label-coin
@@ -178,7 +236,7 @@ require! {
 #                             display: none
 #                     .title-balance
 #                         display: none
-#             >.top-right
+#             .top-right
 #                 width: 40%
 #                 text-align: right
 #                 .wallet-swap img
@@ -259,32 +317,46 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         padding: "2px 4px"
         font-size: "8px"
         color: "#71f4c0"
-    placeholder =
-        | store.current.refreshing => "placeholder"
-        | _ => ""
-    placeholder-coin =
-        | store.current.refreshing => "placeholder-coin"
-        | _ => ""
-    is-loading = store.current.refreshing is yes
+    info-style =
+        width: "13px"
+        height: "13px"
+        font-size: "10px"
+        margin-left: "5px"
+        margin-top: "-1px"
+        float: "revert"
+        display: "block"
 
+    is-loading = store.current.refreshing is yes
     group-name =
         | wallets-group?0? => wallets-group.0
         | _ => ''
     wallets = wallets-group.1
-
-    react.create-element 'div', { id: "wallet-group-switch-#{(group-name)}", className: 'wallet-group wallet-group162870611' }, children = 
+    react.create-element 'div', { id: "wallet-group-switch-#{(group-name)}", className: 'wallet-group wallet-group2089655129' }, children = 
         react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network'
-
         wallets |> map (wallet)->
-
             { wallet-icon, button-style, uninstall, wallet, active, big, balance, balance-usd, pending, send, receive, swap, expand, usd-rate, last } = wallet-funcs store, web3t, wallets, wallet, wallets-groups, group-name
+            container-class =
+                | wallet.status is \loading => ""
+                | _ => "loaded"
+            placeholder =
+                | wallet.status is \loading && isNaN(wallet.balance) => "placeholder"
+                | _ => ""
+            placeholder-coin =
+                | wallet.status is \loading && isNaN(wallet.balance) => "placeholder-coin"
+                | _ => ""
+            withError = wallet.status is \error
             name = wallet.coin.name ? wallet.coin.token
             receive-click = receive(wallet)
             send-click = send(wallet)
             swap-click = swap(store, wallet)
+            expand-click = (e)->
+                store.current.wallet = wallet
+                expand(e)
+                err <- load-wallet-transactions(store, web3t, wallet.coin.token)
+                console.error err if err?
             token = wallet.coin.token
             is-custom = wallet?coin?custom is yes
-            token-display = 
+            token-display =
                 | is-custom is yes => (wallet.coin.name ? "").to-upper-case!
                 | _ => (wallet.coin.nickname ? "").to-upper-case!
             makeDisabled = store.current.refreshing
@@ -293,34 +365,48 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
             wallet-is-disabled = isNaN(wallet.balance)
             send-swap-disabled = wallet-is-disabled or is-loading
             is-custom = wallet.coin.custom is yes
+            syncing =
+                | wallet.status is \loading => \syncing
+                | _ => ""
+            refresh = ->
+                err <- calc-certain-wallet(store, token)
+
+            toggleTooltipVisible = (isHovered) -> (event) ->
+                store.showTooltip = isHovered
+                if isHovered then
+                  store.tooltipCoordinates = { x: event.pageX, y: event.pageY }
+                  store.tooltipMessage = lang["tooltip_#{wallet.coin.token}"]
 
             /* Render */
             react.create-element 'div', { key: "#{token}", style: border-style, id: "token-#{token}", className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
-                react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
-                    react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
-                        react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
-                            react.create-element 'img', { src: "#{wallet-icon}" }
-                        react.create-element 'div', { className: 'info' }, children = 
-                            react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
-                            if store.current.device is \desktop
-                                react.create-element 'div', { title: "#{wallet.balance}", className: "#{placeholder} price token" }, children = 
-                                    react.create-element 'span', {}, ' ' +  round-human wallet.balance 
-                                    react.create-element 'span', {}, ' ' +  token-display 
-                            if is-custom
-                                react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
-                                    react.create-element 'span', { style: custom-style }, ' CUSTOM   '
-                            else
-                                react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
-                                    react.create-element 'span', {}, ' ' +  round-human balance-usd
-                                    react.create-element 'span', {}, ' USD'
-                    if store.current.device is \mobile
-                        react.create-element 'div', { style: wallet-style, className: 'top-middle' }, children = 
-                            if +wallet.pending-sent is 0
-                                react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
-                            react.create-element 'div', { className: "#{placeholder} balance" }, children = 
-                                react.create-element 'span', { title: "#{wallet.balance}" }, ' ' +  round-human wallet.balance 
-                                    react.create-element 'img', { src: "#{wallet.coin.image}", className: "#{placeholder-coin} label-coin" }
-                                    react.create-element 'span', {}, ' ' +  token-display 
-                                if +wallet.pending-sent >0
-                                    react.create-element 'div', { className: 'pending' }, children = 
-                                        react.create-element 'span', {}, ' -' +  pending  + '               '
+                if (wallet.state is "error")
+                    react.create-element 'div', { className: 'retry-container' }, children = 
+                        react.create-element 'button', { on-click: refresh, className: "#{syncing} button lock mt-5 retry-button" }, children = 
+                            icon \Sync, 20
+                react.create-element 'div', { className: "inner-wallet-container #{disabled-class}" }, children = 
+                    react.create-element 'div', { on-click: expand-click, className: 'wallet-top' }, children = 
+                        react.create-element 'div', { style: wallet-style, className: "#{container-class} top-left" }, children = 
+                            react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
+                                react.create-element 'img', { src: "#{wallet-icon}" }
+                            react.create-element 'div', { className: 'info' }, children = 
+                                react.create-element 'div', { className: 'name-holder' }, children = 
+                                    react.create-element 'div', { className: "#{placeholder} balance title" }, ' ' + name
+                                    if token in <[ vlx_native vlx_evm vlx2 bsc_vlx vlx_erc20 vlx_huobi ]>
+                                        react.create-element 'div', { className: 'tooltips' }, children = 
+                                            react.create-element 'div', { style: wallet-style, onMouseEnter: toggleTooltipVisible(true), onMouseLeave: toggleTooltipVisible(false), className: 'tooltip' }, children = 
+                                                react.create-element 'img', { src: "#{icons.info}", style: info-style, className: 'tooltipIcon' }
+                                if store.current.device is \desktop
+                                    react.create-element 'div', { title: "#{wallet.balance}", className: "#{placeholder} price token" }, children = 
+                                        react.create-element 'span', {}, ' ' +  round-human wallet.balance 
+                                        react.create-element 'span', {}, ' ' +  token-display 
+                                if is-custom
+                                    react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
+                                        react.create-element 'span', { style: custom-style }, ' CUSTOM'
+                                else
+                                    react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, children = 
+                                        react.create-element 'span', {}, ' ' +  round-human balance-usd
+                                        react.create-element 'span', {}, ' USD'
+                        if token in <[ vlx_native vlx_evm vlx2 bsc_vlx vlx_erc20 vlx_huobi ]>
+                            react.create-element 'div', { className: 'tooltips' }, children = 
+                                react.create-element 'div', { style: wallet-style, onMouseEnter: toggleTooltipVisible(true), onMouseLeave: toggleTooltipVisible(false), className: 'tooltip' }, children = 
+                                    react.create-element 'div', { className: "#{placeholder} tooltipIcon title" }, ' \?'

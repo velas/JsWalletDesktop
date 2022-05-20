@@ -126,7 +126,6 @@ module.exports = (store, web3t)->
         if store.menu.show then \show else \ ""
     show = ->
         store.menu.show = not store.menu.show
-    
     search-on-change = (event) ->
         store.current.search = event.target.value
         wallets-groups =
@@ -147,7 +146,6 @@ module.exports = (store, web3t)->
         if not wallet?
             store.current.group-index = 0
             store.current.wallet-index = 0
-     
         store.current.filter.token = 
             | wallet? => wallet.coin.token
             | _ => ""

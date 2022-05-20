@@ -14,9 +14,9 @@ saved-seed = seedmem.saved!
 create-send =->
     id: ""
     to: ""
-    chosen-network: null 
-    contract-address: null 
-    fee-calculating: no 
+    chosen-network: null
+    contract-address: null
+    fee-calculating: no
     details: yes
     propose-escrow: no
     address: ''
@@ -28,7 +28,8 @@ create-send =->
     amount-buffer:
         val: "0"
         usdVal: "0"
-        address: ""    
+        address: ""
+        gas-price: "0"
     amount-send: \0
     amount-charged: \0
     amount-charged-usd: \0
@@ -39,16 +40,21 @@ create-send =->
     amount-obtain: \0
     data: ""
     gas: null
-    gas-price: null  
+    gas-price: null
+    gas-price-auto: \0
+    gas-price-custom-amount: \0
+    gas-price-type: \auto
     typing-amount-time-ms: 0
-    TYPING_THRESHOLD_MS: 500   
-    gasEstimate: \0    
+    TYPING_THRESHOLD_MS: 500
+    gasEstimate: \0
+    feeMode: \percent
     homeFee: 0
     homeFeePercent: 0
-    is-swap: no 
+    is-swap: no
     decoded-data: ""
     show-data-mode: \encoded
     error: ''
+    parseError: ''
     amount-send-fee-options:
         cheap: 0
         auto: 0
@@ -63,8 +69,12 @@ url-hash-params =
     | window? => qs.parse window.location.hash.replace('#', '')
     | _ => {}
 store =
-    loading-wallet: no  
-    inputCaretPosition: 0  
+    showTooltip: false
+    tooltipCoordinates: { x: 0, y: 0 }
+    tooltipMessage: "" 
+    stakingStore: null
+    loading-wallet: no
+    inputCaretPosition: 0
     url-params: url-params
     url-hash-params: url-hash-params
     root: null
@@ -76,7 +86,7 @@ store =
     terms: "Loading..."
     terms2: "Loading..."
     collapse: ""
-    just-added-token: null    
+    just-added-token: null
     development:
         proposals: []
         new-proposal:
@@ -85,23 +95,27 @@ store =
             opened: no
             progress: \0
             update-progress: null
+    forceReload: yes
+    forceReloadTxs: yes
+    previous:
+        page: ''
     custom-token:
         add: no
-        isLoading: no   
+        isLoading: no
         contract-address: ""
         decimals: 0
         symbol: ""
         symbol-display: ""
         network: null
-        selected-network: network 
-        switch-network: false   
-        edit-symbol: no 
-        icon: "" 
+        selected-network: network
+        switch-network: false
+        edit-symbol: no
+        icon: ""
         errors:
             contract-address: ""
-            network: ""  
+            network: ""
             decimals: ""
-            symbol: ""    
+            symbol: ""
     preference:
         settings-visible: yes
         invoice-visible: yes
@@ -148,36 +162,46 @@ store =
         is-address-queried: no
         origin: no
     HomeBridgeNativeToErc: {}
-    ForeignBridgeNativeToErc: {}   
+    ForeignBridgeNativeToErc: {}
     lockups:
-        currentTimelock: null    
-        stake-amount-total: 0  
-        exit-tab: '' 
-        wait-for-epoch-change: no   
-        maxWithdrawAllowed: 0   
-        orderedWithdrawAmount: 0  
+        currentTimelock: null
+        stake-amount-total: 0
+        exit-tab: ''
+        wait-for-epoch-change: no
+        maxWithdrawAllowed: 0
+        orderedWithdrawAmount: 0
         maxWithdrawOrderAllowed: 0
-        withdraw-amount: 0 
-        unstake-amount: 0 
-        current-pool: null    
+        withdraw-amount: 0
+        unstake-amount: 0
+        current-pool: null
         lockup-was-choosed: no
-        chosen-lockup: null 
-        chosen-lockup-action: ''   
+        chosen-lockup: null
+        chosen-lockup-action: ''
         lockupStaking: {}
         lockupContracts: []
-        success-cb: null  
-        error: ""    
-        stake: 
-            step: "" 
+        success-cb: null
+        error: ""
+        stake:
+            step: ""
         add:
             move-stake: 0
-            add-validator-stake: "" 
-            add-validator-topup: "" 
+            add-validator-stake: ""
+            add-validator-topup: ""
+    errors:
+        fetchValidators: null
+        fetchAccounts: null
     staking:
+        webSocketAvailable: yes
+        splitting-staking-account: no
+        creating-staking-account: no
+        REWARDS_PER_PAGE: 10
+        rewards_page: 1
+        rewards-index: 0
+        fetchAccounts: yes
         accounts: []
-        myStakeMaxPart: null 
+        myStakeMaxPart: null
         reward-info: []
-        rent: 0    
+        rent: 0
         exit-tab: ''
         maxWithdrawOrderAllowed: 0
         withdrawAmount: 0
@@ -220,19 +244,19 @@ store =
         data-generation: 1
         tab: "line"
         pools: []
-        pool-was-choosed: no  
+        pool-was-choosed: no
         chosen-pool: null
-        chosen-account: null    
+        chosen-account: null
         stake-amount-total: 0
         max-withdraw: 0
         delegators: 0
         reward-loading: no
         wait-for-epoch-change: no
-        lockups: [] 
+        lockups: []
         current_validators_page: 1
-        validators-per-page: 5  
-        accounts-per-page: 3 
-        current_accounts_page: 1   
+        validators-per-page: 5
+        accounts-per-page: 3
+        current_accounts_page: 1
     filestore:
         menu-open: no
         file-tree: no
@@ -274,23 +298,27 @@ store =
         applied: []
     releases: []
     current:
-        switch-network: no  
-        current-network-details: 
-            show: no    
+        account: {
+            wallets: []
+        }
+        switch-network: no
+        search-language: ""
+        current-network-details:
+            show: no
         network-details:
             show: no
             dailyLimit: 0
-            remainingDailyLimit: 0  
-            homeFeePercent: 0  
-            minPerTx: 0    
+            remainingDailyLimit: 0
+            homeFeePercent: 0
+            minPerTx: 0
             maxPerTx: 0
         foreign-network-details:
-            show: no 
+            show: no
             dailyLimit: 0
-            remainingDailyLimit: 0  
-            homeFeePercent: 0  
-            minPerTx: 0    
-            maxPerTx: 0 
+            remainingDailyLimit: 0
+            homeFeePercent: 0
+            minPerTx: 0
+            maxPerTx: 0
         hideCopiedText: no
         transactions-are-loading: no
         address-suffix: ''
@@ -305,12 +333,12 @@ store =
         device: get-device!
         size: get-size!
         list: 0
-        prompt-type: "" 
+        prompt-type: ""
         prompt-answer: ""
         prompt: no
-        prompt2: no 
-        prompt3: no  
-        prompt-password: no 
+        prompt2: no
+        prompt3: no
+        prompt-password: no
         prompt-password-answer: ""
         step: "first"
         verify-seed-indexes: []
@@ -347,7 +375,7 @@ store =
         manage-account: no
         filter-plugins: ""
         confirmation: null
-        notification: null    
+        notification: null
         alert: null
         choose-token: null
         tokens-dropdown: no
@@ -375,11 +403,11 @@ store =
         seed-generated: no
         saved-seed: saved-seed
         balance-usd: \...
-        filter-txs-types: <[ IN OUT ]> 
-        filter: 
+        filter-txs-types: <[ IN OUT ]>
+        filter:
             from: null
             to: null
-            token: null    
+            token: null
         loading: no
         send : create-send!
         invoice : create-send!
@@ -391,7 +419,7 @@ store =
         vote-index: null
     history:
         filter-from: ''
-        filter-to: ''    
+        filter-to: ''
         filter-open: no
         tx-details: no
     pages: [\wallets]

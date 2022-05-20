@@ -93,13 +93,17 @@ module.exports = ({ store, type, disabled, config })->
         store.staking["visible_per_page_#{type}_selector"] = !store.staking["visible_per_page_#{type}_selector"]
     close-per-page-selector = ->
         store.staking["visible_per_page_#{type}_selector"] = no
+    p-style =
+        background-color: style.app.background
+        background: style.app.background
+        zIndex: 2
     # Render
     react.create-element 'div', { className: 'table-pagination table-pagination948035967' }, children = 
         react.create-element 'div', { className: 'pagination-holder' }, children = 
-            react.create-element 'span', { key: "#{type}-selector", id: "#{type}-selector", on-click: switch-per-page-selector, onMouseLeave: close-per-page-selector, className: 'per-page-selector' }, children = 
+            react.create-element 'span', { key: "#{type}-selector", id: "#{type}-selector", on-click: switch-per-page-selector, onMouseLeave: close-per-page-selector, style: p-style, className: 'per-page-selector' }, children = 
                 react.create-element 'div', { className: 'to-show' }, ' Show ' + per-page
                 if store.staking["visible_per_page_#{type}_selector"] is yes
-                    react.create-element 'div', { className: 'per-page-options' }, children = 
+                    react.create-element 'div', { style: p-style, className: 'per-page-options' }, children = 
                         react.create-element 'div', { on-click: set-per-page(5), className: 'span per-page-option' }, ' 5'
                         react.create-element 'div', { on-click: set-per-page(10), className: 'span per-page-option' }, ' 10'
                         react.create-element 'div', { on-click: set-per-page(20), className: 'span per-page-option' }, ' 20'

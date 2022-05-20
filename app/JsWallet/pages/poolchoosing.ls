@@ -29,7 +29,7 @@ require! {
     \./claim-stake.ls
     \../staking/can-make-staking.ls
     \./epoch.ls
-    \./confirmation.ls : { alert, notify }
+    \./confirmation.ls : { alert, notify, confirm }
     \../components/button.ls
     \../components/address-holder-popup.ls
     \../components/pagination.ls
@@ -41,7 +41,7 @@ require! {
     \./stake/accounts.ls : \stake-accounts
     \./stake/error-funcs.ls : { get-error-message }
 }
-# .staking-1486535958
+# .staking1556802966
 #     @import scheme
 #     position: relative
 #     display: block
@@ -230,6 +230,7 @@ require! {
 #                         -web-kit-transition: breathe 3s ease-in infinite
 #                         height: auto
 #                         max-height: 70vh
+#                         background: rgba(255, 255, 255, 0.04)
 #                         .stake-pointer
 #                             background: rgb(37, 87, 127)
 #                         &.lockup
@@ -280,8 +281,6 @@ require! {
 #                         width: 100%
 #                         border-collapse: collapse
 #                         margin: 0px auto
-#                     tr:nth-of-type(odd)
-#                         background: rgba(gray, 0.2)
 #                     th
 #                         font-weight: 400
 #                         &:first-child
@@ -643,8 +642,11 @@ staking-content = (store, web3t)->
         err-message = get-error-message(err, result)
         return alert store, err-message if err-message?
         store.staking.getAccountsFromCashe = no
-        <- notify store, "Funds delegated to\n #{store.staking.chosenPool.address}" 
-        navigate store, web3t, \validators
+        <- notify store, "Funds delegated to\n #{store.staking.chosenPool.address}"
+        if store.staking.webSocketAvailable is no
+            store.staking.getAccountsFromCashe = no
+            return navigate store, web3t, \validators
+        store.current.page = \validators
     change-address = ->
         store.staking.add.add-validator = it.target.value
     change-stake = !->
@@ -756,7 +758,15 @@ staking-content = (store, web3t)->
             item.checked = yes
             store.staking.chosen-pool = item
             store.staking.add.new-address = ""
-            store.staking.error = "" 
+            store.staking.error = ""
+            delegate-amount = your-balance
+            delegate-receiver = store.staking.chosen-pool.address
+            confirmText = "Please confirm that you would like to delegate #{delegate-amount} VLX to #{delegate-receiver}"
+            agree <- confirm store, confirmText
+            return if agree is no
+            delegate!
+        cancel-pool = ->
+            store.staking.chosen-pool = null
         to-eth = ->
             item.eth = not item.eth
         reward =
@@ -781,18 +791,17 @@ staking-content = (store, web3t)->
             | _ => "..."
         mystake-class = if +my-stake > 0 then "with-stake" else ""
         chosen = if store.staking.chosen-pool? and store.staking.chosen-pool.address is item.address then "chosen" else ""
+        config = {decimals: 2}
         react.create-element 'tr', { className: "#{item.status} #{chosen}" }, children = 
             react.create-element 'td', { datacolumn: 'Staker Address', title: "#{item.address}" }, children = 
                 address-holder-popup { store, wallet }
-            react.create-element 'td', {}, ' ' + stake
+            react.create-element 'td', {}, ' ' +  round-human(stake, config) 
             react.create-element 'td', {}, ' ' + fee + '%'
             react.create-element 'td', { className: "#{mystake-class}" }, children = 
                 my-stake |> map build-my-stake
             react.create-element 'td', {}, ' ' + item.stakers
             react.create-element 'td', {}, children = 
                 button { store, on-click: choose-pull , type: \secondary , icon : \arrowRight }
-    cancel-pool = ->
-        store.staking.chosen-pool = null
     activate = (step)-> ->
         store.current.step = step
     activate-first = activate \first
@@ -830,7 +839,7 @@ staking-content = (store, web3t)->
     pagination-disabled = store.staking.pools-are-loading is yes
     react.create-element 'div', { className: 'staking-content delegate' }, children = 
         react.create-element 'div', { className: 'main-sections' }, children = 
-            react.create-element 'div', { id: "pools", className: 'form-group' }, children = 
+            react.create-element 'div', { id: "pools", className: "select-validators-list form-group" }, children = 
                 alert-txn { store }
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
@@ -854,7 +863,7 @@ staking-content = (store, web3t)->
                                     paginate(store.staking.pools, per-page, store.staking.current_validators_page)
                                         |> map build-staker store, web3t
                         pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
-        if store.staking.chosen-pool?
+        if no and store.staking.chosen-pool?
             react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
                 react.create-element 'div', { className: 'section' }, children = 
                     react.create-element 'div', { className: 'title' }, children = 
@@ -899,7 +908,7 @@ pool-chosing = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking-1486535958' }, children = 
+    react.create-element 'div', { className: 'staking staking1556802966' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 

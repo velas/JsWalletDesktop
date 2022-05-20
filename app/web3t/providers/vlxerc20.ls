@@ -41,7 +41,7 @@ export calc-fee = ({ network, tx, fee-type, account, amount, to, data }, cb)->
     err, nonce <- web3.eth.get-transaction-count from, \pending
     return cb err if err?
     err, estimate <- web3.eth.estimate-gas { from, nonce, to, data }
-    return cb err if err?
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     dec = get-dec network
     res = gas-price `times` estimate
     val = res `div` (10^18)

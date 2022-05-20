@@ -70,7 +70,6 @@ try-parse = (data, cb)->
     console.log data if typeof! data?text isnt \String
     return cb "expected text" if typeof! data?text isnt \String
     try
-        сonsole.log \try-parse, data.text, JSON.parse
         data.body = JSON.parse data.text
         cb null, data
     catch err
@@ -140,9 +139,11 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?   
     err, estimate <- get-gas-estimate { network, fee-type, account, amount, to, data }
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
     val = res `div` dec
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
+    
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -270,7 +271,8 @@ get-dec = (network)->
     { decimals } = network
     10^decimals
     
-export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->           
+export calc-gas-price = ({ fee-type, network, gas-price, swap }, cb)->   
+    return cb null, gas-price if gas-price?        
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)

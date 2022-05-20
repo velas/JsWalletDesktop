@@ -9,5 +9,5 @@ npm i livescript -g
 
 Run Each Time
 ```
-lsc ./main.ls
+lsc ./main.js
 ```

@@ -1,14 +1,14 @@
 require! {
     \mobx : { toJS }
     \./math.ls : { times, minus, div }
-    \./calc-amount.ls : { change-amount-invoice, calc-crypto }
+    \./calc-amount.js : { change-amount-invoice, calc-crypto }
     \./browser/window.ls
     \./navigate.ls
     \./close.ls
     \./round5edit.ls
     \./get-primary-info.ls
     \prelude-ls : { map }
-    \../web3t/providers/superagent.ls : { put }
+    \../web3t/providers/superagent.js : { put }
 }
 module.exports = (store, web3t)->
     return null if not store? or not web3t?

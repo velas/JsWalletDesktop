@@ -4,7 +4,7 @@ require! {
     \../get-primary-info.ls
     \../icons.ls
     \../navigate.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../../web3t/providers/superagent-adapter.js : network
 }
 # .tor1758860262

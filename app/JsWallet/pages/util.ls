@@ -3,13 +3,12 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
     \./epoch.ls
-    \./alert-demo.ls
     \../components/burger.ls
     \./switch-account.ls
     \../icons.ls
     \../history-funcs.ls
 }
-# .convert179103145
+# .convert508525513
 #     @import scheme
 #     position: relative
 #     display: block
@@ -46,6 +45,8 @@ require! {
 #         width: 450px
 #         margin: 100px auto 0
 #         text-align: left
+#         @media(max-width: $mobile)
+#             width: 90%
 #         .sub-header
 #             min-height: 40px
 #             text-align: left
@@ -105,11 +106,11 @@ AddressUtil = (props) ->
     return (
         react.create-element 'div', {}, children = 
             react.create-element 'div', { className: 'form-group' }, children = 
-                react.create-element 'label', {}, ' Please paste your VLX address here.'
-                react.create-element 'input', { style: style, placeholder: "VLX address", on-change: vlx-address-onhange, value: vlx-address }
+                react.create-element 'label', {}, ' Please paste your VLX Legacy address here.'
+                react.create-element 'input', { style: style, placeholder: "VLX Legacy address", on-change: vlx-address-onhange, value: vlx-address }
             react.create-element 'div', { className: 'form-group' }, children = 
-                react.create-element 'label', {}, ' Please paste your ETH address here.'
-                react.create-element 'input', { style: style, placeholder: "ETH address", on-change: eth-address-onhange, value: eth-address }
+                react.create-element 'label', {}, ' Please paste your EVM address here.'
+                react.create-element 'input', { style: style, placeholder: "EVM address", on-change: eth-address-onhange, value: eth-address }
     )
 convert = ({ store, web3t })->
     lang = get-lang store
@@ -124,17 +125,14 @@ convert = ({ store, web3t })->
         background-color: style.app.bgspare
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'convert convert179103145' }, children = 
-        alert-demo store, web3t
+    react.create-element 'div', { className: 'convert convert508525513' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' Convert'
             react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
                 react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
             burger store, web3t
-            epoch store, web3t
-            switch-account store, web3t
         react.create-element 'div', { className: 'wrapper' }, children = 
             react.create-element 'div', { className: 'sub-header' }, children = 
-                react.create-element 'span', { style: text, className: 'head' }, ' Convert VLX2ETH'
+                react.create-element 'span', { style: text, className: 'head' }, ' Convert address'
             react.create-element AddressUtil, {}
 module.exports = convert

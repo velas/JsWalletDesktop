@@ -4,8 +4,8 @@ require! {
     \./get-primary-coin.ls
 }
 common =
-    * require \../web3t/plugins/gobyte-topup.ls
-    * require \../web3t/plugins/trycrypto-topup.ls
+    * require \../web3t/plugins/gobyte-topup.js
+    * require \../web3t/plugins/trycrypto-topup.js
     ...
 verify-fields = (t)->
     return no if t.type isnt \topup

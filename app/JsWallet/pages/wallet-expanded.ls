@@ -7,7 +7,7 @@ require! {
     \../math.ls : { plus }
     \./icon.ls
     \../get-primary-info.ls
-    \../../web3t/providers/superagent.ls : { get }
+    \../../web3t/providers/superagent.js : { get }
     \../icons.ls
     \../round-human.ls
     \./confirmation.ls : { alert }
@@ -17,7 +17,7 @@ require! {
     \./loading.ls
     \./confirmation.ls : { confirm }
 }
-# .wallet-detailed1433559501
+# .wallet-expanded152437774
 #     @import scheme
 #     height: 240px
 #     box-sizing: border-box
@@ -38,6 +38,8 @@ require! {
 #                 &:first-child
 #                     margin-left: 0 !important
 #             .wallet-swap img
+#                 filter: invert(1)
+#             .wallet-buy img
 #                 filter: invert(1)
 #         &.left
 #             text-align: center
@@ -164,50 +166,52 @@ module.exports = (store, web3t, wallets, wallet)-->
     wallet-style=
         color: style.app.text3
     if (not wallets? or not wallet?)
-        no-result-text = 
+        no-result-text =
             font-size: "25px"
             text-transform: "initial"
             color: "white"
-        msg-txt-style = 
+        msg-txt-style =
             font-size: "20px"
             color: "white"
             opacity: 0.3
-        return 
-            react.create-element 'div', { key: "no-details", style: wallet-style, className: 'wallet-detailed wallet-detailed1433559501' }, children = 
+        return
+            react.create-element 'div', { key: "no-details", style: wallet-style, className: 'wallet-detailed' }, children = 
                 react.create-element 'div', { style: text, className: 'wallet-part center' }, children = 
                     react.create-element 'div', { className: 'wallet-header' }, children = 
                         react.create-element 'div', {}, children = 
                             if store.loading-wallet is yes
                                 loading(store.loading-wallet)
                             else
-                                react.create-element 'h3', { style: msg-txt-style, className: 'text-message' }, ' No wallet found   '
-                          
-
+                                react.create-element 'h3', { style: msg-txt-style, className: 'text-message' }, ' No wallet found'
     { wallet-icon, uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
-    
     label-uninstall =
         | store.current.refreshing => \...
         | _ => "#{lang.hide}"
-    
     placeholder =
         | store.current.refreshing => "placeholder"
         | _ => ""
     placeholder-coin =
         | store.current.refreshing => "placeholder-coin"
         | _ => ""
-    
-    is-custom = wallet?coin?custom is yes    
+    is-custom = wallet?coin?custom is yes
     wallet-is-disabled = isNaN(wallet?balance)
     is-loading = store.current.refreshing is yes
     send-swap-disabled = wallet-is-disabled or is-loading
-        
     name = wallet?coin?name ? wallet?coin?token
     receive-click = receive(wallet)
     send-click = send(wallet)
     swap-click = swap(store, wallet)
     token = (wallet?coin?token ? "").to-upper-case!
     tokenDisplay = (wallet?coin?nickname ? "").to-upper-case!
+    locationWallet = if window.location.host is "wallet.testnet.velas.com" then 'wallet_testnet' else 'wallet_mainnet'
+    uri-prod = "https://buy.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
+    uri-test = "https://fiat-payments.testnet.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
+    uri_simplex =
+        | store.current.network is \testnet => uri-test
+        | _ => uri-prod
+    buy = ->
+        window.open(uri_simplex)
     style = get-primary-info store
     color1 =
         color: style.app.text
@@ -224,21 +228,18 @@ module.exports = (store, web3t, wallets, wallet)-->
             |> round-human
     total-sent = get-total \OUT, wallet.address
     total-received = get-total \IN, wallet.address
-    
     installed-networks = store.coins |> map (.token)
-    available-networks = 
-        (wallet?network?networks ? []) 
+    available-networks =
+        (wallet?network?networks ? [])
             |> obj-to-pairs
             |> map (-> it.1 )
             |> filter (-> it.disabled isnt yes and it.referTo in installed-networks)
-            
     uninstall-action = (e)->
         if is-custom isnt yes
-            return uninstall(e) 
+            return uninstall(e)
         agree <- confirm store, "You can add this token back in the future by going to “Add custom token”."
         return if not agree
-        uninstall(e)    
-    
+        uninstall(e)
     wallet-style=
         color: style.app.text3
         background: style.app.wallet
@@ -254,13 +255,13 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-detailed wallet-detailed1433559501' }, children = 
+    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-expanded wallet-expanded152437774' }, children = 
         react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
             react.create-element 'div', { className: 'wallet-header' }, children = 
                 react.create-element 'div', { className: 'wallet-header-part right' }, children = 
                     react.create-element 'div', {}, children = 
                         react.create-element 'span', { className: "#{placeholder} title" }, ' ' + name
-                        if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm vlx_evm_legacy ]>
+                        if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
                             react.create-element 'span', { on-click: uninstall-action, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
                     react.create-element 'div', { className: "#{placeholder} balance" }, children = 
                         react.create-element 'div', { title: "#{wallet?balance}", className: 'token-balance' }, children = 
@@ -280,7 +281,11 @@ module.exports = (store, web3t, wallets, wallet)-->
                         button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
                     react.create-element 'div', { className: 'with-swap' }, children = 
-                        button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", classes="wallet-swap", makeDisabled=send-swap-disabled  }                       
+                        if wallet?coin?token is "vlx_native"
+                            button { store, on-click=buy, text: \buy , icon: \buy  , id: "wallet-buy", classes="wallet-swap" }
+                        if wallet?coin?token is "vlx_evm"
+                            button { store, on-click=buy, text: \buy , icon: \buy  , id: "wallet-buy", classes="wallet-swap" }
+                        button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", classes="wallet-swap", makeDisabled=send-swap-disabled  }
             else
                 react.create-element 'div', { className: 'buttons' }, children = 
                     react.create-element 'div', { className: 'with-swap' }, children = 

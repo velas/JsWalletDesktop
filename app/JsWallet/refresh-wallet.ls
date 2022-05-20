@@ -5,7 +5,8 @@ require! {
     \./workflow.ls : { run, task }
 }
 refresh-wallet = (web3, store, cb)->
-    store.current.refreshing = yes
+    return cb null if store.forceReload isnt yes
+    store.current.refreshing = yes 
     task1 = task (cb)->
         load-rates store, cb
     task3 = task (cb)->
@@ -14,5 +15,6 @@ refresh-wallet = (web3, store, cb)->
         get-market-coins-history store, cb 
     <- run [ task1, task3 ] .then
     store.current.refreshing = no
+    store.forceReload = no
     cb null
 module.exports = refresh-wallet

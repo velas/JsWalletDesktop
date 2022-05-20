@@ -114,7 +114,7 @@ calc-fee-private = (config, cb)->
     return cb "private-per-input is missing" if not o.private-per-input?
     fee =
         (tx-fee `times` 2) `plus` (number-of-inputs `times` o.private-per-input)
-    cb null, fee
+    cb null, { calced-fee: fee }
 calc-fee-instantx = ({ network, tx, tx-type, account, fee-type }, cb)->
     return cb "address cannot be empty" if (account?address ? "") is ""
     o = network?tx-fee-options

@@ -32,7 +32,7 @@
         
         "FOREIGN_BRIDGE_TOKEN": "0xb404c51bbc10dcbe948077f18a4b8e553d160084",
         "FOREIGN_BRIDGE": "0x4D34B0b309f6D1DA0a18eA61Ecb52720cA7D08F5",
-        
+
         "networks": {
             "vlx_usdt": {
                 "id":"vlx_usdt",

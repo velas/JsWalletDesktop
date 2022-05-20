@@ -21,7 +21,7 @@ isChecksumAddress = (address) ->
         i++
     true
 isAddress = (address) ->
-    if not //^(0x)?[0-9a-f]{40}$//i.test address
+    if not (//^(0x)?[0-9a-f]{40}$//i.test address)
         false
     else
         if (//^(0x)?[0-9a-f]{40}$//.test address) or //^(0x)?[0-9A-F]{40}$//.test address then true else isChecksumAddress address
@@ -48,8 +48,8 @@ to-eth-address = (velas-address, cb)->
     #     cb err
 window?to-eth-address = vlxToEth if window?
 export isValidAddress =  ({ address }, cb)->
-    err <- to-eth-address address
-    return cb "Given address is not valid Velas address" if err?
+    isValid = is-address address
+    return cb "Given address is not valid Velas EVM address" if not isValid
     cb null, yes
 get-ethereum-fullpair-by-index = (mnemonic, index, network)->
     seed = bip39.mnemonic-to-seed(mnemonic)
@@ -64,7 +64,6 @@ try-parse = (data, cb)->
     return cb null, data if typeof! data.body is \Object
     return cb "expected text" if typeof! data?text isnt \String
     try
-        сonsole.log \try-parse, data.text, JSON.parse
         data.body = JSON.parse data.text
         cb null, data
     catch err
@@ -120,7 +119,7 @@ get-gas-estimate = (config, cb)->
     cb null, from-hex(estimate)
     
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
-    return cb null if typeof! to isnt \String or to.length is 0
+    #return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
@@ -130,13 +129,14 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
         | _ => '0x'
     from = account.address
     query = { from, to, data: data-parsed }
+    console.log "evm" query    
     err, estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data }  
-    return cb err if err?
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
     val = res `div` dec
     #min = 0.002
     #return cb null, min if +val < min
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -210,7 +210,7 @@ get-external-transactions = ({ network, address }, cb)->
     offset = 20
     sort = \desc
     apikey = \4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG
-    query = stringify { module, action, apikey, address, sort, startblock, endblock, page, offset }
+    query = stringify { module, action, apikey, address, sort, page, offset }
     err, resp <- get "#{api-url}?#{query}" .timeout { deadline } .end
     return cb "cannot execute query - err #{err.message ? err }" if err?
     err, result <- json-parse resp.text
@@ -224,9 +224,10 @@ export get-transactions = ({ network, address }, cb)->
     page = 1
     offset = 20
     err, external <- get-external-transactions { network, address, page, offset }
-    return cb err if err?
+    console.log {err, external}
+    external = [] if err?
     err, internal <- get-internal-transactions { network, address, page, offset }
-    return cb err if err?
+    internal = [] if err?
     all = external ++ internal
     ordered =
         all
@@ -249,16 +250,14 @@ calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     cb null, price
     
 try-get-latest = ({ network, account }, cb)->
-    err, address <- to-eth-address account.address
-    return cb err if err?
+    address = account.address
     err, nonce <- make-query network, \eth_getTransactionCount , [ address, "latest" ]
     return cb "cannot get nonce (latest) - err: #{err.message ? err}" if err?
     next = +from-hex(nonce)
     cb null, next
 get-nonce = ({ network, account }, cb)->
     #err, nonce <- web3.eth.get-transaction-count
-    err, address <- to-eth-address account.address
-    return cb err if err?
+    address = account.address
     err, nonce <- make-query network, \eth_getTransactionCount , [ address, \pending ]
     return try-get-latest { network, account }, cb if err? and "#{err.message ? err}".index-of('not implemented') > -1
     return cb "cannot get nonce (pending) - err: #{err.message ? err}" if err?
@@ -268,12 +267,9 @@ is-address = (address) ->
         false
     else
         true
-export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas } , cb)-->
-    #console.log \tx, { network, account, recipient, amount, amount-fee, data, fee-type, tx-type}
+export create-transaction = ({ network, account, recipient, amount, amount-fee, data, fee-type, tx-type, gas-price, gas } , cb)-->    
     dec = get-dec network
-    err, $recipient <- to-eth-address recipient
-    return cb err if err?
-    return cb "address is not correct ethereum address" if not is-address $recipient
+    return cb "Address is not correct Velas EVM address" if not is-address recipient
     private-key = new Buffer account.private-key.replace(/^0x/,''), \hex
     err, nonce <- get-nonce { account, network }
     return cb err if err?
@@ -284,9 +280,8 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
     return cb err if err?
     buffer.gas-price = gas-price
-    err, address <- to-eth-address account.address
-    return cb err if err?
-    err, balance <- make-query network, \eth_getBalance , [ address, \latest ]
+
+    err, balance <- make-query network, \eth_getBalance , [ account.address, \latest ]
     return cb err if err?
     balance-eth = to-eth balance
     to-send = amount `plus` amount-fee
@@ -298,8 +293,8 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
     data-parsed =
         | data? => data
         | _ => '0x'
-    query = { from: address, to: $recipient, data: data-parsed }
-    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: $recipient, data } 
+    query = { from: account.address, to: recipient, data: data-parsed }
+    err, gas-estimate <- get-gas-estimate { network,  fee-type, account, amount, to: recipient, data } 
     return cb err if err?
     err, chainId <- make-query network, \eth_chainId , []
     return cb err if err?
@@ -316,8 +311,8 @@ export create-transaction = ({ network, account, recipient, amount, amount-fee, 
         gas-price: to-hex gas-price
         value: to-hex value
         gas: to-hex gas-estimate
-        to: $recipient
-        from: address
+        to: recipient
+        from: account.address
         data: data || "0x"
         chainId: chainId     
     }

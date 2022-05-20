@@ -305,7 +305,7 @@ module.exports = (store, web3)->
     search = if store.current.page is \search then \active else \not-active
     settings = if store.current.page is \settings then \active else \not-active
     filestorage = if store.current.page is \filestorage then \active else \not-active
-    staking = if store.current.page is \staking then \active else \not-active
+    staking2 = if store.current.page is \staking2 then \active else \not-active
     resources = if store.current.page is \resources then \active else \not-active
     staking-active = if store.current.page is \staking then \active else \not-active
     delegate-active = if store.current.page is \choosestaker then \active else \not-active
@@ -357,10 +357,8 @@ module.exports = (store, web3)->
         navigate store, web3t, \wallets
         store.menu.show = no
     goto-staking = ->
-        navigate store, web3t, \staking
-        store.menu.show = no
-    goto-choose-staker = ->
-        navigate store, web3t, \validators
+        return store.menu.show = no if store.current.page is \staking2
+        navigate store, web3t, \staking2
         store.menu.show = no
     goto-info = ->
         navigate store, web3t, \info
@@ -393,14 +391,14 @@ module.exports = (store, web3)->
                         react.create-element 'label', {}, ' ' + lang.your-wallets
             if store.preference.settings-visible is yes
                 if store.current.device is \mobile
-                    react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, className: "#{staking} menu-item" }, children = 
+                    react.create-element 'div', { on-click: goto-staking, style: icon-style, className: "#{staking2} menu-item" }, children = 
                         react.create-element 'img', { src: "#{icons.staking}" }
                         react.create-element 'label', {}, ' ' + lang.staking
             if store.preference.settings-visible is yes
                 if store.current.device is \mobile
                     react.create-element 'div', { on-click: goto-search, style: icon-style, className: "#{search} menu-item" }, children = 
                         react.create-element 'img', { src: "#{icons.search}" }
-                        react.create-element 'label', {}, ' ' + lang.search
+                        react.create-element 'label', {}, ' ' + lang.dapps
             if store.preference.settings-visible is yes
                 if store.current.device is \mobile
                     react.create-element 'div', { on-click: goto-settings, style: icon-style, className: "#{settings} menu-item" }, children = 

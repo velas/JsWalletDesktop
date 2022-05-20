@@ -74,7 +74,6 @@ try-parse = (data, cb)->
     console.log data if typeof! data?text isnt \String
     return cb "expected text" if typeof! data?text isnt \String
     try
-        сonsole.log \try-parse, data.text, JSON.parse
         data.body = JSON.parse data.text
         cb null, data
     catch err
@@ -133,7 +132,7 @@ get-gas-estimate = (config, cb)->
     cb null, from-hex(estimate)
     
 export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, gas }, cb)->
-    return cb null if typeof! to isnt \String or to.length is 0
+    #return cb null if typeof! to isnt \String or to.length is 0
     return cb null if fee-type isnt \auto
     dec = get-dec network
     err, gas-price <- calc-gas-price { fee-type, network, gas-price }
@@ -144,17 +143,15 @@ export calc-fee = ({ network, fee-type, account, amount, to, data, gas-price, ga
     err, from <- to-eth-address account.address
     console.error "calc-fee from address #{err}" if err?
     return cb "Given address is not valid Velas address" if err?
-    err, to <- to-eth-address to
-    console.error "calc-fee from address #{err}" if err?
-    return cb "Given address is not valid Velas address" if err?
+    #err, to <- to-eth-address to
+    #console.error "calc-fee from address #{err}" if err?
+    #return cb "Given address is not valid Velas address" if err?
     query = { from, to, data: data-parsed }
     err, estimate <- get-gas-estimate { network,  fee-type, account, amount, to, data }
-    return cb err if err?
+    return cb null, { calced-fee: network.tx-fee, gas-price } if err?   
     res = gas-price `times` estimate
     val = res `div` dec
-    #min = 0.002
-    #return cb null, min if +val < min
-    cb null, val
+    cb null, { calced-fee: val, gas-price, gas-estimate: estimate }
 export get-keys = ({ network, mnemonic, index }, cb)->
     result = get-ethereum-fullpair-by-index mnemonic, index, network
     cb null, result
@@ -264,7 +261,6 @@ calc-gas-price = ({ fee-type, network, gas-price }, cb)->
     err, price <- make-query network, \eth_gasPrice , []
     return cb "calc gas price - err: #{err.message ? err}" if err?
     price = from-hex(price)
-    #console.log \price, price
     return cb null, 22000 if +price < 22000
     cb null, price
 try-get-latest = ({ network, account }, cb)->
