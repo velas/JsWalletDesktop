@@ -7,7 +7,7 @@
     "@primer/octicons-react": "9.1.1",
     "@solana/buffer-layout": "4.0.0",
     "@velas/staking.2.0": "file:../../velas-staking.2.0-1.0.0.tgz",
-    "@velas/web3": "git+https://github.com/velas/web3.js.git#web",
+    "@velas/web3": "https://github.com/velas/web3.js.git#web",
     "atob": "2.1.2",
     "bignumber.js": "6.0.0",
     "bitgo-utxo-lib": "^1.8.0",
