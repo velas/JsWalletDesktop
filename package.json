@@ -34,7 +34,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "app-builder-bin": "^3.5.2",
-    "electron": "^7.1.11",
+    "electron": "^13.6.6",
     "electron-builder": "latest",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^0.2.1",
