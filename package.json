@@ -1,7 +1,7 @@
 {
   "name": "Velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.77",
+  "version": "0.14.78",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -69,6 +69,8 @@
     "afterAllArtifactBuild": "scripts/calc-md5.js"
   },
   "dependencies": {
+    "@velas/web3": "https://github.com/velas/web3.js.git#web",
+    "@velas/staking.2.0": "file:./velas-staking.2.0-1.0.0.tgz",
     "@primer/octicons-react": "^9.6.0",
     "atob": "^2.1.2",
     "big-integer": "^1.6.48",
