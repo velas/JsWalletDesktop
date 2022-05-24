@@ -1,0 +1,257 @@
+.vote1153270868
+    @import scheme
+    $border-radius: $border
+    $smooth: opacity .15s ease-in-out
+    position: relative
+    display: block
+    width: auto
+    overflow: hidden
+    margin-left: $left-margin
+    top: 0
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 3
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .wrapper
+        height: calc(100vh - 120px)
+        display: flex
+        overflow-y: scroll
+        scrollbar-width: none
+        padding: 0
+        .side
+            display: inline-grid
+            margin: 60px auto 0
+            width: 70%
+            .notice
+                text-align: left
+                margin: 0px 20px 10px 20px
+                .danger
+                    color: orange
+            @media(max-width:800px)
+                width: 100%
+            .filter
+                height: 60px
+                margin: 20px 20px 10px 20px
+                position: relative
+                .view
+                    position: absolute
+                    top: 0
+                    right: 20px
+                    li
+                        cursor: pointer
+                        opacity: 1
+                        img
+                            &:nth-child(1)
+                                display: none
+                            &:nth-child(2)
+                                display: inline-block
+                        &.compact
+                            img
+                                &:nth-child(1)
+                                    display: inline-block
+                                &:nth-child(2)
+                                    display: none
+                ul
+                    display: flex
+                    list-style: none
+                    padding-left: 20px
+                    line-height: 30px
+                    li
+                        margin-left: 20px
+                        cursor: pointer
+                        font-size: 17px
+                        opacity: .4
+                        &.active
+                            opacity: 1
+                        &:first-child
+                            margin: 0
+                        img
+                            width: 13px
+            .main-content
+                height: 100vh
+                margin: 0px 20px 10px 20px
+                &.create-new-proposal
+                    height: auto
+                    input
+                        outline: none
+                        width: 100%
+                        box-sizing: border-box
+                        height: 36px
+                        line-height: 36px
+                        border-radius: 0
+                        padding: 0px 10px
+                        font-size: 14px
+                        margin: 5px 0
+                        border: 0px
+                        box-shadow: none
+                        ~ .keyboard-panel
+                            display: none
+                .item
+                    padding: 15px
+                    display: flex
+                    text-align: left
+                    position: relative
+                    transition: all .5s
+                    &.active
+                        background: var(--bg-primary-light)
+                        box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
+                        z-index: 1
+                        .rate
+                            button
+                                opacity: 1
+                        .label
+                            background: var(--dark-theme)
+                    &.compact
+                        padding: 10px
+                        .screen
+                            display: none
+                            a
+                                display: none
+                        .description
+                            margin-left: 0px
+                            .sub-header
+                                margin-right: 60px
+                        .rate
+                            margin-right: 10px
+                        .label
+                            right: 10px
+                    &:hover
+                        background: var(--bg-primary-light)
+                        transition: all .5s
+                        cursor: pointer
+                        .rate
+                            button
+                                opacity: 1
+                        .label
+                            transition: all .5s
+                            background: var(--dark-theme)
+                    .label
+                        position: absolute
+                        background: var(--bg-primary-light)
+                        font-size: 8px
+                        text-transform: uppercase
+                        letter-spacing: 2px
+                        top: 0
+                        padding: 20px 10px 5px
+                        border-bottom-right-radius: 3px
+                        border-bottom-left-radius: 3px
+                        right: 15px
+                        transition: all .5s
+                        box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
+                    .rate
+                        margin-right: 15px
+                        padding: 3px 0
+                        width: 90px
+                        text-align: center
+                        button
+                            opacity: .55
+                        .votes
+                            text-align: center
+                        ul
+                            padding: 0
+                            margin: 0
+                            list-style: none
+                            text-align: center
+                            li
+                                cursor: pointer
+                                opacity: .4
+                                padding: 5px
+                                &:nth-child(2)
+                                    opacity: 1
+                                &.active
+                                    opacity: 1
+                    .screen
+                        img
+                            width: 130px
+                            height: 100px
+                            border-radius: 7px
+                            box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.15)
+                            @media(max-width:800px)
+                                display: none
+                        a
+                            position: relative
+                            @media(max-width:800px)
+                                display: none
+                            &:after
+                                bottom: 6px
+                                background: $source
+                                height: 15px
+                                width: 15px
+                                content: ""
+                                display: inline-block
+                                background-repeat: no-repeat
+                                background-size: contain
+                                vertical-align: middle
+                                position: absolute
+                                right: 0
+                    .description
+                        margin-left: 15px
+                        .progress
+                            width: 300px
+                            @media(max-width:800px)
+                                width: 200px
+                            progress
+                                width: 100%
+                            span
+                                font-size: 12px
+                                float: left
+                                &:last-child
+                                    float: right
+                        .header
+                            font-weight: 500
+                            color: #6f6fe2
+                            font-size: 22px
+                            line-height: 28px
+                            margin-right: 60px
+                            cursor: pointer
+                            overflow: hidden
+                            text-overflow: ellipsis
+                            a
+                                color: #fff
+                                opacity: .8
+                                line-height: 1.6
+                                font-size: 13px
+                                margin-left: 10px
+                                &:after
+                                    background: $source
+                                    height: 10px
+                                    width: 10px
+                                    content: ""
+                                    display: inline-block
+                                    background-repeat: no-repeat
+                                    background-size: contain
+                                    vertical-align: middle
+                                    margin-left: 4px
+                        .sub-header
+                            opacity: .8
+                            line-height: 1.6
+                            font-size: 13px
+                            margin-right: 60px
+            >.filter, >.main-content
+                &:last-child
+                    @media(max-width:800px)
+                        margin-top: 0px
+                @media(max-width:800px)
+                    margin: 20px

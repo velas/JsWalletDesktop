@@ -1,0 +1,145 @@
+.choose-account1198269607
+    @import scheme
+    $real-height: 300px
+    $cards-height: 296px
+    $pad: 20px
+    $radius: 15px    
+    height: auto
+    box-sizing: border-box
+    position: relative
+    right: 10px
+    bottom: 30px
+    $cards-pad: 15px
+    z-index: 2
+    .icon-svg-edit
+        height: 15px
+    .icon-svg-create
+        height: 9px
+    .switch-menu
+        right: 0px !important
+        top: 40px !important
+    .header
+        &:after
+            position: absolute
+            font-weight: bold
+            font-size: 40px
+            opacity: .05
+            top: 20px
+            left: -5px
+        .hidden
+            @media(max-width: 940px)
+                visibility: hidden
+    .switch-account
+        float: right
+        line-height: 10px
+        width: auto
+        top: 2px
+        right: 5px
+        position: absolute
+        text-align: right
+        display: block
+        z-index: 2
+        border-radius: 0 0 var(--border-btn) var(--border-btn)
+        @media(max-width: 620px)
+            .name, .icon
+                visibility: hidden
+            .icon.menus, .icon.ckeck, .icon.cancel
+                visibility: visible
+            &.show
+                .name, .icon
+                    visibility: visible
+        .disabled
+            opacity: 0.3
+        .ckeck
+            color: #3cd5af
+        .cancel
+            color: #c25b5f
+        .name
+            white-space: nowrap
+            overflow: hidden
+            width: 100px
+            text-align: right
+            cursor: default
+            display: contents
+            vertical-align: middle
+            display: inline-block
+            overflow-x: auto
+            background: transparent
+            &:hover
+                width: auto
+                cursor: pointer
+        input
+            outline: none
+            width: 70px
+            margin-top: -10px
+            height: 36px
+            line-height: 36px
+            border-radius: 0px
+            padding: 0px 10px
+            font-size: 12px
+            opacity: 1
+        span
+            cursor: pointer
+        .icon
+            vertical-align: middle
+            margin-left: 20px
+            transition: transform .5s
+            display: inline-block
+            &.menus
+                display: none
+                @media(max-width: 620px)
+                    display: inline-block
+                &.show
+                    opacity: .5
+            &.rotate
+                transform: rotate(180deg)
+                transition: transform .5s
+                display: inline-block
+    .h1
+        font-size: 12px
+        text-transform: uppercase
+        letter-spacing: 2px
+        opacity: .8
+    .your-account
+        position: absolute
+        width: auto
+        display: inline-block
+        right: 0
+        top: 0
+        padding: 12px 20px
+        border-left: 0 !important
+        >.buttons
+            display: none !important
+        .buttons
+            >.button
+                width: 20px
+                padding: 0
+                outline: none
+    >*
+        width: 100%
+    >.arrow
+        position: absolute
+        text-align: center
+        cursor: pointer
+        &.arrow-t
+            top: 0
+            margin-top: 10px
+        &.arrow-d
+            bottom: 0
+            margin-bottom: 10px
+            transform: rotate(180deg)
+        &:not(.true)
+            >.arrow-d
+                visibility: hidden
+        >.arrow-container
+            display: inline-block
+            width: 100%
+            max-width: 450px
+            position: relative
+    >.wallet-container
+        overflow: hidden
+        overflow-y: auto
+        height: 300px
+        width: 100%
+        border-top: 1px solid #213040
+        display: inline-block

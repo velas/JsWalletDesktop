@@ -12,67 +12,67 @@ require! {
     \../icons.ls
     \bignumber.js
 }
-# .input-area-2107940614
-#     @import scheme
-#     position: relative
-#     margin: 10px 0
-#     width: 100%
-#     box-sizing: border-box
-#     height: 36px
-#     line-height: 36px
-#     >*
-#         display: inline-block
-#         box-sizing: border-box
-#         margin: 0 !important
-#         height: inherit
-#         line-height: inherit
-#         vertical-align: top
-#         z-index: 1
-#     >input
-#         background: transparent
-#         overflow-x: auto
-#         color: white
-#         display: inline-block
-#         width: calc(100% - 70px) !important
-#         padding: 0 10px
-#         border-radius: $border 0 0 $border !important
-#         border: none
-#         text-align: left
-#         &:disabled
-#             opacity: .2
-#     >.suffix
-#         $color: rgba(#ccc, 0.3)
-#         width: 70px
-#         border-left: 1px solid $color
-#         text-align: center
-#         border-radius: 0 $border $border 0
-#         >*
-#             display: inline-block
-#         >.icon
-#             width: 15px
-#             margin-bottom: -1px
-#             margin-right: 5px
-#     >.show-details
-#         display: none
-#     &:hover
-#         >.show-details
-#             display: block
-#             position: absolute
-#             top: 36px
-#             right: 0
-#             width: auto
-#             padding: 0
-#             color: white
-#             height: 90px
-#             text-align: right
-#             background: transparent
-#             >.panel
-#                 padding: 10px
-#                 background: rgba(black, 0.8)
-#                 display: inline-block
-#                 max-width: 250px
-#                 min-width: 250px
-#                 text-align: left
+.input-area
+    @import scheme
+    position: relative
+    margin: 10px 0
+    width: 100%
+    box-sizing: border-box
+    height: 36px
+    line-height: 36px
+    >*
+        display: inline-block
+        box-sizing: border-box
+        margin: 0 !important
+        height: inherit
+        line-height: inherit
+        vertical-align: top
+        z-index: 1
+    >input
+        background: transparent
+        overflow-x: auto
+        color: white
+        display: inline-block
+        width: calc(100% - 70px) !important
+        padding: 0 10px
+        border-radius: $border 0 0 $border !important
+        border: none
+        text-align: left
+        &:disabled
+            opacity: .2
+    >.suffix
+        $color: rgba(#ccc, 0.3)
+        width: 70px
+        border-left: 1px solid $color
+        text-align: center
+        border-radius: 0 $border $border 0
+        >*
+            display: inline-block
+        >.icon
+            width: 15px
+            margin-bottom: -1px
+            margin-right: 5px
+    >.show-details
+        display: none
+    &:hover
+        >.show-details
+            display: block
+            position: absolute
+            top: 36px
+            right: 0
+            width: auto
+            padding: 0
+            color: white
+            height: 90px
+            text-align: right
+            background: transparent
+            >.panel
+                padding: 10px
+                background: rgba(black, 0.8)
+                display: inline-block
+                max-width: 250px
+                min-width: 250px
+                text-align: left
 DECIMAL_SEPARATOR = '.' 
 module.exports = ({ store, value, on-change, placeholder, id, show-details, token="vlx2", disabled=no })->
     style = get-primary-info store
@@ -149,12 +149,12 @@ module.exports = ({ store, value, on-change, placeholder, id, show-details, toke
     wallet-icon = 
         | wallet.coin?custom is yes and icons.customWalletIcon? => icons.customWalletIcon
         | _ => wallet.coin.image
-    react.create-element 'div', { className: 'input-area input-area-2107940614' }, children = 
-        react.create-element CurrencyInput, { id: "value-input", style: input-style, key: "amount", allowDecimals: yes, allowNegativeValue: no, value: "#{value}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield" }
-        react.create-element 'span', { style: input-style, className: 'suffix' }, children = 
-            react.create-element 'img', { src: "#{wallet-icon}", className: 'icon' }
-            react.create-element 'span', {}, ' ' + token-label
+    .pug.input-area
+        CurrencyInput.pug(id="value-input" class="textfield" style=input-style key="amount" allowDecimals=yes allowNegativeValue=no value="#{value}" decimalsLimit=decimalsLimit label="Send" decimalSeparator=DECIMAL_SEPARATOR groupSeparator="," onValueChange=on-change-internal)
+        span.suffix.pug(style=input-style)
+            img.icon.pug(src="#{wallet-icon}")
+            span.pug #{token-label}
         if show-details? and show-details then   
-            react.create-element 'div', { className: 'show-details' }, children = 
-                react.create-element 'div', { className: 'panel' }, children = 
-                    react.create-element 'div', {}, ' USD: ' + round usd
+            .show-details.pug
+                .panel.pug
+                    .pug USD: #{round usd}

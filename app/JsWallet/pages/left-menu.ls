@@ -10,239 +10,239 @@ require! {
     \../icons.ls
     \./menu.ls
 }
-# .menu855995223
-#     @import scheme
-#     width: 100%
-#     text-align: right
-#     box-sizing: border-box
-#     $smooth: color .15s ease-in-out
-#     &.side-menu
-#         position: fixed
-#         left: 0
-#         width: 250px
-#         height: 100vh
-#         padding: 0
-#         padding-top: 0px
-#         z-index: 11
-#         transition: all .5s
-#         .closed
-#             display: none
-#             top: 2px
-#             right: -22px
-#             position: absolute
-#             cursor: pointer
-#             svg
-#                 transition: all .5s
-#                 &:hover
-#                     transform: rotate(90deg)
-#                     transition: all .5s
-#             &.active
-#                 @media(max-width: $ipad)
-#                     display: inline-block
-#         &.active
-#             @media(max-width: $ipad)
-#                 left: 0px
-#                 box-shadow: 10px 0px 40px 10px #090e33
-#         @media(max-width: $ipad)
-#             left: -250px
-#             transition: all .5s
-#         .menu
-#             line-height: 14px
-#             height: auto
-#         .menu-items
-#             margin: 0
-#             position: absolute
-#             top: calc(4*60px)
-#             width: 100%
-#         .info
-#             position: absolute
-#             width: 100%
-#             text-align: center
-#             padding: 20px 0
-#             bottom: 0
-#             .version
-#                 letter-spacing: 1px
-#                 font-size: 8px
-#                 padding: 6px
-#                 color: #89829d
-#                 border-radius: 8px
-#                 height: 5px
-#                 line-height: 5px
-#                 margin: 5px auto
-#             img
-#                 width: 25px
-#                 vertical-align: bottom
-#         .menu-item
-#             margin-bottom: 0px
-#             height: 40px
-#             padding-top: 20px
-#             &.bottom
-#                 position: absolute
-#                 bottom: 0
-#                 left: 0
-#             &.testnet
-#                 background: orange
-#                 color: white
-#                 min-height: 10px
-#             &.lang
-#                 bottom: 0
-#     .logo
-#         position: absolute
-#         width: 100%
-#         text-align: center
-#         left: 0
-#         img
-#             width: 25px
-#             vertical-align: bottom
-#             cursor: pointer
-#     .menu-item
-#         span
-#             position: absolute
-#             left: 100px
-#             line-height: 1.6
-#             font-size: 14px
-#             letter-spacing: 2px
-#         img
-#             &.more
-#                 left: 220px
-#                 top: 25px
-#                 padding: 0
-#                 height: 9px
-#                 width: auto
-#                 transform: rotate(-90deg)
-#         svg, img
-#             transition: transform .5s
-#         .menu
-#             opacity: 0
-#             position: absolute
-#             left: -100px
-#             display: none
-#         &.submenu
-#             height: 170px
-#             .menu
-#                 position: relative
-#                 left: 90px
-#                 display: block
-#                 top: 50px
-#                 z-index: 1
-#                 width: 140px
-#                 font-size: 10px
-#                 color: #fff
-#                 opacity: 1
-#                 transition: opacity .5s
-#                 ul
-#                     list-style: none
-#                     padding: 0
-#                     text-align: left
-#                     margin: 0
-#                     li
-#                         &:hover
-#                             color: #0bffb7 !important
-#                             transition: .5s
-#                             img
-#                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
-#                                 transition: .5s
-#                         margin-bottom: 15px
-#                         line-height: 1.6
-#                         font-size: 14px
-#                         letter-spacing: 2px
-#                         &:last-child
-#                             margin-bottom: 0
-#                         &.active
-#                             color: #0bffb7 !important
-#                             img
-#                                 filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
-#                         img
-#                             filter: none
-#         &.active
-#             color: #fff !important
-#             background: var(--bg-primary-light)
-#             transition: $smooth
-#             border-bottom: 1px solid var(--border)
-#             opacity: 1
-#             -webkit-transition: $smooth
-#             -moz-transition: $smooth
-#             -ms-transition: $smooth
-#             -o-transition: $smooth
-#             img
-#                 &.more
-#                     transform: rotate(0deg)
-#         &.syncing
-#             @keyframes spin
-#                 from
-#                     transform: rotate(0deg)
-#                 to
-#                     transform: rotate(360deg)
-#             animation-name: spin
-#             animation-duration: 4000ms
-#             animation-iteration-count: infinite
-#             animation-timing-function: linear
-#         cursor: pointer
-#         opacity: .5
-#         &:hover
-#             opacity: 1
-#         vertical-align: bottom
-#         line-height: normal
-#         display: block
-#         position: relative
-#         height: 20px
-#         line-height: 15px
-#         width: 100%
-#         text-align: center
-#         z-index: 11
-#         @media screen and (max-width: 390px)
-#             &:nth-child(4)
-#                 float: left
-#                 margin-left: 0
-#         img
-#             width: 17px
-#             border-radius: 0px
-#             position: absolute
-#             left: 60px
-#             padding: 2px
-#         &.class
-#             position: absolute
-#             top: 530px
-#             left: 0
-#             color: transparent !important
-#     .langs-menu
-#         background: #45217e !important
-#         position: relative
-#         border-left: 0 !important
-#         border-radius: 0 !important
-#         top: 0
-#         left: 0
-#         width: 59px
-#         display: inline-grid
-#         z-index: 1
-#         padding: 20px 0 24px
-#         .langs-item
-#             display: inline-block
-#             cursor: pointer
-#             line-height: 15px
-#             margin-bottom: 20px
-#             text-align: center
-#             div
-#                 line-height: 13px
-#             &:last-child
-#                 margin-bottom: 0
-#             img
-#                 width: 17px
-#                 height: 17px
-#                 padding: 2px
-#                 border-radius: 20px
-#             span
-#                 margin-left: 0px
-#                 font-size: 10px
-#     .iron
-#         -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
-#         -webkit-mask-size: 50% 100%
-#         animation: shine 2s infinite
-#     @keyframes shine
-#         0%
-#             -webkit-mask-position: right
-#         100%
-#             -webkit-mask-position: left
+.menu
+    @import scheme
+    width: 100%
+    text-align: right
+    box-sizing: border-box
+    $smooth: color .15s ease-in-out
+    &.side-menu
+        position: fixed
+        left: 0
+        width: 250px
+        height: 100vh
+        padding: 0
+        padding-top: 0px
+        z-index: 11
+        transition: all .5s
+        .closed
+            display: none
+            top: 2px
+            right: -22px
+            position: absolute
+            cursor: pointer
+            svg
+                transition: all .5s
+                &:hover
+                    transform: rotate(90deg)
+                    transition: all .5s
+            &.active
+                @media(max-width: $ipad)
+                    display: inline-block
+        &.active
+            @media(max-width: $ipad)
+                left: 0px
+                box-shadow: 10px 0px 40px 10px #090e33
+        @media(max-width: $ipad)
+            left: -250px
+            transition: all .5s
+        .menu
+            line-height: 14px
+            height: auto
+        .menu-items
+            margin: 0
+            position: absolute
+            top: calc(4*60px)
+            width: 100%
+        .info
+            position: absolute
+            width: 100%
+            text-align: center
+            padding: 20px 0
+            bottom: 0
+            .version
+                letter-spacing: 1px
+                font-size: 8px
+                padding: 6px
+                color: #89829d
+                border-radius: 8px
+                height: 5px
+                line-height: 5px
+                margin: 5px auto
+            img
+                width: 25px
+                vertical-align: bottom
+        .menu-item
+            margin-bottom: 0px
+            height: 40px
+            padding-top: 20px
+            &.bottom
+                position: absolute
+                bottom: 0
+                left: 0
+            &.testnet
+                background: orange
+                color: white
+                min-height: 10px
+            &.lang
+                bottom: 0
+    .logo
+        position: absolute
+        width: 100%
+        text-align: center
+        left: 0
+        img
+            width: 25px
+            vertical-align: bottom
+            cursor: pointer
+    .menu-item
+        span
+            position: absolute
+            left: 100px
+            line-height: 1.6
+            font-size: 14px
+            letter-spacing: 2px
+        img
+            &.more
+                left: 220px
+                top: 25px
+                padding: 0
+                height: 9px
+                width: auto
+                transform: rotate(-90deg)
+        svg, img
+            transition: transform .5s
+        .menu
+            opacity: 0
+            position: absolute
+            left: -100px
+            display: none
+        &.submenu
+            height: 170px
+            .menu
+                position: relative
+                left: 90px
+                display: block
+                top: 50px
+                z-index: 1
+                width: 140px
+                font-size: 10px
+                color: #fff
+                opacity: 1
+                transition: opacity .5s
+                ul
+                    list-style: none
+                    padding: 0
+                    text-align: left
+                    margin: 0
+                    li
+                        &:hover
+                            color: #0bffb7 !important
+                            transition: .5s
+                            img
+                                filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+                                transition: .5s
+                        margin-bottom: 15px
+                        line-height: 1.6
+                        font-size: 14px
+                        letter-spacing: 2px
+                        &:last-child
+                            margin-bottom: 0
+                        &.active
+                            color: #0bffb7 !important
+                            img
+                                filter: grayscale(100%) brightness(40%) sepia(120%) hue-rotate(-140deg) saturate(790%) contrast(0.5)
+                        img
+                            filter: none
+        &.active
+            color: #fff !important
+            background: var(--bg-primary-light)
+            transition: $smooth
+            border-bottom: 1px solid var(--border)
+            opacity: 1
+            -webkit-transition: $smooth
+            -moz-transition: $smooth
+            -ms-transition: $smooth
+            -o-transition: $smooth
+            img
+                &.more
+                    transform: rotate(0deg)
+        &.syncing
+            @keyframes spin
+                from
+                    transform: rotate(0deg)
+                to
+                    transform: rotate(360deg)
+            animation-name: spin
+            animation-duration: 4000ms
+            animation-iteration-count: infinite
+            animation-timing-function: linear
+        cursor: pointer
+        opacity: .5
+        &:hover
+            opacity: 1
+        vertical-align: bottom
+        line-height: normal
+        display: block
+        position: relative
+        height: 20px
+        line-height: 15px
+        width: 100%
+        text-align: center
+        z-index: 11
+        @media screen and (max-width: 390px)
+            &:nth-child(4)
+                float: left
+                margin-left: 0
+        img
+            width: 17px
+            border-radius: 0px
+            position: absolute
+            left: 60px
+            padding: 2px
+        &.class
+            position: absolute
+            top: 530px
+            left: 0
+            color: transparent !important
+    .langs-menu
+        background: #45217e !important
+        position: relative
+        border-left: 0 !important
+        border-radius: 0 !important
+        top: 0
+        left: 0
+        width: 59px
+        display: inline-grid
+        z-index: 1
+        padding: 20px 0 24px
+        .langs-item
+            display: inline-block
+            cursor: pointer
+            line-height: 15px
+            margin-bottom: 20px
+            text-align: center
+            div
+                line-height: 13px
+            &:last-child
+                margin-bottom: 0
+            img
+                width: 17px
+                height: 17px
+                padding: 2px
+                border-radius: 20px
+            span
+                margin-left: 0px
+                font-size: 10px
+    .iron
+        -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
+        -webkit-mask-size: 50% 100%
+        animation: shine 2s infinite
+    @keyframes shine
+        0%
+            -webkit-mask-position: right
+        100%
+            -webkit-mask-position: left
 #setup-pages = <[ locked newseed chooseinit loading loading2 verifyseed terms terms2 ]>
 module.exports = (store, web3t)->
     return null if not store? or store.current.page in setup-pages
@@ -360,7 +360,7 @@ module.exports = (store, web3t)->
     goto-wallet = ->
         navigate store, web3t, \wallets
     version = (store, web3t)->
-        react.create-element 'div', { className: 'version' }, ' ' + store.version
+        .version.pug #{store.version}
     show-mobile =
         if store.menu.show then \active else \ ""
     close = ->
@@ -368,35 +368,35 @@ module.exports = (store, web3t)->
     network-button-style =
         | store.current.refreshing is yes => {color: style.app.text, opacity: 0.2, cursor: 'no-pointer'}
         | _ => {color: style.app.text, opacity: 1}
-    react.create-element 'div', { style: border-style, className: "#{show-mobile} menu side-menu menu855995223" }, children = 
-        react.create-element 'div', { on-click: close, className: "#{show-mobile} closed" }, children = 
+    .menu.side-menu.pug(style=border-style class="#{show-mobile}")
+        .pug.closed(on-click=close class="#{show-mobile}")
             icon \X, 20
-        react.create-element 'div', { className: 'info' }, children = 
+        .pug.info
             version store, web3t
         menu { store, web3t }
-        react.create-element 'div', { className: 'menu-items' }, children = 
+        .pug.menu-items
             if store.preference.settings-visible is yes
-                react.create-element 'div', { className: 'left-menu-items' }, children = 
-                    react.create-element 'div', { on-click: wallet, style: icon-style, id: "menu-wallets", className: "#{wallets} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.your-wallets
-                        react.create-element 'img', { src: "#{icons.wallet}", style: wallet-icon }
-                    react.create-element 'div', { on-click: goto-choose-staker, style: icon-style, id: "menu-delegate", className: "#{staking-active} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.staking
-                        react.create-element 'img', { src: "#{icons.staking}", style: icon-color }
-                    react.create-element 'div', { on-click: goto-search, style: icon-style, id: "menu-search", className: "#{search} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.dapps
-                        react.create-element 'img', { src: "#{icons.search}", style: icon-color }
-                    react.create-element 'div', { on-click: goto-settings, style: icon-style, id: "menu-settings", className: "#{settings} menu-item" }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.settings
-                        react.create-element 'img', { src: "#{icons.setting}", style: icon-color }
-                    react.create-element 'div', { on-click: goto-support, style: icon-style, id: "menu-support", className: 'menu-item' }, children = 
-                        react.create-element 'span', { className: 'arrow_box' }, ' ' + lang.support
-                        react.create-element 'img', { src: "#{icons.support}", style: icon-color }
+                .pug.left-menu-items
+                    .menu-item.pug(on-click=wallet style=icon-style class="#{wallets}" id="menu-wallets")
+                        span.arrow_box.pug #{lang.your-wallets}
+                        img.pug(src="#{icons.wallet}" style=wallet-icon)
+                    .menu-item.pug(on-click=goto-choose-staker style=icon-style class="#{staking-active}" id="menu-delegate")
+                        span.arrow_box.pug #{lang.staking}
+                        img.pug(src="#{icons.staking}"style=icon-color)
+                    .menu-item.pug(on-click=goto-search style=icon-style class="#{search}" id="menu-search")
+                        span.arrow_box.pug #{lang.dapps}
+                        img.pug(src="#{icons.search}" style=icon-color)
+                    .menu-item.pug(on-click=goto-settings style=icon-style class="#{settings}" id="menu-settings")
+                        span.arrow_box.pug #{lang.settings}
+                        img.pug(src="#{icons.setting}" style=icon-color)
+                    .menu-item.pug(on-click=goto-support style=icon-style id="menu-support")
+                        span.arrow_box.pug #{lang.support}
+                        img.pug(src="#{icons.support}" style=icon-color)
             if store.current.network is \devnet
-                react.create-element 'div', { on-click: goto-mainnet, style: network-button-style, id: "menu-devnet", className: "#{settings} menu-item testnet" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' Devnet'
-                    react.create-element 'img', { src: "#{icons.test}", style: icon-color }
+                .menu-item.pug.testnet(on-click=goto-mainnet style=network-button-style class="#{settings}" id="menu-devnet")
+                    span.arrow_box.pug Devnet
+                    img.pug(src="#{icons.test}" style=icon-color)
             if store.current.network is \testnet
-                react.create-element 'div', { on-click: goto-mainnet, style: network-button-style, id: "menu-testnet", className: "#{settings} menu-item testnet" }, children = 
-                    react.create-element 'span', { className: 'arrow_box' }, ' Testnet'
-                    react.create-element 'img', { src: "#{icons.test}", style: icon-color }
+                .menu-item.pug.testnet(on-click=goto-mainnet style=network-button-style class="#{settings}" id="menu-testnet")
+                    span.arrow_box.pug Testnet
+                    img.pug(src="#{icons.test}" style=icon-color)

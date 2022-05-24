@@ -27,4 +27,4 @@ legend =
 module.exports = (store, web3t)->
     return null if store.staking.pools.length is 0
     data = build-data store.staking.pools
-    react.create-element Pie, { data: data, width: 100, height: 100, legend: legend }
+    Pie.pug(data=data width=100 height=100 legend=legend)

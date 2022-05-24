@@ -15,4 +15,6 @@
         "cordova": true,
         "File": true
     }
+  ,"esversion": 6,
+  "node": true
 }

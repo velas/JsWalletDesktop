@@ -39,612 +39,612 @@ require! {
     \moment
     \../../components/popups/loader.ls
 }
-# .staking-1346721642
-#     @import scheme
-#     position: relative
-#     display: block
-#     width: auto
-#     margin-left: $left-margin
-#     top: 0
-#     height: auto
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     @keyframes blink-animation
-#         50%
-#             opacity: 0.3
-#     @-webkit-keyframes blink-animation
-#         50%
-#             opacity: 0.3
-#     .blink
-#         animation: 1s linear blink-animation  infinite
-#         -webkit-animation: 1s linear blink-animation  infinite
-#     .entities-loader
-#         position: absolute;
-#         top: 0
-#         bottom: 0
-#         left: 0
-#         right: 0
-#         display: flex
-#         align-items: center
-#         .inner-section
-#             margin: auto
-#     .syncing
-#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
-#         -webkit-mask-size: 50%
-#         animation: fb 1s infinite
-#         animation-fill-mode: forwards
-#         background: var(--placeholder)
-#     @keyframes gradient
-#         0%
-#             background-position: 0% 50%
-#         50%
-#             background-position: 100% 50%
-#         100%
-#             background-position: 0% 50%
-#     @keyframes fb
-#         0%
-#             -webkit-mask-position: left
-#         100%
-#             -webkit-mask-position: right
-#     @media (max-width: 800px)
-#         .wallet-main, >.content, .history, .search, .filestore, .resources, .staking, .settings-menu, .staking-res, .stats, .monitor
-#             margin: 60px 0 0
-#             >.title
-#                 margin: 0
-#                 position: fixed
-#                 z-index: 11
-#     .error-no-connection
-#         -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
-#         -webkit-mask-size: 50%
-#         animation: fb 1s infinite
-#         animation-fill-mode: forwards
-#         background: var(--placeholder)
-#         padding: 10px 20px
-#         display: inline-block
-#     .buttons
-#         display: flex
-#     .usd-amount
-#         opacity: 0.65
-#         font-size: 10px
-#         margin-left: 10px
-#     .loader
-#         svg
-#             width: 12px
-#             cursor: pointer
-#         &.spin > svg
-#             @keyframes spin
-#                 from
-#                     transform: rotate(0deg)
-#                 to
-#                     transform: rotate(360deg)
-#             animation-name: spin
-#             animation-duration: 4000ms
-#             animation-iteration-count: infinite
-#             animation-timing-function: linear
-#         &.disabled
-#             opacity: 0.3
-#     .myStakeMaxPart
-#         margin-left: 20px
-#         opacity: 0.3
-#     .icon-right
-#         height: 12px
-#         top: 2px
-#         position: relative
-#     .pad
-#         padding: 0 5px
-#     .pad-bottom
-#         padding-bottom: 5px
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     .float-left
-#         float: left
-#     .float-right
-#         float: right
-#     span.color
-#         color: #cc8b1a
-#         font-weight: bold
-#     .staking-content
-#         overflow: hidden
-#         background: transparent
-#         width: 100%
-#         border-radius: 0px
-#         position: relative
-#         box-sizing: border-box
-#         .table-scroll
-#             position: relative
-#             overflow-x: scroll
-#             background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
-#             background-repeat: no-repeat
-#             background-attachment: local, local, scroll, scroll
-#             background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#             animation: breathe 3s ease-in infinite
-#             -moz-transition: breathe 3s ease-in infinite
-#             -web-kit-transition: breathe 3s ease-in infinite
-#             height: auto
-#             min-height: 100px
-#             max-height: 400px
-#             .stake-pointer
-#                 background: rgb(37, 87, 127)
-#             &.lockup
-#                 height: auto
-#             .address-holder
-#                 a
-#                     padding-left: 30px !important
-#                 .browse
-#                     right: 30px !important
-#             thead
-#                 th
-#                     @media(min-width:800px) and (max-width: 900px)
-#                         font-size: 11px !important
-#             td
-#                 &:nth-child(2)
-#                     cursor: pointer
-#                 &.with-stake
-#                     filter: saturate(6.5)
-#             tr
-#                 &.current-epoch
-#                     background: transparent
-#                 &.chosen
-#                     background: #305673
-#                 &.active
-#                     color: var(--color-td)
-#                 &.inactive
-#                     color: orange
-#                 &.banned
-#                     color: red
-#                 .circle
-#                     border-radius: 0px
-#                     width: 20px
-#                     height: 20px
-#                     display: inline-block
-#                     color: white
-#                     line-height: 1.6
-#                     border-radius: 4px
-#                     background: gray
-#                     &.active
-#                         background: rgb(38, 219, 85)
-#                     &.inactive
-#                         background: orange
-#                     &.banned
-#                         background: red
-#             button
-#                 width: 100%
-#                 height: 36px
-#                 margin: 0
-#             table
-#                 width: 100%
-#                 border-collapse: collapse
-#                 margin: 0px auto
-#             tr:nth-of-type(odd)
-#                 background: rgba(gray, 0.2)
-#             th
-#                 font-weight: 400
-#                 &:first-child
-#                     text-align: center
-#                     width: 5%
-#             td
-#                 &:nth-child(1), &:nth-child(6)
-#                     text-align: center
-#                 img.copy
-#                     height: 16px
-#                     margin-right: 5px
-#             td, th
-#                 padding: 8px
-#                 max-width: 200px
-#                 border: 1px solid rgba(240, 237, 237, 0.16)
-#                 white-space: nowrap
-#                 font-size: 13px
-#                 @media(max-width:800px)
-#                     text-align: left
-#         .claim-table
-#             max-height: 100px
-#             width: 300px
-#             overflow-y: auto
-#             background: rgb(90, 26, 154)
-#             @media(max-width:800px)
-#                 margin: 15px auto
-#             tbody
-#                 background: rgb(45, 15, 85)
-#             table
-#                 width: 100%
-#                 tr
-#                     padding: 0
-#                     margin: 0
-#                     td
-#                         width: 33%
-#                         &:first-child
-#                             text-align: center
-#         .left-proxy, .right-proxy
-#             width: 15px
-#             height: 16px
-#             line-height: 10px
-#             display: inline-block
-#             color: white
-#             padding: 9px
-#             border-radius: 0px
-#             cursor: pointer
-#             vertical-align: top
-#             text-align: center
-#         .form-group
-#             text-align: center
-#             padding-top: 0px
-#             input, textarea
-#                 margin: 5px 0
-#                 outline: none
-#             .section
-#                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
-#                 padding: 20px 20px
-#                 display: flex
-#                 &.rewards
-#                     display: block
-#                 .chosen-account
-#                     .buttons
-#                         text-align: left
-#                         @media(max-width:800px)
-#                             text-align: center
-#                             flex-wrap: wrap
-#                     span
-#                         @media (max-width: 800px)
-#                             font-size: 14px
-#                     .check
-#                         width: 15px
-#                         height: 15px
-#                         margin-left: 10px
-#                         vertical-align: middle
-#                         animation: pulse_check 1s linear
-#                         transform-origin: 50% 50%
-#                     @keyframes pulse_check
-#                         0%
-#                             transform: scale(0)
-#                         25%
-#                             transform: scale(0.5)
-#                         50%
-#                             transform: scale(1.6)
-#                         100%
-#                             transform: scale(1)
-#                 @media (max-width: 800px)
-#                     display: flow-root
-#                     padding: 20px
-#                 &:last-child
-#                     border: 0
-#                 &.reward
-#                     background-image: $reward
-#                     background-repeat: no-repeat
-#                     background-position: 80%
-#                     background-size: auto
-#                     background-color: rgba(111, 50, 162, 0.15)
-#                     @media(max-width: 800px)
-#                         background-position: 5%
-#                     @media(max-width: 540px)
-#                         background-image: none
-#                 .title
-#                     padding: 0px
-#                     padding-right: 10px
-#                     width: 30%
-#                     min-width: 150px
-#                     text-align: left
-#                     text-transform: uppercase
-#                     font-size: 14px
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         margin-bottom: 20px
-#                         text-align: left
-#                     .less
-#                         font-size: 10px
-#                         opacity: 0.9
-#                 .description
-#                     padding: 0px
-#                     font-size: 14px
-#                     width: 80%
-#                     text-align: left
-#                     .notification
-#                         @media(max-width:800px)
-#                             text-align: left
-#                     hr
-#                         margin: 15px auto
-#                         border: 1px solid rgba(240, 237, 237, 0.16)
-#                         border-top: 0
-#                     .chosen-pool
-#                         margin-bottom: 10px
-#                         .color
-#                             color: orange
-#                             font-weight: 600
-#                     &.min-height
-#                         max-height: 300px
-#                         overflow: scroll
-#                         table
-#                             td,td
-#                                 padding: 0 3px
-#                         .choose-pool
-#                             max-width: 50px     
-#                     .left
-#                         position: relative
-#                         .small-btns
-#                             line-height: 36px
-#                             button.small
-#                                 outline: none
-#                                 border-radius: $border
-#                                 line-height: 10px
-#                                 text-align: center
-#                                 height: 16px
-#                                 font-size: 10px
-#                                 font-weight: 600
-#                                 margin-top: 0
-#                                 width: auto
-#                                 margin-right: 10px
-#                                 padding: 2px 5px
-#                                 cursor: pointer
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         text-align: right
-#                     .important
-#                         color: orange
-#                     .left-node
-#                         width: 40%
-#                         float: left
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                             margin-bottom: 20px
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                         img
-#                             width: 240px
-#                     .right-node
-#                         width: 60%
-#                         float: right
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                             text-align: left
-#                     &.node
-#                         width: 80%
-#                     .tabs
-#                         display: inline-block
-#                         margin: 20px 0 20px
-#                         width: 100%
-#                         .tab
-#                             width: 25%
-#                             display: inline-block
-#                             opacity: 0.5;
-#                             text-align: center
-#                             border-bottom: 1px solid
-#                             line-height: 37px
-#                             text-transform: uppercase
-#                             font-size: 10px
-#                             font-weight: bold
-#                             cursor: pointer
-#                             height: 36px
-#                             background: #2c0d5f
-#                             border-color: #6b258e
-#                             @media (max-width: 800px)
-#                                 width: 50%
-#                             &.active
-#                                 opacity: 1
-#                                 border-bottom: 1px solid #6e1d96
-#                                 background: #37156d
-#                     .btn
-#                         margin: 10px 20px 10px 0
-#                         @media (max-width: 800px)
-#                             margin: 10px 15px 0 0
-#                     .step-content
-#                         .btn
-#                             margin: 10px auto 0
-#                     .code
-#                         overflow: scroll
-#                         background: #1b1b1b
-#                         text-align: left
-#                         .copy
-#                             float: right
-#                             margin-top: 11px
-#                             margin-right: 10px
-#                             width: 15px
-#                         .cursor
-#                             -webkit-animation: blink 0.9s infinite
-#                             animation: blink 0.9s infinite
-#                             font: initial
-#                             display: inline-block
-#                             opacity: 1
-#                             margin-left: 5px
-#                         @-webkit-keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         @keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         &.comming
-#                             background: transparent
-#                             text-align: center
-#                     .window
-#                         position: sticky
-#                         top: 0
-#                         left: 0
-#                         height: 39px
-#                         background: #040404
-#                         .icons
-#                             padding: 0.75em
-#                             position: absolute
-#                             span
-#                                 background: #040404
-#                             &:before
-#                                 content: ""
-#                                 background: #040404
-#                             &:after
-#                                 content: ""
-#                                 background: #040404
-#                             span, &:before, &:after
-#                                 display: inline-block
-#                                 float: left
-#                                 width: 1em
-#                                 height: 1em
-#                                 border-radius: 50%
-#                                 margin-right: 0.5em
-#                     .balance
-#                         font-size: 14px
-#                         .color
-#                             color: orange
-#                             font-weight: 600
-#                         .label-coin
-#                             left: 3px
-#                             top: 2px
-#                             padding-right: 2px
-#                             height: 15px
-#                             position: relative
-#                             color: orange
-#                             font-weight: 600
-#                     textarea
-#                         border: 0
-#                         padding: 10px
-#                         font-size: 13px
-#                         width: 100%
-#                         box-sizing: border-box
-#                         min-height: 120px
-#                         font-family: monospace
-#                 .content
-#                     width: 30%
-#                     position: relative
-#                     button, .switch-index
-#                         margin: 0
-#                         position: absolute
-#                         top: 50%
-#                         left: 40%
-#                         -ms-transform: translateY(-50%)
-#                         transform: translateY(-50%)
-#             .center
-#                 text-align: center
-#             .left
-#                 text-align: left
-#             label
-#                 font-size: 13px
-#             h3
-#                 font-size: 12px
-#                 text-transform: uppercase
-#                 letter-spacing: 2px
-#                 opacity: .8
-#                 font-weight: 400
-#                 margin: 0
-#             input[type="radio"]
-#                 height: auto
-#                 width: auto
-#                 margin: 0 40%
-#                 cursor: pointer
-#             input[type="checkbox"]
-#                 height: auto
-#                 width: auto
-#                 margin: 0 40%
-#                 cursor: pointer
-#             input
-#                 outline: none
-#                 width: 100%
-#                 box-sizing: border-box
-#                 height: 36px
-#                 line-height: 36px
-#                 border-radius: 0
-#                 padding: 0px 10px
-#                 font-size: 14px
-#                 margin: 5px 0
-#                 border: 0px
-#                 box-shadow: none
-#                 &.change-index
-#                     margin: 0 !important
-#                     border-radius: 0px
-#                     height: 36px
-#                     width: 55px
-#                     line-height: 36px
-#                     text-align: center
-#                     font-size: 13px
-#     ul
-#         padding: 0
-#         margin: 0
-#         min-width: 100%
-#         max-width: 300px
-#         li
-#             list-style: none
-#             margin-left: 0
-#             font-size: 13px
-#             color: #6f6fe2
-#             font-size: 16px
-#             list-style-position: inside
-#             white-space: nowrap
-#             overflow: hidden
-#             text-overflow: ellipsis
-#             @media (max-width: 800px)
-#                 text-align: center
-#     .yesno
-#         &.Yes
-#             background: rgba(60, 213, 175, 0.2)
-#             color: #3cd5af
-#         &.No
-#             background: rgba(236, 146, 146, 0.2)
-#             color: #d85757
-#     .noyes
-#         &.Yes
-#             background: rgba(236, 146, 146, 0.2)
-#             color: #d85757
-#         &.No
-#             background: rgba(60, 213, 175, 0.2)
-#             color: #3cd5af
-#     button
-#         background-color: $primary
-#         border: 1px solid $primary
-#         border-radius: $border
-#         color: white
-#         height: 36px
-#         width: 125px
-#         padding: 0 6px
-#         margin-top: 10px
-#         text-decoration: none
-#         text-transform: uppercase
-#         font-size: 10px
-#         font-weight: bold
-#         cursor: pointer
-#         outline: none
-#         display: inline-block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &.mt-0
-#             margin-top: 0
-#         &:hover
-#             background: transparent
-#             color: $primary
-#         &.link
-#             min-width: 190px
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         z-index: 1
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#         &:checked + label:before
-#             background-color: #3cd5af
-#             border-color: #3cd5af
-#             color: #fff
+.staking
+    @import scheme
+    position: relative
+    display: block
+    width: auto
+    margin-left: $left-margin
+    top: 0
+    height: auto
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @keyframes blink-animation
+        50%
+            opacity: 0.3
+    @-webkit-keyframes blink-animation
+        50%
+            opacity: 0.3
+    .blink
+        animation: 1s linear blink-animation  infinite
+        -webkit-animation: 1s linear blink-animation  infinite
+    .entities-loader
+        position: absolute;
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        display: flex
+        align-items: center
+        .inner-section
+            margin: auto
+    .syncing
+        -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+        -webkit-mask-size: 50%
+        animation: fb 1s infinite
+        animation-fill-mode: forwards
+        background: var(--placeholder)
+    @keyframes gradient
+        0%
+            background-position: 0% 50%
+        50%
+            background-position: 100% 50%
+        100%
+            background-position: 0% 50%
+    @keyframes fb
+        0%
+            -webkit-mask-position: left
+        100%
+            -webkit-mask-position: right
+    @media (max-width: 800px)
+        .wallet-main, >.content, .history, .search, .filestore, .resources, .staking, .settings-menu, .staking-res, .stats, .monitor
+            margin: 60px 0 0
+            >.title
+                margin: 0
+                position: fixed
+                z-index: 11
+    .error-no-connection
+        -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, #000000 50%, rgba(255, 255, 255, 0.6) 70%)
+        -webkit-mask-size: 50%
+        animation: fb 1s infinite
+        animation-fill-mode: forwards
+        background: var(--placeholder)
+        padding: 10px 20px
+        display: inline-block
+    .buttons
+        display: flex
+    .usd-amount
+        opacity: 0.65
+        font-size: 10px
+        margin-left: 10px
+    .loader
+        svg
+            width: 12px
+            cursor: pointer
+        &.spin > svg
+            @keyframes spin
+                from
+                    transform: rotate(0deg)
+                to
+                    transform: rotate(360deg)
+            animation-name: spin
+            animation-duration: 4000ms
+            animation-iteration-count: infinite
+            animation-timing-function: linear
+        &.disabled
+            opacity: 0.3
+    .myStakeMaxPart
+        margin-left: 20px
+        opacity: 0.3
+    .icon-right
+        height: 12px
+        top: 2px
+        position: relative
+    .pad
+        padding: 0 5px
+    .pad-bottom
+        padding-bottom: 5px
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    .float-left
+        float: left
+    .float-right
+        float: right
+    span.color
+        color: #cc8b1a
+        font-weight: bold
+    .staking-content
+        overflow: hidden
+        background: transparent
+        width: 100%
+        border-radius: 0px
+        position: relative
+        box-sizing: border-box
+        .table-scroll
+            position: relative
+            overflow-x: scroll
+            background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+            background-repeat: no-repeat
+            background-attachment: local, local, scroll, scroll
+            background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+            animation: breathe 3s ease-in infinite
+            -moz-transition: breathe 3s ease-in infinite
+            -web-kit-transition: breathe 3s ease-in infinite
+            height: auto
+            min-height: 100px
+            max-height: 400px
+            .stake-pointer
+                background: rgb(37, 87, 127)
+            &.lockup
+                height: auto
+            .address-holder
+                a
+                    padding-left: 30px !important
+                .browse
+                    right: 30px !important
+            thead
+                th
+                    @media(min-width:800px) and (max-width: 900px)
+                        font-size: 11px !important
+            td
+                &:nth-child(2)
+                    cursor: pointer
+                &.with-stake
+                    filter: saturate(6.5)
+            tr
+                &.current-epoch
+                    background: transparent
+                &.chosen
+                    background: #305673
+                &.active
+                    color: var(--color-td)
+                &.inactive
+                    color: orange
+                &.banned
+                    color: red
+                .circle
+                    border-radius: 0px
+                    width: 20px
+                    height: 20px
+                    display: inline-block
+                    color: white
+                    line-height: 1.6
+                    border-radius: 4px
+                    background: gray
+                    &.active
+                        background: rgb(38, 219, 85)
+                    &.inactive
+                        background: orange
+                    &.banned
+                        background: red
+            button
+                width: 100%
+                height: 36px
+                margin: 0
+            table
+                width: 100%
+                border-collapse: collapse
+                margin: 0px auto
+            tr:nth-of-type(odd)
+                background: rgba(gray, 0.2)
+            th
+                font-weight: 400
+                &:first-child
+                    text-align: center
+                    width: 5%
+            td
+                &:nth-child(1), &:nth-child(6)
+                    text-align: center
+                img.copy
+                    height: 16px
+                    margin-right: 5px
+            td, th
+                padding: 8px
+                max-width: 200px
+                border: 1px solid rgba(240, 237, 237, 0.16)
+                white-space: nowrap
+                font-size: 13px
+                @media(max-width:800px)
+                    text-align: left
+        .claim-table
+            max-height: 100px
+            width: 300px
+            overflow-y: auto
+            background: rgb(90, 26, 154)
+            @media(max-width:800px)
+                margin: 15px auto
+            tbody
+                background: rgb(45, 15, 85)
+            table
+                width: 100%
+                tr
+                    padding: 0
+                    margin: 0
+                    td
+                        width: 33%
+                        &:first-child
+                            text-align: center
+        .left-proxy, .right-proxy
+            width: 15px
+            height: 16px
+            line-height: 10px
+            display: inline-block
+            color: white
+            padding: 9px
+            border-radius: 0px
+            cursor: pointer
+            vertical-align: top
+            text-align: center
+        .form-group
+            text-align: center
+            padding-top: 0px
+            input, textarea
+                margin: 5px 0
+                outline: none
+            .section
+                border-bottom: 1px solid rgba(240, 237, 237, 0.16)
+                padding: 20px 20px
+                display: flex
+                &.rewards
+                    display: block
+                .chosen-account
+                    .buttons
+                        text-align: left
+                        @media(max-width:800px)
+                            text-align: center
+                            flex-wrap: wrap
+                    span
+                        @media (max-width: 800px)
+                            font-size: 14px
+                    .check
+                        width: 15px
+                        height: 15px
+                        margin-left: 10px
+                        vertical-align: middle
+                        animation: pulse_check 1s linear
+                        transform-origin: 50% 50%
+                    @keyframes pulse_check
+                        0%
+                            transform: scale(0)
+                        25%
+                            transform: scale(0.5)
+                        50%
+                            transform: scale(1.6)
+                        100%
+                            transform: scale(1)
+                @media (max-width: 800px)
+                    display: flow-root
+                    padding: 20px
+                &:last-child
+                    border: 0
+                &.reward
+                    background-image: $reward
+                    background-repeat: no-repeat
+                    background-position: 80%
+                    background-size: auto
+                    background-color: rgba(111, 50, 162, 0.15)
+                    @media(max-width: 800px)
+                        background-position: 5%
+                    @media(max-width: 540px)
+                        background-image: none
+                .title
+                    padding: 0px
+                    padding-right: 10px
+                    width: 30%
+                    min-width: 150px
+                    text-align: left
+                    text-transform: uppercase
+                    font-size: 14px
+                    @media (max-width: 800px)
+                        width: 100%
+                        margin-bottom: 20px
+                        text-align: left
+                    .less
+                        font-size: 10px
+                        opacity: 0.9
+                .description
+                    padding: 0px
+                    font-size: 14px
+                    width: 80%
+                    text-align: left
+                    .notification
+                        @media(max-width:800px)
+                            text-align: left
+                    hr
+                        margin: 15px auto
+                        border: 1px solid rgba(240, 237, 237, 0.16)
+                        border-top: 0
+                    .chosen-pool
+                        margin-bottom: 10px
+                        .color
+                            color: orange
+                            font-weight: 600
+                    &.min-height
+                        max-height: 300px
+                        overflow: scroll
+                        table
+                            td,td
+                                padding: 0 3px
+                        .choose-pool
+                            max-width: 50px     
+                    .left
+                        position: relative
+                        .small-btns
+                            line-height: 36px
+                            button.small
+                                outline: none
+                                border-radius: $border
+                                line-height: 10px
+                                text-align: center
+                                height: 16px
+                                font-size: 10px
+                                font-weight: 600
+                                margin-top: 0
+                                width: auto
+                                margin-right: 10px
+                                padding: 2px 5px
+                                cursor: pointer
+                    @media (max-width: 800px)
+                        width: 100%
+                        text-align: right
+                    .important
+                        color: orange
+                    .left-node
+                        width: 40%
+                        float: left
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                            margin-bottom: 20px
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                        img
+                            width: 240px
+                    .right-node
+                        width: 60%
+                        float: right
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                            text-align: left
+                    &.node
+                        width: 80%
+                    .tabs
+                        display: inline-block
+                        margin: 20px 0 20px
+                        width: 100%
+                        .tab
+                            width: 25%
+                            display: inline-block
+                            opacity: 0.5;
+                            text-align: center
+                            border-bottom: 1px solid
+                            line-height: 37px
+                            text-transform: uppercase
+                            font-size: 10px
+                            font-weight: bold
+                            cursor: pointer
+                            height: 36px
+                            background: #2c0d5f
+                            border-color: #6b258e
+                            @media (max-width: 800px)
+                                width: 50%
+                            &.active
+                                opacity: 1
+                                border-bottom: 1px solid #6e1d96
+                                background: #37156d
+                    .btn
+                        margin: 10px 20px 10px 0
+                        @media (max-width: 800px)
+                            margin: 10px 15px 0 0
+                    .step-content
+                        .btn
+                            margin: 10px auto 0
+                    .code
+                        overflow: scroll
+                        background: #1b1b1b
+                        text-align: left
+                        .copy
+                            float: right
+                            margin-top: 11px
+                            margin-right: 10px
+                            width: 15px
+                        .cursor
+                            -webkit-animation: blink 0.9s infinite
+                            animation: blink 0.9s infinite
+                            font: initial
+                            display: inline-block
+                            opacity: 1
+                            margin-left: 5px
+                        @-webkit-keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        @keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        &.comming
+                            background: transparent
+                            text-align: center
+                    .window
+                        position: sticky
+                        top: 0
+                        left: 0
+                        height: 39px
+                        background: #040404
+                        .icons
+                            padding: 0.75em
+                            position: absolute
+                            span
+                                background: #040404
+                            &:before
+                                content: ""
+                                background: #040404
+                            &:after
+                                content: ""
+                                background: #040404
+                            span, &:before, &:after
+                                display: inline-block
+                                float: left
+                                width: 1em
+                                height: 1em
+                                border-radius: 50%
+                                margin-right: 0.5em
+                    .balance
+                        font-size: 14px
+                        .color
+                            color: orange
+                            font-weight: 600
+                        .label-coin
+                            left: 3px
+                            top: 2px
+                            padding-right: 2px
+                            height: 15px
+                            position: relative
+                            color: orange
+                            font-weight: 600
+                    textarea
+                        border: 0
+                        padding: 10px
+                        font-size: 13px
+                        width: 100%
+                        box-sizing: border-box
+                        min-height: 120px
+                        font-family: monospace
+                .content
+                    width: 30%
+                    position: relative
+                    button, .switch-index
+                        margin: 0
+                        position: absolute
+                        top: 50%
+                        left: 40%
+                        -ms-transform: translateY(-50%)
+                        transform: translateY(-50%)
+            .center
+                text-align: center
+            .left
+                text-align: left
+            label
+                font-size: 13px
+            h3
+                font-size: 12px
+                text-transform: uppercase
+                letter-spacing: 2px
+                opacity: .8
+                font-weight: 400
+                margin: 0
+            input[type="radio"]
+                height: auto
+                width: auto
+                margin: 0 40%
+                cursor: pointer
+            input[type="checkbox"]
+                height: auto
+                width: auto
+                margin: 0 40%
+                cursor: pointer
+            input
+                outline: none
+                width: 100%
+                box-sizing: border-box
+                height: 36px
+                line-height: 36px
+                border-radius: 0
+                padding: 0px 10px
+                font-size: 14px
+                margin: 5px 0
+                border: 0px
+                box-shadow: none
+                &.change-index
+                    margin: 0 !important
+                    border-radius: 0px
+                    height: 36px
+                    width: 55px
+                    line-height: 36px
+                    text-align: center
+                    font-size: 13px
+    ul
+        padding: 0
+        margin: 0
+        min-width: 100%
+        max-width: 300px
+        li
+            list-style: none
+            margin-left: 0
+            font-size: 13px
+            color: #6f6fe2
+            font-size: 16px
+            list-style-position: inside
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            @media (max-width: 800px)
+                text-align: center
+    .yesno
+        &.Yes
+            background: rgba(60, 213, 175, 0.2)
+            color: #3cd5af
+        &.No
+            background: rgba(236, 146, 146, 0.2)
+            color: #d85757
+    .noyes
+        &.Yes
+            background: rgba(236, 146, 146, 0.2)
+            color: #d85757
+        &.No
+            background: rgba(60, 213, 175, 0.2)
+            color: #3cd5af
+    button
+        background-color: $primary
+        border: 1px solid $primary
+        border-radius: $border
+        color: white
+        height: 36px
+        width: 125px
+        padding: 0 6px
+        margin-top: 10px
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 10px
+        font-weight: bold
+        cursor: pointer
+        outline: none
+        display: inline-block
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &.mt-0
+            margin-top: 0
+        &:hover
+            background: transparent
+            color: $primary
+        &.link
+            min-width: 190px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+        &:checked + label:before
+            background-color: #3cd5af
+            border-color: #3cd5af
+            color: #fff
 cb = console.log
 as-callback = (p, cb)->
     p.catch (err) -> cb err
@@ -662,7 +662,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    li.pug #{validator}
 Rewards = (props)->
     lang = get-lang store
     style = get-primary-info store
@@ -686,13 +686,13 @@ Rewards = (props)->
             rewardSlot = $amount = $newBalance = percentChange = apr =  "Loading..."
         $class = if epoch is store.staking.current-epoch then "syncing" else ""
         $tr-class = if epoch is store.staking.current-epoch then "current-epoch " else ""
-        react.create-element 'tr', { key: "epoch#{epoch}", className: "#{$tr-class} #{epoch}" }, children = 
-            react.create-element 'td', { key: "epoch#{epoch}1", className: "#{$class}" }, ' ' + epoch
-            react.create-element 'td', { key: "epoch#{epoch}2", className: "#{$class}" }, ' ' + rewardSlot
-            react.create-element 'td', { key: "epoch#{epoch}3", className: "#{$class}" }, ' ' + $amount
-            react.create-element 'td', { key: "epoch#{epoch}4", className: "#{$class}" }, ' ' + $newBalance
-            react.create-element 'td', { key: "epoch#{epoch}5", className: "#{$class}" }, ' ' + percentChange
-            react.create-element 'td', { key: "epoch#{epoch}6", className: "#{$class}" }, ' ' + apr
+        tr.pug(key="epoch#{epoch}" class="#{$tr-class} #{epoch}")
+            td.pug(key="epoch#{epoch}1" class="#{$class}") #{epoch}
+            td.pug(key="epoch#{epoch}2" class="#{$class}") #{rewardSlot}
+            td.pug(key="epoch#{epoch}3" class="#{$class}") #{$amount}
+            td.pug(key="epoch#{epoch}4" class="#{$class}") #{$newBalance}
+            td.pug(key="epoch#{epoch}5" class="#{$class}") #{percentChange}
+            td.pug(key="epoch#{epoch}6" class="#{$class}") #{apr}
     staker-pool-style =
         max-width: 200px
         background: style.app.stats
@@ -711,27 +711,27 @@ Rewards = (props)->
     react.useEffect (->
         fetchRewards!
         return return-fn ), [fetchRewards]
-    react.create-element 'div', { className: 'section rewards' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h2', {}, ' ' + lang.uRewards
-        react.create-element 'div', { className: 'table-scroll' }, children = 
+    .pug.section.rewards
+        .title.pug
+            h2.pug #{lang.uRewards}
+        .pug.table-scroll
             if isLoading then
-                react.create-element 'span', { className: 'entities-loader' }, children = 
-                    react.create-element 'span', { className: 'inner-section' }, children = 
-                        react.create-element 'h3', { className: 'item blink' }, ' Loading... '
+                span.pug.entities-loader
+                    span.pug.inner-section
+                        h3.pug.item.blink Loading... 
             else        
-                react.create-element 'table', {}, children = 
-                    react.create-element 'thead', {}, children = 
-                        react.create-element 'tr', {}, children = 
-                            react.create-element 'td', { width: "3%", style: staker-pool-style, title: "Epoch" }, ' ' + lang.epoch + ' (?)'
-                            react.create-element 'td', { width: "25%", style: stats, title: "Reward Slot" }, ' Reward Slot (?)'
-                            react.create-element 'td', { width: "25%", style: stats, title: "Amount" }, ' ' + lang.amount + ' (?)'
-                            react.create-element 'td', { width: "25%", style: stats, title: "New Balance" }, ' ' + lang.newBalance + ' (?)'
-                            react.create-element 'td', { width: "7%", style: stats, title: "Percent Change" }, ' Percent Change (?)'
-                            react.create-element 'td', { width: "7%", style: stats, title: "APR" }, ' APR (?)'
-                    react.create-element 'tbody', {}, children = 
+                table.pug
+                    thead.pug
+                        tr.pug
+                            td.pug(width="3%" style=staker-pool-style title="Epoch") #{lang.epoch} (?)
+                            td.pug(width="25%" style=stats title="Reward Slot") Reward Slot (?)
+                            td.pug(width="25%" style=stats title="Amount") #{lang.amount} (?)
+                            td.pug(width="25%" style=stats title="New Balance") #{lang.newBalance} (?)
+                            td.pug(width="7%" style=stats title="Percent Change") Percent Change (?)
+                            td.pug(width="7%" style=stats title="APR") APR (?)
+                    tbody.pug
                         rewards |> map build-rewards 
-        react.create-element RewardsStats, { rewards: rewards }
+        RewardsStats.pug(rewards=rewards)
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -1020,106 +1020,106 @@ staking-content = (store, web3t)->
         text-align: "center"
         max-width: "500px"
     /* Render */    
-    react.create-element 'div', { className: 'staking-content delegate' }, children = 
+    .pug.staking-content.delegate
         loader { loading: store.staking.splitting-staking-account, text: "Splitting in process" }
-        react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h2', {}, ' ' + lang.stakeAccount
+        .pug.single-section.form-group(id="choosen-pull")
+            .pug.section
+                .title.pug
+                    h2.pug #{lang.stakeAccount}
                 if is-locked is yes
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { style: lockup-warning-style, className: 'locked-warning-table' }, children = 
-                            react.create-element 'span', {}, ' Account is locked! Lockup expires on '
-                                """ #{date-expires}"""
-                                """ at"""
-                                """ #{time-expires}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.address
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { title: "#{store.staking.chosenAccount.address}", className: 'chosen-account' }, children = 
-                        react.create-element 'span', {}, children = 
-                            """ #{store.staking.chosenAccount.address}"""
-                            react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ID'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', { style: seed-style }, children = 
-                        """ #{store.staking.chosenAccount.seed}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.rentExemptReserve
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{rent} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{usd-rent}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.balance
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(your-balance)} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{round-human(usd-balance)}"""
-            react.create-element 'div', {}
-            react.create-element 'div', {}
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h2', {}, ' ' + lang.stakeDelegation
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.status
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { title: "#{store.staking.chosenAccount.status}", className: 'chosen-account' }, children = 
-                        react.create-element 'span', {}, children = 
-                            """ #{$status}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.validator
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', { className: 'chosen-account' }, children = 
-                        """ #{$validator}"""
+                    .description.pug
+                        .pug.locked-warning-table(style=lockup-warning-style)
+                            span.pug Account is locked! Lockup expires on 
+                                | #{date-expires}
+                                | at
+                                | #{time-expires}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.address}
+                .description.pug
+                    .pug.chosen-account(title="#{store.staking.chosenAccount.address}")
+                        span.pug
+                            | #{store.staking.chosenAccount.address}
+                            img.pug.check(src="#{icons.img-check}")
+            .pug.section
+                .title.pug
+                    h3.pug ID
+                .description.pug
+                    span.pug(style=seed-style)
+                        | #{store.staking.chosenAccount.seed}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.rentExemptReserve}
+                .description.pug
+                    span.pug
+                        | #{rent} VLX
+                    span.pug.usd-amount
+                        | $#{usd-rent}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.balance}
+                .description.pug
+                    span.pug
+                        | #{round-human(your-balance)} VLX
+                    span.pug.usd-amount
+                        | $#{round-human(usd-balance)}
+            .pug
+            .pug
+            .pug.section
+                .title.pug
+                    h2.pug #{lang.stakeDelegation}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.status}
+                .description.pug
+                    .pug.chosen-account(title="#{store.staking.chosenAccount.status}")
+                        span.pug
+                            | #{$status}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.validator}
+                .description.pug
+                    span.pug.chosen-account
+                        | #{$validator}
                         if has-validator
-                            react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.creditsObserved
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(credits_observed)}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.delegatedStake
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(delegated_stake)} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{round-human(usd-delegated_stake)}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.activeStake
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(active_stake)} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{round-human(usd-active_stake)}"""
+                            img.pug.check(src="#{icons.img-check}")
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.creditsObserved}
+                .description.pug
+                    span.pug
+                        | #{round-human(credits_observed)}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.delegatedStake}
+                .description.pug
+                    span.pug
+                        | #{round-human(delegated_stake)} VLX
+                    span.pug.usd-amount
+                        | $#{round-human(usd-delegated_stake)}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.activeStake}
+                .description.pug
+                    span.pug
+                        | #{round-human(active_stake)} VLX
+                    span.pug.usd-amount
+                        | $#{round-human(usd-active_stake)}
                     if store.staking.myStakeMaxPart? and no
-                        react.create-element 'span', { className: 'myStakeMaxPart' }, children = 
-                            react.create-element 'div', { className: 'animation' }, children = 
-                                react.create-element 'div', { className: 'anim-item' }, ' -'
-                                react.create-element 'div', { className: 'anim-item' }, ' -'
-                                react.create-element 'div', { className: 'anim-item' }, ' >'
-                            """ #{myStakeMaxPart}"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + inactiveStakeLabel
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'span', {}, children = 
-                        """ #{round-human(inactive_stake)} VLX"""
-                    react.create-element 'span', { className: 'usd-amount' }, children = 
-                        """ $#{round-human(usd-inactive_stake)}"""
+                        span.pug.myStakeMaxPart
+                            .pug.animation
+                                .pug.anim-item -
+                                .pug.anim-item -
+                                .pug.anim-item >
+                            | #{myStakeMaxPart}
+            .pug.section
+                .title.pug
+                    h3.pug #{inactiveStakeLabel}
+                .description.pug
+                    span.pug
+                        | #{round-human(inactive_stake)} VLX
+                    span.pug.usd-amount
+                        | $#{round-human(usd-inactive_stake)}
                     if store.staking.chosenAccount.status is "activating"
                         more-style =
                             text-decoration: "none"
@@ -1137,24 +1137,24 @@ staking-content = (store, web3t)->
                             opacity: 0.8
                         notification-style =
                             margin-top: "10px"
-                        react.create-element 'div', { style: notification-style, className: 'notification' }, children = 
-                            react.create-element 'span', { style: tip-style }, ' Only 25% of active stake can be activated per epoch.'
-                            react.create-element 'a', { href: "https://support.velas.com/hc/en-150/articles/360021044820-Delegation-Warmup-and-Cooldown", target: "_blank", style: link-style }, children = 
-                                react.create-element 'span', { style: more-style }, ' More...'
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h2', {}, ' Actions'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'buttons' }, children = 
+                        .pug.notification(style=notification-style)
+                            span.pug(style=tip-style) Only 25% of active stake can be activated per epoch.
+                            a.pug(href="https://support.velas.com/hc/en-150/articles/360021044820-Delegation-Warmup-and-Cooldown" target="_blank" style=link-style)
+                                span.pug(style=more-style) More...
+            .pug.section
+                .title.pug
+                    h2.pug Actions
+                .description.pug
+                    .pug.buttons
                         if (store.staking.chosenAccount.status is "inactive") 
-                            react.create-element 'div', {}, children = 
+                            .pug
                                 button { store, on-click: delegate , type: \secondary , text: lang.to_delegate, icon : \arrowRight }
                                 if is-locked is no
                                     button { store, on-click: withdraw , type: \secondary , text: lang.withdraw, icon : \arrowLeft }
                         else if store.staking.chosenAccount.status isnt \deactivating then
                             button { store, on-click: undelegate , type: \secondary , text: lang.to_undelegate, icon : \arrowLeft, classes: "action-undelegate" }
                         button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }
-            react.create-element Rewards, {}
+            Rewards.pug
 account-details = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -1190,11 +1190,11 @@ account-details = ({ store, web3t })->
         store.staking.chosenAccount.stopLoadingRewards = yes
         store.staking.getAccountsFromCashe = yes
         store.current.page = \validators
-    react.create-element 'div', { className: 'staking staking-1346721642' }, children = 
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
-            react.create-element 'div', { on-click: just-go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
+    .pug.staking
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") #{lang.delegateStake}
+            .pug.close(on-click=just-go-back)
+                img.icon-svg.pug(src="#{icons.arrow-left}" style=icon-color)
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t

@@ -18,7 +18,6 @@ export set-account = (web3, store, cb)->
             |> map -> [it.coin.token, it.address] 
             |> pairs-to-obj
     cb null
-
 set-current-wallet = ->
     group-index = store.current.group-index
     wallet-index = store.current.wallet-index

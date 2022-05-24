@@ -11,121 +11,121 @@ require! {
     \../round-human.ls
     \./react-currency-input-field : { default: CurrencyInput }
 }
-# .trx-custom-gas-price-2070405877
-#     position: relative
-#     @import scheme
-#     $border-radius: var(--border-btn)
-#     &.disabled
-#         opacity:.2
-#     table
-#         margin-bottom: -1px
-#         border-radius: $border-radius $border-radius 0 0
-#     td
-#         cursor: pointer
-#         padding: 2px 5px 10px
-#         transition: all .5s
-#         position: relative
-#         &:first-child
-#             border-radius: $border-radius 0 0 0
-#         &:last-child
-#             text-align: left
-#             border-radius: 0 $border-radius 0 0
-#         &:hover
-#             background: var(--td-hover)
-#             transition: all .5s
-#         &.active
-#             background: var(--td-hover)
-#             .field
-#                 &.type
-#                     color: orange
-#                     &:after
-#                         opacity: 1
-#                         filter: none
-#         .type
-#             &:after
-#                 content: $check-xs
-#                 position: absolute
-#                 right: 5px
-#                 opacity: .2
-#                 filter: grayscale(1)
-#                 margin-bottom: 20px
-#         .coin
-#             text-transform: uppercase
-#     .warn-label
-#         display: inline-block;
-#         margin: 0;
-#         font-size: 13px;
-#         .warn-label-text
-#             background: #191919 
-#             border: 1px solid #cc932c
-#             top: 30px
-#             z-index: 3;
-#             padding: 10px;
-#             left: 10px;
-#     .question-mark
-#         display: inline-block
-#         .label
-#             background: white
-#             padding: 0px 3.6px !important
-#             margin-left: 5px
-#             font-weight: bold
-#             border-radius: 50%
-#             margin-bottom: 1px
-#             position: relative
-#             bottom: 2px
-#             cursor: pointer
-#             display: inline-block
-#             font-size: 10px
-#         &:hover
-#             .question-mark-text
-#                 display: block
-#         .question-mark-text
-#             display: none
-#             background: #121212 
-#             position: absolute;
-#             top: 30px
-#             z-index: 3;
-#             padding: 10px;
-#             left: 10px;
-#             min-width: 270px;
-#             .triangle
-#                 width: 0;
-#                 height: 0;
-#                 border-style: solid;
-#                 border-width: 0 10px 15px 10px;
-#                 border-color: transparent transparent #121212 transparent
-#                 position: absolute;
-#                 left: 51px;
-#                 top: -9px;
-#             span
-#                 font-size: 12px
-#                 font-weight: 500;
-#                 color: white
-#     .low-gas-price-warn
-#         p
-#             font-size: 13px
-#             color: red
-#             padding: 10px
-#             position: absolute
-#             right: 0
-#     label
-#         padding-top: 5px
-#         padding-left: 3px
-#         font-size: 13px
-#     table
-#         width: 100%
-#     input
-#         outline: none
-#         width: 100%
-#         box-sizing: border-box
-#         height: 36px
-#         line-height: 36px
-#         border-radius: 0px
-#         padding: 0px 10px
-#         font-size: 14px
-#         border: 0px
-#         box-shadow: none
-#         margin-bottom: -1px
+.trx-custom-gas-price
+    position: relative
+    @import scheme
+    $border-radius: var(--border-btn)
+    &.disabled
+        opacity:.2
+    table
+        margin-bottom: -1px
+        border-radius: $border-radius $border-radius 0 0
+    td
+        cursor: pointer
+        padding: 2px 5px 10px
+        transition: all .5s
+        position: relative
+        &:first-child
+            border-radius: $border-radius 0 0 0
+        &:last-child
+            text-align: left
+            border-radius: 0 $border-radius 0 0
+        &:hover
+            background: var(--td-hover)
+            transition: all .5s
+        &.active
+            background: var(--td-hover)
+            .field
+                &.type
+                    color: orange
+                    &:after
+                        opacity: 1
+                        filter: none
+        .type
+            &:after
+                content: $check-xs
+                position: absolute
+                right: 5px
+                opacity: .2
+                filter: grayscale(1)
+                margin-bottom: 20px
+        .coin
+            text-transform: uppercase
+    .warn-label
+        display: inline-block;
+        margin: 0;
+        font-size: 13px;
+        .warn-label-text
+            background: #191919 
+            border: 1px solid #cc932c
+            top: 30px
+            z-index: 3;
+            padding: 10px;
+            left: 10px;
+    .question-mark
+        display: inline-block
+        .label
+            background: white
+            padding: 0px 3.6px !important
+            margin-left: 5px
+            font-weight: bold
+            border-radius: 50%
+            margin-bottom: 1px
+            position: relative
+            bottom: 2px
+            cursor: pointer
+            display: inline-block
+            font-size: 10px
+        &:hover
+            .question-mark-text
+                display: block
+        .question-mark-text
+            display: none
+            background: #121212 
+            position: absolute;
+            top: 30px
+            z-index: 3;
+            padding: 10px;
+            left: 10px;
+            min-width: 270px;
+            .triangle
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 10px 15px 10px;
+                border-color: transparent transparent #121212 transparent
+                position: absolute;
+                left: 51px;
+                top: -9px;
+            span
+                font-size: 12px
+                font-weight: 500;
+                color: white
+    .low-gas-price-warn
+        p
+            font-size: 13px
+            color: red
+            padding: 10px
+            position: absolute
+            right: 0
+    label
+        padding-top: 5px
+        padding-left: 3px
+        font-size: 13px
+    table
+        width: 100%
+    input
+        outline: none
+        width: 100%
+        box-sizing: border-box
+        height: 36px
+        line-height: 36px
+        border-radius: 0px
+        padding: 0px 10px
+        font-size: 14px
+        border: 0px
+        box-shadow: none
+        margin-bottom: -1px
 DECIMAL_SEPARATOR = '.'
 trx-fee = ({ store, web3t, wallet, fee-token })->
     style = get-primary-info store
@@ -200,16 +200,16 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
     gas-price-custom-amount = round-human(gas-price-custom-amount_GWEI)
     auto-gas-price =  round-human((send.gas-price-auto ? 0) `div` (10^9))
     custom-option = ->
-        react.create-element 'td', { on-click: select-custom-gas-price, className: "#{active-class \custom}" }, children = 
-            react.create-element 'div', { className: 'field type' }, ' ' + lang.custom
-            react.create-element 'div', { className: 'field coin' }, ' ' + gas-price-custom-amount + " GWEI"
+        td.pug(on-click=select-custom-gas-price class="#{active-class \custom}")
+            .pug.field.type #{lang.custom}
+            .pug.field.coin #{gas-price-custom-amount + " GWEI"}
     auto-fee-display-field-class =
         | store.current.send.fee-calculating is yes and send.gas-price-type is \auto => "placeholder" 
         | _ => ""
     auto-option = ->
-        react.create-element 'td', { on-click: choose-auto-gas-price, className: "#{active-class \auto}" }, children = 
-            react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
-            react.create-element 'div', { className: "#{auto-fee-display-field-class} field coin" }, ' ' + auto-gas-price  + " GWEI"
+        td.pug(on-click=choose-auto-gas-price class="#{active-class \auto}")
+            .pug.field.type #{lang.auto}
+            .pug.field.coin(class="#{auto-fee-display-field-class}") #{auto-gas-price  + " GWEI"}
     fee-payer = 
         | wallet.network.tx-fee-in? =>
             tx-fee-in-wallet = store.current.account.wallets |> find (-> it.coin.token is wallet.network.tx-fee-in)           
@@ -222,24 +222,24 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
             "Gas price is lower than offered. Transaction will be confirmed longer or canceled."
         | _ => ""
     warn-label = ->
-        react.create-element 'div', { className: 'warn-label' }, children = 
+        .warn-label.pug
             if send.gas-price-type is \custom and gas-price-islower 
-                react.create-element 'div', { className: 'warn-label-text' }, ' ' + low-gas-warn
-    react.create-element 'div', { className: "#{disabled-class} trx-custom-gas-price trx-custom-gas-price-2070405877" }, children = 
-        react.create-element 'div', {}, children = 
-            react.create-element 'label', { style: text }, ' Gas Price'
-            react.create-element 'div', { className: 'question-mark' }, children = 
-                react.create-element 'div', { style: icon-style, className: 'label' }, ' ?'
-                react.create-element 'div', { className: 'question-mark-text' }, children = 
-                    react.create-element 'div', { className: 'triangle' }
-                    react.create-element 'span', {}, ' ' + gas-price-tooltip
+                .warn-label-text.pug #{low-gas-warn}
+    .pug.trx-custom-gas-price(class="#{disabled-class}")
+        .pug
+            label.pug(style=text) Gas Price
+            .question-mark.pug 
+                .pug.label(style=icon-style) ?
+                .pug.question-mark-text
+                    .triangle.pug
+                    span.pug #{gas-price-tooltip}
             warn-label!
-        react.create-element 'table', { style: border-style, className: 'fee' }, children = 
-            react.create-element 'tbody', {}, children = 
-                react.create-element 'tr', {}, children = 
+        table.pug.fee(style=border-style)
+            tbody.pug
+                tr.pug
                     custom-option!
                     auto-option! 
         if store.current.send.gas-price-type is \custom             
-            react.create-element CurrencyInput, { key: "tx-fee-input", allowNegativeValue: no, style: input-style, defaultValue: "0", allowDecimals: yes, value: "#{gas-price-custom-amount_GWEI}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield tx-fee" }
+            CurrencyInput.pug(class="textfield tx-fee" key="tx-fee-input" allowNegativeValue=no style=input-style defaultValue="0" allowDecimals=yes value="#{gas-price-custom-amount_GWEI}" decimalsLimit=decimalsLimit label="Send" decimalSeparator=DECIMAL_SEPARATOR groupSeparator="," onValueChange=on-change-internal)
 module.exports = trx-fee
 #???store.current.send.send.gas-price-custom-amountcheaon-change-xcon-change-custom-fee.send""store.current.send.send.fstore.current.send.gas-price-custom-amount

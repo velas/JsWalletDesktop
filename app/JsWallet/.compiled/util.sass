@@ -1,0 +1,72 @@
+.convert508525513
+    @import scheme
+    position: relative
+    display: block
+    width: auto
+    overflow: hidden
+    margin-left: 250px
+    top: 0
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 3
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .wrapper
+        width: 450px
+        margin: 100px auto 0
+        text-align: left
+        @media(max-width: $mobile)
+            width: 90%
+        .sub-header
+            min-height: 40px
+            text-align: left
+            padding: 0
+            .head
+                box-sizing: border-box
+                width: 70%
+                line-height: 70px
+                font-size: 27px
+                font-weight: 600
+                vertical-align: middle
+                line-height: 29px
+                display: inline-block
+                width: 80%
+        .form-group
+            margin-top: 15px
+            label
+                color: var(--ligh-text)
+                padding-top: 5px
+                padding-left: 3px
+                font-size: 13px
+            input
+                $border-radius: var(--border-btn)
+                outline: none
+                width: 100%
+                box-sizing: border-box
+                height: 36px
+                line-height: 36px
+                border-radius: $border-radius
+                padding: 0px 10px
+                font-size: 14px
+                border: 0px
+                box-shadow: none

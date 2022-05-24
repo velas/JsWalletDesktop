@@ -7,50 +7,50 @@ require! {
     \../get-primary-info.ls
     \../get-lang.ls
 }
-# .naming1190187335
-#     @import scheme
-#     width: 95%
-#     padding: 0px 0
-#     margin: 0 10px 3px 10px
-#     .custom-domain
-#         input
-#             height: 22px
-#             padding: 2px 13px
-#             width: 100%
-#             text-align: left
-#             width: 70%
-#             border: 0
-#         position: relative
-#         width: 100%
-#         height: 31px
-#         >.part
-#             width: 100%
-#             background: transparent
-#             position: absolute
-#             text-align: center
-#             &.hidden
-#                 z-index: 0
-#                 input
-#                     color: rgba(black, 0.6)
-#                     background: transparent
-#             &.visible
-#                 z-index: 1
-#                 input
-#                     background: transparent
-#                     color: #595768
-#     .message
-#         font-size: 11px
-#         background: transparent
-#         border: none !important
-#         text-align: center
-#         height: 15px
-#         overflow: hidden
-#         text-overflow: ellipsis
-#         color: #595768 - 20
-#         resize: none
-#         padding: 0 !important
-#     button
-#         margin-top: 5px
+.naming
+    @import scheme
+    width: 95%
+    padding: 0px 0
+    margin: 0 10px 3px 10px
+    .custom-domain
+        input
+            height: 22px
+            padding: 2px 13px
+            width: 100%
+            text-align: left
+            width: 70%
+            border: 0
+        position: relative
+        width: 100%
+        height: 31px
+        >.part
+            width: 100%
+            background: transparent
+            position: absolute
+            text-align: center
+            &.hidden
+                z-index: 0
+                input
+                    color: rgba(black, 0.6)
+                    background: transparent
+            &.visible
+                z-index: 1
+                input
+                    background: transparent
+                    color: #595768
+    .message
+        font-size: 11px
+        background: transparent
+        border: none !important
+        text-align: center
+        height: 15px
+        overflow: hidden
+        text-overflow: ellipsis
+        color: #595768 - 20
+        resize: none
+        padding: 0 !important
+    button
+        margin-top: 5px
 install-record = (name, record)->
     "Please setup html element <meta property='web3space' value='#{record}' /> on #{name} to pass verification"
 state =
@@ -131,20 +131,20 @@ module.exports = ({ store, web3t })->
         color: style.app.text 
         background: "rgba(0,0,0,0.2)"
     lang = get-lang store
-    react.create-element 'div', { className: 'box-container naming naming1190187335' }, children = 
-        react.create-element 'div', { className: 'box' }, children = 
-            react.create-element 'div', { className: 'custom-domain' }, children = 
-                react.create-element 'div', { className: 'part hidden' }, children = 
-                    react.create-element 'input', { value: "#{store.current.nicknamefull}", style: input-style }
-                react.create-element 'div', { className: 'part visible' }, children = 
-                    react.create-element 'input', { value: "#{store.current.nickname}", style: input2-style, on-change: enter-nick }
+    .pug.box-container.naming
+        .pug.box
+            .pug.custom-domain
+                .part.hidden.pug
+                    input.pug(value="#{store.current.nicknamefull}" style=input-style)
+                .part.visible.pug
+                    input.pug(value="#{store.current.nickname}" style=input2-style on-change=enter-nick)
             if (store.current.message ? "").length > 0
-                react.create-element 'div', { title: "#{store.current.message}", className: 'message' }, ' ' + store.current.message
-            react.create-element 'div', {}, children = 
+                .pug.message(title="#{store.current.message}") #{store.current.message}
+            .pug
                 switch store.current.status
                     case \verify
-                        react.create-element 'div', {}, ' ' + lang.verify-nickname
+                        .pug #{lang.verify-nickname}
                     case \buy-nickname
-                        react.create-element 'div', {}, ' ' + lang.get-nickname
+                        .pug #{lang.get-nickname}
                     else
-                        react.create-element 'button', { on-click: buy-nickname-click }, ' ' + lang.register
+                        button.pug(on-click=buy-nickname-click) #{lang.register}

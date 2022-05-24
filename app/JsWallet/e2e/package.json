@@ -1,0 +1,50 @@
+{
+  "name": "wallet-tests",
+  "version": "1.0.0",
+  "description": "Tests for Velas Wallet",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:swap && npm run test:staking && npm run test:stable",
+    "test:stable": "PLAYWRIGHT_HTML_REPORT=stable-test-report npx playwright test tests/stable/",
+    "test:staking": "PLAYWRIGHT_HTML_REPORT=staking-test-report npx playwright test tests/staking/",
+    "test:swap": "PLAYWRIGHT_HTML_REPORT=swap-test-report npx playwright test tests/swap/",
+    "blockchain-health-check": "npx ts-node src/tests/blockchain-health-check.ts",
+    "balances-api-health-check": "npx ts-node src/tests/balances-api-healcheck.ts",
+    "prod-monitoring-test": "NETWORK=mainnet ENVIRONMENT=prod npx playwright test monitoring",
+    "lint": "npx eslint 'src/**' --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/velas/wallet-tests.git"
+  },
+  "author": "Velas / Oleksandr Pelykh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/velas/wallet-tests/issues"
+  },
+  "homepage": "https://github.com/velas/wallet-tests#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/node": "^15.12.1",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.20.0",
+    "@velas/velas-chain-test-wrapper": "https://github.com/velas/velas-chain-test-wrapper.git",
+    "axios": "^0.21.1",
+    "chai": "^4.3.4",
+    "http-server": "^14.1.0",
+    "minimist": "^1.2.6",
+    "playwright": "^1.20.0",
+    "playwright-core": "^1.20.0",
+    "tracer": "^1.1.4"
+  }
+}

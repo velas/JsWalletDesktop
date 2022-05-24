@@ -4,20 +4,20 @@ require! {
     \../get-lang.ls
     \prelude-ls : { filter }
 }
-# .title1089447129
-#     &.alert
-#         color: rgb(255, 255, 255)
-#         background: #ffa500
-#         height: auto
-#         &.txn
-#             visibility: visible
-#             margin-left: 0px !important
-#             @media(max-width: 800px)
-#                 margin-left: 0px
-#         .header
-#             line-height: 26px !important
-#             font-size: 12px
-#             .lavel
+.title
+    &.alert
+        color: rgb(255, 255, 255)
+        background: #ffa500
+        height: auto
+        &.txn
+            visibility: visible
+            margin-left: 0px !important
+            @media(max-width: 800px)
+                margin-left: 0px
+        .header
+            line-height: 26px !important
+            font-size: 12px
+            .lavel
 module.exports = ({ store, web3t } )->
     lang = get-lang store
     has-pending =
@@ -26,5 +26,5 @@ module.exports = ({ store, web3t } )->
             |> filter (.pending)
             |> (.length > 0)
     return null if not has-pending
-    react.create-element 'div', { className: 'title alert txn title1089447129' }, children = 
-        react.create-element 'div', { className: 'header' }, ' ' + lang.pendingTransactions
+    .pug.title.alert.txn
+        .pug.header #{lang.pendingTransactions}

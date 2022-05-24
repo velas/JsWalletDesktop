@@ -1936,10 +1936,10 @@
             (FOREIGN_BRIDGE = ref12$.FOREIGN_BRIDGE),
             (FOREIGN_BRIDGE_TOKEN = ref12$.FOREIGN_BRIDGE_TOKEN);
           network = toJS(wallet.network);
-          const web3Provider = wallet.network.api.web3Provider;
+          const web3Provider = wallet?.network?.api?.web3Provider;
           let web3Providers = commonProvider.getWeb3Providers(
             web3Provider,
-            toJS(wallet.network.api.extraWeb3Providers)
+            toJS(wallet?.network?.api?.extraWeb3Providers)
           );
           /* Get minPerTx from HomeBridge */
           generateWeb3AndContractForMinPerTxWithAvaliableWeb3Provider(

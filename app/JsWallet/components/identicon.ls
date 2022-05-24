@@ -8,4 +8,4 @@ module.exports = ({ store, address})->
         size: 36
         id: address
     image = identicon.generate-sync options
-    react.create-element 'img', { src: "#{image}", className: 'identicon' }
+    img.pug.identicon(src="#{image}")

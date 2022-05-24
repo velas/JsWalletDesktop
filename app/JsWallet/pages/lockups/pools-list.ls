@@ -110,36 +110,36 @@ pools-content = (store, web3t)->
         is-disabled = current-contract.lockedPool is item.address  and not lockup-action-choose
         locked-until =  if current-contract.lockedFundsReleaseTime? then moment(current-contract.lockedFundsReleaseTime * 1000).format("DD/MM/YYYY hh:mm") else ".."
         lockedFunds = store.lockups.chosenLockup.lockedFunds
-        react.create-element 'tr', { className: "#{item.status} #{pointer-class}" }, children = 
-            react.create-element 'td', {}, children = 
-                react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
-            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
+        tr.pug(class="#{item.status} #{pointer-class}")
+            td.pug
+                span.pug.circle(class="#{item.status}") #{index}
+            td.pug(datacolumn='Staker Address' title="#{ethToVlx item.address}")
                 address-holder { store, wallet }
             if lockup-action-choose
-                react.create-element 'td', {}, ' ' + lockedFunds
+                td.pug #{lockedFunds}
             else
-                react.create-element 'td', {}, ' ' + stake
-            react.create-element 'td', { className: "#{mystake-class}" }, ' ' + stringify my-stake
+                td.pug #{stake}
+            td.pug(class="#{mystake-class}") #{stringify my-stake}
             if lockup-action-choose
-                react.create-element 'td', {}, ' ' + locked-until
+                td.pug #{locked-until}
             if not lockup-action-choose  
-                react.create-element 'td', {}, children = 
+                td.pug
                     button { classes:"choose-pool", store, on-click: change-default-pool , text: button-label, type: \secondary, make-disabled: is-disabled  } 
-    react.create-element 'table', {}, children = 
-        react.create-element 'thead', {}, children = 
-            react.create-element 'tr', {}, children = 
-                react.create-element 'td', { width: "3%", style: stats }, ' #'
-                react.create-element 'td', { width: "30%", style: staker-pool-style }, ' ' + lang.staker-pool
+    table.pug
+        thead.pug
+            tr.pug
+                td.pug(width="3%" style=stats) #
+                td.pug(width="30%" style=staker-pool-style) #{lang.staker-pool}
                 if lockup-action-choose
-                    react.create-element 'td', { width: "20%", style: stats }, ' Non-Staked Amount'
+                    td.pug(width="20%" style=stats) Non-Staked Amount
                 else
-                    react.create-element 'td', { width: "20%", style: stats }, ' Total Stake'
-                react.create-element 'td', { width: "20%", style: stats }, ' Staked Amount'
+                    td.pug(width="20%" style=stats) Total Stake
+                td.pug(width="20%" style=stats) Staked Amount
                 if lockup-action-choose
-                    react.create-element 'td', { width: "10%", style: stats }, ' Locked Until    '
+                    td.pug(width="10%" style=stats) Locked Until    
                 if not lockup-action-choose
-                    react.create-element 'td', { width: "4%", style: stats }, ' Action'
-        react.create-element 'tbody', {}, children = 
+                    td.pug(width="4%" style=stats) Action
+        tbody.pug
             store.staking.pools
                 |> filter (it)->
                     return no if it.status is \banned
@@ -151,7 +151,7 @@ pools-content = (store, web3t)->
                         it.address is current-contract.lockedPool
                 |> map build-pool store, web3t
 pools-list = ({ store, web3t })->
-    react.create-element 'div', { className: 'lockups-content' }, children = 
+    .pug.lockups-content
         pools-content store, web3t
 pools-list.init = ({ store, web3t, select-action }, cb)->
     action = if select-action then \select else \choose

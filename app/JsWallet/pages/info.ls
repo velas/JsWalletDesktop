@@ -21,141 +21,141 @@ require! {
     \./alert-txn.ls
     \../components/burger.ls
 }
-# .stats-1270740771
-#     @import scheme
-#     $border-radius: var(--border-btn)
-#     $smooth: opacity .15s ease-in-out
-#     position: relative
-#     display: block
-#     width: auto
-#     overflow: hidden
-#     margin-left: $left-margin
-#     top: 0
-#     height: 100%
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     button
-#         background-color: $primary
-#         border: 1px solid $primary
-#         border-radius: $border
-#         color: white
-#         height: 36px
-#         width: 104px
-#         margin-top: 5px
-#         padding: 0 6px
-#         text-decoration: none
-#         text-transform: uppercase
-#         font-size: 10px
-#         font-weight: bold
-#         cursor: pointer
-#         outline: none
-#         display: inline-block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &:hover
-#             background: transparent
-#             color: $primary
-#         &.link
-#             min-width: 190px
-#         float: right
-#         margin-top: 12px
-#         margin-right: 10px
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         z-index: 2
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     >.wrapper
-#         max-height: calc(100vh - 100px)
-#         display: block
-#         overflow-y: scroll
-#         scrollbar-width: none
-#         padding: 20px
-#         margin-top: 0
-#         display: flex
-#         flex-wrap: wrap
-#         margin-right: -10px
-#         margin-left: -10px
-#         .col
-#             box-sizing: border-box
-#             padding: 0 10px
-#             margin-bottom: 20px
-#             &:last-child
-#                 @media (max-width: 800px)
-#                     padding-bottom: $ios-m-b
-#             >div
-#                 background: #3b1771
-#                 padding: 30px 20px
-#                 border-radius: $border
-#             &.col-4
-#                 -webkit-box-flex: 0
-#                 flex: 0 0 25%
-#                 max-width: 25%
-#                 @media screen and (max-width: 800px)
-#                     -webkit-box-flex: 0
-#                     flex: 0 0 50%
-#                     max-width: 50%
-#                 @media screen and (max-width: 400px)
-#                     -webkit-box-flex: 0
-#                     flex: 0 0 100%
-#                     max-width: 100%
-#             &.col-6
-#                 -webkit-box-flex: 0
-#                 flex: 0 0 50%
-#                 max-width: 50%
-#                 @media screen and (max-width: 800px)
-#                     -webkit-box-flex: 0
-#                     flex: 0 0 100%
-#                     max-width: 100%
-#             canvas
-#                 height: auto !important
-#                 width: 80% !important
-#                 margin: 30px auto 0
-#                 @media screen and (max-width: 800px)
-#                     width: 100% !important
-#                     height: auto !important
-#             .value
-#                 font-size: 17px
-#                 display: inline-flex
-#                 .symbol
-#                     font-size: 14px
-#                     vertical-align: super
-#             .header
-#                 font-size: 12px
-#                 text-transform: uppercase
-#                 letter-spacing: 2px
-#                 opacity: .8
-#                 font-weight: 400
+.stats
+    @import scheme
+    $border-radius: var(--border-btn)
+    $smooth: opacity .15s ease-in-out
+    position: relative
+    display: block
+    width: auto
+    overflow: hidden
+    margin-left: $left-margin
+    top: 0
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    button
+        background-color: $primary
+        border: 1px solid $primary
+        border-radius: $border
+        color: white
+        height: 36px
+        width: 104px
+        margin-top: 5px
+        padding: 0 6px
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 10px
+        font-weight: bold
+        cursor: pointer
+        outline: none
+        display: inline-block
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &:hover
+            background: transparent
+            color: $primary
+        &.link
+            min-width: 190px
+        float: right
+        margin-top: 12px
+        margin-right: 10px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 2
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    >.wrapper
+        max-height: calc(100vh - 100px)
+        display: block
+        overflow-y: scroll
+        scrollbar-width: none
+        padding: 20px
+        margin-top: 0
+        display: flex
+        flex-wrap: wrap
+        margin-right: -10px
+        margin-left: -10px
+        .col
+            box-sizing: border-box
+            padding: 0 10px
+            margin-bottom: 20px
+            &:last-child
+                @media (max-width: 800px)
+                    padding-bottom: $ios-m-b
+            >div
+                background: #3b1771
+                padding: 30px 20px
+                border-radius: $border
+            &.col-4
+                -webkit-box-flex: 0
+                flex: 0 0 25%
+                max-width: 25%
+                @media screen and (max-width: 800px)
+                    -webkit-box-flex: 0
+                    flex: 0 0 50%
+                    max-width: 50%
+                @media screen and (max-width: 400px)
+                    -webkit-box-flex: 0
+                    flex: 0 0 100%
+                    max-width: 100%
+            &.col-6
+                -webkit-box-flex: 0
+                flex: 0 0 50%
+                max-width: 50%
+                @media screen and (max-width: 800px)
+                    -webkit-box-flex: 0
+                    flex: 0 0 100%
+                    max-width: 100%
+            canvas
+                height: auto !important
+                width: 80% !important
+                margin: 30px auto 0
+                @media screen and (max-width: 800px)
+                    width: 100% !important
+                    height: auto !important
+            .value
+                font-size: 17px
+                display: inline-flex
+                .symbol
+                    font-size: 14px
+                    vertical-align: super
+            .header
+                font-size: 12px
+                text-transform: uppercase
+                letter-spacing: 2px
+                opacity: .8
+                font-weight: 400
 total-pool = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
     stats=
         background: info.app.stats
-    react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'value' }, children = 
-                react.create-element 'div', { className: 'symbol' }
-                react.create-element 'div', { title: '', className: 'number' }, ' ' + store.staking.pools.length
-            react.create-element 'div', { className: 'header' }, ' ' + lang.total-pools
+    .pug.col.col-4
+        .pug(style=stats)
+            .value.pug
+                .symbol.pug
+                .number.pug(title='') #{store.staking.pools.length}
+            .pug.header #{lang.total-pools}
 total-stakers  = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
@@ -163,12 +163,12 @@ total-stakers  = (store, web3t)->
         background: info.app.stats
     stakers =
         store.staking.pools |> map (.stakers) |> foldl plus, 0
-    react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'value' }, children = 
-                react.create-element 'div', { className: 'symbol' }
-                react.create-element 'div', { title: '', className: 'number' }, ' ' + stakers
-            react.create-element 'div', { className: 'header' }, ' ' + lang.total-stakers
+    .pug.col.col-4
+        .pug(style=stats)
+            .value.pug
+                .symbol.pug
+                .number.pug(title='') #{stakers}
+            .pug.header #{lang.total-stakers}
 staking-amount = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
@@ -176,12 +176,12 @@ staking-amount = (store, web3t)->
         background: info.app.stats
     amount =
         store.staking.pools |> map (-> +it.stakeInitial) |> foldl plus, 0
-    react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'value' }, children = 
-                react.create-element 'div', { className: 'symbol' }
-                react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(amount)
-            react.create-element 'div', { className: 'header' }, ' ' + lang.total-staking
+    .pug.col.col-4
+        .pug(style=stats)
+            .value.pug
+                .symbol.pug
+                .number.pug(title='') #{round-human(amount)}
+            .pug.header #{lang.total-staking}
 my-stake = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
@@ -192,29 +192,29 @@ my-stake = (store, web3t)->
             |> filter (-> not !it.my-stake?) 
             |> map (-> +it.my-stake `div` 1e18) 
             |> foldl plus, 0
-    react.create-element 'div', { className: 'col col-4' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'value' }, children = 
-                react.create-element 'div', { className: 'symbol' }
-                react.create-element 'div', { title: '', className: 'number' }, ' ' + round-human(+amount)
-            react.create-element 'div', { className: 'header' }, ' ' + lang.total-my-stake
+    .pug.col.col-4
+        .pug(style=stats)
+            .value.pug
+                .symbol.pug
+                .number.pug(title='') #{round-human(+amount)}
+            .pug.header #{lang.total-my-stake}
 chart-amount-sizes = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
     stats=
         background: info.app.stats
-    react.create-element 'div', { className: 'col-6 col' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'header' }, ' ' + lang.stake-sizes
+    .col-6.col.pug
+        .pug(style=stats)
+            .pug.header #{lang.stake-sizes}
             staker-stats store, web3t
 chart-stakers-counts = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
     stats=
         background: info.app.stats
-    react.create-element 'div', { className: 'col-6 col' }, children = 
-        react.create-element 'div', { style: stats }, children = 
-            react.create-element 'div', { className: 'header' }, ' ' + lang.pool-population
+    .col-6.col.pug
+        .pug(style=stats)
+            .pug.header #{lang.pool-population}
             staker-stats2 store, web3t
 info = ({ store, web3t })->
     lang = get-lang store
@@ -255,16 +255,16 @@ info = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'stats stats-1270740771' }, children = 
+    .pug.stats
         alert-txn { store }
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.statistics
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") #{lang.statistics}
+            .pug.close(on-click=go-back)
+                img.icon-svg.pug(src="#{icons.arrow-left}" style=icon-color)
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t
-        react.create-element 'div', { className: 'wrapper' }, children = 
+        .pug.wrapper
             total-pool store, web3t
             total-stakers store, web3t
             staking-amount store, web3t

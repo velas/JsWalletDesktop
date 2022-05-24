@@ -1,0 +1,345 @@
+.manage-account617040762
+    @import scheme
+    @keyframes bounceIn
+        from
+            opacity: 0
+            transform: scale3d(0.8, 0.8, 0.8)
+        to
+            opacity: 1
+            transform: scale3d(1, 1, 1)
+    position: fixed
+    width: 100%
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0    
+    z-index: 999
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 10px
+    background: rgba(black, 0.8)
+    >.account-body
+        max-width: 600px
+        display: inline-block
+        overflow: hidden
+        animation-duration: 0.5s
+        animation-name: bounceIn
+        background: white
+        width: 100%
+        margin-top: 5vh
+        margin-bottom: 25vh
+        padding-bottom: 50px
+        border-radius: $border
+        position: relative
+        max-height: 70vh
+        box-sizing: border-box
+        >.title
+            position: absolute
+            z-index: 999
+            box-sizing: border-box
+            top: 0
+            width: 100%
+            color: gray
+            font-size: 22px
+            padding: 10px
+            height: 60px
+            background: black
+            >.header
+                margin: 5px
+            >.close
+                position: absolute
+                font-size: 20px
+                right: 20px
+                top: 13px
+                cursor: pointer
+                &:hover
+                    color: #CCC
+        >.settings
+            padding-top: 60px
+            overflow-y: auto
+            height: calc(65vh - 30px)
+            .title
+                color: $primary
+                text-transform: uppercase
+                font-size: 14px
+                a
+                    color: #ee8791
+            .box
+                input
+                    width: 104px
+            input
+                border-radius: $border
+                line-height: 36px
+                text-align: center
+                font-size: 13px
+            textarea
+                border-radius: $border
+                height: 200px
+                width: 400px
+            input, textarea
+                outline: none
+                margin-bottom: 3px
+                border: 0px
+                padding: 3px 10px
+                box-sizing: border-box
+                position: relative
+            button
+                background-color: $primary
+                border: 1px solid $primary
+                border-radius: $border
+                color: white
+                height: 36px
+                width: 104px
+                margin-top: 20px
+                padding: 0 6px
+                text-decoration: none
+                text-transform: uppercase
+                font-size: 10px
+                font-weight: bold
+                cursor: pointer
+                outline: none
+                display: inline-block
+                text-overflow: ellipsis
+                overflow: hidden
+                white-space: nowrap
+                &:hover
+                    background: transparent
+                    color: $primary
+                &.link
+                    min-width: 190px
+            textarea
+                width: 250px
+                height: 72px
+                resize: none
+                font-size: 15px
+            .switch-account
+                color: #8e8e93
+                font-size: 12px
+                margin-top: 5px
+                .bold
+                    font-weight: bold
+                .button
+                    background: #8e8e93
+                    width: 12px
+                    height: 16px
+                    display: inline-block
+                    color: white
+                    padding: 9px
+                    border-radius: $border
+                    cursor: pointer
+                    vertical-align: top
+                    &:hover
+                        background: gray
+                    &.left
+                        border-radius: $border 0 0 $border
+                    &.right
+                        border-radius: 0 $border $border 0
+                .mb-12
+                    margin-bottom: 12px
+        .bold
+            color: #f0c16b
+        .section
+            border-bottom: 1px solid rgba(240, 237, 237, 0.16)
+            padding: 20px 5% !important
+            @media(max-width: 400px)
+                padding: 10px 3% !important
+            &.last
+                border-bottom: 0
+            &:first-child
+                background: $logo-opacity
+                background-repeat: no-repeat
+                background-position: left 10px
+            padding: 50px 10%
+            .address
+                text-overflow: ellipsis
+                overflow: hidden
+                display: block
+                position: relative
+                img
+                    top: 3px
+                    right: 0px
+                    width: 15px
+                    position: absolute
+                    @media(max-width: 400px)
+                        right: 0
+            .title
+                padding: 2px
+            .description
+                font-size: 16px
+                color: #b0aeae
+                .step
+                    color: #fff
+                    font-weight: 600
+                    border: 1px solid orange
+                    border-radius: 50px
+                    padding: 3px 10px
+                    margin-right: 10px
+                    box-shadow: 0 0 0 rgba(204,169,44, 0.4)
+                    animation: pulse 2s infinite
+                    @media(max-width: 600px)
+                        margin: 10px auto
+                        width: 10px
+            .migrate-img
+                margin-bottom: 5px
+                img
+                    margin: 1px auto 0
+                    width: 40px
+            .cap
+                text-transform: capitalize
+            .low
+                text-transform: lowercase
+            .link
+                color: #6f6fe2
+                text-decoration: underline
+                cursor: pointer
+                font-size: 16px
+                @media(max-width: 600px)
+                    text-overflow: ellipsis
+                    white-space: nowrap
+                    overflow: hidden
+                    max-width: 250px
+                    width: 100%
+                    display: block
+                    margin: 0 auto
+            .pb-0
+                padding-bottom: 0
+            .terms-migrate
+                button
+                    img
+                    &.icon-svg
+                        position: relative
+                        height: 12px
+                        top: 2px
+                        padding: 0px 5px 0 0px
+                .terms-body
+                    >.header
+                        font-size: 19px
+                        padding: 10px
+                    display: inline-block
+                    min-width: 250px
+                    textarea
+                        padding: 10px
+                        overflow: auto
+                        width: 100%
+                        box-sizing: border-box
+                        height: 220px
+                        width: 350px
+                        border: 0
+                        border-radius: $border
+                        outline: none
+                        @media(min-width: 560px)
+                            width: 480px
+                        @media(max-width: 400px)
+                            width: 100%
+                    form
+                        text-align: left
+                        display: flex
+                        span
+                            padding-left: 10px
+                            font-size: 13px
+                            &.orange
+                                color: orange
+                        ol
+                            margin: 0
+                            padding: 0
+                            li
+                                margin-left: 15px
+                        @media(min-width: 560px)
+                            width: 480px
+                        @media(max-width: 400px)
+                            width: 100%
+                &.hide
+                    display: none
+                input[type=checkbox]
+                    + label
+                        display: block
+                        cursor: pointer
+                        text-align: left
+                        padding-left: 25px
+                        position: relative
+                        span
+                            font-size: 13px
+                            &.orange
+                                color: orange
+                        &:before
+                            content: "\2714"
+                            border: 0.1em solid #ecf1fa
+                            border-radius: 0
+                            display: inline-block
+                            width: 10px
+                            font-size: 10px
+                            height: 10px
+                            padding-left: 0.2em
+                            padding-bottom: 0.3em
+                            margin-right: 0.2em
+                            margin-top: 4px
+                            vertical-align: bottom
+                            color: transparent
+                            transition: .2s
+                            position: absolute
+                            left: 0
+                        &:active:before
+                            transform: scale(0)
+                    &:checked + label:before
+                        background-color: #3cd5af
+                        border-color: #3cd5af
+                        color: #fff
+            .content-migrate
+                display: none
+                img
+                    width: 180px
+                    margin: 20px auto
+                    &.icon
+                        height: 12px
+                        width: auto
+                        padding: 0px 5px 0 0px
+                        margin: 0
+                        vertical-align: bottom
+                    .content
+                .support
+                    margin-top: 80px
+                    a
+                        color: #6f6fe2
+                span
+                    @media(max-width: 600px)
+                        display: block
+                        width: 100%
+                &.visible
+                    margin-top: 30px
+                    margin-bottom: 60px
+                    display: block
+                    @media(max-width: 600px)
+                        margin-top: 20px
+        .change-index
+            width: 80px
+            padding: 1px
+            border-radius: 0 !important
+            text-align: center
+    .iron
+        -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
+        -webkit-mask-size: 50%
+        animation: shine 2s infinite
+    @keyframes shine
+        0%
+            -webkit-mask-position: right
+        100%
+            -webkit-mask-position: left
+    @-webkit-keyframes pulse
+        0%
+            -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+        70%
+            -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+        100%
+            -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)
+    @keyframes pulse
+        0%
+            -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+            box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4)
+        70%
+            -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+            box-shadow: 0 0 0 10px rgba(204, 169, 44, 0)
+        100%
+            -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)
+            box-shadow: 0 0 0 0 rgba(204, 169, 44, 0)

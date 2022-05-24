@@ -11,78 +11,78 @@ require! {
     \../components/button.ls
     \./confirmation.ls : { alert }
 }
-# .steps2030851689
-#     @media(max-width:800px)
-#         text-align: center
-#     .step
-#         display: inline-block
-#         vertical-align: text-top
-#         text-align: center
-#         padding: 0 20px 0 0
-#         margin-right: 20px
-#         margin-bottom: 20px
-#         width: 140px
-#         opacity: .6
-#         position: relative
-#         cursor: pointer
-#         transition: all .5s
-#         @media(max-width:800px)
-#             padding: 0 10px
-#             width: auto
-#             margin: 0 auto 30px
-#             display: block
-#         &:last-child
-#             &:after
-#                 content: none !important
-#         &:after
-#             display: block
-#             left: 150px
-#             top: 18px
-#             position: absolute
-#             border-top: 2px solid grey
-#             width: 20%
-#             content: ""
-#             @media(max-width:800px)
-#                 content: none
-#         .step-content
-#             font-size: 13px
-#             button
-#                 width: 125px
-#         button
-#             width: auto
-#             display: block
-#             margin: 15px auto 0
-#         .step-count
-#             display: inline-block
-#             background: grey
-#             padding: 10px 15px
-#             border-radius: 50px
-#             margin-bottom: 20px
-#         &.active
-#             opacity: 1
-#             .step-count
-#                 background: #39dcb4
-#                 animation: pulse_step 1s linear
-#                 transform-origin: 50% 50%
-#             &:after
-#                 display: block
-#                 left: 150px
-#                 top: 18px
-#                 position: absolute
-#                 border-top: 2px solid #3cd5af
-#                 width: 20%
-#                 content: ""
-#                 @media(max-width:800px)
-#                     content: none
-#     @keyframes pulse_step
-#         0%
-#             transform: scale(0.8)
-#         25%
-#             transform: scale(0.9)
-#         50%
-#             transform: scale(1.1)
-#         100%
-#             transform: scale(1)
+.steps
+    @media(max-width:800px)
+        text-align: center
+    .step
+        display: inline-block
+        vertical-align: text-top
+        text-align: center
+        padding: 0 20px 0 0
+        margin-right: 20px
+        margin-bottom: 20px
+        width: 140px
+        opacity: .6
+        position: relative
+        cursor: pointer
+        transition: all .5s
+        @media(max-width:800px)
+            padding: 0 10px
+            width: auto
+            margin: 0 auto 30px
+            display: block
+        &:last-child
+            &:after
+                content: none !important
+        &:after
+            display: block
+            left: 150px
+            top: 18px
+            position: absolute
+            border-top: 2px solid grey
+            width: 20%
+            content: ""
+            @media(max-width:800px)
+                content: none
+        .step-content
+            font-size: 13px
+            button
+                width: 125px
+        button
+            width: auto
+            display: block
+            margin: 15px auto 0
+        .step-count
+            display: inline-block
+            background: grey
+            padding: 10px 15px
+            border-radius: 50px
+            margin-bottom: 20px
+        &.active
+            opacity: 1
+            .step-count
+                background: #39dcb4
+                animation: pulse_step 1s linear
+                transform-origin: 50% 50%
+            &:after
+                display: block
+                left: 150px
+                top: 18px
+                position: absolute
+                border-top: 2px solid #3cd5af
+                width: 20%
+                content: ""
+                @media(max-width:800px)
+                    content: none
+    @keyframes pulse_step
+        0%
+            transform: scale(0.8)
+        25%
+            transform: scale(0.9)
+        50%
+            transform: scale(1.1)
+        100%
+            transform: scale(1)
 cb = console~log
 order-withdraw-process = (store, web3t)->
     lang = get-lang store
@@ -120,28 +120,28 @@ order-withdraw-process = (store, web3t)->
     change-max = (it)->
         store.staking.withdrawAmount = it.target.value
     epoch-next = store.dashboard.epoch-next ? 'loading...'
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.exit
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', { className: 'left' }, children = 
-                react.create-element 'div', { className: 'steps steps2030851689' }, children = 
-                    react.create-element 'div', { on-click-commented: activate-first, className: "#{active-first} step" }, children = 
-                        react.create-element 'div', { className: 'step-count' }, ' 1'
-                        react.create-element 'div', { className: 'step-content' }, children = 
-                            react.create-element 'div', {}, ' ' + lang.requestExit
+    .pug.section
+        .title.pug
+            h3.pug #{lang.exit}
+        .description.pug
+            .pug.left
+                .steps.pug
+                    .pug.step(on-click-commented=activate-first class="#{active-first}")
+                        .pug.step-count 1
+                        .pug.step-content
+                            .pug #{lang.requestExit}
                             if active-first is \active
-                                react.create-element 'div', {}, children = 
-                                    react.create-element 'div', {}, children = 
+                                .pug
+                                    .pug
                                         amount-field { store, value: store.staking.withdrawAmount, on-change: change-max }
                                     button { store, text: lang.requestExit, icon: 'exit', on-click: order, type: "secondary" }
-                    react.create-element 'div', { on-click-commented: activate-second, className: "#{active-second} step" }, children = 
-                        react.create-element 'div', { className: 'step-count' }, ' 2'
-                        react.create-element 'div', { className: 'step-content' }, ' ' + lang.comeBack
-                    react.create-element 'div', { on-click-commented: activate-third, className: "#{active-third} step" }, children = 
-                        react.create-element 'div', { className: 'step-count' }, ' 3'
-                        react.create-element 'div', { className: 'step-content' }, children = 
-                            react.create-element 'div', {}, ' ' + lang.withdraw
+                    .pug.step(on-click-commented=activate-second class="#{active-second}")
+                        .pug.step-count 2
+                        .pug.step-content #{lang.comeBack}
+                    .pug.step(on-click-commented=activate-third class="#{active-third}")
+                        .pug.step-count 3
+                        .pug.step-content
+                            .pug #{lang.withdraw}
                             if active-third is \active
                                 button { store, text: lang.withdraw, icon: 'exit', on-click: exit, type: "secondary" }
 fast-withdraw-process = (store, web3t)->
@@ -170,21 +170,21 @@ fast-withdraw-process = (store, web3t)->
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }
     change-max = (it)->
         store.staking.withdrawAmount = it.target.value
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.exit
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', {}, ' ' + lang.withdraw
-            react.create-element 'div', {}, children = 
+    .pug.section
+        .title.pug
+            h3.pug #{lang.exit}
+        .description.pug
+            .pug #{lang.withdraw}
+            .pug
                 amount-field { store, value: store.staking.withdrawAmount, on-change: change-max }
             button { store, text: lang.withdraw, icon: 'exit', on-click: exit, type: "secondary" }
 not-available-right-now = (store)->
     lang = get-lang store
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.exit
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', {}, ' ' + lang.actionProhibited
+    .pug.section
+        .title.pug
+            h3.pug #{lang.exit}
+        .description.pug
+            .pug #{lang.actionProhibited}
 registry =
     \exit_ordered : order-withdraw-process
     \exit_order   : order-withdraw-process

@@ -9,88 +9,88 @@ require! {
     \../contracts.ls
     \../navigate.ls
 }
-# .address-holder84202264
-#     @import scheme
-#     $card-top-height: 50px
-#     width: 100%
-#     box-sizing: border-box
-#     color: #A8BACB
-#     font-size: 14px
-#     text-align: center
-#     position: relative
-#     overflow: visible
-#     z-index: 0
-#     .browse
-#         display: inline-block
-#         position: absolute
-#         top: 3px
-#         right: 40px
-#         width: auto
-#         img
-#             width: 16px
-#             top: 1px
-#             position: relative
-#             margin: 0
-#             display: inline-block
-#     img
-#         margin-right: 10px
-#     img
-#         position: absolute
-#         right: 1%
-#         margin: 10px
-#         margin-left: 50px
-#         z-index: 2
-#     >img.identicon
-#         position: absolute
-#         right: auto
-#         left: 4px
-#         top: 3px
-#         height: 30px
-#         border-radius: var(--border-btn)
-#         margin: 0px
-#         z-index: 2
-#     >span
-#         width: 100%
-#         z-index: 1
-#         position: relative
-#         border-radius: $border
-#         box-sizing: border-box
-#         vertical-align: top
-#         text-align: center
-#         padding-left: 20px
-#         padding-right: 55px
-#         height: $card-top-height - 14px
-#         color: #677897
-#         font-size: 14px
-#         line-height: $card-top-height - 14px
-#         display: inline-block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         user-select: text !important
-#         cursor: auto
-#         border-radius: var(--border-btn) !important
-#         @media screen and (max-width: 390px)
-#             padding-right: 25px
-#         a
-#             width: auto
-#             z-index: 1
-#             position: relative
-#             border-radius: $border
-#             border: 0
-#             padding-left: 0px
-#             background: transparent
-#             box-sizing: border-box
-#             vertical-align: top
-#             text-align: center
-#             height: $card-top-height - 14px
-#             color: var(--color3)
-#             font-size: 14px
-#             line-height: $card-top-height - 14px
-#             display: inline-block
-#             cursor: pointer
-#             user-select: text !important
-#             &.active
-#                 color: orange
+.address-holder
+    @import scheme
+    $card-top-height: 50px
+    width: 100%
+    box-sizing: border-box
+    color: #A8BACB
+    font-size: 14px
+    text-align: center
+    position: relative
+    overflow: visible
+    z-index: 0
+    .browse
+        display: inline-block
+        position: absolute
+        top: 3px
+        right: 40px
+        width: auto
+        img
+            width: 16px
+            top: 1px
+            position: relative
+            margin: 0
+            display: inline-block
+    img
+        margin-right: 10px
+    img
+        position: absolute
+        right: 1%
+        margin: 10px
+        margin-left: 50px
+        z-index: 2
+    >img.identicon
+        position: absolute
+        right: auto
+        left: 4px
+        top: 3px
+        height: 30px
+        border-radius: var(--border-btn)
+        margin: 0px
+        z-index: 2
+    >span
+        width: 100%
+        z-index: 1
+        position: relative
+        border-radius: $border
+        box-sizing: border-box
+        vertical-align: top
+        text-align: center
+        padding-left: 20px
+        padding-right: 55px
+        height: $card-top-height - 14px
+        color: #677897
+        font-size: 14px
+        line-height: $card-top-height - 14px
+        display: inline-block
+        text-overflow: ellipsis
+        overflow: hidden
+        user-select: text !important
+        cursor: auto
+        border-radius: var(--border-btn) !important
+        @media screen and (max-width: 390px)
+            padding-right: 25px
+        a
+            width: auto
+            z-index: 1
+            position: relative
+            border-radius: $border
+            border: 0
+            padding-left: 0px
+            background: transparent
+            box-sizing: border-box
+            vertical-align: top
+            text-align: center
+            height: $card-top-height - 14px
+            color: var(--color3)
+            font-size: 14px
+            line-height: $card-top-height - 14px
+            display: inline-block
+            cursor: pointer
+            user-select: text !important
+            &.active
+                color: orange
 module.exports = ({ store, wallet, type, on-click, item })->
     style = get-primary-info store
     address-suffix = store.current.address-suffix
@@ -132,11 +132,11 @@ module.exports = ({ store, wallet, type, on-click, item })->
         wallet["address#{address-suffix}"]
     address = get-address(wallet, address-suffix)
     is-contract = contracts.is-contract(store, address)
-    react.create-element 'div', { className: 'address-holder address-holder84202264' }, children = 
+    .address-holder.pug
         identicon { store, address: address-title, on-click=show-details }
-        react.create-element 'span', { style: input, className: 'inner-address-holder' }, children = 
-            react.create-element 'a', { target: "_blank", href: "#{address-link}", className: 'browse' }, children = 
-                react.create-element 'img', { src: "#{icons.browse-open}", style: icon1 }
-            react.create-element MiddleEllipsis, { key: address-title, on-click: show-details }, children = 
-                react.create-element 'a', { target: "_blank", on-click: show-details, className: "#{active}" }, ' ' + address-display
+        span.pug.inner-address-holder(style=input)
+            a.browse.pug(target="_blank" href="#{address-link}")
+                img.pug(src="#{icons.browse-open}" style=icon1)
+            MiddleEllipsis.pug(key=address-title on-click=show-details)
+                a.pug(target="_blank"  class="#{active}" on-click=show-details) #{address-display}
         copy { store, text: address-title }

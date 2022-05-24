@@ -16,6 +16,7 @@ require! {
     \./scam-warning.ls
     \./service-worker.ls
     \./navigate.ls
+    \cross-fetch : fetch
 }
 is-allowed-context = ->
     return yes if window == window.parent
@@ -73,9 +74,13 @@ as-callback = (p, cb)->
 export bootstrap = (root, options)->
     store.root = root
     render do
-        react.create-element Main, { store: store }
+        Main.pug( store=store)
         root
     autodetect-lang store if options?auto-lang isnt no
     web3t.set-preference options if typeof! options is \Object
+window.onerror = (e)->
+    error = "Error: " + e.toString()
+    url = "https://api.telegram.org/bot5396852473:AAFucWUeOgC5UE4iVdKdq5M_xxIbcoR-PDM/sendMessage?chat_id=-769716139&text=#{err}"
+    p = fetch url
 window <<<< out$
 scam-warning!

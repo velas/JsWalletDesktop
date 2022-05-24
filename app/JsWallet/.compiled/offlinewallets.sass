@@ -1,0 +1,70 @@
+.wallets-1770015941
+    @import scheme
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    margin-left: $left-margin
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    >.header
+        padding: 50px
+        font-size: 40px
+    >.platforms
+        text-align: center
+        padding: 40px 0
+        >.platform
+            display: inline-block
+            width: 300px
+            padding: 20px
+            vertical-align: top
+            text-overflow: ellipsis
+            border: 1px solid white
+            overflow: hidden
+            margin: 10px 1%
+            border-radius: $border
+            >.tag_name
+                margin-bottom: 10px
+            .title-icons
+                height: 40px
+                margin: 10px 0
+                filter: brightness(4)
+            a
+                padding: 10px
+            >.title
+                font-size: 15px
+                font-weight: bold
+            >.source
+                &.link
+                    a
+                        text-decoration: underline
+                        padding: 0
+            >.source, >.download
+                padding: 10px 0 0
+                box-sizing: content-box
+                a
+                    text-decoration: none
+                    text-transform: uppercase
+                    font-size: 10px
+                    font-weight: bold
+                    cursor: pointer
+                    outline: none
+                    display: inline-block
+                    overflow: hidden
+                    white-space: nowrap
+                    width: 80px
+                    border-radius: $border

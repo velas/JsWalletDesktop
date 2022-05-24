@@ -7,12 +7,12 @@ module.exports = ({ store, web3t } )->
     info = get-primary-info store
     file-descriptions = store.video.uploading-files.filter ({status}) -> status != 'uploaded'
     row = (desc) ->
-        react.create-element 'div', { key: "#{desc.file.name}", className: 'table-row-menu' }, children = 
-            react.create-element 'div', { className: 'col folder-menu pending' }, children = 
-                react.create-element 'img', { src: "#{store.filestore.extension-icons.txt}" }
-                react.create-element 'div', { className: 'file-name' }, ' ' + desc.file.name
-            react.create-element 'div', { className: 'col folder-menu progress' }, children = 
-                react.create-element 'progress', { value: "#{Math.floor desc.uploaded / desc.file.size * 100}", max: "100" }
+        .pug.table-row-menu(key="#{desc.file.name}")
+            .col.folder-menu.pending.pug
+                img.pug(src="#{store.filestore.extension-icons.txt}")
+                .pug.file-name #{desc.file.name}
+            .col.folder-menu.progress.pug
+                progress.pug(value="#{Math.floor desc.uploaded / desc.file.size * 100}" max="100")
     filter-body =
         border: "1px solid #{info.app.border}"
         background: info.app.header
@@ -27,23 +27,23 @@ module.exports = ({ store, web3t } )->
     switch-progress = ->
         store.current.progress = not store.current.progress
     box =
-        react.create-element 'div', { style: filter-body, className: 'active-download' }, children = 
-            react.create-element 'div', { style: header-table-style, className: 'top' }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Uploading ' + file-descriptions.length + ' item(s)'
-                    react.create-element 'ul', { className: "#{active} action col" }, children = 
-                        react.create-element 'li', { key: "hide-progress3", on-click: switch-progress, className: "#{hide-progress}" }, children = 
-                            react.create-element 'span', {}, children = 
+        .pug.active-download(style=filter-body)
+            .pug.top(style=header-table-style)
+                .pug.table-row-menu
+                    span.col.folder-menu.pug
+                        .pug Uploading #{file-descriptions.length} item(s)
+                    ul.action.col.pug(class="#{active}")
+                        li.pug(key="hide-progress3" on-click=switch-progress class="#{hide-progress}")
+                            span.pug
                                 icon "ChevronDown", 15
-                        react.create-element 'li', { key: "close3" }, ' '
-                            react.create-element 'span', {}, children = 
+                        li.pug(key="close3") 
+                            span.pug
                                 icon \X, 15
-            react.create-element 'div', { style: header-table-style, className: "#{hide-progress}" }, children = 
-                react.create-element 'div', { className: 'table-row-menu' }, children = 
-                    react.create-element 'span', { className: 'col folder-menu' }, children = 
-                        react.create-element 'div', {}, ' Left ?min.'
-                    react.create-element 'span', { className: 'col cancel' }, ' Cancel'
-            react.create-element 'div', { className: "#{hide-progress}" }, children = 
+            .pug(style=header-table-style class="#{hide-progress}")
+                .pug.table-row-menu
+                    span.col.folder-menu.pug
+                        .pug Left ?min.
+                    span.col.cancel.pug Cancel
+            .pug(class="#{hide-progress}")
                 file-descriptions.map row
     return box

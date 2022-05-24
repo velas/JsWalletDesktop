@@ -18,263 +18,263 @@ require! {
     \md5
     \../seed.ls : seedmem
 }
-# .vote1153270868
-#     @import scheme
-#     $border-radius: $border
-#     $smooth: opacity .15s ease-in-out
-#     position: relative
-#     display: block
-#     width: auto
-#     overflow: hidden
-#     margin-left: $left-margin
-#     top: 0
-#     height: 100%
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         z-index: 3
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     .wrapper
-#         height: calc(100vh - 120px)
-#         display: flex
-#         overflow-y: scroll
-#         scrollbar-width: none
-#         padding: 0
-#         .side
-#             display: inline-grid
-#             margin: 60px auto 0
-#             width: 70%
-#             .notice
-#                 text-align: left
-#                 margin: 0px 20px 10px 20px
-#                 .danger
-#                     color: orange
-#             @media(max-width:800px)
-#                 width: 100%
-#             .filter
-#                 height: 60px
-#                 margin: 20px 20px 10px 20px
-#                 position: relative
-#                 .view
-#                     position: absolute
-#                     top: 0
-#                     right: 20px
-#                     li
-#                         cursor: pointer
-#                         opacity: 1
-#                         img
-#                             &:nth-child(1)
-#                                 display: none
-#                             &:nth-child(2)
-#                                 display: inline-block
-#                         &.compact
-#                             img
-#                                 &:nth-child(1)
-#                                     display: inline-block
-#                                 &:nth-child(2)
-#                                     display: none
-#                 ul
-#                     display: flex
-#                     list-style: none
-#                     padding-left: 20px
-#                     line-height: 30px
-#                     li
-#                         margin-left: 20px
-#                         cursor: pointer
-#                         font-size: 17px
-#                         opacity: .4
-#                         &.active
-#                             opacity: 1
-#                         &:first-child
-#                             margin: 0
-#                         img
-#                             width: 13px
-#             .main-content
-#                 height: 100vh
-#                 margin: 0px 20px 10px 20px
-#                 &.create-new-proposal
-#                     height: auto
-#                     input
-#                         outline: none
-#                         width: 100%
-#                         box-sizing: border-box
-#                         height: 36px
-#                         line-height: 36px
-#                         border-radius: 0
-#                         padding: 0px 10px
-#                         font-size: 14px
-#                         margin: 5px 0
-#                         border: 0px
-#                         box-shadow: none
-#                         ~ .keyboard-panel
-#                             display: none
-#                 .item
-#                     padding: 15px
-#                     display: flex
-#                     text-align: left
-#                     position: relative
-#                     transition: all .5s
-#                     &.active
-#                         background: var(--bg-primary-light)
-#                         box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
-#                         z-index: 1
-#                         .rate
-#                             button
-#                                 opacity: 1
-#                         .label
-#                             background: var(--dark-theme)
-#                     &.compact
-#                         padding: 10px
-#                         .screen
-#                             display: none
-#                             a
-#                                 display: none
-#                         .description
-#                             margin-left: 0px
-#                             .sub-header
-#                                 margin-right: 60px
-#                         .rate
-#                             margin-right: 10px
-#                         .label
-#                             right: 10px
-#                     &:hover
-#                         background: var(--bg-primary-light)
-#                         transition: all .5s
-#                         cursor: pointer
-#                         .rate
-#                             button
-#                                 opacity: 1
-#                         .label
-#                             transition: all .5s
-#                             background: var(--dark-theme)
-#                     .label
-#                         position: absolute
-#                         background: var(--bg-primary-light)
-#                         font-size: 8px
-#                         text-transform: uppercase
-#                         letter-spacing: 2px
-#                         top: 0
-#                         padding: 20px 10px 5px
-#                         border-bottom-right-radius: 3px
-#                         border-bottom-left-radius: 3px
-#                         right: 15px
-#                         transition: all .5s
-#                         box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
-#                     .rate
-#                         margin-right: 15px
-#                         padding: 3px 0
-#                         width: 90px
-#                         text-align: center
-#                         button
-#                             opacity: .55
-#                         .votes
-#                             text-align: center
-#                         ul
-#                             padding: 0
-#                             margin: 0
-#                             list-style: none
-#                             text-align: center
-#                             li
-#                                 cursor: pointer
-#                                 opacity: .4
-#                                 padding: 5px
-#                                 &:nth-child(2)
-#                                     opacity: 1
-#                                 &.active
-#                                     opacity: 1
-#                     .screen
-#                         img
-#                             width: 130px
-#                             height: 100px
-#                             border-radius: 7px
-#                             box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.15)
-#                             @media(max-width:800px)
-#                                 display: none
-#                         a
-#                             position: relative
-#                             @media(max-width:800px)
-#                                 display: none
-#                             &:after
-#                                 bottom: 6px
-#                                 background: $source
-#                                 height: 15px
-#                                 width: 15px
-#                                 content: ""
-#                                 display: inline-block
-#                                 background-repeat: no-repeat
-#                                 background-size: contain
-#                                 vertical-align: middle
-#                                 position: absolute
-#                                 right: 0
-#                     .description
-#                         margin-left: 15px
-#                         .progress
-#                             width: 300px
-#                             @media(max-width:800px)
-#                                 width: 200px
-#                             progress
-#                                 width: 100%
-#                             span
-#                                 font-size: 12px
-#                                 float: left
-#                                 &:last-child
-#                                     float: right
-#                         .header
-#                             font-weight: 500
-#                             color: #6f6fe2
-#                             font-size: 22px
-#                             line-height: 28px
-#                             margin-right: 60px
-#                             cursor: pointer
-#                             overflow: hidden
-#                             text-overflow: ellipsis
-#                             a
-#                                 color: #fff
-#                                 opacity: .8
-#                                 line-height: 1.6
-#                                 font-size: 13px
-#                                 margin-left: 10px
-#                                 &:after
-#                                     background: $source
-#                                     height: 10px
-#                                     width: 10px
-#                                     content: ""
-#                                     display: inline-block
-#                                     background-repeat: no-repeat
-#                                     background-size: contain
-#                                     vertical-align: middle
-#                                     margin-left: 4px
-#                         .sub-header
-#                             opacity: .8
-#                             line-height: 1.6
-#                             font-size: 13px
-#                             margin-right: 60px
-#             >.filter, >.main-content
-#                 &:last-child
-#                     @media(max-width:800px)
-#                         margin-top: 0px
-#                 @media(max-width:800px)
-#                     margin: 20px
+.vote
+    @import scheme
+    $border-radius: $border
+    $smooth: opacity .15s ease-in-out
+    position: relative
+    display: block
+    width: auto
+    overflow: hidden
+    margin-left: $left-margin
+    top: 0
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 3
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .wrapper
+        height: calc(100vh - 120px)
+        display: flex
+        overflow-y: scroll
+        scrollbar-width: none
+        padding: 0
+        .side
+            display: inline-grid
+            margin: 60px auto 0
+            width: 70%
+            .notice
+                text-align: left
+                margin: 0px 20px 10px 20px
+                .danger
+                    color: orange
+            @media(max-width:800px)
+                width: 100%
+            .filter
+                height: 60px
+                margin: 20px 20px 10px 20px
+                position: relative
+                .view
+                    position: absolute
+                    top: 0
+                    right: 20px
+                    li
+                        cursor: pointer
+                        opacity: 1
+                        img
+                            &:nth-child(1)
+                                display: none
+                            &:nth-child(2)
+                                display: inline-block
+                        &.compact
+                            img
+                                &:nth-child(1)
+                                    display: inline-block
+                                &:nth-child(2)
+                                    display: none
+                ul
+                    display: flex
+                    list-style: none
+                    padding-left: 20px
+                    line-height: 30px
+                    li
+                        margin-left: 20px
+                        cursor: pointer
+                        font-size: 17px
+                        opacity: .4
+                        &.active
+                            opacity: 1
+                        &:first-child
+                            margin: 0
+                        img
+                            width: 13px
+            .main-content
+                height: 100vh
+                margin: 0px 20px 10px 20px
+                &.create-new-proposal
+                    height: auto
+                    input
+                        outline: none
+                        width: 100%
+                        box-sizing: border-box
+                        height: 36px
+                        line-height: 36px
+                        border-radius: 0
+                        padding: 0px 10px
+                        font-size: 14px
+                        margin: 5px 0
+                        border: 0px
+                        box-shadow: none
+                        ~ .keyboard-panel
+                            display: none
+                .item
+                    padding: 15px
+                    display: flex
+                    text-align: left
+                    position: relative
+                    transition: all .5s
+                    &.active
+                        background: var(--bg-primary-light)
+                        box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
+                        z-index: 1
+                        .rate
+                            button
+                                opacity: 1
+                        .label
+                            background: var(--dark-theme)
+                    &.compact
+                        padding: 10px
+                        .screen
+                            display: none
+                            a
+                                display: none
+                        .description
+                            margin-left: 0px
+                            .sub-header
+                                margin-right: 60px
+                        .rate
+                            margin-right: 10px
+                        .label
+                            right: 10px
+                    &:hover
+                        background: var(--bg-primary-light)
+                        transition: all .5s
+                        cursor: pointer
+                        .rate
+                            button
+                                opacity: 1
+                        .label
+                            transition: all .5s
+                            background: var(--dark-theme)
+                    .label
+                        position: absolute
+                        background: var(--bg-primary-light)
+                        font-size: 8px
+                        text-transform: uppercase
+                        letter-spacing: 2px
+                        top: 0
+                        padding: 20px 10px 5px
+                        border-bottom-right-radius: 3px
+                        border-bottom-left-radius: 3px
+                        right: 15px
+                        transition: all .5s
+                        box-shadow: 0px 9px 9px 0px rgba(0, 0, 0, 0.05)
+                    .rate
+                        margin-right: 15px
+                        padding: 3px 0
+                        width: 90px
+                        text-align: center
+                        button
+                            opacity: .55
+                        .votes
+                            text-align: center
+                        ul
+                            padding: 0
+                            margin: 0
+                            list-style: none
+                            text-align: center
+                            li
+                                cursor: pointer
+                                opacity: .4
+                                padding: 5px
+                                &:nth-child(2)
+                                    opacity: 1
+                                &.active
+                                    opacity: 1
+                    .screen
+                        img
+                            width: 130px
+                            height: 100px
+                            border-radius: 7px
+                            box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.15)
+                            @media(max-width:800px)
+                                display: none
+                        a
+                            position: relative
+                            @media(max-width:800px)
+                                display: none
+                            &:after
+                                bottom: 6px
+                                background: $source
+                                height: 15px
+                                width: 15px
+                                content: ""
+                                display: inline-block
+                                background-repeat: no-repeat
+                                background-size: contain
+                                vertical-align: middle
+                                position: absolute
+                                right: 0
+                    .description
+                        margin-left: 15px
+                        .progress
+                            width: 300px
+                            @media(max-width:800px)
+                                width: 200px
+                            progress
+                                width: 100%
+                            span
+                                font-size: 12px
+                                float: left
+                                &:last-child
+                                    float: right
+                        .header
+                            font-weight: 500
+                            color: #6f6fe2
+                            font-size: 22px
+                            line-height: 28px
+                            margin-right: 60px
+                            cursor: pointer
+                            overflow: hidden
+                            text-overflow: ellipsis
+                            a
+                                color: #fff
+                                opacity: .8
+                                line-height: 1.6
+                                font-size: 13px
+                                margin-left: 10px
+                                &:after
+                                    background: $source
+                                    height: 10px
+                                    width: 10px
+                                    content: ""
+                                    display: inline-block
+                                    background-repeat: no-repeat
+                                    background-size: contain
+                                    vertical-align: middle
+                                    margin-left: 4px
+                        .sub-header
+                            opacity: .8
+                            line-height: 1.6
+                            font-size: 13px
+                            margin-right: 60px
+            >.filter, >.main-content
+                &:last-child
+                    @media(max-width:800px)
+                        margin-top: 0px
+                @media(max-width:800px)
+                    margin: 20px
 get-pair = (wallet, path, index, password, with-keystore)->
     w = wallet.derive-path(path).derive-child(index).get-wallet!
     address  = "0x" + w.get-address!.to-string(\hex)
@@ -323,17 +323,17 @@ item = (store, web3t)-> (vote)->
     update-progress = ->
         newp = store.development.new-proposal
         newp.update-progress = progress
-    react.create-element 'div', { style: border, on-click: vote-on-click, className: "#{view} item" }, children = 
-        react.create-element 'div', { className: 'rate' }, children = 
-            react.create-element 'div', { className: 'votes' }, ' ' + vote.votes.toString()
+    .pug.item(style=border class="#{view}" on-click=vote-on-click)
+        .pug.rate
+            .votes.pug #{vote.votes.toString()}
             button { store, on-click=vote-for, text: \vote, icon: \rate  , type : \primary }
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', { className: 'header' }, ' ' + vote.name
-            react.create-element 'div', { className: 'sub-header' }, ' ' + vote.description
-            react.create-element 'div', { className: 'progress' }, children = 
-                react.create-element 'progress', { value: "#{vote.progress}", max: "100" }
-                react.create-element 'span', {}, ' Start'
-                react.create-element 'span', {}, ' End'
+        .pug.description
+            .pug.header #{vote.name}
+            .pug.sub-header #{vote.description}
+            .pug.progress
+                progress.pug(value="#{vote.progress}" max="100")
+                span.pug Start
+                span.pug End
 content = (store, web3t)->
     lang = get-lang store
     info = get-primary-info store
@@ -371,41 +371,41 @@ content = (store, web3t)->
         newp.description = ""
         newp.name = ""
         newp.opened = no
-    react.create-element 'div', { className: 'side' }, children = 
+    .pug.side
         if no
-            react.create-element 'div', { style: style, className: 'filter' }, children = 
-                react.create-element 'ul', {}, children = 
-                    react.create-element 'li', { key: "best" }, children = 
-                        react.create-element 'img', { src: "#{icons.best}" }
-                        """ Best"""
-                    react.create-element 'li', { key: "hot", className: 'active' }, children = 
-                        react.create-element 'img', { src: "#{icons.hot}" }
-                        """ Hot"""
-                    react.create-element 'li', { key: "new" }, children = 
-                        react.create-element 'img', { src: "#{icons.new}" }
-                        """ New"""
-                    react.create-element 'li', { key: "top" }, children = 
-                        react.create-element 'img', { src: "#{icons.top}" }
-                        """ Top"""
-                react.create-element 'ul', { className: 'view' }, children = 
-                    react.create-element 'li', { on-click: add-class, key: "compound1", className: "#{view}" }, children = 
-                        react.create-element 'img', { src: "#{icons.compact}" }
-                        react.create-element 'img', { src: "#{icons.classic}" }
-                    react.create-element 'li', { on-click: create-new-vote, key: "compound2" }, children = 
-                        react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
-                        react.create-element 'img', { src: "#{icons.create}", width: 18, height: 18 }
-        react.create-element 'div', { className: 'notice' }, children = 
-            react.create-element 'span', { className: 'danger' }, ' Important.'
-            react.create-element 'span', {}, ' A requirement for voting is active participation in Velas staking.'
+            .pug.filter(style=style)
+                ul.pug
+                    li.pug(key="best" )
+                        img.pug(src="#{icons.best}")
+                        | Best
+                    li.pug.active(key="hot" )
+                        img.pug(src="#{icons.hot}")
+                        | Hot
+                    li.pug(key="new" )
+                        img.pug(src="#{icons.new}")
+                        | New
+                    li.pug(key="top" )
+                        img.pug(src="#{icons.top}")
+                        | Top
+                ul.pug.view
+                    li.pug(class="#{view}" on-click=add-class key="compound1" )
+                        img.pug(src="#{icons.compact}")
+                        img.pug(src="#{icons.classic}")
+                    li.pug(on-click=create-new-vote key="compound2" )
+                        img.pug(src="#{icons.create}" width=18 height=18)
+                        img.pug(src="#{icons.create}" width=18 height=18)
+        .pug.notice
+            span.pug.danger Important.
+            span.pug A requirement for voting is active participation in Velas staking.
         if newp.update-progress
-            react.create-element 'div', { style: border-style, className: 'create-new-proposal main-content' }, ' Please make upgrade process here'
+            .pug.create-new-proposal.main-content(style=border-style) Please make upgrade process here
         if newp.opened is yes
-            react.create-element 'div', { style: border-style, className: 'create-new-proposal main-content' }, children = 
+            .pug.create-new-proposal.main-content(style=border-style)
                 text-field { store, value: newp.description , on-change: change-description , placeholder: "description" }
                 text-field { store, value: newp.name , on-change: change-name , placeholder: "name" }
                 button { store, on-click: apply-new-vote , type: \primary , icon : \apply , text: \btnApply }
                 button { store, on-click: cancel-new-vote , icon : \close2 , text: \cancel }
-        react.create-element 'div', { style: style, className: 'main-content' }, children = 
+        .pug.main-content(style=style)
             store.development.proposals |> map item store, web3t
 vote = ({ store, web3t })->
     lang = get-lang store
@@ -419,15 +419,15 @@ vote = ({ store, web3t })->
         background-color: info.app.bgspare
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'vote vote1153270868' }, children = 
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Vote'
-            react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+    .pug.vote
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") Vote
+            .pug.close(on-click=goto-search)
+                img.icon-svg.pug(src="#{icons.arrow-left}")
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t
-        react.create-element 'div', { className: 'wrapper' }, children = 
+        .pug.wrapper
             content store, web3t
 module.exports = vote
 build-proposal-view = ({ web3t, store }, index, cb) ->

@@ -1,0 +1,84 @@
+.monitor1137829075
+    @import scheme
+    margin-left: $left-margin
+    box-sizing: border-box
+    .table-scroll
+        height: calc(100vh - 105px)
+        overflow-x: scroll
+        margin: 30px
+        background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+        background-repeat: no-repeat
+        background-attachment: local, local, scroll, scroll
+        background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+        animation: breathe 3s ease-in infinite
+        -moz-transition: breathe 3s ease-in infinite
+        -web-kit-transition: breathe 3s ease-in infinite
+        @media(max-width: 800px)
+            height: calc(100vh - 150px)
+            margin: 140px 20px 20px
+    table
+        width: 100%
+        margin: 0px auto
+        font-size: 13px
+        border-collapse: collapse
+        tr
+            td
+                border: 1px solid rgba(240, 237, 237, 0.16)
+                padding: 5px
+                max-width: 100px
+                overflow: hidden
+                text-overflow: ellipsis
+            &:nth-of-type(odd)
+                background: rgba(128, 128, 128, 0.2)
+        .check
+            width: 13px
+            height: 13px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 2
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+        button
+            outline: none
+            cursor: pointer
+            border: 1px solid
+            padding: 0
+            box-sizing: border-box
+            border-radius: 0px
+            font-size: 10px
+            padding: 0 6px
+            height: 36px
+            color: #6CA7ED
+            text-transform: uppercase
+            font-weight: bold
+            background: transparent
+            transition: all .5s
+            text-overflow: ellipsis
+            overflow: hidden
+            width: 100%
+            margin: 0 auto
+            opacity: 1
+    label
+        &.no, &.yes
+            padding: 1px 5px
+            border-radius: 4px
+            font-size: 9px
+            letter-spacing: .5px
+        &.no
+            border: 1px solid #fd959559
+            color: #ff98989e
+        &.yes
+            border: 1px solid #6cffa07d
+            color: #5ecc8a

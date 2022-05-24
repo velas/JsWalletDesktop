@@ -5,9 +5,9 @@ require! {
     \../../web3t/addresses.js : { ethToVlx }
     \../get-primary-info.ls
 }
-# .stats-holder-1563307320
-#     @import scheme
-#     color: #1a0e41
+.stats-holder
+    @import scheme
+    color: #1a0e41
 get-stake = (it)->
     | it.stakers is '..' => 0
     | _ => +it.stakers
@@ -91,5 +91,5 @@ module.exports = (store, web3t)->
             id: 'gradientNONE'
         }
     ]
-    react.create-element 'div', { className: 'stats-holder stats-holder-1563307320' }, children = 
-        react.create-element ResponsivePie, { data: data, defs: defs, fill: fill, isInteractive: isInteractive, borderWidth: borderWidth, fit: yes, enableSlicesLabels: no, enableRadialLabels: no, cornerRadius: cornerRadius, padAngle: padAngle, innerRadius: innerRadius }
+    .stats-holder.pug
+        ResponsivePie.pug(data=data defs=defs fill=fill isInteractive=isInteractive   borderWidth=borderWidth fit=yes  enableSlicesLabels=no enableRadialLabels=no cornerRadius=cornerRadius padAngle=padAngle innerRadius=innerRadius)

@@ -8,66 +8,66 @@ require! {
     \../numbers.js : {parseNum}
     \react-currency-input-field : { default: CurrencyInput }
 }
-# .trx-fee-1294478930
-#     @import scheme
-#     $border-radius: var(--border-btn)
-#     &.disabled
-#         opacity:.2
-#     table
-#         margin-bottom: -1px
-#         border-radius: $border-radius $border-radius 0 0
-#     .tx-fee-mode
-#         cursor: pointer
-#         padding: 2px 5px 10px
-#         transition: all .5s
-#         position: relative
-#         &:first-child
-#             border-radius: $border-radius 0 0 0
-#         &:last-child
-#             text-align: left
-#             border-radius: 0 $border-radius 0 0
-#         &:hover
-#             background: var(--td-hover)
-#             transition: all .5s
-#         &.active
-#             background: var(--td-hover)
-#             .field
-#                 &.type
-#                     color: orange
-#                     &:after
-#                         opacity: 1
-#                         filter: none
-#         &.disabled
-#             opacity: 0.2;
-#             cursor: not-allowed;
-#         .type
-#             &:after
-#                 content: $check-xs
-#                 position: absolute
-#                 right: 5px
-#                 opacity: .2
-#                 filter: grayscale(1)
-#                 margin-bottom: 20px
-#         .coin
-#             text-transform: uppercase
-#     label
-#         padding-top: 5px
-#         padding-left: 3px
-#         font-size: 13px
-#     table
-#         width: 100%
-#     input
-#         outline: none
-#         width: 100%
-#         box-sizing: border-box
-#         height: 36px
-#         line-height: 36px
-#         border-radius: 0px
-#         padding: 0px 10px
-#         font-size: 14px
-#         border: 0px
-#         box-shadow: none
-#         margin-bottom: -1px
+.trx-fee
+    @import scheme
+    $border-radius: var(--border-btn)
+    &.disabled
+        opacity:.2
+    table
+        margin-bottom: -1px
+        border-radius: $border-radius $border-radius 0 0
+    .tx-fee-mode
+        cursor: pointer
+        padding: 2px 5px 10px
+        transition: all .5s
+        position: relative
+        &:first-child
+            border-radius: $border-radius 0 0 0
+        &:last-child
+            text-align: left
+            border-radius: 0 $border-radius 0 0
+        &:hover
+            background: var(--td-hover)
+            transition: all .5s
+        &.active
+            background: var(--td-hover)
+            .field
+                &.type
+                    color: orange
+                    &:after
+                        opacity: 1
+                        filter: none
+        &.disabled
+            opacity: 0.2;
+            cursor: not-allowed;
+        .type
+            &:after
+                content: $check-xs
+                position: absolute
+                right: 5px
+                opacity: .2
+                filter: grayscale(1)
+                margin-bottom: 20px
+        .coin
+            text-transform: uppercase
+    label
+        padding-top: 5px
+        padding-left: 3px
+        font-size: 13px
+    table
+        width: 100%
+    input
+        outline: none
+        width: 100%
+        box-sizing: border-box
+        height: 36px
+        line-height: 36px
+        border-radius: 0px
+        padding: 0px 10px
+        font-size: 14px
+        border: 0px
+        box-shadow: none
+        margin-bottom: -1px
 DECIMAL_SEPARATOR = '.'
 trx-fee = ({ store, web3t, wallet, fee-token })->
     style = get-primary-info store
@@ -140,9 +140,9 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
     cheap-option = ->
         return null if !send.amount-send-fee-options.cheap
         return null if send.amount-send-fee-options.cheap > send.amount-send-fee-options.auto
-        react.create-element 'td', { on-click: choose-cheap, className: "#{active-class \cheap}" }, children = 
-            react.create-element 'div', { className: 'field type' }, ' ' + lang.cheap
-            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.cheap then send.amount-send-fee-options.cheap + " " + token-display else ""
+        td.pug(on-click=choose-cheap class="#{active-class \cheap}")
+            .pug.field.type #{lang.cheap}
+            .pug.field.coin #{if send.amount-send-fee-options.cheap then send.amount-send-fee-options.cheap + " " + token-display else ""}
     custom-option = ->
         disabled = 
             | custom-is-disabled => yes
@@ -150,22 +150,22 @@ trx-fee = ({ store, web3t, wallet, fee-token })->
         disabled-class = 
             | custom-is-disabled => "disabled"
             | _ => ""
-        react.create-element 'td', { on-click: select-custom, disabled: disabled, className: "tx-fee-mode #{active-class \custom} #{disabled-class}" }, children = 
-            react.create-element 'div', { className: 'field type' }, ' ' + lang.custom
-            react.create-element 'div', { className: 'field coin' }, ' ' + custom-fee-value! + " " + token-display
+        td.pug(on-click=select-custom class="tx-fee-mode #{active-class \custom} #{disabled-class}" disabled=disabled)
+            .pug.field.type #{lang.custom}
+            .pug.field.coin #{custom-fee-value! + " " + token-display}
     auto-option = ->
-        react.create-element 'td', { on-click: choose-auto, className: "tx-fee-mode #{active-class \auto}" }, children = 
-            react.create-element 'div', { className: 'field type' }, ' ' + lang.auto
-            react.create-element 'div', { className: 'field coin' }, ' ' + if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""
-    react.create-element 'div', { className: "#{disabled-class} trx-fee trx-fee-1294478930" }, children = 
-        react.create-element 'label', { style: text }, ' Transaction Fee'
-        react.create-element 'table', { style: border-style, className: 'fee' }, children = 
-            react.create-element 'tbody', {}, children = 
-                react.create-element 'tr', {}, children = 
+        td.pug(on-click=choose-auto class="tx-fee-mode #{active-class \auto}")
+            .pug.field.type #{lang.auto}
+            .pug.field.coin #{if send.amount-send-fee-options.auto then send.amount-send-fee-options.auto + " " + token-display else ""}
+    .pug.trx-fee(class="#{disabled-class}")
+        label.pug(style=text) Transaction Fee
+        table.pug.fee(style=border-style)
+            tbody.pug
+                tr.pug
                     cheap-option!
                     custom-option!
                     auto-option!
         if store.current.send.fee-type is \custom       
-            react.create-element CurrencyInput, { key: "tx-fee-input", style: input-style, defaultValue: "0", allowDecimals: yes, value: "#{send.fee-custom-amount}", decimalsLimit: decimalsLimit, label: "Send", decimalSeparator: DECIMAL_SEPARATOR, groupSeparator: ",", onValueChange: on-change-internal, className: "textfield tx-fee" }
+            CurrencyInput.pug(class="textfield tx-fee" key="tx-fee-input" style=input-style defaultValue="0" allowDecimals=yes value="#{send.fee-custom-amount}" decimalsLimit=decimalsLimit label="Send" decimalSeparator=DECIMAL_SEPARATOR groupSeparator="," onValueChange=on-change-internal)
 module.exports = trx-fee
 #???store.current.send.send.fee-custom-amountcheaon-change-xcon-change-custom-fee.send""store.current.send.send.fstore.current.send.fee-custom-amount

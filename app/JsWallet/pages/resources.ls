@@ -16,281 +16,281 @@ require! {
     \./alert-demo.ls
     \../components/burger.ls
 }
-# .resources1489477053
-#     @import scheme
-#     position: relative
-#     display: block
-#     width: auto
-#     margin-left: $left-margin
-#     top: 0
-#     height: auto
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     .container-price
-#         text-align: center
-#         padding: 40px 0
-#     .plan
-#         display: inline-block
-#         margin: 10px 1%
-#         vertical-align: text-top
-#     .plan-inner
-#         border: 1px solid rgb(107, 38, 142);
-#         background: rgb(51, 20, 99);
-#         margin: 0 auto
-#         min-width: 340px
-#         max-width: 100%
-#         position: relative
-#     .entry-title
-#         position: relative
-#         text-align: center
-#         padding-bottom: 15px
-#         >.wallet-middle
-#             display: none
-#             $card-top-height: 50px
-#             width: 100%
-#             padding: 0 12px
-#             box-sizing: border-box
-#             color: #A8BACB
-#             font-size: 14px
-#             text-align: center
-#             position: relative
-#             >img
-#                 position: absolute
-#                 right: 3%
-#                 margin: 10px
-#                 margin-left: 50px
-#                 z-index: 2
-#             >a
-#                 width: 100%
-#                 z-index: 1
-#                 position: relative
-#                 border-radius: var(--border-btn)
-#                 border: 0
-#                 background: #E6F0FF
-#                 box-sizing: border-box
-#                 vertical-align: top
-#                 text-align: center
-#                 padding-left: 20px
-#                 padding-right: 25px
-#                 height: $card-top-height - 14px
-#                 color: #677897
-#                 font-size: 12px
-#                 line-height: $card-top-height - 14px
-#                 display: inline-block
-#                 text-overflow: ellipsis
-#                 overflow: hidden
-#                 @media screen and (max-width: 390px)
-#                     padding-right: 35px
-#         .top
-#             display: inline-block
-#         > h3
-#             background: #4b2788
-#             font-size: 20px
-#             padding: 5px 0
-#             text-transform: uppercase
-#             font-weight: 600
-#             margin: 0
-#             border-radius: var(--border-btn) var(--border-btn) 0 0
-#             &:first-letter
-#                 color: orange
-#         .price
-#             width: 100%
-#             margin: 20px auto
-#             background-repeat: no-repeat !important
-#             background-size: contain !important
-#             height: 100px
-#             background-position: center !important
-#             img
-#                 width: 100px
-#     .price span
-#         height: 100px
-#         width: 100px
-#         display: inline-block
-#         margin: 20px auto
-#     .price-month
-#         width: 100%
-#         .per-price
-#             color: #6f6fe2
-#             font-size: 16px
-#     .entry-content
-#         padding: 20px 12px
-#         ul
-#             margin: 0
-#             padding: 0
-#             list-style: none
-#             text-align: center
-#         li
-#             border-bottom: 1px solid var(--border)
-#             padding: 10px 0
-#             &:last-child
-#                 border: none
-#     button
-#         background-color: $primary
-#         border: 1px solid $primary
-#         border-radius: var(--border-btn)
-#         color: white
-#         height: 36px
-#         width: 100%
-#         margin-top: 5px
-#         padding: 0 6px
-#         border: 0
-#         text-decoration: none
-#         text-transform: uppercase
-#         font-size: 10px
-#         font-weight: bold
-#         cursor: pointer
-#         outline: none
-#         display: block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &:hover
-#             background: transparent
-#             color: $primary
-#         &.link
-#             min-width: 190px
-#         float: center
-#         margin-top: 20px
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         z-index: 1
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     .wrapper-task
-#         margin: 0 auto
-#         padding: 0 40px
-#         max-width: 1080px
-#         .title
-#             text-align: center
-#             font-size: 17px
-#             text-transform: uppercase
-#             letter-spacing: 2px
-#             opacity: .8
-#             line-height: 30px
-#             font-weight: 400
-#             margin: 0
-#     .table-task
-#         margin: 20px 0 40px 0
-#         width: 100%
-#         display: table
-#         @media screen and (max-width: 800px)
-#             display: table
-#     .table-deposit
-#         margin: 20px 0 40px 0
-#         width: 100%
-#         display: table
-#         border: 1px solid #6b268e;
-#         background: #331463;
-#         @media screen and (max-width: 800px)
-#             display: block
-#     .row-deposit
-#         &:nth-of-type(odd)
-#             background: transparent !important
-#         .content-deposit
-#             margin: 40px 40px 0
-#             span
-#                 color: #6f6fe2
-#                 cursor: pointer
-#                 &:hover
-#                     text-decoration: underline
-#         .wallet-middle
-#             $card-top-height: 50px
-#             margin: 20px auto 50px
-#             width: 100%
-#             max-width: 400px
-#             padding: 0 12px
-#             box-sizing: border-box
-#             color: #A8BACB
-#             font-size: 14px
-#             margin-top: 10px
-#             text-align: center
-#             position: relative
-#             >img
-#                 position: absolute
-#                 top: 20px
-#                 right: 10px
-#                 margin: 10px
-#                 margin-left: 50px
-#                 z-index: 2
-#                 &.icon-svg
-#                     position: relative
-#                     height: 12px
-#                     top: 2px
-#                     padding-right: 5px
-#             >a
-#                 width: 100%
-#                 z-index: 1
-#                 position: relative
-#                 border-radius: var(--border-btn)
-#                 border: 0
-#                 background: #E6F0FF
-#                 margin-top: 20px
-#                 box-sizing: border-box
-#                 vertical-align: top
-#                 text-align: center
-#                 padding-left: 20px
-#                 padding-right: 25px
-#                 height: $card-top-height - 14px
-#                 color: #677897
-#                 font-size: 15px
-#                 line-height: $card-top-height - 14px
-#                 display: inline-block
-#                 text-overflow: ellipsis
-#                 overflow: hidden
-#                 @media screen and (max-width: 390px)
-#                     padding-right: 35px
-#     .row-task, .row-deposit
-#         display: table-row
-#         background: rgba(98, 52, 171, 0.4)
-#         @media screen and (max-width: 580px)
-#             display: block
-#         &:nth-of-type(odd)
-#             background: #4b278769
-#         &.header
-#             text-transform: uppercase
-#             .cell-task
-#                 @media screen and (max-width: 580px)
-#                     display: none
-#         @media screen and (max-width: 800px)
-#             padding: 14px 0 7px
-#             &.header
-#                 padding: 0
-#             .cell-task
-#                 margin-bottom: 10px
-#                 &:before
-#             margin-bottom: 3px
-#             content: attr(data-title)
-#             min-width: 98px
-#     .cell-task
-#         padding: 10px 12px
-#         display: table-cell
-#         @media screen and (max-width: 580px)
-#             padding: 2px 16px
-#             display: block
-#     .cell-deposit
-#         padding: 10px 12px
-#         display: table-cell
-#         @media screen and (max-width: 580px)
-#             padding: 2px 16px
-#             display: block
+.resources
+    @import scheme
+    position: relative
+    display: block
+    width: auto
+    margin-left: $left-margin
+    top: 0
+    height: auto
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    .container-price
+        text-align: center
+        padding: 40px 0
+    .plan
+        display: inline-block
+        margin: 10px 1%
+        vertical-align: text-top
+    .plan-inner
+        border: 1px solid rgb(107, 38, 142);
+        background: rgb(51, 20, 99);
+        margin: 0 auto
+        min-width: 340px
+        max-width: 100%
+        position: relative
+    .entry-title
+        position: relative
+        text-align: center
+        padding-bottom: 15px
+        >.wallet-middle
+            display: none
+            $card-top-height: 50px
+            width: 100%
+            padding: 0 12px
+            box-sizing: border-box
+            color: #A8BACB
+            font-size: 14px
+            text-align: center
+            position: relative
+            >img
+                position: absolute
+                right: 3%
+                margin: 10px
+                margin-left: 50px
+                z-index: 2
+            >a
+                width: 100%
+                z-index: 1
+                position: relative
+                border-radius: var(--border-btn)
+                border: 0
+                background: #E6F0FF
+                box-sizing: border-box
+                vertical-align: top
+                text-align: center
+                padding-left: 20px
+                padding-right: 25px
+                height: $card-top-height - 14px
+                color: #677897
+                font-size: 12px
+                line-height: $card-top-height - 14px
+                display: inline-block
+                text-overflow: ellipsis
+                overflow: hidden
+                @media screen and (max-width: 390px)
+                    padding-right: 35px
+        .top
+            display: inline-block
+        > h3
+            background: #4b2788
+            font-size: 20px
+            padding: 5px 0
+            text-transform: uppercase
+            font-weight: 600
+            margin: 0
+            border-radius: var(--border-btn) var(--border-btn) 0 0
+            &:first-letter
+                color: orange
+        .price
+            width: 100%
+            margin: 20px auto
+            background-repeat: no-repeat !important
+            background-size: contain !important
+            height: 100px
+            background-position: center !important
+            img
+                width: 100px
+    .price span
+        height: 100px
+        width: 100px
+        display: inline-block
+        margin: 20px auto
+    .price-month
+        width: 100%
+        .per-price
+            color: #6f6fe2
+            font-size: 16px
+    .entry-content
+        padding: 20px 12px
+        ul
+            margin: 0
+            padding: 0
+            list-style: none
+            text-align: center
+        li
+            border-bottom: 1px solid var(--border)
+            padding: 10px 0
+            &:last-child
+                border: none
+    button
+        background-color: $primary
+        border: 1px solid $primary
+        border-radius: var(--border-btn)
+        color: white
+        height: 36px
+        width: 100%
+        margin-top: 5px
+        padding: 0 6px
+        border: 0
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 10px
+        font-weight: bold
+        cursor: pointer
+        outline: none
+        display: block
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &:hover
+            background: transparent
+            color: $primary
+        &.link
+            min-width: 190px
+        float: center
+        margin-top: 20px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .wrapper-task
+        margin: 0 auto
+        padding: 0 40px
+        max-width: 1080px
+        .title
+            text-align: center
+            font-size: 17px
+            text-transform: uppercase
+            letter-spacing: 2px
+            opacity: .8
+            line-height: 30px
+            font-weight: 400
+            margin: 0
+    .table-task
+        margin: 20px 0 40px 0
+        width: 100%
+        display: table
+        @media screen and (max-width: 800px)
+            display: table
+    .table-deposit
+        margin: 20px 0 40px 0
+        width: 100%
+        display: table
+        border: 1px solid #6b268e;
+        background: #331463;
+        @media screen and (max-width: 800px)
+            display: block
+    .row-deposit
+        &:nth-of-type(odd)
+            background: transparent !important
+        .content-deposit
+            margin: 40px 40px 0
+            span
+                color: #6f6fe2
+                cursor: pointer
+                &:hover
+                    text-decoration: underline
+        .wallet-middle
+            $card-top-height: 50px
+            margin: 20px auto 50px
+            width: 100%
+            max-width: 400px
+            padding: 0 12px
+            box-sizing: border-box
+            color: #A8BACB
+            font-size: 14px
+            margin-top: 10px
+            text-align: center
+            position: relative
+            >img
+                position: absolute
+                top: 20px
+                right: 10px
+                margin: 10px
+                margin-left: 50px
+                z-index: 2
+                &.icon-svg
+                    position: relative
+                    height: 12px
+                    top: 2px
+                    padding-right: 5px
+            >a
+                width: 100%
+                z-index: 1
+                position: relative
+                border-radius: var(--border-btn)
+                border: 0
+                background: #E6F0FF
+                margin-top: 20px
+                box-sizing: border-box
+                vertical-align: top
+                text-align: center
+                padding-left: 20px
+                padding-right: 25px
+                height: $card-top-height - 14px
+                color: #677897
+                font-size: 15px
+                line-height: $card-top-height - 14px
+                display: inline-block
+                text-overflow: ellipsis
+                overflow: hidden
+                @media screen and (max-width: 390px)
+                    padding-right: 35px
+    .row-task, .row-deposit
+        display: table-row
+        background: rgba(98, 52, 171, 0.4)
+        @media screen and (max-width: 580px)
+            display: block
+        &:nth-of-type(odd)
+            background: #4b278769
+        &.header
+            text-transform: uppercase
+            .cell-task
+                @media screen and (max-width: 580px)
+                    display: none
+        @media screen and (max-width: 800px)
+            padding: 14px 0 7px
+            &.header
+                padding: 0
+            .cell-task
+                margin-bottom: 10px
+                &:before
+            margin-bottom: 3px
+            content: attr(data-title)
+            min-width: 98px
+    .cell-task
+        padding: 10px 12px
+        display: table-cell
+        @media screen and (max-width: 580px)
+            padding: 2px 16px
+            display: block
+    .cell-deposit
+        padding: 10px 12px
+        display: table-cell
+        @media screen and (max-width: 580px)
+            padding: 2px 16px
+            display: block
 resources = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -361,165 +361,165 @@ resources = ({ store, web3t })->
         background: info.app.tr-even
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'resources resources1489477053' }, children = 
+    .pug.resources
         alert-demo store, web3t
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Resources Center'
-            react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") Resources Center
+            .pug.close(on-click=goto-search)
+                img.icon-svg.pug(src="#{icons.arrow-left}")
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t
-        react.create-element 'div', { className: 'container-price' }, children = 
-            react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
-                    react.create-element 'div', { className: 'entry-title cpu' }, children = 
-                        react.create-element 'h3', { style: resource-header }, ' CPU'
-                        react.create-element 'div', { className: 'top' }, children = 
-                            react.create-element 'div', { style: bg-cpu, className: 'price' }
-                            react.create-element 'div', { className: 'price-month' }, children = 
-                                """ 300 VLX """
-                                react.create-element 'span', { className: 'per-price' }, children = 
-                                    """ / PER MONTH"""
-                        react.create-element 'div', { className: 'entry-content' }, children = 
-                            react.create-element 'ul', {}, children = 
-                                react.create-element 'li', { key: "mining" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for mining"""
-                                react.create-element 'li', { key: "calculation" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for distributed calculations"""
-                                react.create-element 'li', { key: "remote-serverside" }, children = 
-                                    react.create-element 'strong', {}
-                                    """   for remote serverside"""
-                                react.create-element 'li', { key: "vfr" }, children = 
-                                    react.create-element 'strong', {}
-                                    """   for VFR, etc"""
-                        react.create-element 'div', { className: 'wallet-middle' }, children = 
-                            react.create-element 'a', { placeholder: "VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n", style: address-input }, ' VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n'
-                            react.create-element CopyToClipboard, { text: "VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n", on-copy: copied-inform(store), style: filter-icon }, children = 
+        .container-price.pug
+            .plan.pug
+                .plan-inner.pug(style=resource)
+                    .entry-title.cpu.pug
+                        h3.pug(style=resource-header) CPU
+                        .pug.top
+                            .price.pug(style=bg-cpu)
+                            .price-month.pug
+                                | 300 VLX 
+                                span.per-price.pug
+                                    | / PER MONTH
+                        .entry-content.pug
+                            ul.pug
+                                li.pug(key="mining" )
+                                    strong.pug 
+                                    |  for mining
+                                li.pug(key="calculation" )
+                                    strong.pug 
+                                    |  for distributed calculations
+                                li.pug(key="remote-serverside" )
+                                    strong.pug 
+                                    |   for remote serverside
+                                li.pug(key="vfr" )
+                                    strong.pug 
+                                    |   for VFR, etc
+                        .wallet-middle.pug
+                            a.pug(placeholder="VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n" style=address-input) VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n
+                            CopyToClipboard.pug(text="VLX6JfKoyrbErHzBWUyM3cyA9kRaMVL2x3n" on-copy=copied-inform(store) style=filter-icon)
                                 copy store
-                            react.create-element 'button', { style: button-primary2-style }, ' Deposit'
-            react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
-                    react.create-element 'div', { className: 'entry-title gpu' }, children = 
-                        react.create-element 'h3', { style: resource-header }, ' GPU'
-                        react.create-element 'div', { className: 'top' }, children = 
-                            react.create-element 'div', { style: bg-gpu, className: 'price' }
-                            react.create-element 'div', { className: 'price-month' }, children = 
-                                """ 400 VLX """
-                                react.create-element 'span', { className: 'per-price' }, children = 
-                                    """ / PER MONTH"""
-                        react.create-element 'div', { className: 'entry-content' }, children = 
-                            react.create-element 'ul', {}, children = 
-                                react.create-element 'li', { key: "mining2" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for mining"""
-                                react.create-element 'li', { key: "rendering-video" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for rendering of video"""
-                                react.create-element 'li', { key: "destr-calc" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for distributed calculations"""
-                                react.create-element 'li', { key: "science" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for science"""
-                        react.create-element 'div', { className: 'wallet-middle' }, children = 
-                            react.create-element 'a', { placeholder: "VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n", style: address-input }, ' VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n'
-                            react.create-element CopyToClipboard, { text: "VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n", on-copy: copied-inform(store), style: filter-icon }, children = 
+                            button.pug(style=button-primary2-style) Deposit
+            .plan.pug
+                .plan-inner.pug(style=resource)
+                    .entry-title.gpu.pug
+                        h3.pug(style=resource-header) GPU
+                        .pug.top
+                            .price.pug(style=bg-gpu)
+                            .price-month.pug
+                                | 400 VLX 
+                                span.per-price.pug
+                                    | / PER MONTH
+                        .entry-content.pug
+                            ul.pug
+                                li.pug(key="mining2" )
+                                    strong.pug 
+                                    |  for mining
+                                li.pug(key="rendering-video" )
+                                    strong.pug 
+                                    |  for rendering of video
+                                li.pug(key="destr-calc" )
+                                    strong.pug 
+                                    |  for distributed calculations
+                                li.pug(key="science" )
+                                    strong.pug 
+                                    |  for science
+                        .wallet-middle.pug
+                            a.pug(placeholder="VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n" style=address-input) VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n
+                            CopyToClipboard.pug(text="VLX7SxUoyrbErHzBWUyM3cyA9kRaMVL2x6n" on-copy=copied-inform(store) style=filter-icon)
                                 copy store
-                            react.create-element 'button', { style: button-primary2-style }, ' Deposit'
-            react.create-element 'div', { className: 'plan' }, children = 
-                react.create-element 'div', { style: resource, className: 'plan-inner' }, children = 
-                    react.create-element 'div', { className: 'entry-title spcng' }, children = 
-                        react.create-element 'h3', { style: resource-header }, ' STORAGE'
-                        react.create-element 'div', { className: 'top' }, children = 
-                            react.create-element 'div', { style: bg-spacing, className: 'price' }
-                            react.create-element 'div', { className: 'price-month' }, children = 
-                                """ 500 VLX"""
-                                react.create-element 'span', { className: 'per-price' }, children = 
-                                    """ / PER MONTH"""
-                        react.create-element 'div', { className: 'entry-content' }, children = 
-                            react.create-element 'ul', {}, children = 
-                                react.create-element 'li', { key: "file-sharing" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for file sharing"""
-                                react.create-element 'li', { key: "file-storage" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for file storage"""
-                                react.create-element 'li', { key: "distributed-ai" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for distributed AI"""
-                                react.create-element 'li', { key: "dapps" }, children = 
-                                    react.create-element 'strong', {}
-                                    """  for DAPPS"""
-                        react.create-element 'div', { className: 'wallet-middle' }, children = 
-                            react.create-element 'a', { placeholder: "VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n", style: address-input }, ' VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n'
-                            react.create-element CopyToClipboard, { text: "VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n", on-copy: copied-inform(store), style: filter-icon }, children = 
+                            button.pug(style=button-primary2-style) Deposit
+            .plan.pug
+                .plan-inner.pug(style=resource)
+                    .entry-title.spcng.pug
+                        h3.pug(style=resource-header) STORAGE
+                        .pug.top
+                            .price.pug(style=bg-spacing)
+                            .price-month.pug
+                                | 500 VLX
+                                span.per-price.pug
+                                    | / PER MONTH
+                        .entry-content.pug
+                            ul.pug
+                                li.pug(key="file-sharing" )
+                                    strong.pug 
+                                    |  for file sharing
+                                li.pug(key="file-storage" )
+                                    strong.pug 
+                                    |  for file storage
+                                li.pug(key="distributed-ai" )
+                                    strong.pug 
+                                    |  for distributed AI
+                                li.pug(key="dapps" )
+                                    strong.pug 
+                                    |  for DAPPS
+                        .wallet-middle.pug
+                            a.pug(placeholder="VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n" style=address-input) VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n
+                            CopyToClipboard.pug(text="VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n" on-copy=copied-inform(store) style=filter-icon)
                                 copy store
-                            react.create-element 'button', { style: button-primary2-style }, ' Deposit'
-        react.create-element 'div', { className: 'wrapper-task' }, children = 
-            react.create-element 'div', { className: 'title' }, children = 
-                react.create-element 'div', {}, ' Deposit'
-            react.create-element 'div', { style: resource, className: 'table-deposit' }, children = 
-                react.create-element 'div', { className: 'row-deposit' }, children = 
-                    react.create-element 'div', { className: 'content-deposit' }, children = 
-                        """ Please deposit VLX on this address to buy all these 3 resources. Once you use RESOURCES via"""
-                        react.create-element 'span', {}, ' [StorageDapp] '
-                        """ or """
-                        react.create-element 'span', {}, ' [API] '
-                        """ one of them or all together nodes will send invoices automatically. Please use the private key of that account you deposit to pass authorization in network"""
-                    react.create-element 'div', { className: 'wallet-middle' }, children = 
-                        react.create-element 'a', { placeholder: "VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n", style: address-input }, ' VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n'
-                        react.create-element CopyToClipboard, { text: "VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n", on-copy: copied-inform(store), style: filter-icon }, children = 
+                            button.pug(style=button-primary2-style) Deposit
+        .wrapper-task.pug
+            .pug.title
+                .pug Deposit
+            .table-deposit.pug(style=resource)
+                .row-deposit.pug
+                    .content-deposit.pug 
+                        | Please deposit VLX on this address to buy all these 3 resources. Once you use RESOURCES via
+                        span.pug [StorageDapp] 
+                        | or 
+                        span.pug [API] 
+                        | one of them or all together nodes will send invoices automatically. Please use the private key of that account you deposit to pass authorization in network
+                    .wallet-middle.pug
+                        a.pug(placeholder="VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n" style=address-input) VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n
+                        CopyToClipboard.pug(text="VLX2AkOoyrbErHzBWUyM3cyA9kRaMVL2x4n" on-copy=copied-inform(store) style=filter-icon)
                             copy store
-                        react.create-element 'button', { style: button-primary2-style }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.deposit}", className: 'icon-svg' }
-                                """ Deposit"""
-        react.create-element 'div', { className: 'wrapper-task' }, children = 
-            react.create-element 'div', { className: 'title' }, children = 
-                react.create-element 'div', {}, ' Invoices'
-            react.create-element 'div', { className: 'table-task' }, children = 
-                react.create-element 'div', { style: th, className: 'row-task header' }, children = 
-                    react.create-element 'div', { className: 'cell-task' }, ' Task Name'
-                    react.create-element 'div', { className: 'cell-task' }, ' Task Status'
-                    react.create-element 'div', { className: 'cell-task' }, ' Date Finished'
-                    react.create-element 'div', { className: 'cell-task' }, ' Budget Spent'
-                react.create-element 'div', { style: tr-odd, className: 'row-task' }, children = 
-                    react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
-                        """ CPU Usage"""
-                    react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
-                        """ Finished"""
-                    react.create-element 'div', { data-title: 'Date Finished', className: 'cell-task' }, children = 
-                        """ 2020/03/24"""
-                    react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
-                        """ 200 VLX"""
-                react.create-element 'div', { style: tr-even, className: 'row-task' }, children = 
-                    react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
-                        """ GPU Usage"""
-                    react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
-                        """ in Progress"""
-                    react.create-element 'div', { data-title: 'Date Finished', className: 'cell-task' }, children = 
-                        """ 2020/03/24"""
-                    react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
-                        """ 400 VLX"""
-                react.create-element 'div', { style: tr-odd, className: 'row-task' }, children = 
-                    react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
-                        """ Disk Write"""
-                    react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
-                        """ in Progress"""
-                    react.create-element 'div', { data-title: 'Date Finished', className: 'cell-task' }, children = 
-                        """ 2020/03/24"""
-                    react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
-                        """ 500 VLX"""
-                react.create-element 'div', { style: tr-even, className: 'row-task' }, children = 
-                    react.create-element 'div', { data-title: 'Task Name', className: 'cell-task' }, children = 
-                        """ Disk Keep"""
-                    react.create-element 'div', { data-title: 'Task Status', className: 'cell-task' }, children = 
-                        """ in Progress"""
-                    react.create-element 'div', { data-title: 'Date Finished', className: 'cell-task' }, children = 
-                        """ 2020/03/24"""
-                    react.create-element 'div', { data-title: 'Budget Spent', className: 'cell-task' }, children = 
-                        """ 600 VLX"""
+                        button.pug(style=button-primary2-style)
+                            span.pug
+                                img.icon-svg.pug(src="#{icons.deposit}")
+                                | Deposit
+        .wrapper-task.pug
+            .pug.title
+                .pug Invoices
+            .table-task.pug
+                .row-task.header.pug(style=th)
+                    .cell-task.pug Task Name
+                    .cell-task.pug Task Status
+                    .cell-task.pug Date Finished
+                    .cell-task.pug Budget Spent
+                .row-task.pug(style=tr-odd)
+                    .cell-task.pug(data-title='Task Name')
+                        | CPU Usage
+                    .cell-task.pug(data-title='Task Status')
+                        | Finished
+                    .cell-task.pug(data-title='Date Finished')
+                        | 2020/03/24
+                    .cell-task.pug(data-title='Budget Spent')
+                        | 200 VLX
+                .row-task.pug(style=tr-even)
+                    .cell-task.pug(data-title='Task Name')
+                        | GPU Usage
+                    .cell-task.pug(data-title='Task Status')
+                        | in Progress
+                    .cell-task.pug(data-title='Date Finished')
+                        | 2020/03/24
+                    .cell-task.pug(data-title='Budget Spent')
+                        | 400 VLX
+                .row-task.pug(style=tr-odd)
+                    .cell-task.pug(data-title='Task Name')
+                        | Disk Write
+                    .cell-task.pug(data-title='Task Status')
+                        | in Progress
+                    .cell-task.pug(data-title='Date Finished')
+                        | 2020/03/24
+                    .cell-task.pug(data-title='Budget Spent')
+                        | 500 VLX
+                .row-task.pug(style=tr-even)
+                    .cell-task.pug(data-title='Task Name')
+                        | Disk Keep
+                    .cell-task.pug(data-title='Task Status')
+                        | in Progress
+                    .cell-task.pug(data-title='Date Finished')
+                        | 2020/03/24
+                    .cell-task.pug(data-title='Budget Spent')
+                        | 600 VLX
 module.exports = resources

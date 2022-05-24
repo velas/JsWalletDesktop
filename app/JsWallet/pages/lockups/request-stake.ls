@@ -22,81 +22,81 @@ require! {
     \moment
     \./lockups.ls
 }
-# .steps-1322797462
-#     @media(max-width:800px)
-#         text-align: center
-#     .step
-#         display: inline-block
-#         vertical-align: text-top
-#         text-align: center
-#         padding: 0 20px 0 0
-#         margin-right: 20px
-#         margin-bottom: 20px
-#         width: 140px
-#         opacity: .6
-#         position: relative
-#         cursor: pointer
-#         transition: all .5s
-#         @media(max-width:800px)
-#             padding: 0 10px
-#             width: auto
-#             margin: 0 auto 30px
-#             display: block
-#         &:last-child
-#             &:after
-#                 content: none !important
-#         &:after
-#             display: block
-#             left: 150px
-#             top: 18px
-#             position: absolute
-#             border-top: 2px solid grey
-#             width: 20%
-#             content: ""
-#             @media(max-width:800px)
-#                 content: none
-#         .step-content
-#             font-size: 13px
-#             button
-#                 width: 125px
-#         button
-#             width: auto
-#             display: block
-#             margin: 15px auto 0
-#         .step-count
-#             display: inline-block
-#             background: grey
-#             padding: 10px 15px
-#             border-radius: 50px
-#             margin-bottom: 20px
-#         &.active
-#             opacity: 1
-#             .step-count
-#                 background: #39dcb4
-#                 animation: pulse_step 1s linear
-#                 transform-origin: 50% 50%
-#             &:after
-#                 display: block
-#                 left: 150px
-#                 top: 18px
-#                 position: absolute
-#                 border-top: 2px solid #3cd5af
-#                 width: 20%
-#                 content: ""
-#                 @media(max-width:800px)
-#                     content: none
-#             &:last-child
-#                 &:after
-#                     content: none !important
-#     @keyframes pulse_step
-#         0%
-#             transform: scale(0.8)
-#         25%
-#             transform: scale(0.9)
-#         50%
-#             transform: scale(1.1)
-#         100%
-#             transform: scale(1)
+.steps
+    @media(max-width:800px)
+        text-align: center
+    .step
+        display: inline-block
+        vertical-align: text-top
+        text-align: center
+        padding: 0 20px 0 0
+        margin-right: 20px
+        margin-bottom: 20px
+        width: 140px
+        opacity: .6
+        position: relative
+        cursor: pointer
+        transition: all .5s
+        @media(max-width:800px)
+            padding: 0 10px
+            width: auto
+            margin: 0 auto 30px
+            display: block
+        &:last-child
+            &:after
+                content: none !important
+        &:after
+            display: block
+            left: 150px
+            top: 18px
+            position: absolute
+            border-top: 2px solid grey
+            width: 20%
+            content: ""
+            @media(max-width:800px)
+                content: none
+        .step-content
+            font-size: 13px
+            button
+                width: 125px
+        button
+            width: auto
+            display: block
+            margin: 15px auto 0
+        .step-count
+            display: inline-block
+            background: grey
+            padding: 10px 15px
+            border-radius: 50px
+            margin-bottom: 20px
+        &.active
+            opacity: 1
+            .step-count
+                background: #39dcb4
+                animation: pulse_step 1s linear
+                transform-origin: 50% 50%
+            &:after
+                display: block
+                left: 150px
+                top: 18px
+                position: absolute
+                border-top: 2px solid #3cd5af
+                width: 20%
+                content: ""
+                @media(max-width:800px)
+                    content: none
+            &:last-child
+                &:after
+                    content: none !important
+    @keyframes pulse_step
+        0%
+            transform: scale(0.8)
+        25%
+            transform: scale(0.9)
+        50%
+            transform: scale(1.1)
+        100%
+            transform: scale(1)
 cb = console~log
 stringify = (value) ->
     if value? then
@@ -198,14 +198,14 @@ order-withdraw-process = (store, web3t)->
             | _ => "..."
         mystake-class = if +my-stake > 0 then "with-stake" else ""
         pointer-class = if store.lockups.lockupStakingAddress? and (store.lockups.lockupStakingAddress is item.address) then "stake-pointer" else ""
-        react.create-element 'tr', { className: "#{item.status} #{pointer-class}" }, children = 
-            react.create-element 'td', {}, children = 
-                react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
-            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
+        tr.pug(class="#{item.status} #{pointer-class}")
+            td.pug
+                span.pug.circle(class="#{item.status}") #{index}
+            td.pug(datacolumn='Staker Address' title="#{ethToVlx item.address}")
                 address-holder { store, wallet }
-            react.create-element 'td', {}, ' ' + stake
-            react.create-element 'td', { className: "#{mystake-class}" }, ' ' + stringify my-stake
-            react.create-element 'td', {}, children = 
+            td.pug #{stake}
+            td.pug(class="#{mystake-class}") #{stringify my-stake}
+            td.pug
                 button { classes:"choose-pool", store, on-click: choose-pull , type: \secondary , icon : \arrowRight } 
     is-enough-to-stake = (stake, balance, cb)->
         stake = +stake
@@ -323,12 +323,12 @@ order-withdraw-process = (store, web3t)->
         store.lockups.add.add-validator-stake = Math.max (balance `minus` 0.1), 0
     epoch-next = store.dashboard.epoch-next ? 'loading...'
     if not current-contract-has-defaultPool then
-        react.create-element 'div', { className: 'section' }, children = 
-            react.create-element 'div', { className: 'title' }, children = 
-                react.create-element 'h3', {}, ' ' + lang.stake
-            react.create-element 'div', { className: 'description' }, children = 
-                react.create-element 'span', {}, ' No locked pool was found. Please select one before proceed'
-    react.create-element 'div', {}, children = 
+        .pug.section
+            .title.pug
+                h3.pug #{lang.stake}
+            .description.pug 
+                span.pug No locked pool was found. Please select one before proceed
+    .pug
         if store.lockups.chosen-lockup.isForwardingEnabled is no
             use-min-topup = ->
                 store.lockups.add.add-validator-topup = 1
@@ -341,74 +341,74 @@ order-withdraw-process = (store, web3t)->
                     store.lockups.add.add-validator-topup = value
                 catch err
                     console.log "[Change-topup]: #{err}"
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Topup'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'step-content' }, children = 
-                        react.create-element 'div', { className: 'left' }, children = 
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' Your non-staked amount:'
-                                react.create-element 'span', { className: 'color' }, ' ' + lockedFunds
-                                react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+            .pug.section
+                .title.pug
+                    h3.pug Topup
+                .description.pug
+                    .pug.step-content
+                        .pug.left
+                            .pug.balance
+                                span.pug Your non-staked amount:
+                                span.pug.color #{lockedFunds}
+                                span.pug.color #{vlx-token}
                             amount-field { store, value: store.lockups.add.add-validator-topup , on-change: change-topup , placeholder: \Topup, token: "vlx2", id:"choose-staker-vlx-input" }
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min-topup, className: 'small' }, ' ' + lang.min
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max-topup, className: 'small' }, ' ' + lang.max
-                                react.create-element 'span', {}, ' ' + lang.balance + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + your-balance
-                                    react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+                            .pug.balance
+                                span.pug.small-btns
+                                    button.small.pug(style=button-primary3-style on-click=use-min-topup) #{lang.min}
+                                    button.small.pug(style=button-primary3-style on-click=use-max-topup) #{lang.max}
+                                span.pug #{lang.balance}:
+                                span.pug.color #{your-balance}
+                                    img.label-coin.pug(src="#{icons.vlx-icon}")
+                                    span.pug.color #{vlx-token}
                             button { store, on-click: topup-the-contract , type: \secondary , icon : \apply , text: \btnApply }
         if lockedFundsRaw > 0 and store.lockups.chosen-lockup.isForwardingEnabled is no
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.stake
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'step-content' }, children = 
-                        react.create-element 'div', { className: 'left' }, children = 
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' ' + lang.yourStaking + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + round-human (store.lockups.stake-amount-total `div` (10^18))
-                                react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.stake}
+                .description.pug
+                    .pug.step-content
+                        .pug.left
+                            .pug.balance
+                                span.pug #{lang.yourStaking}:
+                                span.pug.color #{round-human (store.lockups.stake-amount-total `div` (10^18))}
+                                span.pug.color #{vlx-token}
                             amount-field { store, value: store.lockups.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake, token: "vlx2", id:"choose-staker-vlx-input" }
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' ' + lang.max
-                                react.create-element 'span', {}, ' Locked Amount:'
-                                react.create-element 'span', { className: 'color' }, ' ' + round-human store.lockups.chosen-lockup.locked-funds
-                                    react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+                            .pug.balance
+                                span.pug.small-btns
+                                    button.small.pug(style=button-primary3-style on-click=use-min) #{lang.min}
+                                    button.small.pug(style=button-primary3-style on-click=use-max) #{lang.max}
+                                span.pug Locked Amount:
+                                span.pug.color #{round-human store.lockups.chosen-lockup.locked-funds}
+                                    img.label-coin.pug(src="#{icons.vlx-icon}")
+                                    span.pug.color #{vlx-token}
                             button { store, on-click: stake-func , type: \secondary , icon : \apply , text: \btnApply }    
         if store.lockups.chosen-lockup.isForwardingEnabled is yes    
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' ' + lang.stake
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'step-content' }, children = 
-                        react.create-element 'div', { className: 'left' }, children = 
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' ' + lang.yourStaking + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + round-human (store.lockups.stake-amount-total `div` (10^18))
-                                react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.stake}
+                .description.pug
+                    .pug.step-content
+                        .pug.left
+                            .pug.balance
+                                span.pug #{lang.yourStaking}:
+                                span.pug.color #{round-human (store.lockups.stake-amount-total `div` (10^18))}
+                                span.pug.color #{vlx-token}
                             amount-field { store, value: store.lockups.add.add-validator-stake , on-change: change-stake , placeholder: lang.stake, token: "vlx2", id:"choose-staker-vlx-input" }
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', { className: 'small-btns' }, children = 
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-min, className: 'small' }, ' ' + lang.min
-                                    react.create-element 'button', { style: button-primary3-style, on-click: use-max, className: 'small' }, ' ' + lang.max
-                                react.create-element 'span', {}, ' ' + lang.balance + ':'
-                                react.create-element 'span', { className: 'color' }, ' ' + round-human store.lockups.chosen-lockup.locked-funds
-                                    react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+                            .pug.balance
+                                span.pug.small-btns
+                                    button.small.pug(style=button-primary3-style on-click=use-min) #{lang.min}
+                                    button.small.pug(style=button-primary3-style on-click=use-max) #{lang.max}
+                                span.pug #{lang.balance}:
+                                span.pug.color #{round-human store.lockups.chosen-lockup.locked-funds}
+                                    img.label-coin.pug(src="#{icons.vlx-icon}")
+                                    span.pug.color #{vlx-token}
                             button { store, on-click: stake-func , type: \secondary , icon : \apply , text: \btnApply }    
 not-available-right-now = (store)->
     lang = get-lang store
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.exit
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', {}, ' ' + lang.actionProhibited
+    .pug.section
+        .title.pug
+            h3.pug #{lang.exit}
+        .description.pug
+            .pug #{lang.actionProhibited}
 module.exports = (store, web3t)->
     order-withdraw-process store, web3t

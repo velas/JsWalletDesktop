@@ -1,0 +1,68 @@
+{
+  "author": {
+    "name": "Andrey Stehno <a.stegno@gmail.com>"
+  },
+  "bugs": {
+    "url": "https://github.com/web3space/web3t/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@bitgo/utxo-lib": "^1.9.6",
+    "aes-js": "3.1.1",
+    "big-integer": "1.6.45",
+    "bignumber": "^1.1.0",
+    "bip32": "^2.0.6",
+    "bip39": "2.5.0",
+    "bitcoinjs-lib": "5.2",
+    "bs58": "4.0.1",
+    "bs58check": "2.1.2",
+    "buffer-layout": "^1.2.0",
+    "cross-fetch": "3.0.4",
+    "crypto-hash": "1.3.0",
+    "ed25519-hd-key": "1.2.0",
+    "ethereumjs-common": "1.5.0",
+    "ethereumjs-util": "^6.0.0",
+    "hdkey": "^1.1.0",
+    "jayson": "3.4.4",
+    "js-sha3": "0.8.0",
+    "lodash": "^4.17.12",
+    "moment": "2.22.2",
+    "multicoin-address-validator": "0.4.16",
+    "prelude-ls": "1.1.2",
+    "qs": "6.5.2",
+    "randombytes": "2.0.6",
+    "rpc-websockets": "^7.4.9",
+    "safe-buffer": "5.1.2",
+    "superstruct": "^0.14.2",
+    "tor-request": "3.1.0",
+    "tweetnacl": "^1.0.3",
+    "utf8": "3.0.0",
+    "uuid": "3.3.2",
+    "web3": "0.20.1"
+  },
+  "deprecated": false,
+  "description": "Unified Open Source Coin Registry (Same interface for all possible coins, tokens)",
+  "homepage": "https://github.com/ethnamed/web3t#readme",
+  "keywords": [
+    "crypto",
+    "standard",
+    "ethnamed"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "web3t",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethnamed/web3t.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-setup": "npm i browserify browserify-livescript -g",
+    "mobile1": "browserify --s module -d -t browserify-livescript index.js > ./web3t.js",
+    "mobile2": "browserify --s module -d -t browserify-livescript ./mobile/index.js > ./mobile/web3t.js"
+  },
+  "version": "0.7.1",
+  "devDependencies": {
+    "browserify-livescript": "^0.2.4"
+  }
+}

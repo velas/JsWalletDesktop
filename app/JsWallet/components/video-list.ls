@@ -18,21 +18,21 @@ module.exports = ({ store, web3t } )->
             goto-details = -> 
                 location.href = "https://video.velas.com/#{desc.id}/#{desc.key}"
             layout = 
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { on-click: goto-details, className: 'source' }, children = 
-                        react.create-element 'span', { className: 'play' }, children = 
+                .pug.section
+                    .source.pug(on-click=goto-details)
+                        span.pug.play
                             icon \TriangleRight, 15
-                        react.create-element 'video', { width: '224', height: '150', controls: 'controls', poster: "#{desc.thumbnail}", style: video-style }, children = 
-                            react.create-element 'source', { src: "/#{desc.id}/#{desc.key}", type: "#{desc.file.type}", preload: "metadata" }
-                        react.create-element 'div', { className: 'title-video' }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{info.branding.logo}", className: 'account' }
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'div', { className: 'header' }, ' ' + desc.file.name
-                                react.create-element 'ul', { className: 'stat' }, children = 
-                                    react.create-element 'li', { key: "views-1212" }, children = 
-                                        react.create-element 'span', {}, ' 2K views'
-                                    react.create-element 'li', { key: "ago13232" }, children = 
-                                        react.create-element 'span', {}, ' 5 days ago'
+                        video.pug(width='224' height='150' controls='controls' poster="#{desc.thumbnail}" style=video-style)
+                            source.pug(src="/#{desc.id}/#{desc.key}" type="#{desc.file.type}" preload="metadata")
+                        .pug.title-video
+                            span.pug
+                                img.pug.account(src="#{info.branding.logo}")
+                            span.pug
+                                .pug.header #{desc.file.name}
+                                ul.pug.stat
+                                    li.pug(key="views-1212")
+                                        span.pug 2K views
+                                    li.pug(key="ago13232")
+                                        span.pug 5 days ago
             return layout
     return videos

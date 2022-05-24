@@ -34,114 +34,114 @@ as-callback = (p, cb)->
     p.catch (err) -> cb err
     p.then (data)->
         cb null, data
-# .staking-accounts-content711009742
-#     @keyframes blink-animation
-#         50%
-#             opacity: 0.3
-#     @-webkit-keyframes blink-animation
-#         50%
-#             opacity: 0.3
-#     .blink
-#         animation: 1s linear blink-animation  infinite
-#         -webkit-animation: 1s linear blink-animation  infinite
-#     .entities-loader
-#         display: block
-#         padding: 40px
-#         text-align: center
-#         .inner-section
-#             padding: 40px
-#             .item
-#                 display: inline
-#     .notification-entity
-#         @media(max-width: 540px)
-#             display: block
-#             margin-top: 20px !important
-#     .hint
-#         .tooltip
-#             position: absolute
-#             text-transform: uppercase
-#             left: 25px
-#             top: -8px
-#             z-index: 1
-#             line-height: 14px
-#             font-size: 9px
-#             font-weight: 600
-#             color: #fff
-#             padding: 5px
-#             background: #000
-#             visibility: hidden
-#             &:after, &:before
-#                 right: 100%
-#                 top: 21%
-#                 border: solid transparent
-#                 content: " "
-#                 height: 0
-#                 width: 0
-#                 position: absolute
-#                 pointer-events: none
-#             &:after
-#                 border-color: rgba(136, 183, 213, 0)
-#                 border-right-color: #000
-#                 border-width: 6px
-#                 margin-top: 2px
-#             &:before
-#                 border-color: rgba(194, 225, 245, 0)
-#                 border-width: 8px
-#                 margin-top: 0px
-#     .hint
-#         &:hover
-#             .tooltip
-#                 visibility: visible
-#     .title
-#         h3
-#             display: inline
-#         .amount
-#             color: white
-#             font-size: 11px
-#             opacity: 0.5    
-#     .form-group
-#         .subtitle
-#             margin: 20px 0 10px
-#         .settings
-#             margin-top: 20px
-#             .settings-item
-#                 margin-bottom: 20px
-#                 & > label
-#                     margin-bottom: 6px
-#                     display: inline-block
-#         .outer-checkbox
-#             display: inline-block
-#             margin: 0 15px 0 0
-#             & + label
-#                 margin: 5px 0
-#         .table-scroll
-#             transition: max-height .5s
-#             table
-#                 thead
-#                     td
-#                         cursor: pointer
-#                         &:hover
-#                             color: #dde6ff
-#                 td
-#                     &.account-status
-#                         text-transform: capitalize
-#                         &.deactivating
-#                             color: #ff5555
-#                         &.activating
-#                             color: orange
-#                         &.active
-#                             color: green
-#                         &.inactive
-#                             color: gray
-#                     &.validator-address
-#                         text-align: center
-#                     border: none
-#     .stake-account-item
-#         &.highlight
-#             box-shadow: 1px 2px 12px inset rgba(60, 213, 175, 0.35)
+.staking-accounts-content
+    @keyframes blink-animation
+        50%
+            opacity: 0.3
+    @-webkit-keyframes blink-animation
+        50%
+            opacity: 0.3
+    .blink
+        animation: 1s linear blink-animation  infinite
+        -webkit-animation: 1s linear blink-animation  infinite
+    .entities-loader
+        display: block
+        padding: 40px
+        text-align: center
+        .inner-section
+            padding: 40px
+            .item
+                display: inline
+    .notification-entity
+        @media(max-width: 540px)
+            display: block
+            margin-top: 20px !important
+    .hint
+        .tooltip
+            position: absolute
+            text-transform: uppercase
+            left: 25px
+            top: -8px
+            z-index: 1
+            line-height: 14px
+            font-size: 9px
+            font-weight: 600
+            color: #fff
+            padding: 5px
+            background: #000
+            visibility: hidden
+            &:after, &:before
+                right: 100%
+                top: 21%
+                border: solid transparent
+                content: " "
+                height: 0
+                width: 0
+                position: absolute
+                pointer-events: none
+            &:after
+                border-color: rgba(136, 183, 213, 0)
+                border-right-color: #000
+                border-width: 6px
+                margin-top: 2px
+            &:before
+                border-color: rgba(194, 225, 245, 0)
+                border-width: 8px
+                margin-top: 0px
+    .hint
+        &:hover
+            .tooltip
+                visibility: visible
+    .title
+        h3
+            display: inline
+        .amount
+            color: white
+            font-size: 11px
+            opacity: 0.5    
+    .form-group
+        .subtitle
+            margin: 20px 0 10px
+        .settings
+            margin-top: 20px
+            .settings-item
+                margin-bottom: 20px
+                & > label
+                    margin-bottom: 6px
+                    display: inline-block
+        .outer-checkbox
+            display: inline-block
+            margin: 0 15px 0 0
+            & + label
+                margin: 5px 0
+        .table-scroll
+            transition: max-height .5s
+            table
+                thead
+                    td
+                        cursor: pointer
+                        &:hover
+                            color: #dde6ff
+                td
+                    &.account-status
+                        text-transform: capitalize
+                        &.deactivating
+                            color: #ff5555
+                        &.activating
+                            color: orange
+                        &.active
+                            color: green
+                        &.inactive
+                            color: gray
+                    &.validator-address
+                        text-align: center
+                    border: none
+    .stake-account-item
+        &.highlight
+            box-shadow: 1px 2px 12px inset rgba(60, 213, 175, 0.35)
 cb = console.log
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', { key: "validator-#{validator}" }, ' ' + validator
+    li.pug(key="validator-#{validator}") #{validator}
 export paginate = (array, per-page, page)->
     page = page - 1
     array.slice page * per-page, (page + 1) * per-page
@@ -299,22 +299,22 @@ staking-accounts-content = (store, web3t)->
                         disabled = yes
                 button { store, classes: "action-undelegate" text: lang.to_undelegate, on-click: undelegate , type: \secondary , icon, makeDisabled: disabled }
         highlighted = if highlight is yes then "highlight" else ""
-        react.create-element 'tr', { key: "#{address}", className: "stake-account-item #{item.status} #{highlighted}" }, children = 
-            react.create-element 'td', {}, children = 
-                react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
-            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{address}" }, children = 
+        tr.pug(class="stake-account-item #{item.status} #{highlighted}" key="#{address}")
+            td.pug
+                span.pug.circle(class="#{item.status}") #{index}
+            td.pug(datacolumn='Staker Address' title="#{address}")
                 address-holder-popup { store, wallet, item}
-            react.create-element 'td', {}, ' ' + balance
-            react.create-element 'td', { title: "#{validator}", className: "validator-address" }, children = 
+            td.pug #{balance}
+            td.pug(class="validator-address" title="#{validator}")
                 if has-validator
                     address-holder-popup { store, wallet: wallet-validator, item }
                 else
                     "---"
-            react.create-element 'td', {}, children = 
-                react.create-element 'div', { className: 'seed' }, ' ' + seed
+            td.pug
+                .pug.seed #{seed}
             if no
-                react.create-element 'td', { className: "account-status #{status}" }, ' ' + $status
-            react.create-element 'td', {}, children = 
+                td.pug(class="account-status #{status}") #{$status}
+            td.pug
                 $button
     cancel = ->
         store.staking-accounts.chosen-lockup = null
@@ -395,77 +395,77 @@ staking-accounts-content = (store, web3t)->
         | store.errors.fetchAccounts? and store.staking.accounts-are-loading is no => yes
         | _ => no
     svg-icon =
-        react.create-element 'svg', { width: '15px', height: '15px', viewBox: '0 0 15 15', version: '1.1', xmlns: 'http://www.w3.org/2000/svg' }, children = 
-            react.create-element 'g', { xmlns: "http://www.w3.org/2000/svg", transform: "matrix(0.026385223 0 0 0.026385223 -0 0.029023906)" }, children = 
-                react.create-element 'g', { xmlns: "http://www.w3.org/2000/svg", transform: "matrix(0.1 0 -0 -0.1 0 340)" }, children = 
-                    react.create-element 'path', { xmlns: "http://www.w3.org/2000/svg", d: "M1796 2907C 1749 2827 1701 2743 1515 2420C 1407 2230 1275 2001 1222 1910C 1170 1819 1110 1716 1090 1680C 950 1438 891 1334 845 1255C 816 1206 747 1084 690 985C 633 886 554 749 514 680L514 680L441 555L1130 552C 1510 551 2130 551 2508 552L2508 552L3197 555L3102 720C 3050 811 2991 914 2970 950C 2950 986 2856 1150 2761 1315C 2665 1480 2510 1750 2415 1915C 1758 3060 1827 2940 1820 2940C 1817 2940 1806 2925 1796 2907z", stroke: "none", fill: "rgb(255 215 0)", fill-rule: "nonzero" }
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content711009742' }, children = 
+        svg.pug(width='15px' height='15px' viewBox='0 0 15 15' version='1.1' xmlns='http://www.w3.org/2000/svg')
+            g.pug(xmlns="http://www.w3.org/2000/svg" transform="matrix(0.026385223 0 0 0.026385223 -0 0.029023906)")
+                g.pug(xmlns="http://www.w3.org/2000/svg" transform="matrix(0.1 0 -0 -0.1 0 340)")
+                    path.pug(xmlns="http://www.w3.org/2000/svg" d="M1796 2907C 1749 2827 1701 2743 1515 2420C 1407 2230 1275 2001 1222 1910C 1170 1819 1110 1716 1090 1680C 950 1438 891 1334 845 1255C 816 1206 747 1084 690 985C 633 886 554 749 514 680L514 680L441 555L1130 552C 1510 551 2130 551 2508 552L2508 552L3197 555L3102 720C 3050 811 2991 914 2970 950C 2950 986 2856 1150 2761 1315C 2665 1480 2510 1750 2415 1915C 1758 3060 1827 2940 1820 2940C 1817 2940 1806 2925 1796 2907z" stroke="none" fill="rgb(255 215 0)" fill-rule="nonzero")
+    .pug.staking-accounts-content
         loader { loading: store.staking.creating-staking-account, text: "Creating staking account..." }
-        react.create-element 'div', {}, children = 
-            react.create-element 'div', { id: "create-staking-account", className: 'form-group' }, children = 
-                react.create-element 'div', { className: 'section create-staking-account' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.createStakingAccount
-                    react.create-element 'div', { className: 'description' }, children = 
+        .pug
+            .form-group.pug(id="create-staking-account")
+                .pug.section.create-staking-account 
+                    .title.pug
+                        h3.pug #{lang.createStakingAccount}
+                    .description.pug
                         if store.staking.creating-staking-account is yes
-                            react.create-element 'span', {}, children = 
+                            span.pug
                                 button {store, classes: "width-auto", text: "Creating...", no-icon:yes, on-click: create-staking-account, makeDisabled: yes, style: {width: \auto, display: \block}}
                         else
-                            react.create-element 'span', {}, children = 
+                            span.pug
                                 button {store, classes: "width-auto", text: lang.createAccount, no-icon:yes, on-click: create-staking-account, style: {width: \auto, display: \block}}
                         if store.staking.accounts.length is 0
-                            react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' Please create a staking account before you stake'
+                            span.pug.notification-entity(style=notification-border) Please create a staking account before you stake
                         else 
-                            react.create-element 'span', { style: notification-border, className: 'notification-entity' }, ' ' + lang.youCanStakeMore
-        react.create-element 'div', {}, children = 
-            react.create-element 'div', { id: "staking-accounts", className: 'form-group' }, children = 
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', { className: 'section-title' }, ' ' + lang.yourStakingAccounts + ' '
-                            react.create-element 'span', { className: 'amount' }, ' (' + store.staking.accounts.length + ')'
+                            span.pug.notification-entity(style=notification-border) #{lang.youCanStakeMore}
+        .pug
+            .form-group.pug(id="staking-accounts")
+                .pug.section
+                    .title.pug
+                        h3.pug.section-title #{lang.yourStakingAccounts} 
+                            span.pug.amount (#{store.staking.accounts.length})
                         if not store.staking.webSocketAvailable or fetch-error-occurred or (store.errors.fetchValidators? and store.staking.pools-are-loading is no)
-                            react.create-element 'div', {}, children = 
-                                react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
+                            .pug
+                                .loader.pug(on-click=refresh style=icon-style title="refresh" class="#{isSpinned}")
                                     icon \Sync, 25
                         if fetch-error-occurred
-                            react.create-element 'div', { className: 'pointer-container' }, children = 
+                            .pug.pointer-container
                                 svg-icon
-                                react.create-element 'div', { className: 'shadow-icon' }
-                    react.create-element 'div', { className: 'description' }, children = 
+                                .shadow-icon.pug
+                    .description.pug
                         if store.errors.fetchAccounts?
-                            react.create-element 'div', { className: 'error' }, children = 
-                                react.create-element 'span', { className: 'warning-icon' }, ' ⚠️'
-                                react.create-element 'div', { className: 'message' }, ' An error occurred during fetching stake accounts. Please try one more time...'
+                            .pug.error
+                                span.pug.warning-icon ⚠️
+                                .pug.message An error occurred during fetching stake accounts. Please try one more time...
                         else
-                            react.create-element 'div', { className: 'cont' }, children = 
+                            .pug.cont
                                 if store.staking.accounts-are-loading is no then
-                                    react.create-element 'div', { className: 'table-scroll' }, children = 
-                                        react.create-element 'table', {}, children = 
-                                            react.create-element 'thead', {}, children = 
-                                                react.create-element 'tr', {}, children = 
-                                                    react.create-element 'td', { width: "3%", style: stats }, ' #'
-                                                    react.create-element 'td', { width: "40%", style: staker-pool-style, title: "Your Staking Account" }, ' ' + lang.account + ' (?)'
-                                                    react.create-element 'td', { width: "10%", style: stats, title: "Your Deposited Balance" }, ' ' + lang.balance + ' (?)'
-                                                    react.create-element 'td', { width: "30%", style: stats, title: "Where you staked" }, ' ' + lang.validator + ' (?)'
-                                                    react.create-element 'td', { width: "7%", style: stats, title: "The ID of your stake. This is made to simplify the search of your stake in validator list" }, ' ID (?)'
+                                    .pug.table-scroll
+                                        table.pug
+                                            thead.pug
+                                                tr.pug
+                                                    td.pug(width="3%" style=stats) #
+                                                    td.pug(width="40%" style=staker-pool-style title="Your Staking Account") #{lang.account} (?)
+                                                    td.pug(width="10%" style=stats title="Your Deposited Balance") #{lang.balance} (?)
+                                                    td.pug(width="30%" style=stats title="Where you staked") #{lang.validator} (?)
+                                                    td.pug(width="7%" style=stats title="The ID of your stake. This is made to simplify the search of your stake in validator list") ID (?)
                                                     if no
-                                                        react.create-element 'td', { width: "10%", style: stats, title: "Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by staking and unstaking spam." }, ' ' + lang.status + ' (?)'
-                                                    react.create-element 'td', { width: "10%", style: stats }, ' ' + (lang.action ? "Action")
-                                            react.create-element 'tbody', {}, children = 
+                                                        td.pug(width="10%" style=stats title="Current staking status. Please notice that you cannot stake / unstake immediately. You need to go through the waiting period. This is made to reduce attacks by staking and unstaking spam.") #{lang.status} (?)
+                                                    td.pug(width="10%" style=stats) #{(lang.action ? "Action")}
+                                            tbody.pug
                                                 paginate( (store.staking.accounts |> sort-by (.seed-index)), perPage, page)
                                                     |> map build store, web3t
                                 if store.staking.accounts-are-loading is no then
                                     pagination {store, type: \accounts, disabled: pagination-disabled, config: {array: store.staking.accounts }}
                                 else
-                                    react.create-element 'div', { className: 'table-scroll' }, children = 
-                                        react.create-element 'span', { className: 'entities-loader' }, children = 
-                                            react.create-element 'span', { className: 'inner-section' }, children = 
-                                                react.create-element 'h3', { className: 'item blink' }, ' Loading...'
-                                                    react.create-element 'span', { className: 'item' }, '  ' + loadingAccountIndex
-                                                    react.create-element 'span', { className: 'item' }, ' of'
-                                                    react.create-element 'span', { className: 'item' }, '  ' + totalOwnStakingAccounts
+                                    .pug.table-scroll
+                                        span.pug.entities-loader
+                                            span.pug.inner-section
+                                                h3.pug.item.blink Loading...
+                                                    span.pug.item  #{loadingAccountIndex}
+                                                    span.pug.item of
+                                                    span.pug.item  #{totalOwnStakingAccounts}
 staking-accounts = ({ store, web3t })->
-    react.create-element 'div', { className: 'staking-accounts-content staking-accounts-content711009742' }, children = 
+    .pug.staking-accounts-content
         staking-accounts-content store, web3t
 stringify = (value) ->
     if value? then

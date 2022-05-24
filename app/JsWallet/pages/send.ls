@@ -34,408 +34,408 @@ require! {
     \moment
     \../components/popups/loader.ls
 }
-# .content-828432226
-#     position: relative
-#     @import scheme
-#     $border-radius: var(--border-btn)
-#     $label-padding: 3px
-#     $label-font: 13px
-#     width: calc(100% - 0px) !important
-#     margin-left: 0px !important
-#     max-width: none !important
-#     height: 100vh
-#     display: flex !important
-#     flex-direction: column
-#     align-items: center
-#     @media(min-height:900px)
-#         justify-content: center
-#     @media(max-width:800px)
-#         margin-left: 0 !important
-#     .icon-svg
-#         position: relative
-#         height: 12px
-#         top: 2px
-#     .icon-svg-history
-#         width: auto !important
-#         height: 20px
-#     .content-body
-#         max-width: 450px !important
-#     >.title
-#         position: fixed
-#         position: -webkit-fixed
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         z-index: 3
-#         @media(max-width:800px)
-#             left: 0
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     .h1
-#         font-size: 17px
-#         text-transform: uppercase
-#         letter-spacing: 2px
-#         opacity: .8
-#     .pending
-#         color: orange
-#     >*
-#         display: inline-block
-#         text-align: center
-#         width: 100%
-#         box-sizing: border-box
-#         border-radius: $border-radius
-#     .swap-notification
-#         p
-#             font-size: 12px
-#             opacity: 0.3
-#     .more-buttons
-#         top: 30px
-#         right: 0
-#         width: 150px
-#         box-shadow: 0px 0px 2px black
-#         border-radius: var(--border-btn)
-#         text-align: left
-#         padding-bottom: 3px
-#         >.more
-#             display: block
-#             cursor: pointer
-#             padding: 5px 0
-#             &:last-child
-#                 border-bottom: 0px
-#             .more-icon
-#                 width: 50px
-#                 text-align: center
-#                 display: inline-block
-#                 vertical-align: middle
-#             .more-text
-#                 width: 80px
-#                 display: inline-block
-#                 vertical-align: middle
-#     >.content-body
-#         margin-top: 75px
-#         @import scheme
-#         color: gray
-#         padding: 20px 10px
-#         @media(max-width:800px)
-#             margin-top: -5px
-#         a
-#             color: #6f6fe2
-#         >form
-#             >table
-#                 background: transparent
-#                 border-radius: 0 0 var(--border-btn) var(--border-btn)
-#                 width: 100%
-#                 border-spacing: 0
-#                 tr
-#                     &.gray
-#                         color: #CCC
-#                     &.orange
-#                         color: #cf952c
-#                     &.green
-#                         color: #23b723
-#                     td
-#                         padding: 3px 10px
-#                         font-size: 14px
-#                         .label-coin
-#                             left: 3px
-#                             top: 3px
-#                             padding: 0 2px 0 2px
-#                             height: 16px
-#                             position: relative
-#                         &:last-child
-#                             text-align: right
-#             text-align: left
-#             margin: auto 10px
-#             >.form-group
-#                 &.sender, &.receiver
-#                     input
-#                         padding: 0 10px 0 45px
-#                         text-align: left
-#                 &.sender
-#                     .address-holder .inner-address-holder
-#                         text-align: left
-#                         padding-left: 45px
-#                 &.receiver input
-#                     text-align: left !important
-#                 .identicon
-#                     ~ span
-#                         background: var(--input)
-#                 &:nth-child(2), &:nth-child(3)
-#                     div
-#                         position: relative
-#                         img
-#                             position: absolute
-#                             right: auto
-#                             left: 4px
-#                             top: 3px
-#                             height: 30px
-#                             border-radius: var(--border-btn)
-#                             margin: 0px
-#                         input
-#                             text-align: center
-#                 .control-label
-#                     padding-top: 5px
-#                     padding-left: $label-padding
-#                     font-size: $label-font
-#                 &.network
-#                     div
-#                         position: relative
-#                     .button
-#                         width: 12px
-#                         height: 16px
-#                         display: inline-block
-#                         padding: 9px
-#                         border-radius: var(--border-btn)
-#                         cursor: pointer
-#                         vertical-align: top
-#                         position: absolute
-#                         &.left
-#                             left: 0
-#                         &.right
-#                             right: 0
-#                             top: 3px
-#                         svg
-#                             vertical-align: inherit !important
-#                 margin-top: 4px
-#                 .address
-#                     padding: 0px
-#                     height: 36px
-#                     line-height: 36px
-#                     overflow: hidden
-#                     text-overflow: ellipsis
-#                     background: transparent
-#                     border-radius: $border-radius
-#                     font-size: 14px
-#                     overflow: hidden
-#                     text-overflow: ellipsis
-#                     color: #677897
-#                 input
-#                     outline: none
-#                     width: 100%
-#                     box-sizing: border-box
-#                     height: 36px
-#                     line-height: 36px
-#                     border-radius: $border-radius
-#                     padding: 0px 10px
-#                     font-size: 14px
-#                     border: 0px
-#                     box-shadow: none
-#                 .amount-field
-#                     position: relative
-#                     >.input-wrapper
-#                         position: relative
-#                         width: 65%
-#                         border-radius: var(--border-btn) 0 0 var(--border-btn)
-#                         &.choose-currency
-#                             display: inline-flex
-#                             width: 45% !important
-#                         .input-area
-#                             margin: 0
-#                         select
-#                             -webkit-appearance: none
-#                             -moz-appearance: none
-#                             padding-right: 30px
-#                             padding-left: 10px
-#                             background-position: right 5px top 50%
-#                             background-repeat: no-repeat
-#                             display: block
-#                             width: 30%
-#                             height: 36px
-#                             font-size: 14px
-#                             line-height: 1.5
-#                             color: #fff
-#                             background-color: #421f7c
-#                             background-clip: padding-box
-#                             border-radius: 0
-#                             border-color: #6b258e
-#                             border-left: 0 solid
-#                             margin-left: -1px
-#                         &.small
-#                             width: 35%
-#                             border-radius: 0 var(--border-btn) var(--border-btn) 0
-#                         display: inline-block
-#                         box-sizing: border-box
-#                         margin: 0
-#                         >.label
-#                             position: absolute
-#                             top: 8px
-#                             display: inline
-#                             &.lusd
-#                                 left: 5px
-#                             &.crypto
-#                                 right: 5px
-#                                 top: 7px
-#                                 height: 22px
-#                         .label-coin
-#                             height: 18px
-#                             top: 3px
-#                             position: relative
-#                             padding: 0 0px 0 8px;
-#                         input
-#                             width: 100%
-#                             color: white
-#                             box-shadow: none
-#                             outline: none
-#                             ::placeholder
-#                                 color: #eee
-#                             &:disabled
-#                                 opacity:.2
-#                             &.amount
-#                                 border-radius: $border-radius 0 0 $border-radius
-#                                 border-right: 0
-#                             &.amount-eur
-#                                 background: #f1eeee
-#                                 padding-left: 20px
-#                                 border-radius: 0 $border-radius $border-radius 0
-#                                 border-left: 0
-#                             &.amount-usd
-#                                 background: #f1eeee
-#                                 border-radius: 0 $border-radius $border-radius 0
-#                                 padding-left: 20px
-#         .smart-contract
-#             overflow: hidden
-#             padding: 2px
-#             box-sizing: border-box
-#         >.header
-#             padding: 10px
-#             min-height: 40px
-#             text-align: left
-#             padding: 0
-#             margin: 0 10px
-#             >.head
-#                 box-sizing: border-box
-#                 width: 70%
-#                 line-height: 70px
-#                 font-size: 27px
-#                 font-weight: 600
-#                 vertical-align: middle
-#                 line-height: 29px
-#                 display: inline-block
-#                 color: #677897
-#                 width: 80%
-#                 &.center
-#                     padding-left: 10px
-#                     text-align: center
-#                     overflow: hidden
-#                     text-overflow: ellipsis
-#                 &.left
-#                     width: 10%
-#                     text-align: center
-#                 &.right
-#                     width: 10%
-#                     text-align: right
-#                     cursor: pointer
-#                     >*
-#                         vertical-align: middle
-#             img
-#                 width: 34px
-#                 border-radius: 0px
-#         .field
-#             font-size: 12px
-#             padding-left: 3px
-#             color: gray
-#             margin-top: 5px
-#             &.type
-#                 font-size: 14px
-#                 color: #fff
-#                 text-transform: capitalize
-#             &.coin
-#                 font-size: 14px
-#                 color: #fff
-#         .usd
-#             font-size: 11px
-#             padding-left: 3px
-#             color: gray
-#             margin-top: 5px
-#             .switch-currency
-#                 float: right
-#                 &.active
-#                     background: var(--primary3)
-#                 &:last-child
-#                     margin-right: 2px
-#             .label-coin
-#                 left: 3px
-#                 top: 3px
-#                 padding: 0 2px 0 2px
-#                 height: 13px
-#                 position: relative
-#         .balance
-#             color: #5E72E4
-#         .send-all
-#             background: transparent
-#             outline: none
-#             border: 0
-#             border-radius: $border
-#             font-size: 12px
-#             line-height: 16px
-#             text-align: center
-#             padding: 2px 5px
-#             cursor: pointer
-#         .not-enough
-#             height: 0
-#             border: none;
-#             color: red
-#             font-size: 12px
-#             font-weight: 400
-#             overflow: hidden
-#             border-radius: 4px;
-#             width: auto;
-#             min-width: auto;
-#             display: inline-block;
-#             line-height: initial;
-#             margin-top: 7px;
-#             max-height: initial;
-#             &.visible
-#                 height: auto
-#                 padding-top: 2.5px !important
-#                 padding-left: 5px !important
-#                 min-height: auto;
-#                 padding: 2.5px 5px;
-#         .bold
-#             font-weight: bold
-#         .button-container
-#             text-align: center
-#             .buttons
-#                 margin-top: 20px
-#                 text-align: center
-#                 border-radius: $border
-#                 width: 100%
-#                 display: inline-block
-#                 overflow: hidden
-#                 .btn
-#                     width: auto
-#                     min-width: 80px
-#                     padding: 0 6px
-#                     line-height: 36px
-#                     height: 36px
-#                     text-transform: uppercase
-#                     text-align: center
-#                     font-weight: bold
-#                     border: 0
-#                     margin: 5px
-#                     font-size: 10px
-#                     border-radius: $border
-#                     display: inline-block
-#                     cursor: pointer
-#                     box-sizing: border-box
-#                     transaction: all .5s
-#                     &.btn-primary
-#                         background: #6CA7ED
-#                         color: white
-#                     &:hover
-#                         background: rgba(#6CA7ED, 0.2)
-#                         opacity: .9
+.content
+    position: relative
+    @import scheme
+    $border-radius: var(--border-btn)
+    $label-padding: 3px
+    $label-font: 13px
+    width: calc(100% - 0px) !important
+    margin-left: 0px !important
+    max-width: none !important
+    height: 100vh
+    display: flex !important
+    flex-direction: column
+    align-items: center
+    @media(min-height:900px)
+        justify-content: center
+    @media(max-width:800px)
+        margin-left: 0 !important
+    .icon-svg
+        position: relative
+        height: 12px
+        top: 2px
+    .icon-svg-history
+        width: auto !important
+        height: 20px
+    .content-body
+        max-width: 450px !important
+    >.title
+        position: fixed
+        position: -webkit-fixed
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 3
+        @media(max-width:800px)
+            left: 0
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .h1
+        font-size: 17px
+        text-transform: uppercase
+        letter-spacing: 2px
+        opacity: .8
+    .pending
+        color: orange
+    >*
+        display: inline-block
+        text-align: center
+        width: 100%
+        box-sizing: border-box
+        border-radius: $border-radius
+    .swap-notification
+        p
+            font-size: 12px
+            opacity: 0.3
+    .more-buttons
+        top: 30px
+        right: 0
+        width: 150px
+        box-shadow: 0px 0px 2px black
+        border-radius: var(--border-btn)
+        text-align: left
+        padding-bottom: 3px
+        >.more
+            display: block
+            cursor: pointer
+            padding: 5px 0
+            &:last-child
+                border-bottom: 0px
+            .more-icon
+                width: 50px
+                text-align: center
+                display: inline-block
+                vertical-align: middle
+            .more-text
+                width: 80px
+                display: inline-block
+                vertical-align: middle
+    >.content-body
+        margin-top: 75px
+        @import scheme
+        color: gray
+        padding: 20px 10px
+        @media(max-width:800px)
+            margin-top: -5px
+        a
+            color: #6f6fe2
+        >form
+            >table
+                background: transparent
+                border-radius: 0 0 var(--border-btn) var(--border-btn)
+                width: 100%
+                border-spacing: 0
+                tr
+                    &.gray
+                        color: #CCC
+                    &.orange
+                        color: #cf952c
+                    &.green
+                        color: #23b723
+                    td
+                        padding: 3px 10px
+                        font-size: 14px
+                        .label-coin
+                            left: 3px
+                            top: 3px
+                            padding: 0 2px 0 2px
+                            height: 16px
+                            position: relative
+                        &:last-child
+                            text-align: right
+            text-align: left
+            margin: auto 10px
+            >.form-group
+                &.sender, &.receiver
+                    input
+                        padding: 0 10px 0 45px
+                        text-align: left
+                &.sender
+                    .address-holder .inner-address-holder
+                        text-align: left
+                        padding-left: 45px
+                &.receiver input
+                    text-align: left !important
+                .identicon
+                    ~ span
+                        background: var(--input)
+                &:nth-child(2), &:nth-child(3)
+                    div
+                        position: relative
+                        img
+                            position: absolute
+                            right: auto
+                            left: 4px
+                            top: 3px
+                            height: 30px
+                            border-radius: var(--border-btn)
+                            margin: 0px
+                        input
+                            text-align: center
+                .control-label
+                    padding-top: 5px
+                    padding-left: $label-padding
+                    font-size: $label-font
+                &.network
+                    div
+                        position: relative
+                    .button
+                        width: 12px
+                        height: 16px
+                        display: inline-block
+                        padding: 9px
+                        border-radius: var(--border-btn)
+                        cursor: pointer
+                        vertical-align: top
+                        position: absolute
+                        &.left
+                            left: 0
+                        &.right
+                            right: 0
+                            top: 3px
+                        svg
+                            vertical-align: inherit !important
+                margin-top: 4px
+                .address
+                    padding: 0px
+                    height: 36px
+                    line-height: 36px
+                    overflow: hidden
+                    text-overflow: ellipsis
+                    background: transparent
+                    border-radius: $border-radius
+                    font-size: 14px
+                    overflow: hidden
+                    text-overflow: ellipsis
+                    color: #677897
+                input
+                    outline: none
+                    width: 100%
+                    box-sizing: border-box
+                    height: 36px
+                    line-height: 36px
+                    border-radius: $border-radius
+                    padding: 0px 10px
+                    font-size: 14px
+                    border: 0px
+                    box-shadow: none
+                .amount-field
+                    position: relative
+                    >.input-wrapper
+                        position: relative
+                        width: 65%
+                        border-radius: var(--border-btn) 0 0 var(--border-btn)
+                        &.choose-currency
+                            display: inline-flex
+                            width: 45% !important
+                        .input-area
+                            margin: 0
+                        select
+                            -webkit-appearance: none
+                            -moz-appearance: none
+                            padding-right: 30px
+                            padding-left: 10px
+                            background-position: right 5px top 50%
+                            background-repeat: no-repeat
+                            display: block
+                            width: 30%
+                            height: 36px
+                            font-size: 14px
+                            line-height: 1.5
+                            color: #fff
+                            background-color: #421f7c
+                            background-clip: padding-box
+                            border-radius: 0
+                            border-color: #6b258e
+                            border-left: 0 solid
+                            margin-left: -1px
+                        &.small
+                            width: 35%
+                            border-radius: 0 var(--border-btn) var(--border-btn) 0
+                        display: inline-block
+                        box-sizing: border-box
+                        margin: 0
+                        >.label
+                            position: absolute
+                            top: 8px
+                            display: inline
+                            &.lusd
+                                left: 5px
+                            &.crypto
+                                right: 5px
+                                top: 7px
+                                height: 22px
+                        .label-coin
+                            height: 18px
+                            top: 3px
+                            position: relative
+                            padding: 0 0px 0 8px;
+                        input
+                            width: 100%
+                            color: white
+                            box-shadow: none
+                            outline: none
+                            ::placeholder
+                                color: #eee
+                            &:disabled
+                                opacity:.2
+                            &.amount
+                                border-radius: $border-radius 0 0 $border-radius
+                                border-right: 0
+                            &.amount-eur
+                                background: #f1eeee
+                                padding-left: 20px
+                                border-radius: 0 $border-radius $border-radius 0
+                                border-left: 0
+                            &.amount-usd
+                                background: #f1eeee
+                                border-radius: 0 $border-radius $border-radius 0
+                                padding-left: 20px
+        .smart-contract
+            overflow: hidden
+            padding: 2px
+            box-sizing: border-box
+        >.header
+            padding: 10px
+            min-height: 40px
+            text-align: left
+            padding: 0
+            margin: 0 10px
+            >.head
+                box-sizing: border-box
+                width: 70%
+                line-height: 70px
+                font-size: 27px
+                font-weight: 600
+                vertical-align: middle
+                line-height: 29px
+                display: inline-block
+                color: #677897
+                width: 80%
+                &.center
+                    padding-left: 10px
+                    text-align: center
+                    overflow: hidden
+                    text-overflow: ellipsis
+                &.left
+                    width: 10%
+                    text-align: center
+                &.right
+                    width: 10%
+                    text-align: right
+                    cursor: pointer
+                    >*
+                        vertical-align: middle
+            img
+                width: 34px
+                border-radius: 0px
+        .field
+            font-size: 12px
+            padding-left: 3px
+            color: gray
+            margin-top: 5px
+            &.type
+                font-size: 14px
+                color: #fff
+                text-transform: capitalize
+            &.coin
+                font-size: 14px
+                color: #fff
+        .usd
+            font-size: 11px
+            padding-left: 3px
+            color: gray
+            margin-top: 5px
+            .switch-currency
+                float: right
+                &.active
+                    background: var(--primary3)
+                &:last-child
+                    margin-right: 2px
+            .label-coin
+                left: 3px
+                top: 3px
+                padding: 0 2px 0 2px
+                height: 13px
+                position: relative
+        .balance
+            color: #5E72E4
+        .send-all
+            background: transparent
+            outline: none
+            border: 0
+            border-radius: $border
+            font-size: 12px
+            line-height: 16px
+            text-align: center
+            padding: 2px 5px
+            cursor: pointer
+        .not-enough
+            height: 0
+            border: none;
+            color: red
+            font-size: 12px
+            font-weight: 400
+            overflow: hidden
+            border-radius: 4px;
+            width: auto;
+            min-width: auto;
+            display: inline-block;
+            line-height: initial;
+            margin-top: 7px;
+            max-height: initial;
+            &.visible
+                height: auto
+                padding-top: 2.5px !important
+                padding-left: 5px !important
+                min-height: auto;
+                padding: 2.5px 5px;
+        .bold
+            font-weight: bold
+        .button-container
+            text-align: center
+            .buttons
+                margin-top: 20px
+                text-align: center
+                border-radius: $border
+                width: 100%
+                display: inline-block
+                overflow: hidden
+                .btn
+                    width: auto
+                    min-width: 80px
+                    padding: 0 6px
+                    line-height: 36px
+                    height: 36px
+                    text-transform: uppercase
+                    text-align: center
+                    font-weight: bold
+                    border: 0
+                    margin: 5px
+                    font-size: 10px
+                    border-radius: $border
+                    display: inline-block
+                    cursor: pointer
+                    box-sizing: border-box
+                    transaction: all .5s
+                    &.btn-primary
+                        background: #6CA7ED
+                        color: white
+                    &:hover
+                        background: rgba(#6CA7ED, 0.2)
+                        opacity: .9
 form-group = (classes, title, style, content)->
-    react.create-element 'div', { className: "#{classes} form-group" }, children = 
-        react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
+    .pug.form-group(class="#{classes}")
+        label.pug.control-label(style=style) #{title}
         content!
 send = ({ store, web3t })->
     { wallet-icon, execute-contract-data, getBridgeInfo, token, name, homeFee, homeFeeUsd, fee-token, bridge-fee-token, network, send, wallet, pending, recipient-change, amount-change, amount-usd-change, amount-eur-change, use-max-amount, show-data, show-label, history, cancel, send-anyway, before-send-anyway, choose-auto, round5edit, round5, is-data, encode-decode, change-amount, invoice } = send-funcs store, web3t
@@ -588,118 +588,118 @@ send = ({ store, web3t })->
         min-width: "30px"
     amount-send-fee-rounded = round-human(send.amount-send-fee, {decimals:8})
     /* Render */
-    react.create-element 'div', { className: 'content content-828432226' }, children = 
+    .pug.content
         loader {loading: store.current.send.checking-allowed, text: "Please wait, approving bridge contract..."}
-        react.create-element 'div', { style: border-header, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + title
-            react.create-element 'div', { on-click: go-back-from-send, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+        .pug.title(style=border-header)
+            .pug.header(class="#{show-class}") #{title}
+            .pug.close(on-click=go-back-from-send)
+                img.icon-svg.pug(src="#{icons.arrow-left}")
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t
-        react.create-element 'div', { style: content-body-style, className: 'content-body' }, children = 
+        .pug.content-body(style=content-body-style)
             if store.current.device isnt \mobile
-                react.create-element 'div', { className: 'header' }, children = 
-                    react.create-element 'span', { className: 'head left' }, children = 
-                        react.create-element 'img', { src: "#{wallet-icon}" }
-                    react.create-element 'span', { style: more-text, className: 'head center' }, ' ' + wallet-title
+                .pug.header
+                    span.head.pug.left
+                        img.pug(src="#{wallet-icon}")
+                    span.pug.head.center(style=more-text) #{wallet-title}
                     if store.current.device is \mobile
-                        react.create-element 'span', { on-click: history, style: icon-style, className: 'head right' }, children = 
-                            react.create-element 'img', { src: "#{icons.history}", className: 'icon-svg-history' }
+                        span.pug.head.right(on-click=history style=icon-style)
+                            img.icon-svg-history.pug(src="#{icons.history}")
             if store.current.send-menu-open
-                react.create-element 'div', { style: menu-style, className: 'more-buttons' }, children = 
+                .pug.more-buttons(style=menu-style)
                     if store.preference.invoice-visible is yes
                         if store.current.device is \desktop
-                            react.create-element 'a', { on-click: open-invoice, className: 'more receive' }, children = 
-                                react.create-element 'div', {}, children = 
-                                    react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
+                            a.pug.more.receive(on-click=open-invoice)
+                                .pug
+                                    span.pug.more-icon(style=icon-style)
                                         icon \Mail, 20
-                                    react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.invoice
+                                    span.pug.more-text(style=more-text) #{lang.invoice}
                     if store.current.device is \mobile
-                        react.create-element 'a', { on-click: history, className: 'more history' }, children = 
-                            react.create-element 'div', {}, children = 
-                                react.create-element 'span', { style: icon-style, className: 'more-icon' }, children = 
+                        a.pug.more.history(on-click=history)
+                            .pug
+                                span.pug.more-icon(style=icon-style)
                                     icon \Inbox, 20
-                                react.create-element 'span', { style: more-text, className: 'more-text' }, ' ' + lang.history
-            react.create-element 'form', {}, children = 
+                                span.pug.more-text(style=more-text) #{lang.history}
+            form.pug
                 form-group \sender, lang.from, icon-style, ->
-                    react.create-element 'div', { style: border-style, className: 'address' }, children = 
+                    .address.pug(style=border-style)
                         address-holder { store, wallet }
-                react.create-element 'div', { className: 'network form-group' }, children = 
+                .pug.network.form-group
                     network-slider { web3t, wallet, store, on-change: network-on-change}
                 form-group \receiver, lang.to, icon-style, ->
-                    react.create-element 'div', {}, children = 
+                    .pug
                         identicon { store, address: send.to }
-                        react.create-element 'input', { type: 'text', style: input-style, on-change: recipient-change, value: "#{recipient}", placeholder: "#{store.current.send-to-mask}", id: "send-recipient" }
+                        input.pug(type='text' style=input-style on-change=recipient-change value="#{recipient}" placeholder="#{store.current.send-to-mask}" id="send-recipient" )
                 form-group \send-amount, lang.amount, icon-style, ->
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'div', { className: 'amount-field' }, children = 
-                            react.create-element 'div', { style: input-wrapper-style, className: 'input-wrapper' }, children = 
-                                react.create-element 'div', { className: 'label crypto' }, children = 
-                                    react.create-element 'img', { src: "#{wallet-icon}", className: 'label-coin' }
-                                    """ #{token-display}"""
+                    .pug
+                        .pug.amount-field
+                            .input-wrapper.pug(style=input-wrapper-style)
+                                .label.crypto.pug
+                                    img.label-coin.pug(src="#{wallet-icon}")
+                                    | #{token-display}
                                 amount-field { store, value: send.amount-send, on-change: before-amount-change, placeholder="0", id="send-amount", token, disabled }
                             if active-usd is \active
                                 if not is-custom
                                     amount-fiat-field { store, on-change:amount-usd-change, placeholder:"0", title:"#{send.amount-send-usd}" value:"#{send.amount-send-usd}", id:"send-amount-usd", disabled: no }
                             if active-eur is \active
-                                react.create-element 'div', { style: amount-style, className: 'input-wrapper small' }, children = 
-                                    react.create-element 'div', { className: 'label lusd' }
-                                    react.create-element 'input', { type: 'text', style: crypto-background, on-change: amount-eur-change, placeholder: "0", title: "#{send.amount-send-eur}", value: "#{round-money send.amount-send-eur}", id: "send-amount-eur", className: 'amount-eur' }
-                        react.create-element 'div', { className: 'usd' }, children = 
-                            react.create-element 'button', { on-click: use-max-amount, style: button-primary3-style, type: "button", id: "send-max", className: 'send-all' }, ' ' + lang.use-max
-                            react.create-element 'span', {}, ' ' + lang.balance
-                            react.create-element 'span', { className: 'balance' }, children = 
-                                react.create-element 'span', { title: "#{wallet.balance}" }, ' ' + round-human wallet.balance
-                                    react.create-element 'img', { src: "#{wallet-icon}", className: 'label-coin' }
-                                    react.create-element 'span', {}, ' ' + token-display
+                                .input-wrapper.small.pug(style=amount-style)
+                                    .label.lusd.pug
+                                    input.pug.amount-eur(type='text'  style=crypto-background on-change=amount-eur-change placeholder="0" title="#{send.amount-send-eur}" value="#{round-money send.amount-send-eur}" id="send-amount-eur")
+                        .pug.usd
+                            button.pug.send-all(on-click=use-max-amount style=button-primary3-style type="button" id="send-max") #{lang.use-max}
+                            span.pug #{lang.balance}
+                            span.pug.balance
+                                span.pug(title="#{wallet.balance}") #{round-human wallet.balance}
+                                    img.label-coin.pug(src="#{wallet-icon}")
+                                    span.pug #{token-display}
                                 if +wallet.pending-sent >0 and no
-                                    react.create-element 'span', { className: 'pending' }, ' ' + '(' + pending + ' ' + lang.pending + ')'
+                                    span.pug.pending #{'(' + pending + ' ' + lang.pending + ')'}
                         if not store.current.send.parseError
-                            react.create-element 'div', { title: "#{send.error}", className: "#{visible-error} control-label not-enough text-left" }, ' ' + send.error
+                            .pug.control-label.not-enough.text-left(title="#{send.error}" class="#{visible-error}") #{send.error}
                 if is-data
                     form-group \contract-data, 'Data', icon-style, ->
-                        react.create-element 'div', { style: input-style, className: 'smart-contract' }, ' ' + show-data!
+                        .pug.smart-contract(style=input-style) #{show-data!}
                 if down(wallet.network?group) in <[ bitcoin ]>
                 or wallet.coin.token in <[ vlx_native ltc ]>
                     trx-fee { store, web3t, wallet, fee-token }
                 else
                     trx-custom-gas-price { store, web3t, wallet, fee-token }
-                react.create-element 'table', { style: border-style }, children = 
-                    react.create-element 'tbody', {}, children = 
-                        react.create-element 'tr', {}, children = 
-                            react.create-element 'td', {}, ' ' + lang.you-spend
-                            react.create-element 'td', {}, children = 
-                                react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + round-human(send.amount-charged)
-                                    react.create-element 'img', { src: "#{wallet-icon}", className: 'label-coin' }
-                                    react.create-element 'span', { title: "#{send.amount-charged}" }, ' ' + token-display
+                table.pug(style=border-style)
+                    tbody.pug
+                        tr.pug
+                            td.pug #{lang.you-spend}
+                            td.pug
+                                span.pug(title="#{send.amount-charged}") #{round-human(send.amount-charged)}
+                                    img.label-coin.pug(src="#{wallet-icon}")
+                                    span.pug(title="#{send.amount-charged}") #{token-display}
                                 if not is-custom
-                                    react.create-element 'div', { className: 'usd' }, ' $ ' + round-human send.amount-charged-usd
-                        react.create-element 'tr', { className: 'orange' }, children = 
-                            react.create-element 'td', {}, ' ' + lang.fee
-                            react.create-element 'td', {}, children = 
-                                react.create-element 'span', { title: "#{send.amount-send-fee}", style: inline-style, className: "#{placeholder-class}" }, ' ' + amount-send-fee-rounded
-                                    react.create-element 'img', { src: "#{fee-coin-image}", className: 'label-coin' }
-                                    react.create-element 'span', { title: "#{send.amount-send-fee}" }, ' ' + fee-token-display
-                                react.create-element 'div', { className: 'usd' }, ' $ ' + round-human send.amount-send-fee-usd
+                                    .pug.usd $ #{round-human send.amount-charged-usd}
+                        tr.pug.orange
+                            td.pug #{lang.fee}
+                            td.pug
+                                span.pug(class="#{placeholder-class}" title="#{send.amount-send-fee}" style=inline-style) #{amount-send-fee-rounded}
+                                    img.label-coin.pug(src="#{fee-coin-image}")
+                                    span.pug(title="#{send.amount-send-fee}") #{fee-token-display}
+                                .pug.usd $ #{round-human send.amount-send-fee-usd}
                         if send.homeFeePercent? and send.homeFeePercent > 0
-                            react.create-element 'tr', { className: 'orange home-fee' }, children = 
-                                react.create-element 'td', {}, children = 
-                                    """ #{lang.home-fee}"""
-                                    """ #{homeFeePercentLabel}"""
-                                react.create-element 'td', {}, children = 
-                                    react.create-element 'span', { title: "#{homeFee}" }, ' ' + round-human homeFee
-                                        react.create-element 'img', { src: "#{send.coin.image}", className: 'label-coin' }
-                                        react.create-element 'span', { title: "#{homeFee}" }, ' ' + token-display
-                                    react.create-element 'div', { className: 'usd' }, ' $ ' + round-human homeFeeUsd
-            react.create-element 'div', { className: 'button-container' }, children = 
-                react.create-element 'div', { className: 'buttons' }, children = 
+                            tr.pug.orange.home-fee
+                                td.pug
+                                    | #{lang.home-fee}
+                                    | #{homeFeePercentLabel}
+                                td.pug
+                                    span.pug(title="#{homeFee}") #{round-human homeFee}
+                                        img.label-coin.pug(src="#{send.coin.image}")
+                                        span.pug(title="#{homeFee}") #{token-display}
+                                    .pug.usd $ #{round-human homeFeeUsd}
+            .pug.button-container
+                .pug.buttons
                     button { store, text: "#{title}" , on-click: send-func , loading: send.sending, type: \primary, error: send.error, makeDisabled: makeDisabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
                 if store.current.send.is-swap is yes
                     if not is-not-bridge!
-                        react.create-element 'div', { className: 'swap-notification' }, children = 
-                            react.create-element 'p', {}, ' ' + lang.swapNotification
+                        .pug.swap-notification
+                            p.pug #{lang.swapNotification}
 module.exports = send
 module.exports.init = ({ store, web3t }, cb)->
     return cb null if not store? or not web3t?

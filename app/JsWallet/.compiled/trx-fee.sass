@@ -1,0 +1,60 @@
+.trx-fee-1294478930
+    @import scheme
+    $border-radius: var(--border-btn)
+    &.disabled
+        opacity:.2
+    table
+        margin-bottom: -1px
+        border-radius: $border-radius $border-radius 0 0
+    .tx-fee-mode
+        cursor: pointer
+        padding: 2px 5px 10px
+        transition: all .5s
+        position: relative
+        &:first-child
+            border-radius: $border-radius 0 0 0
+        &:last-child
+            text-align: left
+            border-radius: 0 $border-radius 0 0
+        &:hover
+            background: var(--td-hover)
+            transition: all .5s
+        &.active
+            background: var(--td-hover)
+            .field
+                &.type
+                    color: orange
+                    &:after
+                        opacity: 1
+                        filter: none
+        &.disabled
+            opacity: 0.2;
+            cursor: not-allowed;
+        .type
+            &:after
+                content: $check-xs
+                position: absolute
+                right: 5px
+                opacity: .2
+                filter: grayscale(1)
+                margin-bottom: 20px
+        .coin
+            text-transform: uppercase
+    label
+        padding-top: 5px
+        padding-left: 3px
+        font-size: 13px
+    table
+        width: 100%
+    input
+        outline: none
+        width: 100%
+        box-sizing: border-box
+        height: 36px
+        line-height: 36px
+        border-radius: 0px
+        padding: 0px 10px
+        font-size: 14px
+        border: 0px
+        box-shadow: none
+        margin-bottom: -1px
