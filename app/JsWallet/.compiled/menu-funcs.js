@@ -67,6 +67,8 @@
       console.log("menu-funcs refresh");
       store.forceReload = true;
       store.forceReloadTxs = true;
+      store.transactions.all = [];
+      store.transactions.applied = [];
       return web3t.refresh(function(){
         store.forceReload = false;
         return store.forceReloadTxs = false;

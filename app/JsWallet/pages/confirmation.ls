@@ -60,7 +60,7 @@ require! {
             height: 60px
     @import scheme
     position: fixed
-    z-index: 99999999
+    z-index: 99999999999999
     height: 100vh
     top: 0
     left: 0

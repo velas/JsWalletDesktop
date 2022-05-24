@@ -1,11 +1,12 @@
 {
   "name": "velas-wallet",
-  "version": "1.2.55",
+  "version": "1.2.56",
   "description": "",
   "main": "",
   "dependencies": {
     "@primer/octicons-react": "9.1.1",
     "@solana/buffer-layout": "4.0.0",
+    "@velas/staking.2.0": "1.0.2",
     "@velas/web3": "git+https://github.com/velas/web3.js.git#web",
     "atob": "2.1.2",
     "bignumber.js": "6.0.0",
@@ -39,7 +40,6 @@
     "react-currency-input-field": "^3.3.2",
     "react-dom": "^17.0.2",
     "react-simple-file-input": "2.1.0",
-    "staking.2.0": "1.0.30",
     "web3": "0.18.4"
   },
   "scripts": {

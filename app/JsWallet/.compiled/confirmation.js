@@ -70,7 +70,7 @@
       }, ' ' + txt);
     };
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -139,7 +139,7 @@
       fontSize: "13px"
     };
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -229,7 +229,7 @@
       }
     }());
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -332,7 +332,7 @@
     ref$ = store.current.swapConfirmation, amountSend = ref$.amountSend, tokenFrom = ref$.tokenFrom, amountReceive = ref$.amountReceive, tokenTo = ref$.tokenTo, bridgeFee = ref$.bridgeFee, homeBridge = ref$.homeBridge, foreignBridge = ref$.foreignBridge, fromNetwork = ref$.fromNetwork, toNetwork = ref$.toNetwork;
     lang = getLang(store);
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -441,7 +441,7 @@
     };
     lang = getLang(store);
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -584,7 +584,7 @@
       }());
     };
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -742,7 +742,7 @@
       }());
     };
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -981,7 +981,7 @@
     };
     return react.createElement('div', {
       onClick: cancel,
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -1076,7 +1076,7 @@
     };
     lang = getLang(store);
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'
@@ -1211,7 +1211,7 @@
       }
     }());
     return react.createElement('div', {
-      className: 'confirmation confirmation-1782791312'
+      className: 'confirmation confirmation2028414736'
     }, children = react.createElement('div', {
       style: confirmation,
       className: 'confirmation-body'

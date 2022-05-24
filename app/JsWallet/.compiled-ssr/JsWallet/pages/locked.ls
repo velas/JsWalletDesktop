@@ -16,7 +16,7 @@ require! {
     \../components/export-import-seed.ls
     \../pages/confirmation.ls : { alert }
 }
-# .locked-906198149
+# .locked-406688437
 #     @import scheme
 #     padding-top: 20px
 #     padding-bottom: 20px
@@ -28,6 +28,10 @@ require! {
 #     display: flex
 #     justify-content: center
 #     align-items: center
+#     z-index: 99999999
+#     position: relative
+#     background: $primary
+#     background-color: var(--bgspare)
 #     @media screen and (max-width: 800px)
 #         display: block
 #     .locked-inner
@@ -395,9 +399,8 @@ locked = ({ store, web3t })->
     info = get-primary-info store
     locked-style=
         color: info.app.text
-        background-image: info.app.background-image
-        background-size: "cover"
         background: info.app.glitch
+
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text
@@ -409,7 +412,7 @@ locked = ({ store, web3t })->
         filter: info.app.filterLogo
     download = ->
         navigate store, web3t, \downloadwallet
-    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-906198149' }, children = 
+    react.create-element 'div', { key: "locked", style: locked-style, className: 'locked locked-406688437' }, children = 
         react.create-element 'div', { className: 'locked-inner' }, children = 
             react.create-element 'div', { className: 'logo' }, children = 
                 react.create-element 'img', { src: "#{info.branding.logo}" }

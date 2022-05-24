@@ -325,8 +325,6 @@
     info = getPrimaryInfo(store);
     lockedStyle = {
       color: info.app.text,
-      backgroundImage: info.app.backgroundImage,
-      backgroundSize: "cover",
       background: info.app.glitch
     };
     buttonPrimary2Style = {
@@ -347,7 +345,7 @@
     return react.createElement('div', {
       key: "locked",
       style: lockedStyle,
-      className: 'locked locked-906198149'
+      className: 'locked locked-406688437'
     }, children = react.createElement('div', {
       className: 'locked-inner'
     }, children = [

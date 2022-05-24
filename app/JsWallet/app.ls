@@ -4,6 +4,7 @@ require! {
     \react
     \./pages.ls
     \./pages/header.ls
+    \./pages/no_internet_banner.ls
     \./pages/mobilemenu.ls
     \./components/default-alert.ls
     #\./pages/side-menu.ls
@@ -17,6 +18,7 @@ require! {
     \./pages/confirmation.ls : { confirmation-control }
     \./pages/hovered-address.ls
     \./components/react-detect-offline : { Offline, Online }
+    \./navigate.ls
 }
 .app
     button
@@ -208,6 +210,26 @@ module.exports = ({ store, web3t })->
         | _ => ""
     open-menu = ->
         store.current.open-menu = not store.current.open-menu
+    close-all-confirm-and-alert-dialogs = ->
+        store.current.promptPassword = no
+        store.current.swap-confirmation = no
+        store.current.confirmation = no
+        store.current.notification = no
+        store.current.prompt = no
+        store.current.prompt2 = no
+        store.current.prompt3 = no
+        store.current.choose-token = no
+        store.current.alert = no
+    detect-network-change = (isOnline)->
+        close-all-confirm-and-alert-dialogs!
+        if not isOnline
+            store.walletIsOffline = yes
+        else
+            store.walletIsOffline = no
+            if store.current.page not in <[ chooseinit newseedrestore reviewwords verifyseed restorewords ]>
+                return navigate store, web3t, \locked
+            if store.current.seed-words.length is 0
+                return navigate store, web3t, \chooseinit
     .pug
         define-root store
         description store
@@ -217,15 +239,15 @@ module.exports = ({ store, web3t })->
             copy-message store, web3t
             default-alert store
             #banner store, web3t
-            if no
-                if store.current.device is \mobile
-                    header store, web3t
             if store.current.device is \mobile
                 mobilemenu store, web3t
             if store.current.device is \desktop
                 # side-menu store, web3t
                 left-menu store, web3t
             current-page { store, web3t }
+            if store.walletIsOffline is yes
+                no_internet_banner {store, web3t}
             hovered-address { store }
-            Offline.pug
-                .notification.fixed-n-centered.error-no-connection.pug Warning! You have no internet connection!\nOffline mode is on!
+            Offline.pug(onChange=detect-network-change)
+                no_internet_banner {store, web3t}
+                .notification.fixed-n-centered.error-no-connection.pug(id="offline-notification") Warning! You have no internet connection!\nOffline mode is on!

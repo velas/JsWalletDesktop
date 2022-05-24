@@ -28,6 +28,10 @@ require! {
     display: flex
     justify-content: center
     align-items: center
+    z-index: 99999999
+    position: relative
+    background: $primary
+    background-color: var(--bgspare)
     @media screen and (max-width: 800px)
         display: block
     .locked-inner
@@ -395,8 +399,6 @@ locked = ({ store, web3t })->
     info = get-primary-info store
     locked-style=
         color: info.app.text
-        background-image: info.app.background-image
-        background-size: "cover"
         background: info.app.glitch
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"

@@ -325,13 +325,17 @@ require! {
             vertical-align: middle
         &.confirmed
             font-style: normal
-            font-size: 14px
+            font-size: 1.0vw;
             margin-left: 3px
             color: gray
             border-radius: $border
             width: auto
             letter-spacing: .5px
             padding: 0px 3px 1px 0px
+            @media(max-width: $ipad)
+                font-size: 1.3vw
+            @media(min-width: 1250px)
+                font-size: 13px
             &.done
                 background-image: var(--confirm)
                 -webkit-text-fill-color: transparent

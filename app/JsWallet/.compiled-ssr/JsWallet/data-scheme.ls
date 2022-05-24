@@ -69,6 +69,7 @@ url-hash-params =
     | window? => qs.parse window.location.hash.replace('#', '')
     | _ => {}
 store =
+    walletIsOffline: no
     showTooltip: false
     tooltipCoordinates: { x: 0, y: 0 }
     tooltipMessage: "" 

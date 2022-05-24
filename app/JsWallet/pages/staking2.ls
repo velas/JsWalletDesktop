@@ -198,23 +198,6 @@ require! {
             margin: 5px
             @media(max-width:800px)
                 text-align: center
-    .info-block-row
-        margin-top: 10px
-    .index-container-details
-        .info-block-column,.info-block-column2
-            margin: 12px 0  
-        .containers
-            margin-bottom: 20px;
-            > div
-        .index-details-avatar-badge
-            div
-                padding: 0 5px    
-    .stake-more
-        .notice-container
-            margin-bottom: 20px
-        .MuiInput-root
-            padding-top: 5px
-            padding-bottom: 5px
 staking2 = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t

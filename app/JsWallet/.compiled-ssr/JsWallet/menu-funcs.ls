@@ -41,6 +41,8 @@ module.exports = (store, web3t)->
         console.log("menu-funcs refresh")
         store.forceReload = yes
         store.forceReloadTxs = yes
+        store.transactions.all = []
+        store.transactions.applied = []
         <- web3t.refresh
         store.forceReload = no
         store.forceReloadTxs = no

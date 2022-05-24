@@ -91,6 +91,7 @@
     }
   }());
   store = {
+    walletIsOffline: false,
     showTooltip: false,
     tooltipCoordinates: {
       x: 0,
