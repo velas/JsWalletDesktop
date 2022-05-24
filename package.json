@@ -34,7 +34,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "app-builder-bin": "^3.5.2",
-    "electron": "^7.1.11",
+    "electron": "18.3.0",
     "electron-builder": "latest",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^0.2.1",
@@ -69,9 +69,9 @@
     "afterAllArtifactBuild": "scripts/calc-md5.js"
   },
   "dependencies": {
-    "@velas/web3": "https://github.com/velas/web3.js.git#web",
-    "@velas/staking.2.0": "file:./velas-staking.2.0-1.0.0.tgz",
     "@primer/octicons-react": "^9.6.0",
+    "@velas/staking.2.0": "file:./velas-staking.2.0-1.0.0.tgz",
+    "@velas/web3": "https://github.com/velas/web3.js.git#web",
     "atob": "^2.1.2",
     "big-integer": "^1.6.48",
     "bignumber": "^1.1.0",
