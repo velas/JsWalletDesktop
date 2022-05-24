@@ -23,7 +23,7 @@
     "isomorphic-fetch": "^3.0.0",
     "isomorphic-webcrypto": "^2.3.8",
     "localStorage": "1.0.4",
-    "lodash": "^4.17.12",
+    "lodash": "^4.17.21",
     "md5": "2.2.1",
     "mobx": "4.0.0",
     "mobx-react": "5.0.0",
