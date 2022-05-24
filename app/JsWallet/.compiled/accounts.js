@@ -377,9 +377,6 @@
         store.staking.creatingStakingAccount = true;
         min_stake = web3t.velas.NativeStaking.min_stake;
         main_balance = getBalance();
-        console.log({
-          main_balance: main_balance
-        });
         txFee = div(5000, Math.pow(10, 9));
         rest = 0.1;
         if (+minus(main_balance, amount) <= 0) {

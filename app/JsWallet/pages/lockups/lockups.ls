@@ -30,25 +30,25 @@ require! {
     \../../seed.ls : seedmem
     \moment
 }
-# .single-section45016658
-#     .subtitle
-#         margin: 20px 0 10px
-#     .settings
-#         margin-top: 20px
-#         .settings-item
-#             margin-bottom: 20px
-#             & > label
-#                 margin-bottom: 6px 
-#                 display: inline-block
-#     .outer-checkbox
-#         display: inline-block
-#         margin: 0 15px 0 0
-#         & + label   
-#             margin: 5px 0
-#     .table-scroll.lockup
-#         table
-#             td
-#                 border: none
+.single-section
+    .subtitle
+        margin: 20px 0 10px
+    .settings
+        margin-top: 20px
+        .settings-item
+            margin-bottom: 20px
+            & > label
+                margin-bottom: 6px 
+                display: inline-block
+    .outer-checkbox
+        display: inline-block
+        margin: 0 15px 0 0
+        & + label   
+            margin: 5px 0
+    .table-scroll.lockup
+        table
+            td
+                border: none
 cb = console.log
 get-pair = (wallet, path, index, password, with-keystore)->
     w = wallet.derive-path(path).derive-child(index).get-wallet!
@@ -73,7 +73,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', {}, ' ' + validator
+    li.pug(key="#{validator}") #{validator}
 lockups-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -230,16 +230,16 @@ lockups-content = (store, web3t)->
             null
         lockedUntil = if lockedFundsReleaseTime? then moment(lockedFundsReleaseTime * 1000).format("DD/MM/YYYY hh:mm") else ".."
         lockedThreshold = if lockThreshold? then (lockThreshold `div`(10^18)) else ".." 
-        react.create-element 'tr', { key: "#{item.address}", on-mouse-enter: show-stake-place, on-mouse-leave: hide-stake-place, className: "#{item.status}" }, children = 
-            react.create-element 'td', {}, children = 
-                react.create-element 'span', { className: "#{item.status} circle" }, ' ' + index
-            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{ethToVlx item.address}" }, children = 
+        tr.pug(class="#{item.status}" key="#{item.address}" on-mouse-enter=show-stake-place on-mouse-leave=hide-stake-place)
+            td.pug
+                span.pug.circle(class="#{item.status}") #{index}
+            td.pug(datacolumn='Staker Address' title="#{ethToVlx item.address}")
                 address-holder { store, wallet }
-            react.create-element 'td', {}, ' ' + lockedFunds
-            react.create-element 'td', {}, ' ' + stake + ' '
-            react.create-element 'td', {}, ' ' + lockedThreshold + '    '
-            react.create-element 'td', {}, ' ' + lockedUntil + '           '
-            react.create-element 'td', {}, children = 
+            td.pug #{lockedFunds}
+            td.pug #{stake} 
+            td.pug #{lockedThreshold}    
+            td.pug #{lockedUntil}           
+            td.pug
                 button { store, on-click: choose , type: \secondary , icon : \arrowRight }
     cancel = ->
         store.lockups.chosen-lockup = null
@@ -262,25 +262,25 @@ lockups-content = (store, web3t)->
         background: style.app.stats
     cancel-choose-pool = ->
         <- pools-list.init({store, web3t, select-action: no})
-    react.create-element 'div', { className: 'staking-content delegate' }, children = 
+    .pug.staking-content.delegate
         if not store.staking.chosen-pool? and not store.lockups.chosen-lockup?
-            react.create-element 'div', { className: 'main-sections' }, children = 
-                react.create-element 'div', { id: "lockups", className: 'form-group' }, children = 
-                    react.create-element 'div', { className: 'section' }, children = 
-                        react.create-element 'div', { className: 'title' }, children = 
-                            react.create-element 'h3', {}, ' Lock-up contracts'
-                        react.create-element 'div', { on-mouse-leave: hide-stake-place, className: 'description table-scroll lockup' }, children = 
-                            react.create-element 'table', {}, children = 
-                                react.create-element 'thead', {}, children = 
-                                    react.create-element 'tr', {}, children = 
-                                        react.create-element 'td', { width: "3%", style: stats }, ' #'
-                                        react.create-element 'td', { width: "40%", style: staker-pool-style }, ' Address'
-                                        react.create-element 'td', { width: "20%", style: stats }, ' Non-staked Amount'
-                                        react.create-element 'td', { width: "20%", style: stats }, ' Staked Amount'
-                                        react.create-element 'td', { width: "7%", style: stats }, ' Threshold, VLX'
-                                        react.create-element 'td', { width: "10%", style: stats }, ' Locked Until'
-                                        react.create-element 'td', { width: "9%", style: stats }, ' Select'
-                                react.create-element 'tbody', {}, children = 
+            .pug.main-sections
+                .form-group.pug(id="lockups")
+                    .pug.section
+                        .title.pug
+                            h3.pug Lock-up contracts
+                        .description.pug.table-scroll.lockup(on-mouse-leave=hide-stake-place)
+                            table.pug
+                                thead.pug
+                                    tr.pug
+                                        td.pug(width="3%" style=stats) #
+                                        td.pug(width="40%" style=staker-pool-style) Address
+                                        td.pug(width="20%" style=stats) Non-staked Amount
+                                        td.pug(width="20%" style=stats) Staked Amount
+                                        td.pug(width="7%" style=stats) Threshold, VLX
+                                        td.pug(width="10%" style=stats) Locked Until
+                                        td.pug(width="9%" style=stats) Select
+                                tbody.pug
                                     store.lockups.lockupContracts |> map build store, web3t 
         # We have choosen contract
         if store.lockups.chosen-lockup?
@@ -314,48 +314,48 @@ lockups-content = (store, web3t)->
                 "Select default pool from the list:"
             else
                 "Default pool:"
-            react.create-element 'div', { id: "choosen-lockup", className: 'single-section form-group single-section45016658' }, children = 
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' Lock-up contract'
-                        react.create-element 'div', { className: 'buttons' }, children = 
+            .pug.single-section.form-group(id="choosen-lockup")
+                .pug.section
+                    .title.pug
+                        h3.pug Lock-up contract
+                        .buttons.pug
                             button { store, on-click: cancel , type: \secondary , icon : "back" , text: "Back" id="cancel-pool"} 
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { title: "#{store.lockups.chosen-lockup.address}", className: 'chosen-pool' }, children = 
-                            react.create-element 'span', {}, children = 
-                                """ #{ethToVlx store.lockups.chosen-lockup.address}"""
-                                react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
-                            react.create-element 'div', { className: 'settings' }, children = 
+                    .description.pug
+                        .pug.chosen-pool(title="#{store.lockups.chosen-lockup.address}")
+                            span.pug
+                                | #{ethToVlx store.lockups.chosen-lockup.address}
+                                img.pug.check(src="#{icons.img-check}")
+                            .pug.settings
                                 if current-contract.lockedPool? and +current-contract.lockedPool isnt 0 then
-                                    react.create-element 'div', { className: 'flex-container flex-container-centered settings-item' }, children = 
+                                    .pug.flex-container.flex-container-centered.settings-item
                                         checkbox { store, value: isForwardingEnabled, id:"autostaking-switcher", on-change:  on-change-autostaking, checked:isForwardingEnabled} 
-                                        react.create-element 'span', {}, ' Autostaking is ' + autostaking-state
-                                react.create-element 'div', { className: 'flex-container flex-container-centered settings-item' }, children = 
+                                        span.pug Autostaking is #{autostaking-state}
+                                .pug.flex-container.flex-container-centered.settings-item
                                     if current-contract.lockedPool?
                                         if store.lockups.chosen-lockup-action is \select then
                                             button {store, on-click: cancel-choose-pool,  text: "Cancel", no-icon: yes, id="cancel-choose-pool"}
-                                    react.create-element 'div', { className: 'subtitle color' }, children = 
-                                        react.create-element 'label', {}, ' ' + Locked-pool-label
-                                    react.create-element 'div', { className: 'table-non-scroll min-height description width100' }, children = 
+                                    .pug.subtitle.color
+                                        label.pug #{Locked-pool-label}
+                                    .pug.table-non-scroll.min-height.description.width100
                                         pools-list({store, web3t})
                                     if store.lockups.chosen-lockup-action is \choose then 
-                                        react.create-element 'div', {}, children = 
+                                        .pug
                                             button {store, classes: "width-auto", text: "Select default pool", no-icon:yes, on-click: choose-pool-from-list, style: {width: \auto}}
                 #txs-history { store, web3t }                  
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.withdraw
-                    react.create-element 'div', { className: 'description' }, children = 
+                .pug.section
+                    .title.pug
+                        h3.pug #{lang.withdraw}
+                    .description.pug
                         if store.lockups.chosen-lockup.maxWithdrawAllowed > 0   
-                            react.create-element 'div', { className: 'left' }, children = 
-                                react.create-element 'label', {}
-                                react.create-element 'div', { className: 'balance' }
+                            .pug.left
+                                label.pug
+                                .pug.balance
                                 button { store, on-click: withdraw, classes: "width-auto" type: \secondary , icon : \apply , text: "Withdraw #{(store.lockups.chosen-lockup.maxWithdrawAllowed `div` (10^18))} VLX" }    
                         else
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' You have no available '
-                                react.create-element 'span', { className: 'color' }, ' VLX '
-                                react.create-element 'span', {}, ' to withdraw'
+                            .pug.balance
+                                span.pug You have no available 
+                                span.pug.color VLX 
+                                span.pug to withdraw
                 request-stake store, web3t
                 request-unstake store, web3t 
                 # if we have some funds to unstake
@@ -381,24 +381,24 @@ lockups-content = (store, web3t)->
                         to = pool-address
                         err <- web3t.vlx2.send-transaction { to, data, amount:0, gas: 4600000, gas-price: 1000000 }
                         return cb err if err?
-                    react.create-element 'div', { className: 'section' }, children = 
-                        react.create-element 'div', { className: 'title' }, children = 
-                            react.create-element 'h3', {}, ' Unstake'
-                        react.create-element 'div', { className: 'description' }, children = 
-                            react.create-element 'div', { className: 'left' }, children = 
-                                react.create-element 'label', {}, ' Unstake'
+                    .pug.section
+                        .title.pug
+                            h3.pug Unstake
+                        .description.pug
+                            .pug.left
+                                label.pug Unstake
                                 amount-field { store, value: store.lockups.unstakeAmount, on-change: change-unstake, placeholder: lang.unstake, token: "vlx2", id:"unstake-vlx-input" }
-                                react.create-element 'div', { className: 'balance' }, children = 
-                                    react.create-element 'span', { className: 'small-btns' }, children = 
-                                        react.create-element 'button', { style: button-primary3-style, on-click: use-min2, className: 'small' }, ' ' + lang.min
-                                        react.create-element 'button', { style: button-primary3-style, on-click: use-max2, className: 'small' }, ' ' + lang.max
-                                    react.create-element 'span', {}, ' ' + lang.stake + ':'
-                                    react.create-element 'span', { className: 'color' }, ' ' + round-human (store.lockups.chosen-lockup.stake `div` (10^18))
-                                        react.create-element 'img', { src: "#{icons.vlx-icon}", className: 'label-coin' }
-                                        react.create-element 'span', { className: 'color' }, ' ' + vlx-token
+                                .pug.balance
+                                    span.pug.small-btns
+                                        button.small.pug(style=button-primary3-style on-click=use-min2) #{lang.min}
+                                        button.small.pug(style=button-primary3-style on-click=use-max2) #{lang.max}
+                                    span.pug #{lang.stake}:
+                                    span.pug.color #{round-human (store.lockups.chosen-lockup.stake `div` (10^18))}
+                                        img.label-coin.pug(src="#{icons.vlx-icon}")
+                                        span.pug.color #{vlx-token}
                                 button { store, on-click: unstake , type: \secondary , icon : \apply , text: \btnApply }
 lockups = ({ store, web3t })->
-    react.create-element 'div', { className: 'lockups-content' }, children = 
+    .pug.lockups-content
         lockups-content store, web3t
 stringify = (value) ->
     if value? then

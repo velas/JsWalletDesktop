@@ -20,7 +20,7 @@ transform-ptx = (config, [tx, amount, fee, time, from, to2])-->
     { url, linktx, cluster } = config.network?api ? {}
     _cluster = if cluster? then "?cluster=#{cluster}" else ""
     url = | linktx => linktx.replace \:hash, tx
-        | url => "#{url}/tx/#{tx}#{_cluster}"
+          | url => "#{url}/tx/#{tx}#{_cluster}"
     { tx, amount, url, fee: fee, time, from, to: to2 }
 make-not-pending = (store, tx)->
     #console.log \make-not-pending, tx
@@ -90,12 +90,14 @@ export rebuild-history = (store, web3, wallet, cb)->
         |> each extend { address, coin, network, pending: yes, checked: 0 }
         |> each txs~push
     cb!
+
 build-loader = (store, web3)-> (wallet)-> task (cb)->
     wallet.txs-status = \loading
     err <- rebuild-history store, web3, wallet
     wallet.txs-status = \loaded
     return cb! if err?
     cb null
+
 export load-all-transactions = (store, web3, cb)->
     { wallets } = store.current.account
     wallet = store.current.wallet
@@ -103,15 +105,19 @@ export load-all-transactions = (store, web3, cb)->
     err <- load-wallet-transactions(store, web3, token)
     console.error("[load-wallet-transactions]", err) if err?
     cb null
+
 export load-wallet-transactions = (store, web3, token, cb)->
     return cb "[load-wallet-transactions] error: token is not defined" if not token?
+
     wallet = store.current.account.wallets |> find (-> it.coin.token is token)
     return if wallet.txs-status in <[ loading loaded ]>
+
     loaders =
         | wallet? =>
             [wallet]
                 |> map build-loader store, web3
         | _ => []
+
     tasks =
         loaders
             |> map -> [loaders.index-of(it).to-string!, it]

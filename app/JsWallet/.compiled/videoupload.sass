@@ -1,0 +1,157 @@
+.manage-account1779628587
+    @import scheme
+    @keyframes bounceIn
+        from
+            opacity: 0
+            transform: scale3d(0.8, 0.8, 0.8)
+        to
+            opacity: 1
+            transform: scale3d(1, 1, 1)
+    position: fixed
+    width: 100%
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 999
+    height: 100%
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 10px
+    background: rgba(black, 0.8)
+    >.account-body
+        max-width: 600px
+        display: inline-block
+        overflow: hidden
+        animation-duration: 0.5s
+        animation-name: bounceIn
+        background: white
+        width: 100%
+        margin-top: 5vh
+        margin-bottom: 25vh
+        padding-bottom: 50px
+        border-radius: $border
+        position: relative
+        max-height: 70vh
+        box-sizing: border-box
+        >.title
+            position: absolute
+            z-index: 999
+            box-sizing: border-box
+            top: 0
+            width: 100%
+            color: gray
+            font-size: 22px
+            padding: 10px
+            height: 60px
+            background: black
+            >.subheader
+                margin: 5px
+            >.closed
+                position: absolute
+                font-size: 20px
+                right: 20px
+                top: 13px
+                cursor: pointer
+                &:hover
+                    color: #CCC
+        >.settings
+            padding-top: 60px
+            overflow-y: auto
+            height: calc(65vh - 30px)
+            padding: 60px 40px 0
+            @media(max-width: 400px)
+                padding: 60px 20px 0
+            .tab
+                display: flex
+                list-style: none
+                width: 100%
+                padding: 0
+                li
+                    &:after
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+                        display: block
+                        content: ""
+                        margin: 0px auto
+                        padding-top: 10px
+                        transition: all .5s
+                    width: 50%
+                    text-align: center
+                    cursor: pointer
+                    opacity: .5
+                    &.active
+                        opacity: 1
+                        &:after
+                            border-bottom: 1px solid #fff
+                            display: block
+                            content: ""
+                            margin: 0px auto
+                            padding-top: 10px
+                            transition: all .5s
+            .header
+                height: calc(100vh - 420px)
+                padding: 20px 50px 0
+                @media(max-width: 480px)
+                    padding: 20px 0px 0
+                >img
+                    width: 50px
+            .title
+                padding: 0px
+                width: 100%
+                margin: 0 auto
+                text-align: center
+                font-size: 2px
+            .box
+                input
+                    width: 104px
+            input
+                border-radius: $border
+                line-height: 36px
+                text-align: center
+                font-size: 13px
+            .btn-area
+                display: inline-block
+                margin: 30px 0 0
+            .content-upload
+                margin: 30px 0 20px
+            input
+                outline: none
+                width: 100%
+                box-sizing: border-box
+                height: 36px
+                line-height: 36px
+                border-radius: 0
+                padding: 0px 10px
+                font-size: 14px
+                border: 0px
+                box-shadow: none
+                transition: all .5s
+                margin: 10px 0 0px
+                &:active, &:focus
+                    transition: all .5s
+                    text-align: left
+            button
+                background-color: $primary
+                border: 1px solid $primary
+                border-radius: $border
+                color: white
+                height: 36px
+                width: 104px
+                margin: 0
+                padding: 0 6px
+                text-decoration: none
+                text-transform: uppercase
+                font-size: 10px
+                font-weight: bold
+                cursor: pointer
+                outline: none
+                display: inline-block
+                text-overflow: ellipsis
+                overflow: hidden
+                white-space: nowrap
+                &:hover
+                    background: transparent
+                    color: $primary
+                &.link
+                    min-width: 190px

@@ -12,14 +12,14 @@ require! {
     \prelude-ls : { filter } 
     \../round-number.ls   
 }
-# .section-877430629
-#     .not-enough
-#         color: red  
-#         min-height: 33px
-#         padding: 0 4px
-#         font-size: 12px
-#         max-height: 20px
-#         overflow: hidden
+.section
+    .not-enough
+        color: red  
+        min-height: 33px
+        padding: 0 4px
+        font-size: 12px
+        max-height: 20px
+        overflow: hidden
 try-parse-address = (address, cb)->
     try 
         cb null, vlxToEth(address)
@@ -88,16 +88,16 @@ module.exports = (store, web3t)->
         err <- is-valid-address { address: store.staking.add.new-address, network: wallet.network } 
         return store.staking.error = "Address is not valid" if err? and ("#{err}".index-of "Given address is not valid Velas address") > -1   
         store.staking.error = ''
-    react.create-element 'div', { className: 'section section-877430629' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.moveStake
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', {}, children = 
-                react.create-element 'label', {}, ' ' + lang.moveAmount
+    .pug.section
+        .title.pug
+            h3.pug #{lang.moveStake}
+        .description.pug
+            .pug
+                label.pug #{lang.moveAmount}
                 amount-field { store, value: store.staking.add.move-stake , on-change: change-stake , placeholder: lang.stake }
-            react.create-element 'div', {}, children = 
-                react.create-element 'label', {}, ' ' + lang.newPoolAddress
+            .pug
+                label.pug #{lang.newPoolAddress}
                 text-field { store, value: store.staking.add.new-address , on-change: change-address , placeholder: lang.stake }
-                react.create-element 'div', { title: "#{store.staking.error}", className: 'control-label not-enough text-left' }, ' ' + store.staking.error
-            react.create-element 'div', {}, children = 
+                .pug.control-label.not-enough.text-left(title="#{store.staking.error}") #{store.staking.error}
+            .pug
                 button { store, on-click: move-stake , type: \secondary , icon : \apply , text: \btnApply }

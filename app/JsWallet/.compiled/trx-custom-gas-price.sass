@@ -1,0 +1,115 @@
+.trx-custom-gas-price-2070405877
+    position: relative
+    @import scheme
+    $border-radius: var(--border-btn)
+    &.disabled
+        opacity:.2
+    table
+        margin-bottom: -1px
+        border-radius: $border-radius $border-radius 0 0
+    td
+        cursor: pointer
+        padding: 2px 5px 10px
+        transition: all .5s
+        position: relative
+        &:first-child
+            border-radius: $border-radius 0 0 0
+        &:last-child
+            text-align: left
+            border-radius: 0 $border-radius 0 0
+        &:hover
+            background: var(--td-hover)
+            transition: all .5s
+        &.active
+            background: var(--td-hover)
+            .field
+                &.type
+                    color: orange
+                    &:after
+                        opacity: 1
+                        filter: none
+        .type
+            &:after
+                content: $check-xs
+                position: absolute
+                right: 5px
+                opacity: .2
+                filter: grayscale(1)
+                margin-bottom: 20px
+        .coin
+            text-transform: uppercase
+    .warn-label
+        display: inline-block;
+        margin: 0;
+        font-size: 13px;
+        .warn-label-text
+            background: #191919 
+            border: 1px solid #cc932c
+            top: 30px
+            z-index: 3;
+            padding: 10px;
+            left: 10px;
+    .question-mark
+        display: inline-block
+        .label
+            background: white
+            padding: 0px 3.6px !important
+            margin-left: 5px
+            font-weight: bold
+            border-radius: 50%
+            margin-bottom: 1px
+            position: relative
+            bottom: 2px
+            cursor: pointer
+            display: inline-block
+            font-size: 10px
+        &:hover
+            .question-mark-text
+                display: block
+        .question-mark-text
+            display: none
+            background: #121212 
+            position: absolute;
+            top: 30px
+            z-index: 3;
+            padding: 10px;
+            left: 10px;
+            min-width: 270px;
+            .triangle
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 10px 15px 10px;
+                border-color: transparent transparent #121212 transparent
+                position: absolute;
+                left: 51px;
+                top: -9px;
+            span
+                font-size: 12px
+                font-weight: 500;
+                color: white
+    .low-gas-price-warn
+        p
+            font-size: 13px
+            color: red
+            padding: 10px
+            position: absolute
+            right: 0
+    label
+        padding-top: 5px
+        padding-left: 3px
+        font-size: 13px
+    table
+        width: 100%
+    input
+        outline: none
+        width: 100%
+        box-sizing: border-box
+        height: 36px
+        line-height: 36px
+        border-radius: 0px
+        padding: 0px 10px
+        font-size: 14px
+        border: 0px
+        box-shadow: none
+        margin-bottom: -1px

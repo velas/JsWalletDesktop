@@ -64,6 +64,7 @@ calc-wallet = (store, token, cb)->
             wallet.status = "error"
             wallet.state = "error"
             cb!
+
     loaders =
         [wallet] |> map build-loader
     tasks =
@@ -71,6 +72,7 @@ calc-wallet = (store, token, cb)->
             |> map -> [loaders.index-of(it).to-string!, it]
             |> pairs-to-obj
     <- run [tasks] .then
+
     if store.current.account.wallets[current.token-index]?
         store.current.account.wallets[current.token-index] = wallet
     cb null

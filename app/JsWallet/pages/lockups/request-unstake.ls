@@ -12,61 +12,61 @@ require! {
     \../confirmation.ls : { alert }
     \moment
 }
-# .steps-holder-2134779650
-#     @media(max-width:800px)
-#         text-align: center
-#     .status-note
-#         text-align: center
-#     .steps
-#         display: flex
-#         .step
-#             flex: 1
-#             display: inline-block
-#             vertical-align: text-top
-#             text-align: center
-#             padding: 0 20px 20px 20px
-#             margin-bottom: 20px
-#             opacity: .6
-#             position: relative
-#             cursor: pointer
-#             transition: all .5s
-#             @media(max-width:800px)
-#                 padding: 0 10px
-#                 width: auto
-#                 margin: 0 auto 30px
-#                 display: block
-#             &:last-child
-#                 &:after
-#                     content: none !important
-#             .step-content
-#                 font-size: 13px
-#                 button
-#                     width: 125px
-#             button
-#                 width: auto
-#                 display: block
-#                 margin: 15px auto 0
-#             .step-count
-#                 display: inline-block
-#                 background: grey
-#                 padding: 10px 15px
-#                 border-radius: 50px
-#                 margin-bottom: 20px
-#             &.active
-#                 opacity: 1
-#                 .step-count
-#                     background: #39dcb4
-#                     animation: pulse_step 1s linear
-#                     transform-origin: 50% 50%
-#         @keyframes pulse_step
-#             0%
-#                 transform: scale(0.8)
-#             25%
-#                 transform: scale(0.9)
-#             50%
-#                 transform: scale(1.1)
-#             100%
-#                 transform: scale(1)
+.steps-holder    
+    @media(max-width:800px)
+        text-align: center
+    .status-note
+        text-align: center
+    .steps
+        display: flex
+        .step
+            flex: 1
+            display: inline-block
+            vertical-align: text-top
+            text-align: center
+            padding: 0 20px 20px 20px
+            margin-bottom: 20px
+            opacity: .6
+            position: relative
+            cursor: pointer
+            transition: all .5s
+            @media(max-width:800px)
+                padding: 0 10px
+                width: auto
+                margin: 0 auto 30px
+                display: block
+            &:last-child
+                &:after
+                    content: none !important
+            .step-content
+                font-size: 13px
+                button
+                    width: 125px
+            button
+                width: auto
+                display: block
+                margin: 15px auto 0
+            .step-count
+                display: inline-block
+                background: grey
+                padding: 10px 15px
+                border-radius: 50px
+                margin-bottom: 20px
+            &.active
+                opacity: 1
+                .step-count
+                    background: #39dcb4
+                    animation: pulse_step 1s linear
+                    transform-origin: 50% 50%
+        @keyframes pulse_step
+            0%
+                transform: scale(0.8)
+            25%
+                transform: scale(0.9)
+            50%
+                transform: scale(1.1)
+            100%
+                transform: scale(1)
 cb = console~log
 order-withdraw-process = (store, web3t)->
     lang = get-lang store
@@ -115,43 +115,43 @@ order-withdraw-process = (store, web3t)->
     amount-requested = +store.lockups.orderedWithdrawAmount > 0 and store.lockups.wait-for-epoch-change
     unstake-is-allowed = +store.lockups.orderedWithdrawAmount > 0 and not store.lockups.wait-for-epoch-change
     unstake-wait-time = store.lockups.chosen-lockup.unstake-wait-time
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' Unstake'
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', { className: 'left' }, children = 
-                react.create-element 'div', { className: 'steps-holder steps-holder-2134779650' }, children = 
-                    react.create-element 'div', { className: 'steps' }, children = 
-                        react.create-element 'div', { on-click-commented: activate-first, className: "#{active-first} step" }, children = 
-                            react.create-element 'div', { className: 'step-count' }, ' 1'
-                            react.create-element 'div', { className: 'step-content' }, children = 
-                                react.create-element 'div', {}, ' Request Unstake'
+    .pug.section
+        .title.pug
+            h3.pug Unstake
+        .description.pug
+            .pug.left
+                .pug.steps-holder
+                    .steps.pug
+                        .pug.step(on-click-commented=activate-first class="#{active-first}")
+                            .pug.step-count 1
+                            .pug.step-content
+                                .pug Request Unstake
                                 if active-first is \active
-                                    react.create-element 'div', {}, children = 
-                                        react.create-element 'div', {}, children = 
+                                    .pug
+                                        .pug
                                             amount-field { store, value: store.lockups.withdrawAmount, on-change: change-max }
                                         button { store, text: "Request Unstake", icon: 'exit', on-click: order, type: "secondary" }
-                        react.create-element 'div', { on-click-commented: activate-second, className: "#{active-second} step" }, children = 
-                            react.create-element 'div', { className: 'step-count' }, ' 2'
-                            react.create-element 'div', { className: 'step-content' }, '  Come back later for your unstaking amount'
-                        react.create-element 'div', { on-click-commented: activate-third, className: "#{active-third} step" }, children = 
-                            react.create-element 'div', { className: 'step-count' }, ' 3'
-                            react.create-element 'div', { className: 'step-content' }, children = 
-                                react.create-element 'div', {}, ' Unstake'
+                        .pug.step(on-click-commented=activate-second class="#{active-second}")
+                            .pug.step-count 2
+                            .pug.step-content  Come back later for your unstaking amount
+                        .pug.step(on-click-commented=activate-third class="#{active-third}")
+                            .pug.step-count 3
+                            .pug.step-content
+                                .pug Unstake
                                 if active-third is \active
                                     button { store, text: "Unstake", icon: 'exit', on-click: exit, type: "secondary" }
-                    react.create-element 'div', { className: 'status-note' }, children = 
+                    .pug.status-note
                         if amount-requested then
-                            react.create-element 'div', { className: 'note balance' }, children = 
-                                react.create-element 'span', { className: 'color' }, ' ' + (store.lockups.orderedWithdrawAmount `div` (10^18) ) + ' '
-                                react.create-element 'span', { className: 'color' }, ' VLX '
-                                react.create-element 'span', {}, ' were requested to unstake and will be available'
-                                react.create-element 'span', { className: 'color' }, ' ' + unstake-wait-time
+                            .pug.note.balance 
+                                span.pug.color #{(store.lockups.orderedWithdrawAmount `div` (10^18) )} 
+                                span.pug.color VLX 
+                                span.pug were requested to unstake and will be available
+                                span.pug.color #{unstake-wait-time}
                         if unstake-is-allowed then
-                            react.create-element 'div', { className: 'note balance' }, children = 
-                                react.create-element 'span', { className: 'color' }, ' ' + (store.lockups.orderedWithdrawAmount `div` (10^18) ) + ' '
-                                react.create-element 'span', { className: 'color' }, ' VLX '
-                                react.create-element 'span', {}, ' are available to unstake '
+                            .pug.note.balance 
+                                span.pug.color #{(store.lockups.orderedWithdrawAmount `div` (10^18) )} 
+                                span.pug.color VLX 
+                                span.pug are available to unstake 
 fast-withdraw-process = (store, web3t)->
     lang = get-lang store
     exit = ->
@@ -172,23 +172,23 @@ fast-withdraw-process = (store, web3t)->
         err <- web3t.vlx2.send-transaction { to, data, amount, gas: 4600000, gas-price: 1000000 }
     change-max = (it)->
         store.lockups.withdrawAmount = it.target.value
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' ' + lang.exit
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', {}, ' ' + lang.withdraw
-            react.create-element 'div', {}, children = 
+    .pug.section
+        .title.pug
+            h3.pug #{lang.exit}
+        .description.pug
+            .pug #{lang.withdraw}
+            .pug
                 amount-field { store, value: store.lockups.withdrawAmount, on-change: change-max }
             button { store, text: lang.withdraw, icon: 'exit', on-click: exit, type: "secondary" }
 not-available-right-now = (store)->
     lang = get-lang store
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' Unstake'
-        react.create-element 'div', { className: 'description' }, children = 
-            react.create-element 'div', { className: 'balance' }, children = 
-                react.create-element 'span', {}, ' The action is not available till next epoch '
-                react.create-element 'span', { className: 'color' }, ' (' + store.lockups.chosen-lockup.till-next-epoch + ')'
+    .pug.section
+        .title.pug
+            h3.pug Unstake
+        .description.pug
+            .pug.balance
+                span.pug The action is not available till next epoch 
+                span.pug.color (#{store.lockups.chosen-lockup.till-next-epoch})
 registry =
     \exit_ordered : order-withdraw-process
     \exit_order   : order-withdraw-process

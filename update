@@ -1,23 +1,9 @@
-
-#echo $(curl https://web3.space/wallet-main-bundle.css > main-bundle.css)
+WALLET_PATH='../VelasWalet/wallet-area'
 rm -rf ./app
-#mkdir ./app
-#echo $(curl https://web3.space/ssr.zip > ./app/ssr.zip)
-#cd ./app
-#unzip -a ./ssr.zip
-#rm ./ssr.zip
-#cd ../
+mkdir ./app
 
-cp -r ../JsWallet/.compiled-ssr ./app
-cp -r ../JsWallet/.compiled/main-bundle.css ./
-rsync -av --progress ../web3t ./app --exclude ".git"
+cp -r $WALLET_PATH/wallet/.compiled/main-bundle.css ./
+rsync -av --progress --exclude=$WALLET_PATH/wallet/index.html --exclude ".git" $WALLET_PATH/wallet/ ./app/JsWallet
+rsync -av --progress  --exclude ".git" $WALLET_PATH/web3t/ ./app/web3t
 
-
-
-# Alternative
-#rm -rf ./app
-#mkdir ./app
-#cp -rv ../VelasWalet/wallet-area/wallet/.compiled-ssr/wallet ./app/JsWallet
-#cp -rv ../VelasWalet/wallet-area/wallet/.compiled-ssr/web3t ./app/web3t
-#cp -rv ../VelasWalet/wallet-area/wallet/.compiled/main-bundle.css ./
-#rsync -av --progress ../VelasWalet/wallet-area/web3t/ ./app/web3t --exclude ".git"
+echo '--- Dont forget to check web3t/plugins folder in order to compare web3Provider`s apiKeys! ---'

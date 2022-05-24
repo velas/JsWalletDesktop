@@ -1,0 +1,105 @@
+.staking-accounts-content711009742
+    @keyframes blink-animation
+        50%
+            opacity: 0.3
+    @-webkit-keyframes blink-animation
+        50%
+            opacity: 0.3
+    .blink
+        animation: 1s linear blink-animation  infinite
+        -webkit-animation: 1s linear blink-animation  infinite
+    .entities-loader
+        display: block
+        padding: 40px
+        text-align: center
+        .inner-section
+            padding: 40px
+            .item
+                display: inline
+    .notification-entity
+        @media(max-width: 540px)
+            display: block
+            margin-top: 20px !important
+    .hint
+        .tooltip
+            position: absolute
+            text-transform: uppercase
+            left: 25px
+            top: -8px
+            z-index: 1
+            line-height: 14px
+            font-size: 9px
+            font-weight: 600
+            color: #fff
+            padding: 5px
+            background: #000
+            visibility: hidden
+            &:after, &:before
+                right: 100%
+                top: 21%
+                border: solid transparent
+                content: " "
+                height: 0
+                width: 0
+                position: absolute
+                pointer-events: none
+            &:after
+                border-color: rgba(136, 183, 213, 0)
+                border-right-color: #000
+                border-width: 6px
+                margin-top: 2px
+            &:before
+                border-color: rgba(194, 225, 245, 0)
+                border-width: 8px
+                margin-top: 0px
+    .hint
+        &:hover
+            .tooltip
+                visibility: visible
+    .title
+        h3
+            display: inline
+        .amount
+            color: white
+            font-size: 11px
+            opacity: 0.5    
+    .form-group
+        .subtitle
+            margin: 20px 0 10px
+        .settings
+            margin-top: 20px
+            .settings-item
+                margin-bottom: 20px
+                & > label
+                    margin-bottom: 6px
+                    display: inline-block
+        .outer-checkbox
+            display: inline-block
+            margin: 0 15px 0 0
+            & + label
+                margin: 5px 0
+        .table-scroll
+            transition: max-height .5s
+            table
+                thead
+                    td
+                        cursor: pointer
+                        &:hover
+                            color: #dde6ff
+                td
+                    &.account-status
+                        text-transform: capitalize
+                        &.deactivating
+                            color: #ff5555
+                        &.activating
+                            color: orange
+                        &.active
+                            color: green
+                        &.inactive
+                            color: gray
+                    &.validator-address
+                        text-align: center
+                    border: none
+    .stake-account-item
+        &.highlight
+            box-shadow: 1px 2px 12px inset rgba(60, 213, 175, 0.35)

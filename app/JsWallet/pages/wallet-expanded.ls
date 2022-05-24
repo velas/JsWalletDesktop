@@ -17,149 +17,149 @@ require! {
     \./loading.ls
     \./confirmation.ls : { confirm }
 }
-# .wallet-expanded152437774
-#     @import scheme
-#     height: 240px
-#     box-sizing: border-box
-#     $tablet: 1200px
-#     >.wallet-part
-#         display: inline-block
-#         position: relative
-#         box-sizing: border-box
-#         vertical-align: top
-#         width: 50%
-#         @media screen and (max-width: $tablet)
-#             padding: 0
-#         .with-swap
-#             display: flex
-#             button
-#                 flex: 1
-#                 margin: 0 5px 0 !important
-#                 &:first-child
-#                     margin-left: 0 !important
-#             .wallet-swap img
-#                 filter: invert(1)
-#             .wallet-buy img
-#                 filter: invert(1)
-#         &.left
-#             text-align: center
-#         &.left
-#             text-align: left
-#             @media screen and (max-width: $tablet)
-#                 width: 60%
-#             >.buttons
-#                 margin-top: 15px
-#                 width: calc((130px * 2) + 10px)
-#                 .btn
-#                     margin: 0
-#                     width: 130px
-#                     &:last-child
-#                         margin-left: 10px
-#                         margin: 0 0 5px !important
-#             >.details
-#                 display: none
-#             .uninstall
-#                 position: relative
-#                 text-transform: uppercase
-#                 font-size: 10px
-#                 padding: 1px 5px 1px 2px
-#                 margin-left: 5px
-#                 letter-spacing: 2px
-#                 cursor: pointer
-#                 border-radius: var(--border-btn)
-#             >.address-holder
-#                 margin-top: 10px
-#                 width: calc((130px * 2) + 10px)
-#                 a
-#                     padding-left: 10px
-#                 @media screen and (max-width: $tablet)
-#                     margin-top: 20px
-#         &.right
-#             @media screen and (max-width: $tablet)
-#                 width: 40%
-#         >.wallet-header
-#             &.chart
-#                 text-align: right
-#                 padding-top: 0px
-#                 border-left: 1px solid rgba(white, 0.2)
-#                 border-color: var(--border-color)
-#                 @media screen and (max-width: $tablet)
-#                     >.wallet-header-part
-#                         width: 100%
-#                         text-align: center
-#                         &.left
-#                             display: none
-#                         >.stats
-#                             margin: 0 auto
-#             >.wallet-header-part
-#                 display: inline-block
-#                 box-sizing: border-box
-#                 vertical-align: top
-#                 .stats-style
-#                     height: 90%
-#                     width: 90%
-#                     top: 4%
-#                     right: 4%
-#                     content: ''
-#                     display: block
-#                     position: absolute
-#                     border-radius: 100px
-#                     .coin
-#                         margin: 20% auto
-#                         text-align: center
-#                         .course
-#                             font-size: 12px
-#                             opacity: .5
-#                 &.left
-#                     img
-#                         width: 40px
-#                 &.right
-#                     text-align: left
-#                     padding: 0
-#                     .title
-#                         font-size: 10px
-#                         text-transform: uppercase
-#                         letter-spacing: 2px
-#                     .token-balance
-#                         font-size: 24px
-#                         font-weight: bold
-#                     .usd-balance
-#                         font-size: 14px
-#                         opacity: .5
-#                     .pending
-#                         font-size: 14px
-#                         color: orange
-#                 .counts
-#                     margin-bottom: 5px
-#                     .label
-#                         font-size: 12px
-#                     .label-icon
-#                         width: 25px
-#                         height: 25px
-#                         background: #f7618a
-#                         border-radius: var(--border-btn)
-#                         text-align: center
-#                         margin-bottom: 6px
-#                         .icon-svg
-#                             filter: invert(105%)
-#         .stats
-#             $size: 150px
-#             $size-tablet: 100px
-#             margin-right: 20px
-#             display: inline-block
-#             height: $size
-#             max-height: $size
-#             width: $size
-#             max-width: $size
-#             position: relative
-#             @media screen and (max-width: $tablet)
-#                 height: $size-tablet - 10
-#                 max-height: $size-tablet - 10
-#                 width: $size-tablet - 10
-#                 max-width: $size-tablet - 10
-#             >*
-#                 height: inherit
-#                 width: inherit
+.wallet-expanded
+    @import scheme
+    height: 240px
+    box-sizing: border-box
+    $tablet: 1200px
+    >.wallet-part
+        display: inline-block
+        position: relative
+        box-sizing: border-box
+        vertical-align: top
+        width: 50%
+        @media screen and (max-width: $tablet)
+            padding: 0
+        .with-swap
+            display: flex
+            button
+                flex: 1
+                margin: 0 5px 0 !important
+                &:first-child
+                    margin-left: 0 !important
+            .wallet-swap img
+                filter: invert(1)
+            .wallet-buy img
+                filter: invert(1)
+        &.left
+            text-align: center
+        &.left
+            text-align: left
+            @media screen and (max-width: $tablet)
+                width: 60%
+            >.buttons
+                margin-top: 15px
+                width: calc((130px * 2) + 10px)
+                .btn
+                    margin: 0
+                    width: 130px
+                    &:last-child
+                        margin-left: 10px
+                        margin: 0 0 5px !important
+            >.details
+                display: none
+            .uninstall
+                position: relative
+                text-transform: uppercase
+                font-size: 10px
+                padding: 1px 5px 1px 2px
+                margin-left: 5px
+                letter-spacing: 2px
+                cursor: pointer
+                border-radius: var(--border-btn)
+            >.address-holder
+                margin-top: 10px
+                width: calc((130px * 2) + 10px)
+                a
+                    padding-left: 10px
+                @media screen and (max-width: $tablet)
+                    margin-top: 20px
+        &.right
+            @media screen and (max-width: $tablet)
+                width: 40%
+        >.wallet-header
+            &.chart
+                text-align: right
+                padding-top: 0px
+                border-left: 1px solid rgba(white, 0.2)
+                border-color: var(--border-color)
+                @media screen and (max-width: $tablet)
+                    >.wallet-header-part
+                        width: 100%
+                        text-align: center
+                        &.left
+                            display: none
+                        >.stats
+                            margin: 0 auto
+            >.wallet-header-part
+                display: inline-block
+                box-sizing: border-box
+                vertical-align: top
+                .stats-style
+                    height: 90%
+                    width: 90%
+                    top: 4%
+                    right: 4%
+                    content: ''
+                    display: block
+                    position: absolute
+                    border-radius: 100px
+                    .coin
+                        margin: 20% auto
+                        text-align: center
+                        .course
+                            font-size: 12px
+                            opacity: .5
+                &.left
+                    img
+                        width: 40px
+                &.right
+                    text-align: left
+                    padding: 0
+                    .title
+                        font-size: 10px
+                        text-transform: uppercase
+                        letter-spacing: 2px
+                    .token-balance
+                        font-size: 24px
+                        font-weight: bold
+                    .usd-balance
+                        font-size: 14px
+                        opacity: .5
+                    .pending
+                        font-size: 14px
+                        color: orange
+                .counts
+                    margin-bottom: 5px
+                    .label
+                        font-size: 12px
+                    .label-icon
+                        width: 25px
+                        height: 25px
+                        background: #f7618a
+                        border-radius: var(--border-btn)
+                        text-align: center
+                        margin-bottom: 6px
+                        .icon-svg
+                            filter: invert(105%)
+        .stats
+            $size: 150px
+            $size-tablet: 100px
+            margin-right: 20px
+            display: inline-block
+            height: $size
+            max-height: $size
+            width: $size
+            max-width: $size
+            position: relative
+            @media screen and (max-width: $tablet)
+                height: $size-tablet - 10
+                max-height: $size-tablet - 10
+                width: $size-tablet - 10
+                max-width: $size-tablet - 10
+            >*
+                height: inherit
+                width: inherit
 cb = console~log
 module.exports = (store, web3t, wallets, wallet)-->
     style = get-primary-info store
@@ -175,14 +175,14 @@ module.exports = (store, web3t, wallets, wallet)-->
             color: "white"
             opacity: 0.3
         return
-            react.create-element 'div', { key: "no-details", style: wallet-style, className: 'wallet-detailed' }, children = 
-                react.create-element 'div', { style: text, className: 'wallet-part center' }, children = 
-                    react.create-element 'div', { className: 'wallet-header' }, children = 
-                        react.create-element 'div', {}, children = 
+            .wallet-detailed.pug(key="no-details" style=wallet-style)
+                .wallet-part.center.pug(style=text)
+                    .wallet-header.pug
+                        .pug
                             if store.loading-wallet is yes
                                 loading(store.loading-wallet)
                             else
-                                react.create-element 'h3', { style: msg-txt-style, className: 'text-message' }, ' No wallet found'
+                                h3.text-message.pug(style=msg-txt-style) No wallet found
     { wallet-icon, uninstall, wallet, balance, balance-usd, pending, send, receive, swap, usd-rate } = wallet-funcs store, web3t, wallets, wallet
     lang = get-lang store
     label-uninstall =
@@ -255,64 +255,64 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    react.create-element 'div', { key: "#{token}", style: wallet-style, className: 'wallet-expanded wallet-expanded152437774' }, children = 
-        react.create-element 'div', { style: text, className: 'wallet-part left' }, children = 
-            react.create-element 'div', { className: 'wallet-header' }, children = 
-                react.create-element 'div', { className: 'wallet-header-part right' }, children = 
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'span', { className: "#{placeholder} title" }, ' ' + name
+    .wallet-expanded.pug(key="#{token}" style=wallet-style)
+        .wallet-part.left.pug(style=text)
+            .wallet-header.pug
+                .wallet-header-part.right.pug
+                    .pug
+                        span.title.pug(class="#{placeholder}") #{name}
                         if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
-                            react.create-element 'span', { on-click: uninstall-action, style: uninstall-style, className: 'uninstall' }, ' ' + label-uninstall
-                    react.create-element 'div', { className: "#{placeholder} balance" }, children = 
-                        react.create-element 'div', { title: "#{wallet?balance}", className: 'token-balance' }, children = 
-                            react.create-element 'span', {}, ' ' +  round-human wallet?balance 
-                            react.create-element 'span', {}, ' ' +  tokenDisplay 
+                            span.pug.uninstall(on-click=uninstall-action style=uninstall-style) #{label-uninstall}
+                    .balance.pug(class="#{placeholder}")
+                        .pug.token-balance(title="#{wallet?balance}")
+                            span.pug #{ round-human wallet?balance }
+                            span.pug #{ tokenDisplay }
                         if not is-custom
-                            react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} usd-balance" }, children = 
-                                react.create-element 'span', {}, ' ' +  round-human balance-usd 
-                                react.create-element 'span', {}, ' USD'
+                            .pug.usd-balance(class="#{placeholder}" title="#{balance-usd}")
+                                span.pug #{ round-human balance-usd }
+                                span.pug USD
                         if +wallet.pending-sent >0 and no
-                            react.create-element 'div', { className: 'pending' }, children = 
-                                react.create-element 'span', {}, ' -' +  pending 
+                            .pug.pending
+                                span.pug -#{ pending }
             address-holder { store, wallet, type: \bg }
             if (available-networks.length > 0) then
-                react.create-element 'div', { className: 'buttons' }, children = 
-                    react.create-element 'div', { className: 'with-swap' }, children = 
+                .buttons.pug
+                    .with-swap.pug
                         button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
-                    react.create-element 'div', { className: 'with-swap' }, children = 
+                    .with-swap.pug
                         if wallet?coin?token is "vlx_native"
                             button { store, on-click=buy, text: \buy , icon: \buy  , id: "wallet-buy", classes="wallet-swap" }
                         if wallet?coin?token is "vlx_evm"
                             button { store, on-click=buy, text: \buy , icon: \buy  , id: "wallet-buy", classes="wallet-swap" }
                         button { store, on-click=swap-click, text: \swap , icon: \swap  , id: "wallet-swap", classes="wallet-swap", makeDisabled=send-swap-disabled  }
             else
-                react.create-element 'div', { className: 'buttons' }, children = 
-                    react.create-element 'div', { className: 'with-swap' }, children = 
+                .buttons.pug
+                    .with-swap.pug
                         button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, id: "wallets-send", makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get  , type : \primary, id: "wallets-receive", makeDisabled=no }
-            react.create-element 'div', { className: 'details' }, children = 
-                react.create-element 'div', { title: "#{balance-usd}", className: "#{placeholder} price" }, ' $' +  round-human balance-usd 
-                react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human usd-rate
-        react.create-element 'div', { className: 'wallet-part right' }, children = 
-            react.create-element 'div', { className: 'wallet-header chart' }, children = 
-                react.create-element 'div', { className: 'wallet-header-part left' }, children = 
-                    react.create-element 'div', { className: 'stats' }, children = 
-                        react.create-element 'span', { className: 'stats-style' }, children = 
-                            react.create-element 'div', { style: text, className: 'coin' }, children = 
-                                react.create-element 'img', { src: "#{wallet-icon}", className: "#{placeholder-coin} label-coin" }
-                                react.create-element 'div', { className: "#{placeholder}" }, ' ' +  token-display 
+            .details.pug
+                .price.pug(class="#{placeholder}" title="#{balance-usd}") $#{ round-human balance-usd }
+                .name.pug(class="#{placeholder}" title="#{usd-rate}") $#{ round-human usd-rate}
+        .wallet-part.right.pug
+            .wallet-header.pug.chart
+                .wallet-header-part.left.pug
+                    .stats.pug
+                        span.stats-style.pug
+                            .pug.coin(style=text)
+                                img.label-coin.pug(class="#{placeholder-coin}" src="#{wallet-icon}")
+                                .pug(class="#{placeholder}") #{ token-display }
                                 if not is-custom
-                                    react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} course" }, ' $' +  round-human usd-rate
+                                    .pug.course(class="#{placeholder}" title="#{usd-rate}") $#{ round-human usd-rate}
                         wallet-stats store, web3t
-                react.create-element 'div', { style: text, className: 'wallet-header-part right' }, children = 
-                    react.create-element 'div', { className: 'counts' }, children = 
-                        react.create-element 'div', { style: color-label, className: 'label-icon' }, children = 
-                            react.create-element 'img', { src: "#{icons.send}", className: 'icon-svg' }
-                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-sent + ' ' token-display 
-                        react.create-element 'div', { style: color1, className: 'label' }, ' ' + lang.totalSent
-                    react.create-element 'div', { className: 'counts' }, children = 
-                        react.create-element 'div', { style: color-label2, className: 'label-icon' }, children = 
-                            react.create-element 'img', { src: "#{icons.get}", className: 'icon-svg' }
-                        react.create-element 'div', { className: "#{placeholder}" }, ' ' +  total-received + ' ' token-display 
-                        react.create-element 'div', { style: color2, className: 'label' }, ' ' + lang.totalReceived
+                .wallet-header-part.right.pug(style=text)
+                    .pug.counts
+                        .pug.label-icon(style=color-label)
+                            img.icon-svg.pug(src="#{icons.send}")
+                        .pug(class="#{placeholder}") #{ total-sent + ' ' token-display }
+                        .pug.label(style=color1) #{lang.totalSent}
+                    .pug.counts
+                        .pug.label-icon(style=color-label2)
+                            img.icon-svg.pug(src="#{icons.get}")
+                        .pug(class="#{placeholder}") #{ total-received + ' ' token-display }
+                        .pug.label(style=color2) #{lang.totalReceived}

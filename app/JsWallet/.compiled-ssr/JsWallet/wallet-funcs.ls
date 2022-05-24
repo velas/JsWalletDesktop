@@ -104,6 +104,7 @@ module.exports = (store, web3t, wallets, wallet, wallets-groups, group-name)->
         | index is store.current.wallet-index and group-index is store.current.group-index=> \big
         | _ => ""
     status = wallet.status
+
     balance = round5(wallet.balance) + ' ' + wallet.coin.token.to-upper-case!
     balance-usd = wallet.balance `times` usd-rate
     pending = round5(wallet.pending-sent) + ' ' + wallet.coin.token.to-upper-case!

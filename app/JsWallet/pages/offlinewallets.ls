@@ -8,76 +8,76 @@ require! {
     \../navigate.ls
     \../components/burger.ls
 }
-# .wallets-1770015941
-#     @import scheme
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     margin-left: $left-margin
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         z-index: 1
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     >.header
-#         padding: 50px
-#         font-size: 40px
-#     >.platforms
-#         text-align: center
-#         padding: 40px 0
-#         >.platform
-#             display: inline-block
-#             width: 300px
-#             padding: 20px
-#             vertical-align: top
-#             text-overflow: ellipsis
-#             border: 1px solid white
-#             overflow: hidden
-#             margin: 10px 1%
-#             border-radius: $border
-#             >.tag_name
-#                 margin-bottom: 10px
-#             .title-icons
-#                 height: 40px
-#                 margin: 10px 0
-#                 filter: brightness(4)
-#             a
-#                 padding: 10px
-#             >.title
-#                 font-size: 15px
-#                 font-weight: bold
-#             >.source
-#                 &.link
-#                     a
-#                         text-decoration: underline
-#                         padding: 0
-#             >.source, >.download
-#                 padding: 10px 0 0
-#                 box-sizing: content-box
-#                 a
-#                     text-decoration: none
-#                     text-transform: uppercase
-#                     font-size: 10px
-#                     font-weight: bold
-#                     cursor: pointer
-#                     outline: none
-#                     display: inline-block
-#                     overflow: hidden
-#                     white-space: nowrap
-#                     width: 80px
-#                     border-radius: $border
+.wallets
+    @import scheme
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    margin-left: $left-margin
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    >.header
+        padding: 50px
+        font-size: 40px
+    >.platforms
+        text-align: center
+        padding: 40px 0
+        >.platform
+            display: inline-block
+            width: 300px
+            padding: 20px
+            vertical-align: top
+            text-overflow: ellipsis
+            border: 1px solid white
+            overflow: hidden
+            margin: 10px 1%
+            border-radius: $border
+            >.tag_name
+                margin-bottom: 10px
+            .title-icons
+                height: 40px
+                margin: 10px 0
+                filter: brightness(4)
+            a
+                padding: 10px
+            >.title
+                font-size: 15px
+                font-weight: bold
+            >.source
+                &.link
+                    a
+                        text-decoration: underline
+                        padding: 0
+            >.source, >.download
+                padding: 10px 0 0
+                box-sizing: content-box
+                a
+                    text-decoration: none
+                    text-transform: uppercase
+                    font-size: 10px
+                    font-weight: bold
+                    cursor: pointer
+                    outline: none
+                    display: inline-block
+                    overflow: hidden
+                    white-space: nowrap
+                    width: 80px
+                    border-radius: $border
 build-version = (store, release)-->
     style = get-primary-info store
     button-primary1-style=
@@ -118,16 +118,16 @@ build-version = (store, release)-->
     console.log "#{release.name}.md5"
     md5-file =
         store.releases |> find (-> it.name is "#{release.name}.md5")
-    react.create-element 'div', { style: resource, className: 'platform' }, children = 
-        react.create-element 'img', { src: "#{icon}", className: 'title-icons' }
-        react.create-element 'div', { className: 'title' }, ' ' + name
-        react.create-element 'div', { className: 'tag_name' }, ' ' + release.tag_name
-        react.create-element 'div', { className: 'source' }, children = 
-            react.create-element 'a', { href: "#{source}", style: button-primary3-style, target: "_blank" }, ' Source Code'
-        react.create-element 'div', { className: 'download' }, children = 
-            react.create-element 'a', { href: "#{release.browser_download_url}", style: button-primary1-style, target: "_blank" }, ' Download'
-        react.create-element 'div', { className: 'source link' }, children = 
-            react.create-element 'a', { href: "#{md5-file?browser_download_url}", style: button-link, target: "_blank" }, ' MD5'
+    .pug.platform(style=resource)
+        img.pug.title-icons(src="#{icon}")
+        .pug.title #{name}
+        .pug.tag_name #{release.tag_name}
+        .pug.source
+            a.pug(href="#{source}" style=button-primary3-style target="_blank") Source Code
+        .pug.download
+            a.pug(href="#{release.browser_download_url}" style=button-primary1-style target="_blank") Download
+        .pug.source.link
+            a.pug(href="#{md5-file?browser_download_url}" style=button-link target="_blank") MD5
 only-version = (item)->
     [...parts, last] = item.name.split('.')
     last in <[ dmg exe snap ]>
@@ -145,15 +145,15 @@ header = (store, web3t)->
         navigate store, web3t, \search
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { style: border-style, className: 'title' }, children = 
-        react.create-element 'div', { className: "#{show-class} header" }, ' Download Wallets'
-        react.create-element 'div', { on-click: goto-search, className: 'close' }, children = 
-            react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+    .pug.title(style=border-style)
+        .pug.header(class="#{show-class}") Download Wallets
+        .pug.close(on-click=goto-search)
+            img.icon-svg.pug(src="#{icons.arrow-left}")
         burger store, web3t
 module.exports = ({ store, web3t })->
-    react.create-element 'div', { className: 'wallets wallets-1770015941' }, children = 
+    .pug.wallets
         header store, web3t
-        react.create-element 'div', { className: 'platforms' }, children = 
+        .pug.platforms
             store.releases |> filter only-version |> map build-version store
 #update-md5 = ([release, ...releases], cb)->
 #    return cb null if not release?

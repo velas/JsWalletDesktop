@@ -1,0 +1,28 @@
+.input-area-1052438182
+    position: relative
+    display: inline-block
+    margin: 0
+    box-sizing: border-box
+    height: 36px
+    line-height: 36px
+    min-width: 100px
+    >*
+        display: inline-block
+        box-sizing: border-box  
+        margin: 0 !important
+        height: inherit
+        line-height: inherit
+        vertical-align: top
+    >input
+        position: absolute
+        width: 100% !important
+        border: 0px
+        display: inline-block
+        width: calc(100% - 70px)
+        padding: 0 10px
+        left: 0
+        top: 2px
+        &.typeahead
+            z-index: 1
+        &.userinput
+            z-index: 2

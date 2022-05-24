@@ -1,1 +1,0 @@
-fs "**/*.ls" | map "lsc -c *" | bash

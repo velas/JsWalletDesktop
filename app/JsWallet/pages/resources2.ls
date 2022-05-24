@@ -26,306 +26,306 @@ require! {
     \../seed.ls : seedmem
     \../components/burger.ls
 }
-# .staking-res-76570990
-#     @import scheme
-#     position: relative
-#     display: block
-#     width: auto
-#     margin-left: $left-margin
-#     top: 0
-#     height: auto
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     .staking-content
-#         overflow: hidden
-#         background: transparent
-#         width: 100%
-#         border-radius: 0px
-#         position: relative
-#         box-sizing: border-box
-#         .left-proxy, .right-proxy
-#             width: 15px
-#             height: 16px
-#             line-height: 10px
-#             display: inline-block
-#             color: white
-#             padding: 9px
-#             border-radius: 0px
-#             cursor: pointer
-#             vertical-align: top
-#             text-align: center
-#         .form-group
-#             text-align: center
-#             padding-top: 0px
-#             overflow-y: auto
-#             input, textarea
-#                 margin: 5px 0
-#                 outline: none
-#             .section
-#                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
-#                 padding: 30px 20px
-#                 display: flex
-#                 @media (max-width: 800px)
-#                     display: flow-root
-#                     padding: 20px
-#                 &:last-child
-#                     border: 0
-#                 .title
-#                     padding: 0px
-#                     width: 30%
-#                     text-align: left
-#                     text-transform: uppercase
-#                     font-size: 14px
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         margin-bottom: 20px
-#                         text-align: center
-#                     .less
-#                         font-size: 10px
-#                         opacity: 0.9
-#                 .description
-#                     padding: 0px
-#                     font-size: 14px
-#                     width: 70%
-#                     text-align: left
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         text-align: center
-#                     .important
-#                         color: orange
-#                     .left-node
-#                         width: 40%
-#                         float: left
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                             margin-bottom: 20px
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                         img
-#                             width: 240px
-#                             &.icon-svg
-#                                 height: 12px
-#                                 width: auto
-#                                 padding-right: 5px
-#                     .right-node
-#                         width: 60%
-#                         float: right
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                             text-align: left
-#                     &.node
-#                         width: 80%
-#                     .tabs
-#                         display: inline-block
-#                         margin: 20px 0 20px
-#                         width: 100%
-#                         .tab
-#                             width: 25%
-#                             display: inline-block
-#                             opacity: 0.5;
-#                             text-align: center
-#                             border-bottom: 1px solid
-#                             line-height: 37px
-#                             text-transform: uppercase
-#                             font-size: 10px
-#                             font-weight: bold
-#                             cursor: pointer
-#                             height: 36px
-#                             background: #2c0d5f
-#                             border-color: #6b258e
-#                             @media (max-width: 800px)
-#                                 width: 50%
-#                             &.active
-#                                 opacity: 1
-#                                 border-bottom: 1px solid #6e1d96
-#                                 background: #37156d
-#                     .btn
-#                         margin: 10px 0
-#                     .code
-#                         overflow: scroll
-#                         background: #1b1b1b
-#                         text-align: left
-#                         .copy
-#                             float: right
-#                             margin-top: 11px
-#                             margin-right: 10px
-#                             width: 15px
-#                         .cursor
-#                             -webkit-animation: blink 0.9s infinite
-#                             animation: blink 0.9s infinite
-#                             font: initial
-#                             display: inline-block
-#                             opacity: 1
-#                             margin-left: 5px
-#                         @-webkit-keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         @keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         &.comming
-#                             background: transparent
-#                             text-align: center
-#                     .window
-#                         position: sticky
-#                         top: 0
-#                         left: 0
-#                         height: 39px
-#                         background: #040404
-#                         .icons
-#                             padding: 0.75em
-#                             position: absolute
-#                             span
-#                                 background: #ca912e
-#                             &:before
-#                                 content: ""
-#                                 background: #e25f5d
-#                             &:after
-#                                 content: ""
-#                                 background: #3ec930
-#                             span, &:before, &:after
-#                                 display: inline-block
-#                                 float: left
-#                                 width: 1em
-#                                 height: 1em
-#                                 border-radius: 50%
-#                                 margin-right: 0.5em
-#                     .balance
-#                         font-weight: 600
-#                         font-size: 16px
-#                         span:first-child
-#                             color: orange
-#                     textarea
-#                         border: 0
-#                         padding: 10px
-#                         font-size: 13px
-#                         width: 100%
-#                         box-sizing: border-box
-#                         min-height: 120px
-#                         font-family: monospace
-#                 .content
-#                     width: 30%
-#                     position: relative
-#                     button, .switch-index
-#                         margin: 0
-#                         position: absolute
-#                         top: 50%
-#                         left: 40%
-#                         -ms-transform: translateY(-50%)
-#                         transform: translateY(-50%)
-#             .center
-#                 text-align: center
-#             .left
-#                 text-align: left
-#             label
-#                 font-size: 13px
-#             h3
-#                 font-size: 12px
-#                 text-transform: uppercase
-#                 letter-spacing: 2px
-#                 opacity: .8
-#                 font-weight: 400
-#                 margin: 0
-#             input
-#                 outline: none
-#                 width: 100%
-#                 box-sizing: border-box
-#                 height: 36px
-#                 line-height: 36px
-#                 border-radius: 0
-#                 padding: 0px 10px
-#                 font-size: 14px
-#                 margin: 5px 0
-#                 border: 0px
-#                 box-shadow: none
-#                 &.change-index
-#                     margin: 0 !important
-#                     border-radius: 0px
-#                     height: 36px
-#                     width: 55px
-#                     line-height: 36px
-#                     text-align: center
-#                     font-size: 13px
-#     ul
-#         padding: 0
-#         margin: 0
-#         min-width: 100%
-#         max-width: 300px
-#         li 
-#             list-style: none
-#             margin-left: 0
-#             font-size: 13px
-#             color: #6f6fe2
-#             font-size: 16px
-#             list-style-position: inside
-#             white-space: nowrap
-#             overflow: hidden
-#             text-overflow: ellipsis
-#             @media (max-width: 800px)
-#                 text-align: center
-#     button
-#         background-color: $primary
-#         border: 1px solid $primary
-#         border-radius: $border
-#         color: white
-#         height: 36px
-#         width: 130px
-#         border: 0
-#         margin-top: 10px
-#         padding: 0 6px
-#         text-decoration: none
-#         text-transform: uppercase
-#         font-size: 10px
-#         font-weight: bold
-#         cursor: pointer
-#         outline: none
-#         display: inline-block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &.btn-width
-#             width: auto
-#             padding: 0 10px
-#         &:hover
-#             background: transparent
-#             color: $primary
-#         &.link
-#             min-width: 190px
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         z-index: 1
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
+.staking-res
+    @import scheme
+    position: relative
+    display: block
+    width: auto
+    margin-left: $left-margin
+    top: 0
+    height: auto
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    .staking-content
+        overflow: hidden
+        background: transparent
+        width: 100%
+        border-radius: 0px
+        position: relative
+        box-sizing: border-box
+        .left-proxy, .right-proxy
+            width: 15px
+            height: 16px
+            line-height: 10px
+            display: inline-block
+            color: white
+            padding: 9px
+            border-radius: 0px
+            cursor: pointer
+            vertical-align: top
+            text-align: center
+        .form-group
+            text-align: center
+            padding-top: 0px
+            overflow-y: auto
+            input, textarea
+                margin: 5px 0
+                outline: none
+            .section
+                border-bottom: 1px solid rgba(240, 237, 237, 0.16)
+                padding: 30px 20px
+                display: flex
+                @media (max-width: 800px)
+                    display: flow-root
+                    padding: 20px
+                &:last-child
+                    border: 0
+                .title
+                    padding: 0px
+                    width: 30%
+                    text-align: left
+                    text-transform: uppercase
+                    font-size: 14px
+                    @media (max-width: 800px)
+                        width: 100%
+                        margin-bottom: 20px
+                        text-align: center
+                    .less
+                        font-size: 10px
+                        opacity: 0.9
+                .description
+                    padding: 0px
+                    font-size: 14px
+                    width: 70%
+                    text-align: left
+                    @media (max-width: 800px)
+                        width: 100%
+                        text-align: center
+                    .important
+                        color: orange
+                    .left-node
+                        width: 40%
+                        float: left
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                            margin-bottom: 20px
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                        img
+                            width: 240px
+                            &.icon-svg
+                                height: 12px
+                                width: auto
+                                padding-right: 5px
+                    .right-node
+                        width: 60%
+                        float: right
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                            text-align: left
+                    &.node
+                        width: 80%
+                    .tabs
+                        display: inline-block
+                        margin: 20px 0 20px
+                        width: 100%
+                        .tab
+                            width: 25%
+                            display: inline-block
+                            opacity: 0.5;
+                            text-align: center
+                            border-bottom: 1px solid
+                            line-height: 37px
+                            text-transform: uppercase
+                            font-size: 10px
+                            font-weight: bold
+                            cursor: pointer
+                            height: 36px
+                            background: #2c0d5f
+                            border-color: #6b258e
+                            @media (max-width: 800px)
+                                width: 50%
+                            &.active
+                                opacity: 1
+                                border-bottom: 1px solid #6e1d96
+                                background: #37156d
+                    .btn
+                        margin: 10px 0
+                    .code
+                        overflow: scroll
+                        background: #1b1b1b
+                        text-align: left
+                        .copy
+                            float: right
+                            margin-top: 11px
+                            margin-right: 10px
+                            width: 15px
+                        .cursor
+                            -webkit-animation: blink 0.9s infinite
+                            animation: blink 0.9s infinite
+                            font: initial
+                            display: inline-block
+                            opacity: 1
+                            margin-left: 5px
+                        @-webkit-keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        @keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        &.comming
+                            background: transparent
+                            text-align: center
+                    .window
+                        position: sticky
+                        top: 0
+                        left: 0
+                        height: 39px
+                        background: #040404
+                        .icons
+                            padding: 0.75em
+                            position: absolute
+                            span
+                                background: #ca912e
+                            &:before
+                                content: ""
+                                background: #e25f5d
+                            &:after
+                                content: ""
+                                background: #3ec930
+                            span, &:before, &:after
+                                display: inline-block
+                                float: left
+                                width: 1em
+                                height: 1em
+                                border-radius: 50%
+                                margin-right: 0.5em
+                    .balance
+                        font-weight: 600
+                        font-size: 16px
+                        span:first-child
+                            color: orange
+                    textarea
+                        border: 0
+                        padding: 10px
+                        font-size: 13px
+                        width: 100%
+                        box-sizing: border-box
+                        min-height: 120px
+                        font-family: monospace
+                .content
+                    width: 30%
+                    position: relative
+                    button, .switch-index
+                        margin: 0
+                        position: absolute
+                        top: 50%
+                        left: 40%
+                        -ms-transform: translateY(-50%)
+                        transform: translateY(-50%)
+            .center
+                text-align: center
+            .left
+                text-align: left
+            label
+                font-size: 13px
+            h3
+                font-size: 12px
+                text-transform: uppercase
+                letter-spacing: 2px
+                opacity: .8
+                font-weight: 400
+                margin: 0
+            input
+                outline: none
+                width: 100%
+                box-sizing: border-box
+                height: 36px
+                line-height: 36px
+                border-radius: 0
+                padding: 0px 10px
+                font-size: 14px
+                margin: 5px 0
+                border: 0px
+                box-shadow: none
+                &.change-index
+                    margin: 0 !important
+                    border-radius: 0px
+                    height: 36px
+                    width: 55px
+                    line-height: 36px
+                    text-align: center
+                    font-size: 13px
+    ul
+        padding: 0
+        margin: 0
+        min-width: 100%
+        max-width: 300px
+        li 
+            list-style: none
+            margin-left: 0
+            font-size: 13px
+            color: #6f6fe2
+            font-size: 16px
+            list-style-position: inside
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            @media (max-width: 800px)
+                text-align: center
+    button
+        background-color: $primary
+        border: 1px solid $primary
+        border-radius: $border
+        color: white
+        height: 36px
+        width: 130px
+        border: 0
+        margin-top: 10px
+        padding: 0 6px
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 10px
+        font-weight: bold
+        cursor: pointer
+        outline: none
+        display: inline-block
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &.btn-width
+            width: auto
+            padding: 0 10px
+        &:hover
+            background: transparent
+            color: $primary
+        &.link
+            min-width: 190px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
 get-pair = (wallet, path, index, password, with-keystore)->
     w = wallet.derive-path(path).derive-child(index).get-wallet!
     address  = "0x" + w.get-address!.to-string(\hex)
@@ -347,7 +347,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', { key: "show-validator-#{validator}" }, ' ' + validator
+    li.pug(key="show-validator-#{validator}") #{validator}
 staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
@@ -415,7 +415,7 @@ staking-content = (store, web3t)->
             width: \100%
             margin-bottom: \2px
             background: if index % 2 then 'rgba(255, 255, 255, 0.04)' else ''
-        react.create-element 'div', { style: line-style }, ' ' + it
+        .pug(style=line-style) #{it}
     line-style =
         padding: "10px" 
         width: \100%
@@ -467,137 +467,137 @@ staking-content = (store, web3t)->
         to = web3t.velas.Staking.address
         amount = 0
         err <- web3t.vlx2.send-transaction { to, data, amount }
-    react.create-element 'div', { className: 'staking-content' }, children = 
+    .pug.staking-content
         #placeholder store, web3t
-        react.create-element 'div', { className: 'form-group' }, children = 
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Install Node'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'left-node' }, children = 
-                        react.create-element 'img', { src: "#{icons.img-node}" }
-                    react.create-element 'div', { className: 'right-node' }, children = 
-                        react.create-element 'div', {}, ' This script automatically deploys your node through the terminal. Also, it uses addresses associated with your current account to manage the node in the wallet.'
-                        react.create-element 'br', {}
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'span', { className: 'important' }, ' Important: '
-                            """ Do not transfer this script to anyone, as it is generated in your wallet, using personal wallet data."""
+        .form-group.pug
+            .pug.section
+                .title.pug
+                    h3.pug Install Node
+                .description.pug
+                    .pug.left-node
+                        img.pug(src="#{icons.img-node}")
+                    .pug.right-node
+                        .pug This script automatically deploys your node through the terminal. Also, it uses addresses associated with your current account to manage the node in the wallet.
+                        br.pug
+                        .pug 
+                            span.important.pug Important: 
+                            | Do not transfer this script to anyone, as it is generated in your wallet, using personal wallet data.
                         if pairs.mining.keystore.length is 0
-                            react.create-element 'div', {}, children = 
-                                react.create-element 'div', { className: 'btn' }, children = 
-                                    react.create-element 'button', { style: button-primary2-style, on-click: show-script, className: 'btn-width' }, children = 
-                                        react.create-element 'span', {}, children = 
-                                            react.create-element 'img', { src: "#{icons.generate}", className: 'icon-svg' }
-                                            """ Generate Script"""
-                                react.create-element 'div', {}, ' Please allow 30 seconds'
+                            .pug
+                                .pug.btn
+                                    button.btn-width.pug(style=button-primary2-style on-click=show-script)
+                                        span.pug
+                                            img.icon-svg.pug(src="#{icons.generate}")
+                                            | Generate Script
+                                .pug Please allow 30 seconds
                     if pairs.mining.keystore.length > 0 or store.url-params.dev?
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'div', { className: 'tabs' }, children = 
-                                react.create-element 'span', { on-click: activate-line, className: "#{active-line} tab" }, ' Line by Line'
-                                react.create-element 'span', { on-click: activate-string, className: "#{active-string} tab" }, ' As one single string'
-                                react.create-element 'span', { on-click: activate-ssh, className: "#{active-ssh} tab" }, ' Install via ssh'
-                                react.create-element 'span', { on-click: activate-do, className: "#{active-do} tab" }, ' Install on Digital Ocean'
+                        .pug
+                            .pug.tabs
+                                span.tab.pug(on-click=activate-line class="#{active-line}") Line by Line
+                                span.tab.pug(on-click=activate-string class="#{active-string}") As one single string
+                                span.tab.pug(on-click=activate-ssh class="#{active-ssh}") Install via ssh
+                                span.tab.pug(on-click=activate-do class="#{active-do}") Install on Digital Ocean
                             if active-line is \active
-                                react.create-element 'div', { className: 'code' }, children = 
-                                    react.create-element 'section', { className: 'window' }, children = 
-                                        react.create-element 'section', { className: 'icons' }, children = 
-                                            react.create-element 'span', {}
-                                        react.create-element CopyToClipboard, { text: "#{velas-node-applied-template}", on-copy: copied-inform(store), style: filter-icon, className: 'copy' }, children = 
+                                .pug.code
+                                    section.pug.window
+                                        section.pug.icons
+                                            span.pug
+                                        CopyToClipboard.pug.copy(text="#{velas-node-applied-template}" on-copy=copied-inform(store) style=filter-icon)
                                             copy store
                                     velas-node-applied-template |> map build-template-line
                             if active-string is \active
-                                react.create-element 'div', { className: 'code' }, children = 
-                                    react.create-element 'section', { className: 'window' }, children = 
-                                        react.create-element 'section', { className: 'icons' }, children = 
-                                            react.create-element 'span', {}
-                                        react.create-element CopyToClipboard, { text: "#{velas-node-applied-template-line}", on-copy: copied-inform(store), style: filter-icon, className: 'copy' }, children = 
+                                .pug.code
+                                    section.pug.window
+                                        section.pug.icons
+                                            span.pug
+                                        CopyToClipboard.pug.copy(text="#{velas-node-applied-template-line}" on-copy=copied-inform(store) style=filter-icon)
                                             copy store
-                                    react.create-element 'div', { style: line-style }, children = 
+                                    .pug(style=line-style)
                                         velas-node-applied-template-line
                             if active-ssh is \active
-                                react.create-element 'div', { className: 'code' }, children = 
-                                    react.create-element 'section', { className: 'window' }, children = 
-                                        react.create-element 'section', { className: 'icons' }, children = 
-                                            react.create-element 'span', {}
-                                        react.create-element CopyToClipboard, { text: "some code", on-copy: copied-inform(store), style: filter-icon, className: 'copy' }, children = 
+                                .pug.code
+                                    section.pug.window
+                                        section.pug.icons
+                                            span.pug
+                                        CopyToClipboard.pug.copy(text="some code" on-copy=copied-inform(store) style=filter-icon)
                                             copy store
-                                    react.create-element 'div', { style: line-style }, children = 
-                                        """ Comming Soon"""
-                                        react.create-element 'span', { className: 'cursor' }, ' |'
+                                    .pug(style=line-style)
+                                        | Comming Soon
+                                        span.cursor.pug |
                             if active-do is \active
-                                react.create-element 'div', { className: 'code' }, children = 
-                                    react.create-element 'section', { className: 'window' }, children = 
-                                        react.create-element 'section', { className: 'icons' }, children = 
-                                            react.create-element 'span', {}
-                                        react.create-element CopyToClipboard, { text: "some code", on-copy: copied-inform(store), style: filter-icon, className: 'copy' }, children = 
+                                .pug.code
+                                    section.pug.window
+                                        section.pug.icons
+                                            span.pug
+                                        CopyToClipboard.pug.copy(text="some code" on-copy=copied-inform(store) style=filter-icon)
                                             copy store
-                                    react.create-element 'div', { style: line-style }, children = 
-                                        """ Comming Soon"""
-                                        react.create-element 'span', { className: 'cursor' }, ' |'
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Become Validator'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'left' }, children = 
-                        react.create-element 'label', {}, ' Your Mining Address'
-                        react.create-element 'input', { type: 'text', value: "#{pairs.mining.address}", readonly: "readonly", style: input-style, placeholder: "mining address" }
-                    react.create-element 'div', { className: 'left' }, children = 
-                        react.create-element 'label', {}, ' Your Stake (VLX)'
-                        react.create-element 'input', { type: 'text', value: "#{store.staking.add.add-validator-stake}", on-change: change-stake, style: input-style, placeholder: "stake" }
-                    react.create-element 'button', { style: button-primary2-style, on-click: become-validator }, children = 
-                        react.create-element 'span', {}, children = 
-                            react.create-element 'img', { src: "#{icons.apply}", className: 'icon-svg' }
-                            """ Apply"""
+                                    .pug(style=line-style)
+                                        | Comming Soon
+                                        span.cursor.pug |
+            .pug.section
+                .title.pug
+                    h3.pug Become Validator
+                .description.pug
+                    .pug.left
+                        label.pug Your Mining Address
+                        input.pug(type='text' value="#{pairs.mining.address}" readonly="readonly" style=input-style placeholder="mining address")
+                    .pug.left
+                        label.pug Your Stake (VLX)
+                        input.pug(type='text' value="#{store.staking.add.add-validator-stake}" on-change=change-stake style=input-style placeholder="stake")
+                    button.pug(style=button-primary2-style on-click=become-validator)
+                        span.pug
+                            img.icon-svg.pug(src="#{icons.apply}")
+                            | Apply
             if store.staking.validators.pending.length > 0
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' Pending Validators'
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'ul', {}, children = 
+                .pug.section
+                    .title.pug
+                        h3.pug Pending Validators
+                    .description.pug
+                        ul.pug
                             store.staking.validators.pending |> filter (-> store.staking.validators.active.index-of(it) is -1) |> map show-validator store, web3t
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Active Validators. Current epoch: ' + store.staking.epoch
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'ul', {}, children = 
+            .pug.section
+                .title.pug
+                    h3.pug Active Validators. Current epoch: #{store.staking.epoch}
+                .description.pug
+                    ul.pug
                         store.staking.validators.active |> map show-validator store, web3t
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Your Rewards '
-                react.create-element 'div', { className: 'description' }, children = 
+            .pug.section
+                .title.pug
+                    h3.pug Your Rewards 
+                .description.pug
                     if store.staking.reward?
-                        react.create-element 'div', {}, children = 
-                            react.create-element 'div', { className: 'balance' }, children = 
-                                react.create-element 'span', {}, ' ' + store.staking.reward
-                                react.create-element 'span', {}, '  VLX'
-                            react.create-element 'button', { style: button-primary2-style, on-click: claim }, children = 
-                                react.create-element 'span', {}, children = 
-                                    react.create-element 'img', { src: "#{icons.reward}", className: 'icon-svg' }
-                                    """ Claim Reward"""
+                        .pug
+                            .pug.balance
+                                span.pug #{store.staking.reward}
+                                span.pug  VLX
+                            button.pug(style=button-primary2-style on-click=claim)
+                                span.pug
+                                    img.icon-svg.pug(src="#{icons.reward}")
+                                    | Claim Reward
                     else
-                        react.create-element 'button', { style: button-primary2-style, on-click: calc-reward, className: 'btn-width' }, children = 
-                            react.create-element 'span', {}, children = 
-                                react.create-element 'img', { src: "#{icons.calculate}", className: 'icon-svg' }
-                                """ Calculate Reward"""
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Account Index'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'div', { className: 'switch-index' }, children = 
-                        react.create-element 'span', { on-click: account-left-proxy, style: button-primary2-style, className: 'button left-proxy' }, children = 
+                        button.btn-width.pug(style=button-primary2-style on-click=calc-reward)
+                            span.pug
+                                img.icon-svg.pug(src="#{icons.calculate}")
+                                | Calculate Reward
+            .pug.section
+                .title.pug
+                    h3.pug Account Index
+                .description.pug
+                    .switch-index.pug
+                        span.pug.button.left-proxy(on-click=account-left-proxy style=button-primary2-style)
                             icon \ChevronLeft, 15
-                        react.create-element 'span', { className: 'bold' }, children = 
-                            react.create-element 'input', { value: "#{store.current.account-index}", style: input-style, on-change: change-account-index-proxy, className: 'change-index' }
-                        react.create-element 'span', { on-click: account-right-proxy, style: button-primary2-style, className: 'button right-proxy' }, children = 
+                        span.pug.bold
+                            input.pug.change-index(value="#{store.current.account-index}" style=input-style on-change=change-account-index-proxy)
+                        span.pug.button.right-proxy(on-click=account-right-proxy style=button-primary2-style)
                             icon \ChevronRight, 15
-            react.create-element 'div', { className: 'section' }, children = 
-                react.create-element 'div', { className: 'title' }, children = 
-                    react.create-element 'h3', {}, ' Exit from Validator Pool'
-                react.create-element 'div', { className: 'description' }, children = 
-                    react.create-element 'button', { style: button-primary4-style, on-click: exit }, children = 
-                        react.create-element 'span', {}, children = 
-                            react.create-element 'img', { src: "#{icons.exit}", className: 'icon-svg' }
-                            """ Exit"""
+            .pug.section
+                .title.pug
+                    h3.pug Exit from Validator Pool
+                .description.pug
+                    button.pug(style=button-primary4-style on-click=exit)
+                        span.pug
+                            img.icon-svg.pug(src="#{icons.exit}")
+                            | Exit
 staking = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -627,12 +627,12 @@ staking = ({ store, web3t })->
         color: info.app.color3
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking-res staking-res-76570990' }, children = 
+    .pug.staking-res
         alert-demo store, web3t
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' Resource Staking'
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", className: 'icon-svg' }
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") Resource Staking
+            .pug.close(on-click=go-back)
+                img.icon-svg.pug(src="#{icons.arrow-left}")
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t

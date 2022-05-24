@@ -3,18 +3,18 @@ require! {
     \prelude-ls : { map }
     \../get-primary-info.ls
 }
-# .keyboard-1406577857
-#     .key
-#         $size: 40px
-#         user-select: none
-#         cursor: pointer
-#         display: inline-block
-#         width: $size
-#         height: $size
-#         text-align: center
-#         line-height: $size
-#         &:hover
-#             font-weight: bold
+.keyboard
+    .key
+        $size: 40px
+        user-select: none
+        cursor: pointer
+        display: inline-block
+        width: $size
+        height: $size
+        text-align: center
+        line-height: $size
+        &:hover
+            font-weight: bold
 genCharArray = (charA, charZ) ->
     a = []
     i = charA.charCodeAt 0
@@ -40,12 +40,12 @@ build-key = (store, value, on-change)-> (key)->
         background: style.app.background
         background-color: style.app.bgspare
         color: style.app.text
-    react.create-element 'div', { on-click: change, style: button-style, className: 'key' }, ' ' + key
+    .pug.key(on-click=change style=button-style) #{key}
 numpad = (store, value, on-change)->
-    react.create-element 'div', { className: 'keyboard keyboard-1406577857' }, children = 
+    .pug.keyboard
         (di ++ sp) |> map build-key store, value, on-change
 all = (store, value, on-change)->
-    react.create-element 'div', { className: 'keyboard keyboard-1406577857' }, children = 
+    .pug.keyboard
         (az ++ di ++ sp) |> map build-key store, value, on-change 
 module.exports = ({ store, type, on-change, value })->
     return null if store.current.device is \mobile

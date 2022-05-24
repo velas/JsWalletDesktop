@@ -41,549 +41,549 @@ require! {
     \./stake/accounts.ls : \stake-accounts
     \./stake/error-funcs.ls : { get-error-message }
 }
-# .staking1556802966
-#     @import scheme
-#     position: relative
-#     display: block
-#     width: auto
-#     margin-left: $left-margin
-#     top: 0
-#     height: auto
-#     min-height: 100vh
-#     padding-top: 5%
-#     box-sizing: border-box
-#     padding: 0px
-#     background: transparent
-#     .stake-item
-#         background: #628881
-#         color: white
-#         font-weight: bold
-#         text-align: center
-#         margin-bottom: 5px
-#         cursor: pointer
-#         &:last-child
-#             margin-bottom: 0
-#     .loader
-#         svg
-#             width: 12px
-#             cursor: pointer
-#         &.spin > svg
-#             @keyframes spin
-#                 from
-#                     transform: rotate(0deg)
-#                 to
-#                     transform: rotate(360deg)
-#             animation-name: spin
-#             animation-duration: 4000ms
-#             animation-iteration-count: infinite
-#             animation-timing-function: linear
-#         &.disabled
-#             opacity: 0.3
-#     .icon-right
-#         height: 12px
-#         top: 2px
-#         position: relative
-#     .pad
-#         padding: 0 5px
-#     .pad-bottom
-#         padding-bottom: 5px
-#     @media(max-width:$ipad)
-#         width: 100%
-#         margin: 0
-#     .float-left
-#         float: left
-#     .float-right
-#         float: right
-#     span.color
-#         color: #cc8b1a
-#         font-weight: bold
-#     .staking-content
-#         background: transparent
-#         width: 100%
-#         border-radius: 0px
-#         position: relative
-#         box-sizing: border-box
-#         .claim-table
-#             max-height: 100px
-#             width: 300px
-#             overflow-y: auto
-#             background: rgb(90, 26, 154)
-#             @media(max-width:800px)
-#                 margin: 15px auto
-#             tbody
-#                 background: rgb(45, 15, 85)
-#             table
-#                 width: 100%
-#                 tr
-#                     padding: 0
-#                     margin: 0
-#                     td
-#                         width: 33%
-#                         &:first-child
-#                             text-align: center
-#         .left-proxy, .right-proxy
-#             width: 15px
-#             height: 16px
-#             line-height: 10px
-#             display: inline-block
-#             color: white
-#             padding: 9px
-#             border-radius: 0px
-#             cursor: pointer
-#             vertical-align: top
-#             text-align: center
-#         .form-group
-#             text-align: center
-#             padding-top: 0px
-#             input, textarea
-#                 margin: 5px 0
-#                 outline: none
-#             .section
-#                 border-bottom: 1px solid rgba(240, 237, 237, 0.16)
-#                 padding: 30px 20px
-#                 display: flex
-#                 .chosen-pool
-#                     .buttons
-#                         text-align: left
-#                         @media(max-width:800px)
-#                             text-align: center
-#                     span
-#                         @media (max-width: 800px)
-#                             font-size: 14px
-#                     .check
-#                         width: 15px
-#                         height: 15px
-#                         margin-left: 10px
-#                         vertical-align: middle
-#                         animation: pulse_check 1s linear
-#                         transform-origin: 50% 50%
-#                     @keyframes pulse_check
-#                         0%
-#                             transform: scale(0)
-#                         25%
-#                             transform: scale(0.5)
-#                         50%
-#                             transform: scale(1.6)
-#                         100%
-#                             transform: scale(1)
-#                 @media (max-width: 800px)
-#                     display: flow-root
-#                     padding: 20px
-#                 &:last-child
-#                     border: 0
-#                     @media (max-width: 800px)
-#                         padding-bottom: $ios-m-b
-#                 &.reward
-#                     background-image: $reward
-#                     background-repeat: no-repeat
-#                     background-position: 80%
-#                     background-size: auto
-#                     background-color: rgba(111, 50, 162, 0.15)
-#                     @media(max-width: 800px)
-#                         background-position: 5%
-#                     @media(max-width: 540px)
-#                         background-image: none
-#                 .title
-#                     padding: 0px
-#                     width: 17%
-#                     min-width: 150px
-#                     text-align: left
-#                     text-transform: uppercase
-#                     font-size: 14px
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         margin-bottom: 20px
-#                         text-align: center
-#                     .less
-#                         font-size: 10px
-#                         opacity: 0.9
-#                 .description
-#                     padding: 0px
-#                     font-size: 14px
-#                     width: 80%
-#                     text-align: left
-#                     hr
-#                         margin: 15px auto
-#                         border: 1px solid rgba(240, 237, 237, 0.16)
-#                         border-top: 0
-#                     .chosen-pool
-#                         margin-bottom: 10px
-#                         .color
-#                             color: orange
-#                             font-weight: 600
-#                     &.min-height
-#                         max-height: 300px
-#                         overflow: scroll
-#                         table
-#                             td,td
-#                                 padding: 0 3px
-#                         .choose-pool
-#                             max-width: 50px
-#                     .table-scroll
-#                         overflow-x: scroll
-#                         background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
-#                         background-repeat: no-repeat
-#                         background-attachment: local, local, scroll, scroll
-#                         background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#                         animation: breathe 3s ease-in infinite
-#                         -moz-transition: breathe 3s ease-in infinite
-#                         -web-kit-transition: breathe 3s ease-in infinite
-#                         height: auto
-#                         max-height: 70vh
-#                         background: rgba(255, 255, 255, 0.04)
-#                         .stake-pointer
-#                             background: rgb(37, 87, 127)
-#                         &.lockup
-#                             height: auto
-#                         .address-holder
-#                             a
-#                                 padding-left: 30px !important
-#                             .browse
-#                                 right: 30px !important
-#                         thead
-#                             th
-#                                 @media(min-width:800px) and (max-width: 900px)
-#                                     font-size: 11px !important
-#                         td
-#                             &:nth-child(2)
-#                                 cursor: pointer
-#                             &.with-stake
-#                                 filter: saturate(6.5)
-#                         tr
-#                             &.chosen
-#                                 background: #305673
-#                             &.active
-#                                 color: var(--color-td)
-#                             &.inactive
-#                                 color: orange
-#                             &.banned
-#                                 color: red
-#                             .circle
-#                                 border-radius: 0px
-#                                 width: 20px
-#                                 height: 20px
-#                                 display: inline-block
-#                                 color: white
-#                                 line-height: 1.6
-#                                 border-radius: 4px
-#                                 background: gray
-#                                 &.active
-#                                     background: rgb(38, 219, 85)
-#                                 &.inactive
-#                                     background: orange
-#                                 &.banned
-#                                     background: red
-#                         button
-#                             width: 100%
-#                             height: 36px
-#                             margin: 0
-#                     table
-#                         width: 100%
-#                         border-collapse: collapse
-#                         margin: 0px auto
-#                     th
-#                         font-weight: 400
-#                         &:first-child
-#                             text-align: center
-#                             width: 5%
-#                     td
-#                         &:nth-child(1), &:nth-child(6)
-#                             text-align: center
-#                         img.copy
-#                             height: 16px
-#                             margin-right: 5px
-#                     td, th
-#                         padding: 8px
-#                         max-width: 200px
-#                         border: 1px solid rgba(240, 237, 237, 0.16)
-#                         white-space: nowrap
-#                         font-size: 13px
-#                         @media(max-width:800px)
-#                             text-align: left
-#                     .left
-#                         position: relative
-#                         .small-btns
-#                             line-height: 36px
-#                             button.small
-#                                 outline: none
-#                                 border-radius: $border
-#                                 line-height: 10px
-#                                 text-align: center
-#                                 height: 16px
-#                                 font-size: 10px
-#                                 font-weight: 600
-#                                 margin-top: 0
-#                                 width: auto
-#                                 margin-right: 10px
-#                                 padding: 2px 5px
-#                                 cursor: pointer
-#                     @media (max-width: 800px)
-#                         width: 100%
-#                         text-align: center
-#                     .important
-#                         color: orange
-#                     .left-node
-#                         width: 40%
-#                         float: left
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                             margin-bottom: 20px
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                         img
-#                             width: 240px
-#                     .right-node
-#                         width: 60%
-#                         float: right
-#                         @media (max-width: 800px)
-#                             width: 100%
-#                             text-align: center
-#                         @media (min-width: 801px) and (max-width: 992px)
-#                             width: 50%
-#                             text-align: left
-#                     &.node
-#                         width: 80%
-#                     .tabs
-#                         display: inline-block
-#                         margin: 20px 0 20px
-#                         width: 100%
-#                         .tab
-#                             width: 25%
-#                             display: inline-block
-#                             opacity: 0.5;
-#                             text-align: center
-#                             border-bottom: 1px solid
-#                             line-height: 37px
-#                             text-transform: uppercase
-#                             font-size: 10px
-#                             font-weight: bold
-#                             cursor: pointer
-#                             height: 36px
-#                             background: #2c0d5f
-#                             border-color: #6b258e
-#                             @media (max-width: 800px)
-#                                 width: 50%
-#                             &.active
-#                                 opacity: 1
-#                                 border-bottom: 1px solid #6e1d96
-#                                 background: #37156d
-#                     .btn
-#                         margin: 10px 0
-#                         @media (max-width: 800px)
-#                             margin: 10px auto 0
-#                     .step-content
-#                         .btn
-#                             margin: 10px auto 0
-#                     .code
-#                         overflow: scroll
-#                         background: #1b1b1b
-#                         text-align: left
-#                         .copy
-#                             float: right
-#                             margin-top: 11px
-#                             margin-right: 10px
-#                             width: 15px
-#                         .cursor
-#                             -webkit-animation: blink 0.9s infinite
-#                             animation: blink 0.9s infinite
-#                             font: initial
-#                             display: inline-block
-#                             opacity: 1
-#                             margin-left: 5px
-#                         @-webkit-keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         @keyframes blink
-#                             0%
-#                                 opacity: 1
-#                             50%
-#                                 opacity: 0
-#                             100%
-#                                 opacity: 1
-#                         &.comming
-#                             background: transparent
-#                             text-align: center
-#                     .window
-#                         position: sticky
-#                         top: 0
-#                         left: 0
-#                         height: 39px
-#                         background: #040404
-#                         .icons
-#                             padding: 0.75em
-#                             position: absolute
-#                             span
-#                                 background: #040404
-#                             &:before
-#                                 content: ""
-#                                 background: #040404
-#                             &:after
-#                                 content: ""
-#                                 background: #040404
-#                             span, &:before, &:after
-#                                 display: inline-block
-#                                 float: left
-#                                 width: 1em
-#                                 height: 1em
-#                                 border-radius: 50%
-#                                 margin-right: 0.5em
-#                     .balance
-#                         font-size: 14px
-#                         .color
-#                             color: orange
-#                             font-weight: 600
-#                         .label-coin
-#                             left: 3px
-#                             top: 2px
-#                             padding-right: 2px
-#                             height: 15px
-#                             position: relative
-#                             color: orange
-#                             font-weight: 600
-#                     textarea
-#                         border: 0
-#                         padding: 10px
-#                         font-size: 13px
-#                         width: 100%
-#                         box-sizing: border-box
-#                         min-height: 120px
-#                         font-family: monospace
-#                 .content
-#                     width: 30%
-#                     position: relative
-#                     button, .switch-index
-#                         margin: 0
-#                         position: absolute
-#                         top: 50%
-#                         left: 40%
-#                         -ms-transform: translateY(-50%)
-#                         transform: translateY(-50%)
-#             .center
-#                 text-align: center
-#             .left
-#                 text-align: left
-#             label
-#                 font-size: 13px
-#             h3
-#                 font-size: 12px
-#                 text-transform: uppercase
-#                 letter-spacing: 2px
-#                 opacity: .8
-#                 font-weight: 400
-#                 margin: 0
-#             input[type="radio"]
-#                 height: auto
-#                 width: auto
-#                 margin: 0 40%
-#                 cursor: pointer
-#             input[type="checkbox"]
-#                 height: auto
-#                 width: auto
-#                 margin: 0 40%
-#                 cursor: pointer
-#             input
-#                 outline: none
-#                 width: 100%
-#                 box-sizing: border-box
-#                 height: 36px
-#                 line-height: 36px
-#                 border-radius: 0
-#                 padding: 0px 10px
-#                 font-size: 14px
-#                 margin: 5px 0
-#                 border: 0px
-#                 box-shadow: none
-#                 &.change-index
-#                     margin: 0 !important
-#                     border-radius: 0px
-#                     height: 36px
-#                     width: 55px
-#                     line-height: 36px
-#                     text-align: center
-#                     font-size: 13px
-#     ul
-#         padding: 0
-#         margin: 0
-#         min-width: 100%
-#         max-width: 300px
-#         li
-#             list-style: none
-#             margin-left: 0
-#             font-size: 13px
-#             color: #6f6fe2
-#             font-size: 16px
-#             list-style-position: inside
-#             white-space: nowrap
-#             overflow: hidden
-#             text-overflow: ellipsis
-#             @media (max-width: 800px)
-#                 text-align: center
-#     .yesno
-#         &.Yes
-#             background: rgba(60, 213, 175, 0.2)
-#             color: #3cd5af
-#         &.No
-#             background: rgba(236, 146, 146, 0.2)
-#             color: #d85757
-#     .noyes
-#         &.Yes
-#             background: rgba(236, 146, 146, 0.2)
-#             color: #d85757
-#         &.No
-#             background: rgba(60, 213, 175, 0.2)
-#             color: #3cd5af
-#     button
-#         background-color: $primary
-#         border: 1px solid $primary
-#         border-radius: $border
-#         color: white
-#         height: 36px
-#         width: 125px
-#         padding: 0 6px
-#         margin-top: 10px
-#         text-decoration: none
-#         text-transform: uppercase
-#         font-size: 10px
-#         font-weight: bold
-#         cursor: pointer
-#         outline: none
-#         display: inline-block
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &.mt-0
-#             margin-top: 0
-#         &:hover
-#             background: transparent
-#             color: $primary
-#         &.link
-#             min-width: 190px
-#     >.title
-#         position: sticky
-#         position: -webkit-sticky
-#         z-index: 1
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#         &:checked + label:before
-#             background-color: #3cd5af
-#             border-color: #3cd5af
-#             color: #fff
+.staking
+    @import scheme
+    position: relative
+    display: block
+    width: auto
+    margin-left: $left-margin
+    top: 0
+    height: auto
+    min-height: 100vh
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 0px
+    background: transparent
+    .stake-item
+        background: #628881
+        color: white
+        font-weight: bold
+        text-align: center
+        margin-bottom: 5px
+        cursor: pointer
+        &:last-child
+            margin-bottom: 0
+    .loader
+        svg
+            width: 12px
+            cursor: pointer
+        &.spin > svg
+            @keyframes spin
+                from
+                    transform: rotate(0deg)
+                to
+                    transform: rotate(360deg)
+            animation-name: spin
+            animation-duration: 4000ms
+            animation-iteration-count: infinite
+            animation-timing-function: linear
+        &.disabled
+            opacity: 0.3
+    .icon-right
+        height: 12px
+        top: 2px
+        position: relative
+    .pad
+        padding: 0 5px
+    .pad-bottom
+        padding-bottom: 5px
+    @media(max-width:$ipad)
+        width: 100%
+        margin: 0
+    .float-left
+        float: left
+    .float-right
+        float: right
+    span.color
+        color: #cc8b1a
+        font-weight: bold
+    .staking-content
+        background: transparent
+        width: 100%
+        border-radius: 0px
+        position: relative
+        box-sizing: border-box
+        .claim-table
+            max-height: 100px
+            width: 300px
+            overflow-y: auto
+            background: rgb(90, 26, 154)
+            @media(max-width:800px)
+                margin: 15px auto
+            tbody
+                background: rgb(45, 15, 85)
+            table
+                width: 100%
+                tr
+                    padding: 0
+                    margin: 0
+                    td
+                        width: 33%
+                        &:first-child
+                            text-align: center
+        .left-proxy, .right-proxy
+            width: 15px
+            height: 16px
+            line-height: 10px
+            display: inline-block
+            color: white
+            padding: 9px
+            border-radius: 0px
+            cursor: pointer
+            vertical-align: top
+            text-align: center
+        .form-group
+            text-align: center
+            padding-top: 0px
+            input, textarea
+                margin: 5px 0
+                outline: none
+            .section
+                border-bottom: 1px solid rgba(240, 237, 237, 0.16)
+                padding: 30px 20px
+                display: flex
+                .chosen-pool
+                    .buttons
+                        text-align: left
+                        @media(max-width:800px)
+                            text-align: center
+                    span
+                        @media (max-width: 800px)
+                            font-size: 14px
+                    .check
+                        width: 15px
+                        height: 15px
+                        margin-left: 10px
+                        vertical-align: middle
+                        animation: pulse_check 1s linear
+                        transform-origin: 50% 50%
+                    @keyframes pulse_check
+                        0%
+                            transform: scale(0)
+                        25%
+                            transform: scale(0.5)
+                        50%
+                            transform: scale(1.6)
+                        100%
+                            transform: scale(1)
+                @media (max-width: 800px)
+                    display: flow-root
+                    padding: 20px
+                &:last-child
+                    border: 0
+                    @media (max-width: 800px)
+                        padding-bottom: $ios-m-b
+                &.reward
+                    background-image: $reward
+                    background-repeat: no-repeat
+                    background-position: 80%
+                    background-size: auto
+                    background-color: rgba(111, 50, 162, 0.15)
+                    @media(max-width: 800px)
+                        background-position: 5%
+                    @media(max-width: 540px)
+                        background-image: none
+                .title
+                    padding: 0px
+                    width: 17%
+                    min-width: 150px
+                    text-align: left
+                    text-transform: uppercase
+                    font-size: 14px
+                    @media (max-width: 800px)
+                        width: 100%
+                        margin-bottom: 20px
+                        text-align: center
+                    .less
+                        font-size: 10px
+                        opacity: 0.9
+                .description
+                    padding: 0px
+                    font-size: 14px
+                    width: 80%
+                    text-align: left
+                    hr
+                        margin: 15px auto
+                        border: 1px solid rgba(240, 237, 237, 0.16)
+                        border-top: 0
+                    .chosen-pool
+                        margin-bottom: 10px
+                        .color
+                            color: orange
+                            font-weight: 600
+                    &.min-height
+                        max-height: 300px
+                        overflow: scroll
+                        table
+                            td,td
+                                padding: 0 3px
+                        .choose-pool
+                            max-width: 50px
+                    .table-scroll
+                        overflow-x: scroll
+                        background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+                        background-repeat: no-repeat
+                        background-attachment: local, local, scroll, scroll
+                        background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+                        animation: breathe 3s ease-in infinite
+                        -moz-transition: breathe 3s ease-in infinite
+                        -web-kit-transition: breathe 3s ease-in infinite
+                        height: auto
+                        max-height: 70vh
+                        background: rgba(255, 255, 255, 0.04)
+                        .stake-pointer
+                            background: rgb(37, 87, 127)
+                        &.lockup
+                            height: auto
+                        .address-holder
+                            a
+                                padding-left: 30px !important
+                            .browse
+                                right: 30px !important
+                        thead
+                            th
+                                @media(min-width:800px) and (max-width: 900px)
+                                    font-size: 11px !important
+                        td
+                            &:nth-child(2)
+                                cursor: pointer
+                            &.with-stake
+                                filter: saturate(6.5)
+                        tr
+                            &.chosen
+                                background: #305673
+                            &.active
+                                color: var(--color-td)
+                            &.inactive
+                                color: orange
+                            &.banned
+                                color: red
+                            .circle
+                                border-radius: 0px
+                                width: 20px
+                                height: 20px
+                                display: inline-block
+                                color: white
+                                line-height: 1.6
+                                border-radius: 4px
+                                background: gray
+                                &.active
+                                    background: rgb(38, 219, 85)
+                                &.inactive
+                                    background: orange
+                                &.banned
+                                    background: red
+                        button
+                            width: 100%
+                            height: 36px
+                            margin: 0
+                    table
+                        width: 100%
+                        border-collapse: collapse
+                        margin: 0px auto
+                    th
+                        font-weight: 400
+                        &:first-child
+                            text-align: center
+                            width: 5%
+                    td
+                        &:nth-child(1), &:nth-child(6)
+                            text-align: center
+                        img.copy
+                            height: 16px
+                            margin-right: 5px
+                    td, th
+                        padding: 8px
+                        max-width: 200px
+                        border: 1px solid rgba(240, 237, 237, 0.16)
+                        white-space: nowrap
+                        font-size: 13px
+                        @media(max-width:800px)
+                            text-align: left
+                    .left
+                        position: relative
+                        .small-btns
+                            line-height: 36px
+                            button.small
+                                outline: none
+                                border-radius: $border
+                                line-height: 10px
+                                text-align: center
+                                height: 16px
+                                font-size: 10px
+                                font-weight: 600
+                                margin-top: 0
+                                width: auto
+                                margin-right: 10px
+                                padding: 2px 5px
+                                cursor: pointer
+                    @media (max-width: 800px)
+                        width: 100%
+                        text-align: center
+                    .important
+                        color: orange
+                    .left-node
+                        width: 40%
+                        float: left
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                            margin-bottom: 20px
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                        img
+                            width: 240px
+                    .right-node
+                        width: 60%
+                        float: right
+                        @media (max-width: 800px)
+                            width: 100%
+                            text-align: center
+                        @media (min-width: 801px) and (max-width: 992px)
+                            width: 50%
+                            text-align: left
+                    &.node
+                        width: 80%
+                    .tabs
+                        display: inline-block
+                        margin: 20px 0 20px
+                        width: 100%
+                        .tab
+                            width: 25%
+                            display: inline-block
+                            opacity: 0.5;
+                            text-align: center
+                            border-bottom: 1px solid
+                            line-height: 37px
+                            text-transform: uppercase
+                            font-size: 10px
+                            font-weight: bold
+                            cursor: pointer
+                            height: 36px
+                            background: #2c0d5f
+                            border-color: #6b258e
+                            @media (max-width: 800px)
+                                width: 50%
+                            &.active
+                                opacity: 1
+                                border-bottom: 1px solid #6e1d96
+                                background: #37156d
+                    .btn
+                        margin: 10px 0
+                        @media (max-width: 800px)
+                            margin: 10px auto 0
+                    .step-content
+                        .btn
+                            margin: 10px auto 0
+                    .code
+                        overflow: scroll
+                        background: #1b1b1b
+                        text-align: left
+                        .copy
+                            float: right
+                            margin-top: 11px
+                            margin-right: 10px
+                            width: 15px
+                        .cursor
+                            -webkit-animation: blink 0.9s infinite
+                            animation: blink 0.9s infinite
+                            font: initial
+                            display: inline-block
+                            opacity: 1
+                            margin-left: 5px
+                        @-webkit-keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        @keyframes blink
+                            0%
+                                opacity: 1
+                            50%
+                                opacity: 0
+                            100%
+                                opacity: 1
+                        &.comming
+                            background: transparent
+                            text-align: center
+                    .window
+                        position: sticky
+                        top: 0
+                        left: 0
+                        height: 39px
+                        background: #040404
+                        .icons
+                            padding: 0.75em
+                            position: absolute
+                            span
+                                background: #040404
+                            &:before
+                                content: ""
+                                background: #040404
+                            &:after
+                                content: ""
+                                background: #040404
+                            span, &:before, &:after
+                                display: inline-block
+                                float: left
+                                width: 1em
+                                height: 1em
+                                border-radius: 50%
+                                margin-right: 0.5em
+                    .balance
+                        font-size: 14px
+                        .color
+                            color: orange
+                            font-weight: 600
+                        .label-coin
+                            left: 3px
+                            top: 2px
+                            padding-right: 2px
+                            height: 15px
+                            position: relative
+                            color: orange
+                            font-weight: 600
+                    textarea
+                        border: 0
+                        padding: 10px
+                        font-size: 13px
+                        width: 100%
+                        box-sizing: border-box
+                        min-height: 120px
+                        font-family: monospace
+                .content
+                    width: 30%
+                    position: relative
+                    button, .switch-index
+                        margin: 0
+                        position: absolute
+                        top: 50%
+                        left: 40%
+                        -ms-transform: translateY(-50%)
+                        transform: translateY(-50%)
+            .center
+                text-align: center
+            .left
+                text-align: left
+            label
+                font-size: 13px
+            h3
+                font-size: 12px
+                text-transform: uppercase
+                letter-spacing: 2px
+                opacity: .8
+                font-weight: 400
+                margin: 0
+            input[type="radio"]
+                height: auto
+                width: auto
+                margin: 0 40%
+                cursor: pointer
+            input[type="checkbox"]
+                height: auto
+                width: auto
+                margin: 0 40%
+                cursor: pointer
+            input
+                outline: none
+                width: 100%
+                box-sizing: border-box
+                height: 36px
+                line-height: 36px
+                border-radius: 0
+                padding: 0px 10px
+                font-size: 14px
+                margin: 5px 0
+                border: 0px
+                box-shadow: none
+                &.change-index
+                    margin: 0 !important
+                    border-radius: 0px
+                    height: 36px
+                    width: 55px
+                    line-height: 36px
+                    text-align: center
+                    font-size: 13px
+    ul
+        padding: 0
+        margin: 0
+        min-width: 100%
+        max-width: 300px
+        li
+            list-style: none
+            margin-left: 0
+            font-size: 13px
+            color: #6f6fe2
+            font-size: 16px
+            list-style-position: inside
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            @media (max-width: 800px)
+                text-align: center
+    .yesno
+        &.Yes
+            background: rgba(60, 213, 175, 0.2)
+            color: #3cd5af
+        &.No
+            background: rgba(236, 146, 146, 0.2)
+            color: #d85757
+    .noyes
+        &.Yes
+            background: rgba(236, 146, 146, 0.2)
+            color: #d85757
+        &.No
+            background: rgba(60, 213, 175, 0.2)
+            color: #3cd5af
+    button
+        background-color: $primary
+        border: 1px solid $primary
+        border-radius: $border
+        color: white
+        height: 36px
+        width: 125px
+        padding: 0 6px
+        margin-top: 10px
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 10px
+        font-weight: bold
+        cursor: pointer
+        outline: none
+        display: inline-block
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &.mt-0
+            margin-top: 0
+        &:hover
+            background: transparent
+            color: $primary
+        &.link
+            min-width: 190px
+    >.title
+        position: sticky
+        position: -webkit-sticky
+        z-index: 1
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+        &:checked + label:before
+            background-color: #3cd5af
+            border-color: #3cd5af
+            color: #fff
 cb = console.log
 as-callback = (p, cb)->
     p.catch (err) -> cb err
@@ -604,7 +604,7 @@ to-keystore = (store, with-keystore)->
     mining  = get-pair wallet, \m0/2 , index, password, with-keystore
     { staking, mining, password }
 show-validator = (store, web3t)-> (validator)->
-    react.create-element 'li', { key: "show-validator-#{validator}" }, ' ' + validator
+    li.pug(key="show-validator-#{validator}") #{validator}
 staking-content = (store, web3t)->
     { go-back } = history-funcs store, web3t
     style = get-primary-info store
@@ -745,9 +745,9 @@ staking-content = (store, web3t)->
                 return null if not account?
                 store.staking.chosen-account = account
                 navigate store, web3t, \account_details
-            react.create-element 'div', { on-click: show-details, className: "stake-item" }, children = 
-                react.create-element 'div', { className: 'name' }, children = 
-                    react.create-element 'span', {}, ' ' + stake.seed
+            .pug(class="stake-item" on-click=show-details)
+                .pug.name
+                    span.pug #{stake.seed}
         index = store.staking.pools.index-of(item) + 1
         choose-pull = ->
             page = \choosestaker
@@ -792,15 +792,15 @@ staking-content = (store, web3t)->
         mystake-class = if +my-stake > 0 then "with-stake" else ""
         chosen = if store.staking.chosen-pool? and store.staking.chosen-pool.address is item.address then "chosen" else ""
         config = {decimals: 2}
-        react.create-element 'tr', { className: "#{item.status} #{chosen}" }, children = 
-            react.create-element 'td', { datacolumn: 'Staker Address', title: "#{item.address}" }, children = 
+        tr.pug(class="#{item.status} #{chosen}")
+            td.pug(datacolumn='Staker Address' title="#{item.address}")
                 address-holder-popup { store, wallet }
-            react.create-element 'td', {}, ' ' +  round-human(stake, config) 
-            react.create-element 'td', {}, ' ' + fee + '%'
-            react.create-element 'td', { className: "#{mystake-class}" }, children = 
+            td.pug #{ round-human(stake, config) }
+            td.pug #{fee}%
+            td.pug(class="#{mystake-class}")
                 my-stake |> map build-my-stake
-            react.create-element 'td', {}, ' ' + item.stakers
-            react.create-element 'td', {}, children = 
+            td.pug #{item.stakers}
+            td.pug
                 button { store, on-click: choose-pull , type: \secondary , icon : \arrowRight }
     activate = (step)-> ->
         store.current.step = step
@@ -837,46 +837,46 @@ staking-content = (store, web3t)->
     per-page = store.staking.validators_per_page
     page = store.staking.current_validators_page
     pagination-disabled = store.staking.pools-are-loading is yes
-    react.create-element 'div', { className: 'staking-content delegate' }, children = 
-        react.create-element 'div', { className: 'main-sections' }, children = 
-            react.create-element 'div', { id: "pools", className: "select-validators-list form-group" }, children = 
+    .pug.staking-content.delegate
+        .pug.main-sections
+            .form-group.pug(id="pools" class="select-validators-list")
                 alert-txn { store }
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.pleaseSelectValidator
-                        react.create-element 'div', {}, children = 
+                .pug.section
+                    .title.pug
+                        h3.pug #{lang.pleaseSelectValidator}
+                        .pug
                             if no
-                                react.create-element 'div', { on-click: refresh, style: icon-style, title: "refresh", className: "#{isSpinned} loader" }, children = 
+                                .loader.pug(on-click=refresh style=icon-style title="refresh" class="#{isSpinned}")
                                     icon \Sync, 25
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { className: 'table-scroll' }, children = 
-                            react.create-element 'table', {}, children = 
-                                react.create-element 'thead', {}, children = 
-                                    react.create-element 'tr', {}, children = 
-                                        react.create-element 'td', { width: "30%", style: staker-pool-style, title: "Validator Staking Address. Permanent" }, ' ' + lang.validator + ' (?)'
-                                        react.create-element 'td', { width: "15%", style: stats, title: "Sum of all stakings" }, ' ' + lang.total-stake + ' (?)'
-                                        react.create-element 'td', { width: "5%", style: stats, title: "Validator Interest. (100% - Validator Interest = Pool Staking Reward)" }, ' ' + lang.comission + ' (?)'
-                                        react.create-element 'td', { width: "10%", style: stats, title: "Find you staking by Seed" }, ' ' + lang.my-stake + ' (?)'
-                                        react.create-element 'td', { width: "5%", style: stats, title: "How many stakers in a pool" }, ' ' + lang.stakers + ' (?)'
-                                        react.create-element 'td', { width: "4%", style: stats }, ' ' + lang.select
-                                react.create-element 'tbody', {}, children = 
+                    .description.pug
+                        .pug.table-scroll
+                            table.pug
+                                thead.pug
+                                    tr.pug
+                                        td.pug(width="30%" style=staker-pool-style title="Validator Staking Address. Permanent") #{lang.validator} (?)
+                                        td.pug(width="15%" style=stats title="Sum of all stakings") #{lang.total-stake} (?)
+                                        td.pug(width="5%" style=stats title="Validator Interest. (100% - Validator Interest = Pool Staking Reward)") #{lang.comission} (?)
+                                        td.pug(width="10%" style=stats title="Find you staking by Seed") #{lang.my-stake} (?)
+                                        td.pug(width="5%" style=stats title="How many stakers in a pool") #{lang.stakers} (?)
+                                        td.pug(width="4%" style=stats) #{lang.select}
+                                tbody.pug
                                     paginate(store.staking.pools, per-page, store.staking.current_validators_page)
                                         |> map build-staker store, web3t
                         pagination {store, type: \validators, disabled: pagination-disabled, config: {array: store.staking.pools }}
         if no and store.staking.chosen-pool?
-            react.create-element 'div', { id: "choosen-pull", className: 'single-section form-group' }, children = 
-                react.create-element 'div', { className: 'section' }, children = 
-                    react.create-element 'div', { className: 'title' }, children = 
-                        react.create-element 'h3', {}, ' ' + lang.becomeStaker
-                    react.create-element 'div', { className: 'description' }, children = 
-                        react.create-element 'div', { className: 'left float-left' }, children = 
-                            react.create-element 'span', {}, ' ' + lang.to_delegate
-                            react.create-element 'span', { className: 'color' }, ' ' + your-balance + ' VLX'
-                            react.create-element 'span', {}, ' ' + lang.delegate_to
-                            react.create-element 'div', { title: "#{store.staking.chosen-pool.address}", className: 'chosen-pool' }, children = 
-                                react.create-element 'span', {}, children = 
-                                    """ #{store.staking.chosen-pool.address}"""
-                                    react.create-element 'img', { src: "#{icons.img-check}", className: 'check' }
+            .pug.single-section.form-group(id="choosen-pull")
+                .pug.section
+                    .title.pug
+                        h3.pug #{lang.becomeStaker}
+                    .description.pug
+                        .pug.left.float-left
+                            span.pug #{lang.to_delegate}
+                            span.pug.color #{your-balance} VLX
+                            span.pug #{lang.delegate_to}
+                            .pug.chosen-pool(title="#{store.staking.chosen-pool.address}")
+                                span.pug
+                                    | #{store.staking.chosen-pool.address}
+                                    img.pug.check(src="#{icons.img-check}")
                         button { store, classes="float-right" on-click: delegate , type: \secondary , icon : \apply , text: \btnApply }
 pool-chosing = ({ store, web3t })->
     lang = get-lang store
@@ -908,11 +908,11 @@ pool-chosing = ({ store, web3t })->
         filter: info.app.icon-filter
     show-class =
         if store.current.open-menu then \hide else \ ""
-    react.create-element 'div', { className: 'staking staking1556802966' }, children = 
-        react.create-element 'div', { style: border-style, className: 'title' }, children = 
-            react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.delegateStake
-            react.create-element 'div', { on-click: go-back, className: 'close' }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-left}", style: icon-color, className: 'icon-svg' }
+    .pug.staking
+        .pug.title(style=border-style)
+            .pug.header(class="#{show-class}") #{lang.delegateStake}
+            .pug.close(on-click=go-back)
+                img.icon-svg.pug(src="#{icons.arrow-left}" style=icon-color)
             burger store, web3t
             epoch store, web3t
             switch-account store, web3t

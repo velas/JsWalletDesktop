@@ -11,197 +11,197 @@ require! {
     \../../send-funcs.ls
     \../../pages/confirmation.ls : { network-details-modal }  
 }
-# .network-slider-1989415310
-#     .switch-menu
-#         position: absolute !important
-#         right: -1px
-#         top: 45px
-#         width: 100%
-#         display: inline-grid
-#         z-index: 3
-#         box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
-#         border-radius: 0 0 var(--border-btn) var(--border-btn)
-#         .folder-menu
-#             width: 100%
-#             div
-#                 text-overflow: ellipsis
-#                 white-space: nowrap
-#                 overflow: hidden
-#                 font-size: 12px
-#                 text-transform: uppercase
-#                 letter-spacing: 2px
-#         .col
-#             font-size: 12px
-#             padding: 10px
-#             margin: 0
-#             display: inline-block
-#             vertical-align: top
-#             box-sizing: border-box
-#             overflow-y: hidden
-#             &.folder-menu
-#                 text-align: left
-#                 display: inline-flex
-#                 span
-#                     margin-right: 10px
-#         .table-row-menu
-#             text-align: left
-#             &.disabled
-#                 opacity: 0.4
-#                 cursor: not-allowed
-#             &:hover
-#                 cursor: pointer
-#                 background: var(--bg-primary-light)
-#             &.active
-#                 background: var(--bg-primary-light)
-#         .middle
-#             padding: 11px 10px
-#             height: 37px
-#             &.account
-#                 padding: 10px
-#                 min-height: 155px
-#                 overflow: scroll
-#                 background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
-#                 background-repeat: no-repeat
-#                 background-attachment: local, local, scroll, scroll
-#                 background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#                 animation: breathe 3s ease-in infinite
-#                 -moz-transition: breathe 3s ease-in infinite
-#                 -web-kit-transition: breathe 3s ease-in infinite
-#             @keyframes breathe
-#                 0%
-#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#                 15%
-#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
-#                 30%
-#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
-#                 45%
-#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
-#                 60%
-#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
-#                 75%
-#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
-#                 90%
-#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
-#                 100%
-#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#             @-webkit-keyframes breathe
-#                 0%
-#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#                 15%
-#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
-#                 30%
-#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
-#                 45%
-#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
-#                 60%
-#                     background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
-#                 75%
-#                     background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
-#                 90%
-#                     background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
-#                 100%
-#                     background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
-#     @keyframes animate-arrow-1  
-#         0%
-#             transform: translateX(-40px)
-#             opacity: 0
-#         70%
-#             transform: translateX(0px)
-#             opacity: 1
-#     @keyframes animate-arrow-2  
-#         0%
-#             transform: translateX(-20px)
-#             opacity: 0
-#         70%,100%
-#             transform: translateX(0px)
-#             opacity: 0.5
-#     @keyframes animate-arrow-3  
-#         0%
-#             transform: translateX(-10px)
-#             opacity: 0
-#         70%,100%
-#             transform: translateX(0px)
-#             opacity: 0.3
-#     @-webkit-keyframes blink
-#         0%     
-#             opacity: 0
-#         25% 
-#             opacity: 1    
-#         50%   
-#             opacity: 0
-#         100%
-#             transform: translate(15px, 0px) 
-#             opacity: 1
-#     @keyframes blink
-#         0%     
-#             opacity: 0
-#         25% 
-#             opacity: 1    
-#         50%   
-#             opacity: 0
-#         100%
-#             transform: translate(15px, 0px) 
-#             opacity: 1
-#     .chosen-network
-#         font-size: 13px
-#         font-weight: 500
-#         letter-spacing: -0.4px
-#         position: absolute
-#         text-transform: uppercase
-#         top: 30px
-#         z-index: 2
-#         @media(max-width: 600px)
-#             font-size: 10px    
-#         &.network-from
-#             left: 10px
-#         &.network-to
-#             right: 0  
-#             color: #ce942c 
-#             left: 0
-#             text-align: center
-#     .default-network-input
-#         position: relative
-#     .arrow-right
-#         font-size: 15px
-#         font-weight: bold
-#         position: absolute
-#         top: 28px
-#         z-index: 2
-#         width: 30px
-#         left: -40px
-#         right: 0
-#         margin: auto 
-#         color: #61d6b0
-#         animation: blink 2000ms linear infinite 
-#         text-shadow: -2px 2px #5a6dda 
-#         @media(max-width: 600px)
-#             display: none
-#         &:nth-child(1)
-#             animation-delay: 1s 
-#         &:nth-child(2)
-#             animation-delay: 1.1s   
-#         &:nth-child(3)
-#             animation-delay: 1.2s
-#         &:nth-child(4)
-#             animation-delay: 1.3s
-#         &:nth-child(5)
-#             animation-delay: 1.4s
-#     .navigation-button
-#         transition: opacity 0.2
-#         z-index: 2
-#         &:hover
-#             opacity: 0.9
-#         &.inactive
-#             opacity: 0.6
-#             cursor: not-allowed !important
-#         .button-inner
-#             position: relative
-#             img
-#                 top: 0 !important
-#                 &.rotate
-#                     transform: rotate(180deg)
-#                     transition: transform .5s
-#                     display: inline-block
+.network-slider
+    .switch-menu
+        position: absolute !important
+        right: -1px
+        top: 45px
+        width: 100%
+        display: inline-grid
+        z-index: 3
+        box-shadow: 0px 13px 20px 0px rgba(0, 0, 0, 0.15)
+        border-radius: 0 0 var(--border-btn) var(--border-btn)
+        .folder-menu
+            width: 100%
+            div
+                text-overflow: ellipsis
+                white-space: nowrap
+                overflow: hidden
+                font-size: 12px
+                text-transform: uppercase
+                letter-spacing: 2px
+        .col
+            font-size: 12px
+            padding: 10px
+            margin: 0
+            display: inline-block
+            vertical-align: top
+            box-sizing: border-box
+            overflow-y: hidden
+            &.folder-menu
+                text-align: left
+                display: inline-flex
+                span
+                    margin-right: 10px
+        .table-row-menu
+            text-align: left
+            &.disabled
+                opacity: 0.4
+                cursor: not-allowed
+            &:hover
+                cursor: pointer
+                background: var(--bg-primary-light)
+            &.active
+                background: var(--bg-primary-light)
+        .middle
+            padding: 11px 10px
+            height: 37px
+            &.account
+                padding: 10px
+                min-height: 155px
+                overflow: scroll
+                background: linear-gradient(var(--color1) 30%, rgba(50,18,96, 0)), linear-gradient(rgba(50,18,96, 0), var(--color1) 70%) 0 100%, radial-gradient(farthest-side at 50% 0, var(--color2), rgba(0,0,0,0)), radial-gradient(farthest-side at 50% 100%, var(--color2), rgba(0,0,0,0)) 0 100%
+                background-repeat: no-repeat
+                background-attachment: local, local, scroll, scroll
+                background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+                animation: breathe 3s ease-in infinite
+                -moz-transition: breathe 3s ease-in infinite
+                -web-kit-transition: breathe 3s ease-in infinite
+            @keyframes breathe
+                0%
+                    background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+                15%
+                    background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+                30%
+                    background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+                45%
+                    background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+                60%
+                    background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+                75%
+                    background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+                90%
+                    background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+                100%
+                    background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+            @-webkit-keyframes breathe
+                0%
+                    background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+                15%
+                    background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+                30%
+                    background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+                45%
+                    background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+                60%
+                    background-size: 100% 30px, 100% 30px, 100% 23px, 100% 23px
+                75%
+                    background-size: 100% 30px, 100% 30px, 100% 20px, 100% 20px
+                90%
+                    background-size: 100% 30px, 100% 30px, 100% 17px, 100% 17px
+                100%
+                    background-size: 100% 30px, 100% 30px, 100% 15px, 100% 15px
+    @keyframes animate-arrow-1  
+        0%
+            transform: translateX(-40px)
+            opacity: 0
+        70%
+            transform: translateX(0px)
+            opacity: 1
+    @keyframes animate-arrow-2  
+        0%
+            transform: translateX(-20px)
+            opacity: 0
+        70%,100%
+            transform: translateX(0px)
+            opacity: 0.5
+    @keyframes animate-arrow-3  
+        0%
+            transform: translateX(-10px)
+            opacity: 0
+        70%,100%
+            transform: translateX(0px)
+            opacity: 0.3
+    @-webkit-keyframes blink
+        0%     
+            opacity: 0
+        25% 
+            opacity: 1    
+        50%   
+            opacity: 0
+        100%
+            transform: translate(15px, 0px) 
+            opacity: 1
+    @keyframes blink
+        0%     
+            opacity: 0
+        25% 
+            opacity: 1    
+        50%   
+            opacity: 0
+        100%
+            transform: translate(15px, 0px) 
+            opacity: 1
+    .chosen-network
+        font-size: 13px
+        font-weight: 500
+        letter-spacing: -0.4px
+        position: absolute
+        text-transform: uppercase
+        top: 30px
+        z-index: 2
+        @media(max-width: 600px)
+            font-size: 10px    
+        &.network-from
+            left: 10px
+        &.network-to
+            right: 0  
+            color: #ce942c 
+            left: 0
+            text-align: center
+    .default-network-input
+        position: relative
+    .arrow-right
+        font-size: 15px
+        font-weight: bold
+        position: absolute
+        top: 28px
+        z-index: 2
+        width: 30px
+        left: -40px
+        right: 0
+        margin: auto 
+        color: #61d6b0
+        animation: blink 2000ms linear infinite 
+        text-shadow: -2px 2px #5a6dda 
+        @media(max-width: 600px)
+            display: none
+        &:nth-child(1)
+            animation-delay: 1s 
+        &:nth-child(2)
+            animation-delay: 1.1s   
+        &:nth-child(3)
+            animation-delay: 1.2s
+        &:nth-child(4)
+            animation-delay: 1.3s
+        &:nth-child(5)
+            animation-delay: 1.4s
+    .navigation-button
+        transition: opacity 0.2
+        z-index: 2
+        &:hover
+            opacity: 0.9
+        &.inactive
+            opacity: 0.6
+            cursor: not-allowed !important
+        .button-inner
+            position: relative
+            img
+                top: 0 !important
+                &.rotate
+                    transform: rotate(180deg)
+                    transition: transform .5s
+                    display: inline-block
 module.exports = ({ web3t, wallet, store, id, on-change })->
     return null if not wallet.network.networks?
     #return null if not store.current.send.chosenNetwork?
@@ -327,9 +327,9 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
             store.current.switch-network = no
         position-style =
             color: if store.current.send.chosenNetwork.refer-to is referTo then '#3cd5af' else ''
-        react.create-element 'div', { on-click: change-network, key: "account#{referTo}", style: position-style, className: 'table-row-menu' }, children = 
-            react.create-element 'div', { className: 'col folder-menu' }, children = 
-                react.create-element 'div', {}, ' ' + name
+        .pug.table-row-menu(on-click=change-network key="account#{referTo}" style=position-style class="")
+            .col.folder-menu.pug
+                .pug #{name}
     dropdown-class = 
         | network-labels.length > 1 => ""
         | _ => "inactive"           
@@ -337,28 +337,28 @@ module.exports = ({ web3t, wallet, store, id, on-change })->
         | store.current.switch-network is yes => \rotate 
         | _ => ""
     /* Render */
-    react.create-element 'div', { className: 'network-slider network-slider-1989415310' }, children = 
-        react.create-element 'label', { style: style2, className: 'control-label' }, ' Choose Network'
+    .pug.network-slider 
+        label.pug.control-label(style=style2) Choose Network
         if no
-            react.create-element 'span', { on-click: network-from-details, style: choose-network-style, className: 'chosen-network network-from' }, children = 
-                """ #{network-from} """
+            span.pug.chosen-network.network-from(on-click=network-from-details style=choose-network-style)
+                | #{network-from} 
         if no
-            react.create-element 'span', { style: choose-network-style, className: 'chosen-network network-to' }, children = 
-                """ #{network-to}"""
-        react.create-element 'div', {}, children = 
-            react.create-element 'span', { style: pointer-style, on-click: dropdown-click, className: 'bold default-network-input' }, children = 
-                react.create-element 'input', { value: "#{network-to}", style: input-style2, disabled: true, className: 'change-network' }
-            react.create-element 'span', { on-click: dropdown-click, className: "#{dropdown-class} button navigation-button right" }, children = 
-                react.create-element 'div', { className: 'button-inner' }, children = 
-                    react.create-element 'img', { src: "#{icons.arrow-down}", style: img-icon-style, className: "#{rotate-class} icon-svg" }
+            span.pug.chosen-network.network-to(style=choose-network-style)
+                | #{network-to}
+        .pug
+            span.pug.bold.default-network-input(style=pointer-style on-click=dropdown-click)
+                input.pug.change-network(value="#{network-to}" style=input-style2 disabled=true)
+            span.pug.button.navigation-button.right(on-click=dropdown-click class="#{dropdown-class}")
+                .pug.button-inner
+                    img.icon-svg.pug(src="#{icons.arrow-down}" style=img-icon-style class="#{rotate-class}")
             if store.current.switch-network and network-labels.length > 1
-                react.create-element 'div', { style: filter-body, className: 'switch-menu' }, children = 
-                    react.create-element 'div', { className: 'middle account' }, children = 
+                .pug.switch-menu(style=filter-body)
+                    .pug.middle.account
                         available-networks  
                             |> obj-to-pairs 
                             |> map create-network-position
         if not is-not-bridge!
-            react.create-element 'div', { style: tooltip-style, on-click: network-from-details, className: 'limits-tooltip' }, children = 
-                react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.info}", style: info-style, className: 'icon-svg' }
-                    react.create-element 'span', { style: limits-label-style }, ' limits  '
+            .pug.limits-tooltip(style=tooltip-style on-click=network-from-details)
+                span.pug 
+                    img.icon-svg.pug(src="#{icons.info}" style=info-style)
+                    span.pug(style=limits-label-style) limits  

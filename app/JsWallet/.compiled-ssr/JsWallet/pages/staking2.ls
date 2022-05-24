@@ -19,7 +19,7 @@ require! {
     \@velas/staking.2.0 : Staking
     '@velas/staking.2.0/lib/modules/staking-store.js' : { StakingStore }
 }
-# .staking2-192785206
+# .staking2-981606074
 #     $mobile: 500px
 #     @import scheme
 #     position: relative
@@ -198,6 +198,24 @@ require! {
 #             margin: 5px
 #             @media(max-width:800px)
 #                 text-align: center
+#     .info-block-row
+#         margin-top: 10px
+#     .index-container-details
+#         .info-block-column,.info-block-column2
+#             margin: 12px 0  
+#         .containers
+#             margin-bottom: 20px;
+#             > div
+#         .index-details-avatar-badge
+#             div
+#                 padding: 0 5px    
+#     .stake-more
+#         .notice-container
+#             margin-bottom: 20px
+#         .MuiInput-root
+#             padding-top: 5px
+#             padding-bottom: 5px
+                       
 staking2 = ({ store, web3t })->
     lang = get-lang store
     { go-back } = history-funcs store, web3t
@@ -224,7 +242,7 @@ staking2 = ({ store, web3t })->
     show-class =
         if store.current.open-menu then \hide else \ ""
     /* Render */
-    react.create-element 'div', { className: 'staking2 staking2-192785206' }, children = 
+    react.create-element 'div', { className: 'staking2 staking2-981606074' }, children = 
         react.create-element 'div', { style: border-style, className: 'title' }, children = 
             react.create-element 'div', { className: "#{show-class} header" }, ' ' + lang.staking
             burger store, web3t

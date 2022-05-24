@@ -66,7 +66,9 @@ module.exports = (store, web3t)->
     #pages =
     #    * \wallets
     #    * \history
+
     balancesAreCalculated = !(store.current.account.wallets |> find (-> it.status in <[ error loading ]>))?
+
     change-seed = (event)->
         state.timeout = clear-timeout state.timeout
         current.seed = event.target.value

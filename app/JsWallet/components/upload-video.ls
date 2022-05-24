@@ -137,13 +137,13 @@ drop-zone = ({ store, web3t }) ->
         store.video.drag = not store.video.drag
     on-drag-over = (event) ->
         event.prevent-default!
-    react.create-element 'div', { on-click: drag-file-close, on-drag-over: on-drag-over, on-drop: upload-video-files, className: 'header-table dragfile dragarea' }, children = 
-        react.create-element 'div', { style: dashed-border, className: 'cell network' }, children = 
-            react.create-element 'img', { src: "#{icons.img-drag}", style: icon-style, className: 'bounce' }
-            """ Drag and Drop here"""
-            react.create-element 'br', {}
-            """ or"""
-            react.create-element 'input', { id: 'browse-files-video', type: 'file', multiple: yes, on-change: upload-video-files, style: input-file-style }
-            react.create-element 'span', { on-click: on-browse-files }, ' Browse files'
+    .header-table.dragfile.dragarea.pug(on-click=drag-file-close on-drag-over=on-drag-over on-drop=upload-video-files)
+        .pug.cell.network(style=dashed-border)
+            img.pug.bounce(src="#{icons.img-drag}" style=icon-style)
+            | Drag and Drop here
+            br.pug
+            | or
+            input.pug(id='browse-files-video' type='file' multiple=yes on-change=upload-video-files style=input-file-style)
+            span.pug(on-click=on-browse-files) Browse files
 module.exports = ({ store, web3t })->
     drop-zone { store, web3t }

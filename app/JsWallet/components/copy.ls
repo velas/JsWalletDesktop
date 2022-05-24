@@ -15,5 +15,5 @@ module.exports = ({ store, text })->
         store.current.try-copy = text
     leave = ->
         store.current.try-copy = null
-    react.create-element CopyToClipboard, { text: "#{text}", on-copy: copied-inform(store), style: icon2, on-mouse-enter: enter, on-mouse-leave: leave }, children = 
+    CopyToClipboard.pug(text="#{text}" on-copy=copied-inform(store) style=icon2 on-mouse-enter=enter on-mouse-leave=leave)
         copy store

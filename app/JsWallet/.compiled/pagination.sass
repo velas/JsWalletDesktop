@@ -1,0 +1,44 @@
+.table-pagination948035967
+    @import scheme
+    .pagination-holder
+        position: relative
+        text-align: center
+        padding: 20px
+        @media screen and (max-width: 540px)
+            padding: 10px 0
+            display: flex
+            align-items: flex-start
+        .current-page
+            flex: 2
+        button                      
+            margin: 0 20px 0 !important
+            min-width: 50px
+            &:first-of-type
+                @media screen and (max-width: 540px)
+                    margin-left: 0 !important
+                    flex: 1
+            &:last-of-type
+                @media screen and (max-width: 540px)
+                    margin-right: 0 !important
+                    flex: 1
+        .per-page-selector
+            position: absolute
+            left: 0
+            padding: 5px 10px
+            border: 1px solid #555668
+            cursor: pointer
+            @media screen and (max-width: 540px)
+                position: relative
+                margin-right: 10px
+                padding: 5px
+            &:hover
+                .per-page-options
+                    display: block !important
+            .per-page-options
+                position: relative
+                &.hidden
+                    display: none
+                .per-page-option
+                    padding: 2px 5px
+                    &:hover
+                        background: #555668

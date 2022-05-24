@@ -16,151 +16,151 @@ require! {
     \localStorage
     \../icons.ls
 }
-# .choose-account1198269607
-#     @import scheme
-#     $real-height: 300px
-#     $cards-height: 296px
-#     $pad: 20px
-#     $radius: 15px    
-#     height: auto
-#     box-sizing: border-box
-#     position: relative
-#     right: 10px
-#     bottom: 30px
-#     $cards-pad: 15px
-#     z-index: 2
-#     .icon-svg-edit
-#         height: 15px
-#     .icon-svg-create
-#         height: 9px
-#     .switch-menu
-#         right: 0px !important
-#         top: 40px !important
-#     .header
-#         &:after
-#             position: absolute
-#             font-weight: bold
-#             font-size: 40px
-#             opacity: .05
-#             top: 20px
-#             left: -5px
-#         .hidden
-#             @media(max-width: 940px)
-#                 visibility: hidden
-#     .switch-account
-#         float: right
-#         line-height: 10px
-#         width: auto
-#         top: 2px
-#         right: 5px
-#         position: absolute
-#         text-align: right
-#         display: block
-#         z-index: 2
-#         border-radius: 0 0 var(--border-btn) var(--border-btn)
-#         @media(max-width: 620px)
-#             .name, .icon
-#                 visibility: hidden
-#             .icon.menus, .icon.ckeck, .icon.cancel
-#                 visibility: visible
-#             &.show
-#                 .name, .icon
-#                     visibility: visible
-#         .disabled
-#             opacity: 0.3
-#         .ckeck
-#             color: #3cd5af
-#         .cancel
-#             color: #c25b5f
-#         .name
-#             white-space: nowrap
-#             overflow: hidden
-#             width: 100px
-#             text-align: right
-#             cursor: default
-#             display: contents
-#             vertical-align: middle
-#             display: inline-block
-#             overflow-x: auto
-#             background: transparent
-#             &:hover
-#                 width: auto
-#                 cursor: pointer
-#         input
-#             outline: none
-#             width: 70px
-#             margin-top: -10px
-#             height: 36px
-#             line-height: 36px
-#             border-radius: 0px
-#             padding: 0px 10px
-#             font-size: 12px
-#             opacity: 1
-#         span
-#             cursor: pointer
-#         .icon
-#             vertical-align: middle
-#             margin-left: 20px
-#             transition: transform .5s
-#             display: inline-block
-#             &.menus
-#                 display: none
-#                 @media(max-width: 620px)
-#                     display: inline-block
-#                 &.show
-#                     opacity: .5
-#             &.rotate
-#                 transform: rotate(180deg)
-#                 transition: transform .5s
-#                 display: inline-block
-#     .h1
-#         font-size: 12px
-#         text-transform: uppercase
-#         letter-spacing: 2px
-#         opacity: .8
-#     .your-account
-#         position: absolute
-#         width: auto
-#         display: inline-block
-#         right: 0
-#         top: 0
-#         padding: 12px 20px
-#         border-left: 0 !important
-#         >.buttons
-#             display: none !important
-#         .buttons
-#             >.button
-#                 width: 20px
-#                 padding: 0
-#                 outline: none
-#     >*
-#         width: 100%
-#     >.arrow
-#         position: absolute
-#         text-align: center
-#         cursor: pointer
-#         &.arrow-t
-#             top: 0
-#             margin-top: 10px
-#         &.arrow-d
-#             bottom: 0
-#             margin-bottom: 10px
-#             transform: rotate(180deg)
-#         &:not(.true)
-#             >.arrow-d
-#                 visibility: hidden
-#         >.arrow-container
-#             display: inline-block
-#             width: 100%
-#             max-width: 450px
-#             position: relative
-#     >.wallet-container
-#         overflow: hidden
-#         overflow-y: auto
-#         height: 300px
-#         width: 100%
-#         border-top: 1px solid #213040
-#         display: inline-block
+.choose-account
+    @import scheme
+    $real-height: 300px
+    $cards-height: 296px
+    $pad: 20px
+    $radius: 15px    
+    height: auto
+    box-sizing: border-box
+    position: relative
+    right: 10px
+    bottom: 30px
+    $cards-pad: 15px
+    z-index: 2
+    .icon-svg-edit
+        height: 15px
+    .icon-svg-create
+        height: 9px
+    .switch-menu
+        right: 0px !important
+        top: 40px !important
+    .header
+        &:after
+            position: absolute
+            font-weight: bold
+            font-size: 40px
+            opacity: .05
+            top: 20px
+            left: -5px
+        .hidden
+            @media(max-width: 940px)
+                visibility: hidden
+    .switch-account
+        float: right
+        line-height: 10px
+        width: auto
+        top: 2px
+        right: 5px
+        position: absolute
+        text-align: right
+        display: block
+        z-index: 2
+        border-radius: 0 0 var(--border-btn) var(--border-btn)
+        @media(max-width: 620px)
+            .name, .icon
+                visibility: hidden
+            .icon.menus, .icon.ckeck, .icon.cancel
+                visibility: visible
+            &.show
+                .name, .icon
+                    visibility: visible
+        .disabled
+            opacity: 0.3
+        .ckeck
+            color: #3cd5af
+        .cancel
+            color: #c25b5f
+        .name
+            white-space: nowrap
+            overflow: hidden
+            width: 100px
+            text-align: right
+            cursor: default
+            display: contents
+            vertical-align: middle
+            display: inline-block
+            overflow-x: auto
+            background: transparent
+            &:hover
+                width: auto
+                cursor: pointer
+        input
+            outline: none
+            width: 70px
+            margin-top: -10px
+            height: 36px
+            line-height: 36px
+            border-radius: 0px
+            padding: 0px 10px
+            font-size: 12px
+            opacity: 1
+        span
+            cursor: pointer
+        .icon
+            vertical-align: middle
+            margin-left: 20px
+            transition: transform .5s
+            display: inline-block
+            &.menus
+                display: none
+                @media(max-width: 620px)
+                    display: inline-block
+                &.show
+                    opacity: .5
+            &.rotate
+                transform: rotate(180deg)
+                transition: transform .5s
+                display: inline-block
+    .h1
+        font-size: 12px
+        text-transform: uppercase
+        letter-spacing: 2px
+        opacity: .8
+    .your-account
+        position: absolute
+        width: auto
+        display: inline-block
+        right: 0
+        top: 0
+        padding: 12px 20px
+        border-left: 0 !important
+        >.buttons
+            display: none !important
+        .buttons
+            >.button
+                width: 20px
+                padding: 0
+                outline: none
+    >*
+        width: 100%
+    >.arrow
+        position: absolute
+        text-align: center
+        cursor: pointer
+        &.arrow-t
+            top: 0
+            margin-top: 10px
+        &.arrow-d
+            bottom: 0
+            margin-bottom: 10px
+            transform: rotate(180deg)
+        &:not(.true)
+            >.arrow-d
+                visibility: hidden
+        >.arrow-container
+            display: inline-block
+            width: 100%
+            max-width: 450px
+            position: relative
+    >.wallet-container
+        overflow: hidden
+        overflow-y: auto
+        height: 300px
+        width: 100%
+        border-top: 1px solid #213040
+        display: inline-block
 module.exports = (store, web3t)->
     return null if not store.current.account?
     { wallets, go-up, can-up, go-down, can-down } = wallets-funcs store, web3t
@@ -216,23 +216,23 @@ module.exports = (store, web3t)->
     show-class =
         if store.current.open-menu then \show else \ ""
     view-account-template = ->
-        react.create-element 'div', { className: "#{show-class} switch-account h1" }, children = 
-            react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
-            react.create-element 'span', { on-click: edit-account-name, className: "#{disabled-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.create}", style: icon2, className: 'icon-svg-edit' }
-            react.create-element 'span', { on-click: open-account, className: "#{disabled-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", style: icon3, className: 'icon-svg-create' }
-            react.create-element 'span', { on-click: open-menu, className: "#{disabled-class} icon menus" }, children = 
-                react.create-element 'img', { src: "#{icons.menu}", style: icon-color, className: 'icon-svg-create' }
+        .pug.switch-account.h1(class="#{show-class}")
+            span.name.pug(on-click=open-account) #{account-name}
+            span.pug.icon(class="#{disabled-class}" on-click=edit-account-name)
+                img.icon-svg-edit.pug(src="#{icons.create}" style=icon2)
+            span.pug.icon(class="#{disabled-class}" on-click=open-account class="#{rotate-class}")
+                img.icon-svg-create.pug(src="#{icons.arrow-down}" style=icon3)
+            span.pug.icon.menus(class="#{disabled-class}" on-click=open-menu class="#{show-class}")
+                img.icon-svg-create.pug(src="#{icons.menu}" style=icon-color)
     edit-account-template = ->
-        react.create-element 'div', { className: 'switch-account h1' }, children = 
-            react.create-element 'input', { value: "#{store.current.edit-account-name}", on-change: edit-account, style: input, className: 'h1' }
-            react.create-element 'span', { on-click: done-edit, className: 'ckeck icon' }, children = 
+        .pug.switch-account.h1
+            input.h1.pug(value="#{store.current.edit-account-name}" on-change=edit-account style=input)
+            span.ckeck.pug.icon(on-click=done-edit)
                 icon "Check", 20
-            react.create-element 'span', { on-click: cancel-edit-account-name, className: 'cancel icon' }, children = 
+            span.cancel.pug.icon(on-click=cancel-edit-account-name)
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { className: 'choose-account choose-account1198269607' }, children = 
+    .choose-account.pug
         chosen-account-template
         your-account store, web3t

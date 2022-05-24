@@ -53,4 +53,4 @@ module.exports = ({store, web3t})->
     return null if !store.interop.is-address-queried or !is-in-iframe
     #set-timeout click-sign, 0
     #return null
-    react.create-element 'div', { on-click: click-provide-address }, ' Website ' + store.interop.origin + ' request your address. Click to provide it.'
+    .pug(on-click=click-provide-address) Website #{store.interop.origin} request your address. Click to provide it.

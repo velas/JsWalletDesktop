@@ -1,0 +1,190 @@
+.manage-account-635636907
+    @import scheme
+    @keyframes bounceIn
+        from
+            opacity: 0
+            transform: scale3d(0.8, 0.8, 0.8)
+        to
+            opacity: 1
+            transform: scale3d(1, 1, 1)
+    position: fixed 
+    width: 100%
+    top: 0
+    bottom: 0  
+    left: 0
+    right: 0  
+    z-index: 999
+    padding-top: 5%
+    box-sizing: border-box
+    padding: 10px
+    background: rgba(black, 0.08)
+    backdrop-filter: blur(5px)
+    display: flex
+    align-items: center
+    >.account-body
+        max-width: 600px
+        display: inline-block
+        animation-duration: 0.5s
+        animation-name: bounceIn
+        background: white
+        width: 100%
+        margin: auto
+        border-radius: var(--border-btn)
+        position: relative
+        max-height: 600px    
+        overflow: hidden
+        box-shadow: 17px 10px 13px #0000001f, -6px 10px 13px #00000024
+        padding-bottom: 20px
+        @media (max-width: 580px)
+            margin-top: 0
+            margin-bottom: 0
+            height: auto    
+        .content-manage
+            display: flex
+            flex-direction: row  
+        .add-custom-token
+            float: right  
+        >.title
+            box-sizing: border-box
+            font-size: 22px
+            padding: 10px
+            margin-top: 20px
+            margin: 15px
+            > div
+                margin-bottom: 20px  
+            .closed
+                position: absolute
+                padding: 10px 20px
+                font-size: 20px
+                right: 0
+                top: 0
+                cursor: pointer
+                &:hover
+                    color: #CCC
+        .add-custom-token
+            @media (max-width: 580px)
+                width: 100% 
+            button    
+                margin-right: 0      
+        .search-content
+            position: relative
+            width: calc(50% - 5px)
+            float: left
+            text-align: left
+            @media (max-width: 580px)
+                width: 100%    
+                padding: 0
+            .search
+                margin-top: 7px
+                border: 1px solid #CCC
+                padding: 9px
+                border-radius: var(--border-btn)
+                width: 100%
+                padding-left: 35px
+                box-sizing: border-box
+                font-size: 13px
+                outline: none
+            .icon
+                top: 4px
+                left: 11px
+                position: absolute
+                @media (max-width: 580px)
+                    left: 10px
+        >.settings
+            display: inline-block    
+            height: 480px   
+            overflow-y: scroll
+            margin-top: 0
+            width: 100%
+            border-top: 1px solid rgba(255, 255, 255,  0.05)
+            .section
+                position: relative
+                min-height: 200px
+                background: rgba(84, 102, 96,  0.03)
+                .legacy-tokens.title
+                    margin-top: 20px
+                    opacity: 0.2
+                .list
+                    display: flex;
+                    flex-wrap: wrap;
+                    height: 80%
+                    padding: 10px
+                    margin: auto 10px
+                    @media (max-width: 580px)
+                        padding: 10px 0
+                    .wallet-group
+                        width: 100%   
+                        text-align: left
+                        margin-bottom: 10px
+                        .network-wallets
+                            display: flex
+                            flex-wrap: wrap 
+                        .group-name
+                            text-align: left
+                            padding: 5px 12px 5px 10px
+                            color: #7f818a
+                            text-transform: uppercase
+                            font-size: 12px
+                            top: -1px !important   
+                        .outer-item 
+                            width: 50%  
+                            text-align: center 
+                            @media (max-width: 580px)
+                                width: 100%    
+                        .item
+                            width: calc(100% - 10px)
+                            margin-bottom: 10px    
+                            display: inline-block
+                            background: #642dbd
+                            border-radius: var(--border-btn)
+                            padding: 10px
+                            text-align: left
+                            box-sizing: border-box
+                            @media (max-width: 580px)
+                                width: 100%
+                                float: none
+                            &:nth-child(odd)
+                                @media (max-width: 580px)
+                                    margin-right: 0
+                            >*
+                                display: inline-block
+                                vertical-align: middle
+                                height: 40px
+                                box-sizing: border-box
+                            input
+                                margin: 0 5px
+                                border-radius: var(--border-btn)
+                                width: calc(100% - 90px)
+                                border: 0
+                                padding: 5px 10px
+                                outline: none
+                                font-size: 15px
+                            img
+                                width: 40px
+                                border-radius: 0px
+                            .title
+                                margin-left: 10px
+                                color: gray
+                                width: calc(100% - 90px)
+                                height: auto
+                            button
+                                width: 40px
+                                height: 40px
+                                line-height: 45px
+                                border-radius: var(--border-btn)
+                                border: 0 !important
+                                box-sizing: border-box
+                                padding: 0
+                                margin: 0
+                                cursor: pointer
+                                color: black
+                                background: transparent
+                                outline: none
+                                &:hover
+                                    color: white
+                                    opacity: .6
+                                    transition: .5s
+                                >*
+                                    vertical-align: middle
+                &.legacy-tokens
+                    margin-top: 10px

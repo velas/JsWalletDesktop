@@ -86,6 +86,7 @@ require! {
 #                 border: 1px solid #f6931a
 #                 padding: 0 5px
 #                 line-height: 17px
+
 #                 .total-balance-warning-icon
 #                     cursor: help
 #                     &:hover
@@ -93,6 +94,7 @@ require! {
 #                             display: block
 #                 .full-warning-notification-text
 #                     text-transform: initial
+
 #                 .balance-warning-notification
 #                     z-index: 2
 #                     display: none
@@ -106,13 +108,17 @@ require! {
 #                     background: #1f1f1f
 #                     text-align: left
 #                     z-index: 9
+
 #                     @media (max-width: 800px)
 #                         left: 80%
+
 #                     @media (max-width: 735px)
 #                         left: 50%
 #                         top: 130%
+
 #                     @media (max-width: 400px)
 #                         left: 10%
+
 #                     .triangle
 #                         width: 0
 #                         height: 0
@@ -122,8 +128,10 @@ require! {
 #                         position: relative
 #                         left: -18px
 #                         top: -50px
+
 #                         @media (max-width: 735px)
 #                             display: none
+
 #             .balance-text
 #                 display: inline-block
 #             >.menu
@@ -223,17 +231,22 @@ module.exports = ({ store, web3t })->
     syncing =
         | store.current.refreshing => \syncing
         | _ => ""
+
     placeholder =
         | store.current.account.wallets |> find (-> it.status is "loading") => "placeholder"
         | _ => ""
+
     usdBalances = store.current.account.wallets
         |> filter (-> not isNaN(it.balanceUsd))
         |> map (-> it.balanceUsd)
         |> foldl plus, 0
+
     not-loaded-balances-exists = store.current.account.wallets |> find (-> it.state in <[ error ]> )
+
     totalBalance =
         | not-loaded-balances-exists => "..."
         | _ => round-human usdBalances
+
     icon-style =
         width: "15px"
         height: "15px"
@@ -241,6 +254,7 @@ module.exports = ({ store, web3t })->
         top: "1px"
         position: "relative"
         margin-left: 3px
+
     react.create-element 'div', { style: menu-style, className: 'menu wallet-main menu345890219' }, children = 
         react.create-element 'div', { className: 'menu-body' }, children = 
             react.create-element 'div', { className: 'branding' }, children = 

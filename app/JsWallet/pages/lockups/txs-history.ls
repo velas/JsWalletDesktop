@@ -27,11 +27,11 @@ require! {
     \moment
 }
 txs-content = (store, web3t)->
-    react.create-element 'div', { className: 'history-content' }
+    .pug.history-content
 txs-history = ({ store, web3t })->
-    react.create-element 'div', { className: 'section' }, children = 
-        react.create-element 'div', { className: 'title' }, children = 
-            react.create-element 'h3', {}, ' History'
-        react.create-element 'div', { className: 'description' }, children = 
+    .pug.section
+        .title.pug
+            h3.pug History
+        .description.pug
             txs-content store, web3t
 module.exports = txs-history

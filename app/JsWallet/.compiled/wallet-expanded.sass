@@ -1,0 +1,143 @@
+.wallet-expanded152437774
+    @import scheme
+    height: 240px
+    box-sizing: border-box
+    $tablet: 1200px
+    >.wallet-part
+        display: inline-block
+        position: relative
+        box-sizing: border-box
+        vertical-align: top
+        width: 50%
+        @media screen and (max-width: $tablet)
+            padding: 0
+        .with-swap
+            display: flex
+            button
+                flex: 1
+                margin: 0 5px 0 !important
+                &:first-child
+                    margin-left: 0 !important
+            .wallet-swap img
+                filter: invert(1)
+            .wallet-buy img
+                filter: invert(1)
+        &.left
+            text-align: center
+        &.left
+            text-align: left
+            @media screen and (max-width: $tablet)
+                width: 60%
+            >.buttons
+                margin-top: 15px
+                width: calc((130px * 2) + 10px)
+                .btn
+                    margin: 0
+                    width: 130px
+                    &:last-child
+                        margin-left: 10px
+                        margin: 0 0 5px !important
+            >.details
+                display: none
+            .uninstall
+                position: relative
+                text-transform: uppercase
+                font-size: 10px
+                padding: 1px 5px 1px 2px
+                margin-left: 5px
+                letter-spacing: 2px
+                cursor: pointer
+                border-radius: var(--border-btn)
+            >.address-holder
+                margin-top: 10px
+                width: calc((130px * 2) + 10px)
+                a
+                    padding-left: 10px
+                @media screen and (max-width: $tablet)
+                    margin-top: 20px
+        &.right
+            @media screen and (max-width: $tablet)
+                width: 40%
+        >.wallet-header
+            &.chart
+                text-align: right
+                padding-top: 0px
+                border-left: 1px solid rgba(white, 0.2)
+                border-color: var(--border-color)
+                @media screen and (max-width: $tablet)
+                    >.wallet-header-part
+                        width: 100%
+                        text-align: center
+                        &.left
+                            display: none
+                        >.stats
+                            margin: 0 auto
+            >.wallet-header-part
+                display: inline-block
+                box-sizing: border-box
+                vertical-align: top
+                .stats-style
+                    height: 90%
+                    width: 90%
+                    top: 4%
+                    right: 4%
+                    content: ''
+                    display: block
+                    position: absolute
+                    border-radius: 100px
+                    .coin
+                        margin: 20% auto
+                        text-align: center
+                        .course
+                            font-size: 12px
+                            opacity: .5
+                &.left
+                    img
+                        width: 40px
+                &.right
+                    text-align: left
+                    padding: 0
+                    .title
+                        font-size: 10px
+                        text-transform: uppercase
+                        letter-spacing: 2px
+                    .token-balance
+                        font-size: 24px
+                        font-weight: bold
+                    .usd-balance
+                        font-size: 14px
+                        opacity: .5
+                    .pending
+                        font-size: 14px
+                        color: orange
+                .counts
+                    margin-bottom: 5px
+                    .label
+                        font-size: 12px
+                    .label-icon
+                        width: 25px
+                        height: 25px
+                        background: #f7618a
+                        border-radius: var(--border-btn)
+                        text-align: center
+                        margin-bottom: 6px
+                        .icon-svg
+                            filter: invert(105%)
+        .stats
+            $size: 150px
+            $size-tablet: 100px
+            margin-right: 20px
+            display: inline-block
+            height: $size
+            max-height: $size
+            width: $size
+            max-width: $size
+            position: relative
+            @media screen and (max-width: $tablet)
+                height: $size-tablet - 10
+                max-height: $size-tablet - 10
+                width: $size-tablet - 10
+                max-width: $size-tablet - 10
+            >*
+                height: inherit
+                width: inherit

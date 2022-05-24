@@ -347,7 +347,6 @@ staking-accounts-content = (store, web3t)->
         store.staking.creating-staking-account = yes
         min_stake = web3t.velas.NativeStaking.min_stake
         main_balance = get-balance!
-        console.log {main_balance}
         tx-fee = 5000 `div` (10^9)
         rest = 0.1
         amount = amount `minus` (store.staking.rent `plus` tx-fee `plus` rest) if +(main_balance `minus` amount) <= 0

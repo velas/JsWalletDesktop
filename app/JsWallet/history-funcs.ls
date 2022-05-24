@@ -56,10 +56,10 @@ module.exports = (store, web3t)->
             font-size: "90%"
             font-weight: 600
         return
-            react.create-element 'div', { className: 'balance' }, children = 
-                react.create-element 'span', { className: 'color' }, ' ' + int
+            .pug.balance
+                span.color.pug #{int}
             if dec? then
-                react.create-element 'span', { style: gray-style, className: 'gray-color' }, '\.' + dec + '     '
+                span.gray-color.pug(style=gray-style)\.#{dec}     
     is-active = (value)->
         types = store.current.filter-txs-types
         if value in types then \active else ''

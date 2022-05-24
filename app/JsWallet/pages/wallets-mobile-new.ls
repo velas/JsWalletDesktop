@@ -21,445 +21,445 @@ require! {
     \../math.ls : { div, times, minus }
     \react-chartjs-2 : { Line }
 }
-# .wallet-mobile1694213368
-#     $mobile: 425px
-#     $tablet: 800px
-#     button.btn
-#         min-width: auto
-#         margin: 0
+.wallet-mobile
+    $mobile: 425px
+    $tablet: 800px
+    button.btn
+        min-width: auto
+        margin: 0
     
 
-#     .wallet-group
-#         .group-name
-#             text-align: left
-#             padding: 5px 12px
-#             text-transform: uppercase
-#             font-size: 13px
-#             background: var(--bgspare)
-#             position: -webkit-sticky
-#             position: sticky
-#             top: 0
-#             z-index: 1
+    .wallet-group
+        .group-name
+            text-align: left
+            padding: 5px 12px
+            text-transform: uppercase
+            font-size: 13px
+            background: var(--bgspare)
+            position: -webkit-sticky
+            position: sticky
+            top: 0
+            z-index: 1
     
-#     .wallet
-#         @import scheme
-#         $cards-height: 324px
-#         $pad: 20px
-#         $radius: 15px
-#         position: relative
-#         cursor: pointer
-#         $card-height: 63px
-#         height: $card-height
-#         border-radius: 0
-#         &.disabled-wallet-item
-#             opacity: 0.24
-#             cursor: no-drop
-#         &.last
-#             height: 60px
-#         $mt: 20px
-#         box-sizing: border-box
-#         overflow: hidden
-#         transition: height .5s
-#         border: 0px
-#         &:first-child
-#             margin-top: 0
-#             box-shadow: none
-#         &:last-child
-#             margin-bottom: 0px
-#         .pending
-#             color: orange
-#         &.over
-#             background: #CCC
-#         &.big
-#             height: 170px
-#         &.active
-#         .wallet-middle
-#             >.uninstall
-#                 position: absolute
-#                 bottom: 11px
-#                 right: 10px
-#                 height: 20px
-#                 max-height: 20px
-#                 z-index: 99999
-#                 font-size: 17px
-#                 line-height: 1.2
-#                 text-align: center
-#                 font-weight: bold
-#             box-sizing: border-box
-#             width: 70%
-#             height: 85px
-#             float: left
-#             padding: 20px
-#             border-top: 1px solid rgb(107, 38, 142)
-#             border-right: 1px solid rgb(107, 38, 142)
-#             &:last-child
-#                 display: block
-#             &:last-child
-#                 border-right: 0 !important
-#             .name
-#                 color: #fff
-#                 font-size: 16px
-#                 font-weight: 700
-#                 &.per
-#                     font-size: 10px
-#                     color: orange
-#                     font-weight: 100
-#                 &:last-child
-#                     font-size: 10px
-#                     text-transform: uppercase
-#                     letter-spacing: 2px
-#                     margin-top: 5px
-#                     opacity: .8
-#             .title-balance
-#                 color: #fff
-#                 font-size: 14px
-#                 text-align: left
+    .wallet
+        @import scheme
+        $cards-height: 324px
+        $pad: 20px
+        $radius: 15px
+        position: relative
+        cursor: pointer
+        $card-height: 63px
+        height: $card-height
+        border-radius: 0
+        &.disabled-wallet-item
+            opacity: 0.24
+            cursor: no-drop
+        &.last
+            height: 60px
+        $mt: 20px
+        box-sizing: border-box
+        overflow: hidden
+        transition: height .5s
+        border: 0px
+        &:first-child
+            margin-top: 0
+            box-shadow: none
+        &:last-child
+            margin-bottom: 0px
+        .pending
+            color: orange
+        &.over
+            background: #CCC
+        &.big
+            height: 170px
+        &.active
+        .wallet-middle
+            >.uninstall
+                position: absolute
+                bottom: 11px
+                right: 10px
+                height: 20px
+                max-height: 20px
+                z-index: 99999
+                font-size: 17px
+                line-height: 1.2
+                text-align: center
+                font-weight: bold
+            box-sizing: border-box
+            width: 70%
+            height: 85px
+            float: left
+            padding: 20px
+            border-top: 1px solid rgb(107, 38, 142)
+            border-right: 1px solid rgb(107, 38, 142)
+            &:last-child
+                display: block
+            &:last-child
+                border-right: 0 !important
+            .name
+                color: #fff
+                font-size: 16px
+                font-weight: 700
+                &.per
+                    font-size: 10px
+                    color: orange
+                    font-weight: 100
+                &:last-child
+                    font-size: 10px
+                    text-transform: uppercase
+                    letter-spacing: 2px
+                    margin-top: 5px
+                    opacity: .8
+            .title-balance
+                color: #fff
+                font-size: 14px
+                text-align: left
                 
 
-#             a
-#                 text-align: left
-#         >.wallet-top
-#             min-height: 62px
-#             padding: 0 0 0 12px
-#             box-sizing: border-box
-#             $card-top-height: 50px
-#             width: 100%
-#             color: #677897
-#             font-size: 14px
-#             text-align: center
-#             overflow: hidden
-#             .inner-container
-#                 display: flex
-#                 flex-direction: row
-#                 width: 70%
-#                 float: left
-#             >*
-#                 display: inline-block
-#                 box-sizing: border-box
-#                 vertical-align: top
-#                 padding-top: 12px
-#                 height: $card-top-height
-#             .top-left
-#                 float: left
-#                 width: 30%
-#                 text-align: left
-#                 text-overflow: ellipsis
-#                 @media screen and (min-width: 801px)
-#                     padding-top: 5px
-#                 @media screen and (max-width: 800px)
-#                     width: 15%
-#                 >*
-#                     display: inline-block
-#                 >.img
-#                     margin-top: 5px
-#                     height: 32px
-#                     >img
-#                         max-width: 50px
-#                         border-radius: 0
-#                         width: 100%
-#                         height: 100%
-#                         @media screen and (min-width: 801px)
-#                             padding-top: 4px
-#                 >.info
-#                     text-align: left
-#                     margin-left: 0px
-#                     text-overflow: ellipsis
-#                     overflow: hidden
-#                     width: auto
-#                     @media screen and (max-width: 390px)
-#                         display: none
-#                     >.name
-#                         padding-left: 3px
-#                     >.price
-#                         font-size: 11px
-#                         font-weight: bold
-#                         overflow: hidden
-#                         text-overflow: ellipsis
-#                         opacity: .5
-#                         padding: 0
-#                         letter-spacing: .4px
-#                         &.token
-#                             opacity: 1
-#                             font-size: 12px
-#             .top-middle
-#                 text-align: center
-#                 display: flex
-#                 float: left
-#                 margin-left: 5px
-#                 .label-coin
-#                     height: 16px
-#                     top: 3px
-#                     padding-left: 4px
-#                     position: relative
-#                 @media screen and (max-width: 800px)
-#                     text-align: left
-#                 >.balance
-#                     &:last-child
-#                         font-weight: bold
-#                         font-size: 13px
-#                 .first-block
-#                     margin-right: 20px
-#                     width: 120px
-#                     white-space: nowrap
-#                     text-overflow: ellipsis
-#                     overflow: hidden
-#                 .usd-balance
-#                     color: white
-#                     font-weight: 500
-#                 .flexy 
-#                     .block-row
-#                         &:last-child
-#                             margin-top: 5px
-#                     .block-row
-#                         &:last-child
-#                             font-size: 13px
+            a
+                text-align: left
+        >.wallet-top
+            min-height: 62px
+            padding: 0 0 0 12px
+            box-sizing: border-box
+            $card-top-height: 50px
+            width: 100%
+            color: #677897
+            font-size: 14px
+            text-align: center
+            overflow: hidden
+            .inner-container
+                display: flex
+                flex-direction: row
+                width: 70%
+                float: left
+            >*
+                display: inline-block
+                box-sizing: border-box
+                vertical-align: top
+                padding-top: 12px
+                height: $card-top-height
+            .top-left
+                float: left
+                width: 30%
+                text-align: left
+                text-overflow: ellipsis
+                @media screen and (min-width: 801px)
+                    padding-top: 5px
+                @media screen and (max-width: 800px)
+                    width: 15%
+                >*
+                    display: inline-block
+                >.img
+                    margin-top: 5px
+                    height: 32px
+                    >img
+                        max-width: 50px
+                        border-radius: 0
+                        width: 100%
+                        height: 100%
+                        @media screen and (min-width: 801px)
+                            padding-top: 4px
+                >.info
+                    text-align: left
+                    margin-left: 0px
+                    text-overflow: ellipsis
+                    overflow: hidden
+                    width: auto
+                    @media screen and (max-width: 390px)
+                        display: none
+                    >.name
+                        padding-left: 3px
+                    >.price
+                        font-size: 11px
+                        font-weight: bold
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        opacity: .5
+                        padding: 0
+                        letter-spacing: .4px
+                        &.token
+                            opacity: 1
+                            font-size: 12px
+            .top-middle
+                text-align: center
+                display: flex
+                float: left
+                margin-left: 5px
+                .label-coin
+                    height: 16px
+                    top: 3px
+                    padding-left: 4px
+                    position: relative
+                @media screen and (max-width: 800px)
+                    text-align: left
+                >.balance
+                    &:last-child
+                        font-weight: bold
+                        font-size: 13px
+                .first-block
+                    margin-right: 20px
+                    width: 120px
+                    white-space: nowrap
+                    text-overflow: ellipsis
+                    overflow: hidden
+                .usd-balance
+                    color: white
+                    font-weight: 500
+                .flexy 
+                    .block-row
+                        &:last-child
+                            margin-top: 5px
+                    .block-row
+                        &:last-child
+                            font-size: 13px
                     
 
-#             >.top-right
-#                 text-align: right
-#                 .graph-container
-#                     position: relative
-#                     .percent
-#                         position: absolute
-#                         color: white
-#                         font-size: 11px
-#                         margin: auto
-#                         left: 0
-#                         right: 0
-#                         text-align: center
-#                         top: 0
-#                         bottom: 0
-#                         height: 12px
-#                         &.positive 
-#                             color: "green"
-#                         &.negative
-#                             color: "red"    
-#                 .wallet-swap img
-#                     filter: invert(1)
-#                 .icon
-#                     vertical-align: sub
-#                     .icon-svg-create
-#                         height: 9px
-#                         transform: rotate(-90deg)
-#                         vertical-align: inherit
-#                         opacity: .3
-#                 @media screen and (max-width: 800px)
-#                     display: flex
-#                     float: right
-#                     flex-direction: row-reverse
-#                 >button
-#                     outline: none
-#                     margin-bottom: 5px
-#                     margin-left: 5px
-#                     cursor: pointer
-#                     border: 0
-#                     $round: 36px
-#                     padding: 0
-#                     box-sizing: border-box
-#                     border-radius: $border
-#                     font-size: 10px
-#                     width: auto
-#                     padding: 0 6px
-#                     height: $round
-#                     color: #6CA7ED
-#                     text-transform: uppercase
-#                     font-weight: bold
-#                     background: transparent
-#                     transition: all .5s
-#                     text-overflow: ellipsis
-#                     overflow: hidden
-#                     width: 80px
-#                     .icon-svg
-#                         @media screen and (max-width: 800px)
-#                             padding: 0
-#                     .icon
-#                         position: relative
-#                         height: 16px
-#                         top: 2px
-#                     @media screen and (max-width: 800px)
-#                         width: 40px
-#                         line-height: 30px
-#     .your-account
-#         position: relative
-#         display: block
-#         max-width: 450px
-#         border: 0 !important
-#         .tor
-#             right: 0px
-#             bottom: -27px
-#             .tor-content
-#                 right: -55px
-#                 &:after, &:before
-#                     right: 33%
-#                     top: -10%
-#         .switch-menu
-#             right: -1px
-#             top: 165px
-#             @media(max-width: 480px)
-#                 right: -2px
-#     @media(max-width: 800px)
-#         margin-top: 0px
-#     .wallets
-#         @import scheme
-#         $border: var(--border-btn)
-#         $real-height: 300px
-#         $cards-height: 296px
-#         $pad: 20px
-#         $radius: 15px    
-#         height: 395px
-#         box-sizing: border-box
-#         position: relative
-#         left: 0
-#         $cards-pad: 15px
-#         right: 0
-#         margin: 0 $cards-pad
-#         z-index: 2
-#         @media(max-width: $mobile)
-#             margin: 0
-#             height: calc(100vh - 100px)
-#         >*
-#             width: 100%
-#         >.arrow
-#             position: absolute
-#             text-align: center
-#             cursor: pointer
-#             &.arrow-t
-#                 top: 0
-#                 margin-top: 10px
-#             &.arrow-d
-#                 bottom: 0
-#                 margin-bottom: 10px
-#                 transform: rotate(180deg)
-#             &:not(.true)
-#                 >.arrow-d
-#                     visibility: hidden
-#             >.arrow-container
-#                 display: inline-block
-#                 width: 100%
-#                 max-width: 450px
-#                 position: relative
-#         padding-top: 20px
-#         >.wallet-container
-#             overflow: hidden
-#             overflow-y: auto
-#             border-radius: 0 0 $border $border
-#             max-height: 268px
-#             height: 100%
-#             max-width: 450px
-#             border-top: 1px solid #213040
-#             display: inline-block
-#             @media(max-width: $mobile)
-#                 max-height: 100vh
-#                 height: auto
-#                 margin-bottom: 0px
-#             .wallet
-#                 margin-bottom: 15px
-#                 box-shadow: 0px 11px 20px #0808087d
-#                 background: var(--bg-secondary)
-#                 &:last-child
-#                     margin-bottom: -1px
-#                 &.big
-#                     background: var(--bg-secondary)
-#             @media(max-width: $mobile)
-#                 border-width: 1px 0 0 0 !important
-#         .switch-account
-#             float: right
-#             line-height: 2
-#             right: 20px
-#             position: relative
-#             display: inline-flex
-#             .ckeck
-#                 color: #3cd5af
-#             .cancel
-#                 color: #c25b5f
-#             .name
-#                 text-overflow: ellipsis
-#                 white-space: nowrap
-#                 overflow: hidden
-#                 width: 90px
-#                 text-align: right
-#                 cursor: default
-#             input
-#                 outline: none
-#                 width: 100px
-#                 margin-top: -6px
-#                 height: 36px
-#                 line-height: 36px
-#                 border-radius: 0px
-#                 padding: 0px 10px
-#                 font-size: 12px
-#                 opacity: 1
-#             span
-#                 cursor: pointer
-#             .icon
-#                 vertical-align: middle
-#                 margin-left: 20px
-#                 transition: transform .5s
-#                 &.rotate
-#                     transform: rotate(180deg)
-#                     transition: transform .5s
-#         .h1
-#             font-size: 12px
-#             text-transform: uppercase
-#             letter-spacing: 2px
-#             opacity: .8
-#         .icon-svg1
-#             position: relative
-#             height: 16px
-#             top: 2px
-#         .icon-svg2
-#             position: relative
-#             height: 10px
-#         .header
-#             max-width: 450px
-#             margin: 0 auto
-#             border-left: 1px solid var(--border)
-#             border-right: 1px solid var(--border)
-#             @media(max-width: $mobile)
-#                 border: 0
-#     .wallet
-#         .title
-#             color: white
-#             text-transform: uppercase
-#             font-size: 11px
-#             font-weight: 500
-#             white-space: nowrap
-#             text-overflow: ellipsis
-#             overflow: hidden
-#         .wallet-middle
-#             width: 100%
-#             padding: 10px 12px
-#             box-sizing: border-box
-#             color: #A8BACB
-#             font-size: 14px
-#             margin-top: 5px
-#             text-align: center
-#             position: relative
-#             display: inline-block
-#             height: auto
-#             border: 0 !important
-#             .address-holder
-#                 .browse
-#                     display: none
-#                 .copy
-#                     padding: 10px
-#                     margin: 0
-#                 div
-#                     a
-#                         padding: 0 10px 0 20px
+            >.top-right
+                text-align: right
+                .graph-container
+                    position: relative
+                    .percent
+                        position: absolute
+                        color: white
+                        font-size: 11px
+                        margin: auto
+                        left: 0
+                        right: 0
+                        text-align: center
+                        top: 0
+                        bottom: 0
+                        height: 12px
+                        &.positive 
+                            color: "green"
+                        &.negative
+                            color: "red"    
+                .wallet-swap img
+                    filter: invert(1)
+                .icon
+                    vertical-align: sub
+                    .icon-svg-create
+                        height: 9px
+                        transform: rotate(-90deg)
+                        vertical-align: inherit
+                        opacity: .3
+                @media screen and (max-width: 800px)
+                    display: flex
+                    float: right
+                    flex-direction: row-reverse
+                >button
+                    outline: none
+                    margin-bottom: 5px
+                    margin-left: 5px
+                    cursor: pointer
+                    border: 0
+                    $round: 36px
+                    padding: 0
+                    box-sizing: border-box
+                    border-radius: $border
+                    font-size: 10px
+                    width: auto
+                    padding: 0 6px
+                    height: $round
+                    color: #6CA7ED
+                    text-transform: uppercase
+                    font-weight: bold
+                    background: transparent
+                    transition: all .5s
+                    text-overflow: ellipsis
+                    overflow: hidden
+                    width: 80px
+                    .icon-svg
+                        @media screen and (max-width: 800px)
+                            padding: 0
+                    .icon
+                        position: relative
+                        height: 16px
+                        top: 2px
+                    @media screen and (max-width: 800px)
+                        width: 40px
+                        line-height: 30px
+    .your-account
+        position: relative
+        display: block
+        max-width: 450px
+        border: 0 !important
+        .tor
+            right: 0px
+            bottom: -27px
+            .tor-content
+                right: -55px
+                &:after, &:before
+                    right: 33%
+                    top: -10%
+        .switch-menu
+            right: -1px
+            top: 165px
+            @media(max-width: 480px)
+                right: -2px
+    @media(max-width: 800px)
+        margin-top: 0px
+    .wallets
+        @import scheme
+        $border: var(--border-btn)
+        $real-height: 300px
+        $cards-height: 296px
+        $pad: 20px
+        $radius: 15px    
+        height: 395px
+        box-sizing: border-box
+        position: relative
+        left: 0
+        $cards-pad: 15px
+        right: 0
+        margin: 0 $cards-pad
+        z-index: 2
+        @media(max-width: $mobile)
+            margin: 0
+            height: calc(100vh - 100px)
+        >*
+            width: 100%
+        >.arrow
+            position: absolute
+            text-align: center
+            cursor: pointer
+            &.arrow-t
+                top: 0
+                margin-top: 10px
+            &.arrow-d
+                bottom: 0
+                margin-bottom: 10px
+                transform: rotate(180deg)
+            &:not(.true)
+                >.arrow-d
+                    visibility: hidden
+            >.arrow-container
+                display: inline-block
+                width: 100%
+                max-width: 450px
+                position: relative
+        padding-top: 20px
+        >.wallet-container
+            overflow: hidden
+            overflow-y: auto
+            border-radius: 0 0 $border $border
+            max-height: 268px
+            height: 100%
+            max-width: 450px
+            border-top: 1px solid #213040
+            display: inline-block
+            @media(max-width: $mobile)
+                max-height: 100vh
+                height: auto
+                margin-bottom: 0px
+            .wallet
+                margin-bottom: 15px
+                box-shadow: 0px 11px 20px #0808087d
+                background: var(--bg-secondary)
+                &:last-child
+                    margin-bottom: -1px
+                &.big
+                    background: var(--bg-secondary)
+            @media(max-width: $mobile)
+                border-width: 1px 0 0 0 !important
+        .switch-account
+            float: right
+            line-height: 2
+            right: 20px
+            position: relative
+            display: inline-flex
+            .ckeck
+                color: #3cd5af
+            .cancel
+                color: #c25b5f
+            .name
+                text-overflow: ellipsis
+                white-space: nowrap
+                overflow: hidden
+                width: 90px
+                text-align: right
+                cursor: default
+            input
+                outline: none
+                width: 100px
+                margin-top: -6px
+                height: 36px
+                line-height: 36px
+                border-radius: 0px
+                padding: 0px 10px
+                font-size: 12px
+                opacity: 1
+            span
+                cursor: pointer
+            .icon
+                vertical-align: middle
+                margin-left: 20px
+                transition: transform .5s
+                &.rotate
+                    transform: rotate(180deg)
+                    transition: transform .5s
+        .h1
+            font-size: 12px
+            text-transform: uppercase
+            letter-spacing: 2px
+            opacity: .8
+        .icon-svg1
+            position: relative
+            height: 16px
+            top: 2px
+        .icon-svg2
+            position: relative
+            height: 10px
+        .header
+            max-width: 450px
+            margin: 0 auto
+            border-left: 1px solid var(--border)
+            border-right: 1px solid var(--border)
+            @media(max-width: $mobile)
+                border: 0
+    .wallet
+        .title
+            color: white
+            text-transform: uppercase
+            font-size: 11px
+            font-weight: 500
+            white-space: nowrap
+            text-overflow: ellipsis
+            overflow: hidden
+        .wallet-middle
+            width: 100%
+            padding: 10px 12px
+            box-sizing: border-box
+            color: #A8BACB
+            font-size: 14px
+            margin-top: 5px
+            text-align: center
+            position: relative
+            display: inline-block
+            height: auto
+            border: 0 !important
+            .address-holder
+                .browse
+                    display: none
+                .copy
+                    padding: 10px
+                    margin: 0
+                div
+                    a
+                        padding: 0 10px 0 20px
            
-#             .buttons
-#                 margin-top: 10px
-#                 display: flex
-#                 button
-#                     margin-right: 7px
-#                     padding: 0 15px
-#                     border-radius: 0 !important
-#                     &.button-swap
-#                         background: #621bbf  
-#                         color: #71f4b4 
-#                         img
-#                             filter: invert(99%) sepia(33%) saturate(5822%) hue-rotate(64deg) brightness(87%) contrast(153%) 
+            .buttons
+                margin-top: 10px
+                display: flex
+                button
+                    margin-right: 7px
+                    padding: 0 15px
+                    border-radius: 0 !important
+                    &.button-swap
+                        background: #621bbf  
+                        color: #71f4b4 
+                        img
+                            filter: invert(99%) sepia(33%) saturate(5822%) hue-rotate(64deg) brightness(87%) contrast(153%) 
                 
 cb = console~log
 wallet-group = (store, web3t, wallets, wallets-groups, wallets-group)-->
@@ -502,8 +502,8 @@ wallet-group = (store, web3t, wallets, wallets-groups, wallets-group)-->
         | _ => ''
     wallets = wallets-group.1
 
-    react.create-element 'div', { className: 'wallet-group' }, children = 
-        react.create-element 'div', { className: 'group-name' }, ' ' + group-name + ' Network'
+    .wallet-group.pug
+        .pug.group-name #{group-name} Network
 
         wallets |> map (wallet)->
 
@@ -637,32 +637,32 @@ wallet-group = (store, web3t, wallets, wallets-groups, wallets-group)-->
                     |> filter (-> it.disabled isnt yes and it.referTo in installed-networks)
 
             /* Render */
-            react.create-element 'div', { key: "#{token}", className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
-                react.create-element 'div', { on-click: expand, className: 'wallet-top' }, children = 
-                    react.create-element 'div', { className: 'inner-container' }, children = 
-                        react.create-element 'div', { style: wallet-style, className: 'top-left' }, children = 
-                            react.create-element 'div', { className: "#{placeholder-coin} img" }, children = 
-                                react.create-element 'img', { src: "#{wallet.coin.image}" }
+            .wallet.pug.wallet-item(class="#{big} #{disabled-class}" key="#{token}")
+                .wallet-top.pug(on-click=expand)
+                    .inner-container.pug
+                        .top-left.pug(style=wallet-style)
+                            .img.pug(class="#{placeholder-coin}")
+                                img.pug(src="#{wallet.coin.image}")
                                 if no
-                                    react.create-element 'div', {}, ' ' + name + '           '
-                        react.create-element 'div', { className: 'top-middle' }, children = 
-                            react.create-element 'div', { className: 'first-block flexy' }, children = 
-                                react.create-element 'span', { className: "#{placeholder} title block-row" }, ' ' + name + ' '
-                                react.create-element 'div', { className: 'title-balance block-row' }, children = 
-                                    react.create-element 'div', { title: "#{usd-rate}", className: "#{placeholder} name" }, ' $' +  round-human(usd-rate) + '     '
-                            react.create-element 'div', { className: 'second-block flexy' }, children = 
-                                react.create-element 'div', { className: 'usd-balance block-row' }, ' $' +  round-human balance-usd + ' '
-                                react.create-element 'div', { className: 'coin-balance block-row' }, ' ' +  round-human wallet.balance  + '                      '
-                    react.create-element 'div', { className: 'top-right' }, children = 
-                        react.create-element 'div', { className: 'graph-container' }, children = 
-                            react.create-element 'div', { className: "#{percent-class} percent" }, ' ' + percent-display
-                            react.create-element Line, { data: data, options: options, width: 100, height: 50, legend: legend }
+                                    .pug #{name}           
+                        .top-middle.pug 
+                            .first-block.flexy.pug
+                                span.pug.title.block-row(class="#{placeholder}") #{name} 
+                                .title-balance.pug.block-row
+                                    .name.pug(class="#{placeholder}" title="#{usd-rate}") $#{ round-human(usd-rate)}     
+                            .second-block.flexy.pug
+                                .pug.usd-balance.block-row $#{ round-human balance-usd} 
+                                .pug.coin-balance.block-row #{ round-human wallet.balance }                      
+                    .top-right.pug
+                        .pug.graph-container
+                            .percent.pug(class="#{percent-class}") #{percent-display}
+                            Line.pug(data=data options=options width=100 height=50 legend=legend)
                         
-                react.create-element 'div', { style: border, className: 'wallet-middle' }, children = 
+                .wallet-middle.pug(style=border)
                     address-holder { store, wallet, type: \bg }
                     if token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
-                        react.create-element 'div', { on-click: uninstall, style: wallet-style, className: 'uninstall' }, ' ' + label-uninstall
-                    react.create-element 'div', { className: 'buttons' }, children = 
+                        .pug.uninstall(on-click=uninstall style=wallet-style) #{label-uninstall}
+                    .buttons.pug
                         button { store, on-click=send-click, text: \send , icon: \send , type: \secondary, makeDisabled=send-swap-disabled }
                         button { store, on-click=receive-click, text: \receive , icon: \get, type : \primary }
                         if (available-networks.length > 0) then
@@ -738,31 +738,31 @@ mobile = ({ store, web3t })->
     #return null if not wallet-detail?
         
     view-account-template = ->
-        react.create-element 'div', { className: 'switch-account h1' }, children = 
-            react.create-element 'span', { on-click: open-account, className: 'name' }, ' ' + account-name
-            react.create-element 'span', { on-click: edit-account-name, className: 'icon' }, children = 
-                react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg1' }
-            react.create-element 'span', { on-click: open-account, className: "#{rotate-class} icon" }, children = 
-                react.create-element 'img', { src: "#{icons.arrow-down}", className: 'icon-svg2' }
+        .pug.switch-account.h1
+            span.name.pug(on-click=open-account) #{account-name}
+            span.pug.icon(on-click=edit-account-name)
+                img.icon-svg1.pug(src="#{icons.create}")
+            span.pug.icon(on-click=open-account class="#{rotate-class}")
+                img.icon-svg2.pug(src="#{icons.arrow-down}")
     edit-account-template = ->
-        react.create-element 'div', { className: 'switch-account h1' }, children = 
-            react.create-element 'input', { value: "#{store.current.edit-account-name}", on-change: edit-account, style: input, className: 'h1' }
-            react.create-element 'span', { on-click: done-edit, className: 'ckeck icon' }, children = 
+        .pug.switch-account.h1
+            input.h1.pug(value="#{store.current.edit-account-name}" on-change=edit-account style=input)
+            span.ckeck.pug.icon(on-click=done-edit)
                 icon "Check", 20
-            react.create-element 'span', { on-click: cancel-edit-account-name, className: 'cancel icon' }, children = 
+            span.cancel.pug.icon(on-click=cancel-edit-account-name)
                 icon "X", 20
     chosen-account-template =
         if store.current.edit-account-name is "" then view-account-template! else edit-account-template!
-    react.create-element 'div', { key: "wallets", className: 'wallet-mobile wallet-mobile1694213368' }, children = 
+    .pug.wallet-mobile(key="wallets")
         menu { store, web3t }
         manage-account { store, web3t }
         token-migration { store, web3t }
         add-coin-page { store, web3t }
-        react.create-element 'div', { key: "wallets-body", className: 'wallets' }, children = 
-            react.create-element 'div', { style: header-style, className: 'header' }, children = 
-                react.create-element 'span', { style: header-left, className: 'head left h1 hidden' }, ' ' + lang.your-wallets
+        .wallets.pug(key="wallets-body")
+            .header.pug(style=header-style)
+                span.pug.head.left.h1.hidden(style=header-left) #{lang.your-wallets}
                 chosen-account-template
-            react.create-element 'div', { key: "wallets-viewport", style: border-style-w, className: 'wallet-container' }, children = 
+            .wallet-container.pug(key="wallets-viewport" style=border-style-w)
                 wallets
                     |> group-by (.network.group)
                     |> obj-to-pairs

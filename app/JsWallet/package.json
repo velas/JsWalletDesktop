@@ -6,8 +6,7 @@
   "dependencies": {
     "@primer/octicons-react": "9.1.1",
     "@solana/buffer-layout": "4.0.0",
-    "@velas/staking.2.0": "file:../../velas-staking.2.0-1.0.0.tgz",
-    "@velas/web3": "https://github.com/velas/web3.js.git#web",
+    "@velas/web3": "git+https://github.com/velas/web3.js.git#web",
     "atob": "2.1.2",
     "bignumber.js": "6.0.0",
     "bitgo-utxo-lib": "^1.8.0",
@@ -23,7 +22,6 @@
     "image-data-uri": "2.0.0",
     "isomorphic-fetch": "^3.0.0",
     "isomorphic-webcrypto": "^2.3.8",
-    "livescript": "^1.6.0",
     "localStorage": "1.0.4",
     "lodash": "^4.17.12",
     "md5": "2.2.1",
@@ -41,6 +39,7 @@
     "react-currency-input-field": "^3.3.2",
     "react-dom": "^17.0.2",
     "react-simple-file-input": "2.1.0",
+    "staking.2.0": "1.0.30",
     "web3": "0.18.4"
   },
   "scripts": {

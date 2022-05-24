@@ -18,4 +18,4 @@ legend =
 module.exports = (store, web3t)->
     return null if store.staking.reward-info.length is 0
     data = build-data store.staking.reward-info
-    react.create-element Bar, { data: data, width: 100, height: 100, legend: legend }
+    Bar.pug(data=data width=100 height=100 legend=legend)

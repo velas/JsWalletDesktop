@@ -8,122 +8,122 @@ require! {
     \./confirmation.ls : { confirm }
 }
 # verification seed
-# .newseed-136522795
-#     @import scheme
-#     padding-top: 50px
-#     width: 100%
-#     height: $height
-#     box-sizing: border-box
-#     height: 100%
-#     .words
-#         max-width: 500px
-#         display: inline-block
-#         margin-bottom: 20px
-#         .word
-#             display: inline-block
-#             color: #fff
-#             padding: 10px
-#             margin: 5px
-#             font-size: 14px
-#             font-weight: 400
-#             min-width: 25%
-#             border-radius: calc(var(--border-btn) * 10)
-#             -ms-user-select: none
-#             cursor: default
-#             @media(max-width: 500px)
-#                 min-width: 35%
-#             >input
-#                 background: transparent
-#                 border: 0
-#                 display: inline-block
-#                 color: #fff
-#                 padding: 0
-#                 width: 100px
-#                 margin: 0
-#                 font-size: 14px
-#                 text-align: center
-#                 cursor: auto
-#             input:focus ~ span.effect
-#                 background: rgb(60, 213, 175) !important
-#                 color: #190841 !important
-#                 transition: all .5s
-#                 animation: pulse_effect 1.5s linear
-#                 transform-origin: 50% 50%
-#             span
-#                 &:first-child
-#                     background: #7651ae
-#                     color: #fff
-#                     display: inline-block
-#                     padding: 4px
-#                     float: left
-#                     border-radius: var(--border-btn)
-#                     width: 11px
-#                     height: 10px
-#                     font-size: 10px
-#                     line-height: 11px
-#                     @media(max-width: 500px)
-#                         margin-right: 5px
-#                 &.effect    
-#                     &:last-child
-#                         background: #7651ae
-#                         color: #fff
-#                         display: inline-block
-#                         padding: 4px
-#                         float: left
-#                         border-radius: var(--border-btn)
-#                         width: 11px
-#                         height: 10px
-#                         font-size: 10px
-#                         line-height: 11px
-#                         @media(max-width: 500px)
-#                             margin-right: 5px
-#     .title
-#         color: #ebf6f8
-#         font-size: 22px
-#         margin-bottom: 20px
-#     input
-#         border-radius: $border
-#         resize: none
-#         font-size: 13px
-#         border: 0
-#         text-align: center
-#         outline: none
-#         &:focus
-#             border-color: #248295
-#     button
-#         outline: none
-#         width: auto
-#         min-width: 80px
-#         height: 36px
-#         margin: 15px 5px 0
-#         text-transform: uppercase
-#         font-weight: 600
-#         padding: 0px 6px
-#         border: 0
-#         cursor: pointer
-#         background: #248295
-#         border-radius: $border
-#         font-size: 10px
-#         color: white
-#         text-overflow: ellipsis
-#         overflow: hidden
-#         white-space: nowrap
-#         &:hover
-#             background: #248295 - 20
-#     .warning
-#         padding: 10px
-#         border: 1px solid orange
-#         margin: 20px auto 0
-#         max-width: 180px
-#         border-radius: $border
-#         font-size: 13px
-#         background: rgba(orange, 0.2)
-#     .hint
-#         color: #f2eeee
-#         padding: 20px 0
-#         max-width: 270px
-#         font-size: 13px
-#         margin: 0 auto
+.newseed
+    @import scheme
+    padding-top: 50px
+    width: 100%
+    height: $height
+    box-sizing: border-box
+    height: 100%
+    .words
+        max-width: 500px
+        display: inline-block
+        margin-bottom: 20px
+        .word
+            display: inline-block
+            color: #fff
+            padding: 10px
+            margin: 5px
+            font-size: 14px
+            font-weight: 400
+            min-width: 25%
+            border-radius: calc(var(--border-btn) * 10)
+            -ms-user-select: none
+            cursor: default
+            @media(max-width: 500px)
+                min-width: 35%
+            >input
+                background: transparent
+                border: 0
+                display: inline-block
+                color: #fff
+                padding: 0
+                width: 100px
+                margin: 0
+                font-size: 14px
+                text-align: center
+                cursor: auto
+            input:focus ~ span.effect
+                background: rgb(60, 213, 175) !important
+                color: #190841 !important
+                transition: all .5s
+                animation: pulse_effect 1.5s linear
+                transform-origin: 50% 50%
+            span
+                &:first-child
+                    background: #7651ae
+                    color: #fff
+                    display: inline-block
+                    padding: 4px
+                    float: left
+                    border-radius: var(--border-btn)
+                    width: 11px
+                    height: 10px
+                    font-size: 10px
+                    line-height: 11px
+                    @media(max-width: 500px)
+                        margin-right: 5px
+                &.effect    
+                    &:last-child
+                        background: #7651ae
+                        color: #fff
+                        display: inline-block
+                        padding: 4px
+                        float: left
+                        border-radius: var(--border-btn)
+                        width: 11px
+                        height: 10px
+                        font-size: 10px
+                        line-height: 11px
+                        @media(max-width: 500px)
+                            margin-right: 5px
+    .title
+        color: #ebf6f8
+        font-size: 22px
+        margin-bottom: 20px
+    input
+        border-radius: $border
+        resize: none
+        font-size: 13px
+        border: 0
+        text-align: center
+        outline: none
+        &:focus
+            border-color: #248295
+    button
+        outline: none
+        width: auto
+        min-width: 80px
+        height: 36px
+        margin: 15px 5px 0
+        text-transform: uppercase
+        font-weight: 600
+        padding: 0px 6px
+        border: 0
+        cursor: pointer
+        background: #248295
+        border-radius: $border
+        font-size: 10px
+        color: white
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        &:hover
+            background: #248295 - 20
+    .warning
+        padding: 10px
+        border: 1px solid orange
+        margin: 20px auto 0
+        max-width: 180px
+        border-radius: $border
+        font-size: 13px
+        background: rgba(orange, 0.2)
+    .hint
+        color: #f2eeee
+        padding: 20px 0
+        max-width: 270px
+        font-size: 13px
+        margin: 0 auto
 newseed = ({ store, web3t })->
     lang = get-lang store
     { next, save } = newseed-funcs store, web3t
@@ -173,25 +173,25 @@ newseed = ({ store, web3t })->
     build-verify-seed = (store, item)-->
         enter-confirm = ->
             item.part = (it?target?value ? "").trim!
-        react.create-element 'div', { style: seed-style, className: 'word' }, children = 
-            react.create-element 'input', { style: address-input, key: "enter_#{item.index}_word", value: "#{item.part}", on-change: enter-confirm, placeholder: "#{lang.word} ##{item.index + 1}", on-key-down: on-key-down }
-    react.create-element 'div', { className: 'newseed newseed-136522795' }, children = 
-        react.create-element 'img', { style: newseed-style, src: "#{icons.verifyseed}" }
-        react.create-element 'div', { style: text-style, className: 'title' }, ' ' + lang.verify-seed-phrase
-        react.create-element 'div', { className: 'words' }, children = 
+        .pug.word(style=seed-style)
+            input.pug(style=address-input key="enter_#{item.index}_word" value="#{item.part}" on-change=enter-confirm placeholder="#{lang.word} ##{item.index + 1}" on-key-down=on-key-down)
+    .newseed.pug
+        img.pug(style=newseed-style src="#{icons.verifyseed}")
+        .title.pug(style=text-style) #{lang.verify-seed-phrase}
+        .pug.words
             build-verify-seed store, store.current.verify-seed-indexes[store.current.verify-seed-index]
-        react.create-element 'div', {}, children = 
-            react.create-element 'button', { style: button-primary3-style, on-click: back, className: 'right' }, children = 
-                react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.close2}", style: btn-icon, className: 'icon-svg' }
-                    """ #{lang.cancel}"""
-            react.create-element 'button', { style: button-primary1-style, on-click: verify-seed, className: 'right' }, children = 
-                react.create-element 'span', {}, children = 
-                    react.create-element 'img', { src: "#{icons.right}", style: btn-icon, className: 'icon-svg' }
-                    """ #{lang.next}"""
+        .pug
+            button.pug.right(style=button-primary3-style on-click=back)
+                span.pug
+                    img.icon-svg.pug(src="#{icons.close2}" style=btn-icon)
+                    | #{lang.cancel}
+            button.pug.right(style=button-primary1-style on-click=verify-seed)
+                span.pug
+                    img.icon-svg.pug(src="#{icons.right}" style=btn-icon)
+                    | #{lang.next}
         if store.current.verify-seed-error is yes
-            react.create-element 'div', { style: text-style, className: 'warning' }, children = 
-                react.create-element 'div', {}, ' ' + lang.words-are-not-match
+            .pug.warning(style=text-style)
+                .pug #{lang.words-are-not-match}
 random = ->
     Math.floor((Math.random! * 10) + 1)
 get-verifier = (store)-> (original)->

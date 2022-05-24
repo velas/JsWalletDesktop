@@ -7,50 +7,50 @@ require! {
     \./button.ls
     \../math.ls : { div, times, plus, minus }
 }
-# .table-pagination948035967
-#     @import scheme
-#     .pagination-holder
-#         position: relative
-#         text-align: center
-#         padding: 20px
-#         @media screen and (max-width: 540px)
-#             padding: 10px 0
-#             display: flex
-#             align-items: flex-start
-#         .current-page
-#             flex: 2
-#         button                      
-#             margin: 0 20px 0 !important
-#             min-width: 50px
-#             &:first-of-type
-#                 @media screen and (max-width: 540px)
-#                     margin-left: 0 !important
-#                     flex: 1
-#             &:last-of-type
-#                 @media screen and (max-width: 540px)
-#                     margin-right: 0 !important
-#                     flex: 1
-#         .per-page-selector
-#             position: absolute
-#             left: 0
-#             padding: 5px 10px
-#             border: 1px solid #555668
-#             cursor: pointer
-#             @media screen and (max-width: 540px)
-#                 position: relative
-#                 margin-right: 10px
-#                 padding: 5px
-#             &:hover
-#                 .per-page-options
-#                     display: block !important
-#             .per-page-options
-#                 position: relative
-#                 &.hidden
-#                     display: none
-#                 .per-page-option
-#                     padding: 2px 5px
-#                     &:hover
-#                         background: #555668
+.table-pagination
+    @import scheme
+    .pagination-holder
+        position: relative
+        text-align: center
+        padding: 20px
+        @media screen and (max-width: 540px)
+            padding: 10px 0
+            display: flex
+            align-items: flex-start
+        .current-page
+            flex: 2
+        button                      
+            margin: 0 20px 0 !important
+            min-width: 50px
+            &:first-of-type
+                @media screen and (max-width: 540px)
+                    margin-left: 0 !important
+                    flex: 1
+            &:last-of-type
+                @media screen and (max-width: 540px)
+                    margin-right: 0 !important
+                    flex: 1
+        .per-page-selector
+            position: absolute
+            left: 0
+            padding: 5px 10px
+            border: 1px solid #555668
+            cursor: pointer
+            @media screen and (max-width: 540px)
+                position: relative
+                margin-right: 10px
+                padding: 5px
+            &:hover
+                .per-page-options
+                    display: block !important
+            .per-page-options
+                position: relative
+                &.hidden
+                    display: none
+                .per-page-option
+                    padding: 2px 5px
+                    &:hover
+                        background: #555668
 module.exports = ({ store, type, disabled, config })->
     { array } = config
     new-array = ^^array
@@ -98,21 +98,21 @@ module.exports = ({ store, type, disabled, config })->
         background: style.app.background
         zIndex: 2
     # Render
-    react.create-element 'div', { className: 'table-pagination table-pagination948035967' }, children = 
-        react.create-element 'div', { className: 'pagination-holder' }, children = 
-            react.create-element 'span', { key: "#{type}-selector", id: "#{type}-selector", on-click: switch-per-page-selector, onMouseLeave: close-per-page-selector, style: p-style, className: 'per-page-selector' }, children = 
-                react.create-element 'div', { className: 'to-show' }, ' Show ' + per-page
+    .pug.table-pagination
+        .pug.pagination-holder
+            span.pug.per-page-selector(key="#{type}-selector" id="#{type}-selector" on-click=switch-per-page-selector onMouseLeave=close-per-page-selector style=p-style)
+                .to-show.pug Show #{per-page}
                 if store.staking["visible_per_page_#{type}_selector"] is yes
-                    react.create-element 'div', { style: p-style, className: 'per-page-options' }, children = 
-                        react.create-element 'div', { on-click: set-per-page(5), className: 'span per-page-option' }, ' 5'
-                        react.create-element 'div', { on-click: set-per-page(10), className: 'span per-page-option' }, ' 10'
-                        react.create-element 'div', { on-click: set-per-page(20), className: 'span per-page-option' }, ' 20'
+                    .per-page-options.pug(style=p-style)
+                        .span.pug.per-page-option(on-click=set-per-page(5)) 5
+                        .span.pug.per-page-option(on-click=set-per-page(10)) 10
+                        .span.pug.per-page-option(on-click=set-per-page(20)) 20
             if +entities > +store.staking["#{type}_per_page"]
-                react.create-element 'div', {}, children = 
+                .pug
                     button {store, classes: "width-auto", text: "<", no-icon:yes, on-click: go-back, style: {width: \auto, display: \block}, makeDisabled: prev-button-disabled}
-                    react.create-element 'span', { className: 'current-page' }, children = 
-                        react.create-element 'span', {}, ' Page'
-                            """ #{page}"""
-                            """ /"""
-                            """ #{allPages}"""
+                    span.pug.current-page
+                        span.pug Page
+                            | #{page}
+                            | /
+                            | #{allPages}
                     button {store, classes: "width-auto", text: ">", no-icon:yes, on-click: go-forward, style: {width: \auto, display: \block}, makeDisabled: next-button-disabled}

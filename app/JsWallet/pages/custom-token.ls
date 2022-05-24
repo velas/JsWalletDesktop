@@ -24,415 +24,415 @@ require! {
     \../plugin-loader.ls : { common }
     \lodash/cloneDeep
 }
-# .custom-token-content254250696
-#     position: relative
-#     @import scheme
-#     $border-radius: var(--border-btn)
-#     $label-padding: 3px
-#     $label-font: 13px
-#     width: calc(100% - 0px) !important
-#     margin-left: 0px !important
-#     max-width: none !important
-#     display: flex !important
-#     flex-direction: column  
-#     align-items: center
-#     @media(min-height:900px)
-#         justify-content: center    
-#     @media(max-width:800px)
-#         margin-left: 0 !important
-#     .icon-svg
-#         position: relative
-#         height: 12px
-#         top: 2px
-#     .icon-svg-history
-#         width: auto !important
-#         height: 20px
-#     .content-body
-#         max-width: 450px !important
-#     .navigation-button
-#         img
-#             &.rotate
-#                 transform: rotate(-180deg)
-#                 transition: transform .3s
-#                 display: inline-block
-#     >.title
-#         position: fixed
-#         position: -webkit-fixed
-#         background: var(--background)
-#         box-sizing: border-box
-#         top: 0
-#         width: 100%
-#         color: gray
-#         font-size: 22px
-#         padding: 10px
-#         height: 60px
-#         z-index: 3
-#         @media(max-width:800px)
-#             left: 0
-#         >.header
-#             margin: 5px
-#             text-align: center
-#             @media(max-width:800px)
-#                 text-align: center
-#     .h1
-#         font-size: 17px
-#         text-transform: uppercase
-#         letter-spacing: 2px
-#         opacity: .8
-#     .pending
-#         color: orange
-#     >*
-#         display: inline-block
-#         text-align: center
-#         width: 100%
-#         box-sizing: border-box
-#         border-radius: $border-radius
-#     .swap-notification
-#         p
-#             font-size: 12px
-#             opacity: 0.3
-#     .more-buttons
-#         top: 30px
-#         right: 0
-#         width: 150px
-#         box-shadow: 0px 0px 2px black
-#         border-radius: var(--border-btn)
-#         text-align: left
-#         padding-bottom: 3px
-#         >.more
-#             display: block
-#             cursor: pointer
-#             padding: 5px 0
-#             &:last-child
-#                 border-bottom: 0px
-#             .more-icon
-#                 width: 50px
-#                 text-align: center
-#                 display: inline-block
-#                 vertical-align: middle
-#             .more-text
-#                 width: 80px
-#                 display: inline-block
-#                 vertical-align: middle
-#     >.content-body
-#         border: 0
-#         background: "transparent"
-#         @import scheme
-#         color: gray
-#         @media(max-width:800px)
-#             margin-top: -5px  
-#         a
-#             color: #6f6fe2
-#         .table-row-menu
-#             border-bottom: 1px solid rgba(238, 238, 238, 0.07)
-#             &:hover
-#                 background: var(--input)
-#                 .network-item-button
-#                     background: #080e35    
-#             .network-item-title
-#                 display: inline-block
-#                 margin-right: 10px
-#                 min-width: 90px
-#             .networks
-#                 .network-item-button
-#                     opacity: 0.8
-#                     padding: 5px 10px
-#                     display: inline-block
-#                     margin: 0 5px
-#                     background: #303372
-#                     text-transform: uppercase
-#                     font-size: 12px
-#                     box-shadow: 0px 1px 2px black
-#                     &:hover
-#                         opacity: 1
-#                     &.testnet-network
-#                         background: #343434
-#         >form
-#             >table
-#                 background: transparent
-#                 border-radius: 0 0 var(--border-btn) var(--border-btn)
-#                 width: 100%
-#                 border-spacing: 0
-#                 tr
-#                     &.gray
-#                         color: #CCC
-#                     &.orange
-#                         color: #cf952c
-#                     &.green
-#                         color: #23b723
-#                     td
-#                         padding: 3px 10px
-#                         font-size: 14px
-#                         .label-coin
-#                             left: 3px
-#                             top: 3px
-#                             padding: 0 2px 0 2px
-#                             height: 16px
-#                             position: relative
-#                         &:last-child
-#                             text-align: right
-#             text-align: left
-#             margin: auto 10px
-#             .switch-menu
-#                 .network-item
-#                     padding: 2px 5px
-#                     background: #ffffff
-#                     text-align: center
-#                     width: auto
-#                     min-width: auto
-#                     max-width: initial
-#                     margin: 0 5px
-#                     font-weight: 400
-#                     border: 0.1px solid rgba(255, 255, 255, 0.1)
-#                     color: #292b55
-#                     display: inline-block
-#                     &.testnet
-#                         background: rgb(31, 31, 31)
-#             >.form-group
-#                 margin-bottom: 10px
-#                 min-height: 80px
-#                 padding: 0px
-#                 text-overflow: ellipsis
-#                 background: transparent
-#                 border-radius: $border-radius
-#                 input 
-#                     padding: 0 10px 0 45px 
-#                     text-align: left
-#                 &.sender
-#                     .address-holder .inner-address-holder
-#                         text-align: left
-#                         padding-left: 45px
-#                 &.receiver input
-#                     text-align: left !important
-#                 .identicon
-#                     ~ span
-#                         background: var(--input)
-#                 .control-label
-#                     padding-top: 5px
-#                     font-size: $label-font
-#                     padding-bottom: 5px
-#                     display: block
-#                 &.network
-#                     div
-#                         position: relative
-#                     .button
-#                         width: 12px
-#                         height: 16px
-#                         display: inline-block
-#                         padding: 9px
-#                         border-radius: var(--border-btn)
-#                         cursor: pointer
-#                         vertical-align: top
-#                         position: absolute
-#                         &.left
-#                             left: 0
-#                         &.right
-#                             right: 0
-#                             top: 3px
-#                         svg
-#                             vertical-align: inherit !important
-#                 input
-#                     outline: none
-#                     width: 100%
-#                     box-sizing: border-box
-#                     height: 36px
-#                     line-height: 36px
-#                     border-radius: $border-radius
-#                     padding: 0px 10px
-#                     font-size: 14px
-#                     border: 0px
-#                     box-shadow: none
-#                 .amount-field
-#                     position: relative
-#                     >.input-wrapper
-#                         position: relative
-#                         width: 65%
-#                         border-radius: var(--border-btn) 0 0 var(--border-btn)
-#                         &.choose-currency
-#                             display: inline-flex
-#                             width: 45% !important
-#                         .input-area
-#                             margin: 0
-#                         select
-#                             -webkit-appearance: none
-#                             -moz-appearance: none
-#                             padding-right: 30px
-#                             padding-left: 10px
-#                             background-position: right 5px top 50%
-#                             background-repeat: no-repeat
-#                             display: block
-#                             width: 30%
-#                             height: 36px
-#                             font-size: 14px
-#                             line-height: 1.5
-#                             color: #fff
-#                             background-color: #421f7c
-#                             background-clip: padding-box
-#                             border-radius: 0
-#                             border-color: #6b258e
-#                             border-left: 0 solid
-#                             margin-left: -1px
-#                         &.small
-#                             width: 35%
-#                             border-radius: 0 var(--border-btn) var(--border-btn) 0
-#                         display: inline-block
-#                         box-sizing: border-box
-#                         margin: 0
-#                         >.label
-#                             position: absolute
-#                             top: 8px
-#                             display: inline
-#                             &.lusd
-#                                 left: 5px
-#                             &.crypto
-#                                 right: 5px
-#                                 top: 7px
-#                                 height: 22px
-#                         .label-coin
-#                             height: 18px
-#                             top: 3px
-#                             position: relative
-#                             padding: 0 0px 0 8px;
-#                         input
-#                             width: 100%
-#                             color: white
-#                             box-shadow: none
-#                             outline: none
-#                             ::placeholder
-#                                 color: #eee
-#                             &:disabled
-#                                 opacity:.2
-#                             &.amount
-#                                 border-radius: $border-radius 0 0 $border-radius
-#                                 border-right: 0
-#                             &.amount-eur
-#                                 background: #f1eeee
-#                                 padding-left: 20px
-#                                 border-radius: 0 $border-radius $border-radius 0
-#                                 border-left: 0
-#                             &.amount-usd
-#                                 background: #f1eeee
-#                                 border-radius: 0 $border-radius $border-radius 0
-#                                 padding-left: 20px
-#         .smart-contract
-#             overflow: hidden
-#             padding: 2px
-#             box-sizing: border-box
-#         >.header
-#             padding: 10px
-#             min-height: 40px
-#             text-align: left
-#             padding: 0
-#             margin: 0 10px
-#             >.head
-#                 box-sizing: border-box
-#                 width: 70%
-#                 line-height: 70px
-#                 font-size: 27px
-#                 font-weight: 600
-#                 vertical-align: middle
-#                 line-height: 29px
-#                 display: inline-block
-#                 color: #677897
-#                 width: 80%
-#                 &.center
-#                     padding-left: 10px
-#                     text-align: center
-#                 &.left
-#                     width: 10%
-#                     text-align: center
-#                 &.right
-#                     width: 10%
-#                     text-align: right
-#                     cursor: pointer
-#                     >*
-#                         vertical-align: middle
-#             img
-#                 width: 34px
-#                 border-radius: 0px
-#         .field
-#             font-size: 12px
-#             padding-left: 3px
-#             color: gray
-#             margin-top: 5px
-#             &.type
-#                 font-size: 14px
-#                 color: #fff
-#                 text-transform: capitalize
-#             &.coin
-#                 font-size: 14px
-#                 color: #fff
-#         .usd
-#             font-size: 11px
-#             padding-left: 3px
-#             color: gray
-#             margin-top: 5px
-#             .switch-currency
-#                 float: right
-#                 &.active
-#                     background: var(--primary3)
-#                 &:last-child
-#                     margin-right: 2px
-#             .label-coin
-#                 left: 3px
-#                 top: 3px
-#                 padding: 0 2px 0 2px
-#                 height: 13px
-#                 position: relative
-#         .balance
-#             color: #5E72E4
-#         .send-all
-#             background: transparent
-#             outline: none
-#             border: 0
-#             border-radius: $border
-#             font-size: 12px
-#             line-height: 16px
-#             text-align: center
-#             padding: 2px 5px
-#             cursor: pointer
-#         .error
-#             color: #ff5336
-#             padding-top: 5px
-#             font-size: 12px
-#             max-height: 20px
-#             font-weight: 400f
-#             overflow: hidden
-#         .bold
-#             font-weight: bold
-#         .button-container
-#             text-align: center
-#             .buttons
-#                 text-align: center
-#                 border-radius: $border
-#                 width: 100%
-#                 display: inline-block
-#                 overflow: hidden
-#                 .btn
-#                     width: auto
-#                     min-width: 110px
-#                     padding: 0 6px
-#                     line-height: 36px
-#                     height: 36px
-#                     text-transform: uppercase
-#                     text-align: center
-#                     font-weight: bold
-#                     border: 0
-#                     margin: 5px 10px
-#                     font-size: 10px
-#                     border-radius: $border
-#                     display: inline-block
-#                     cursor: pointer
-#                     box-sizing: border-box
-#                     &.btn-primary
-#                         background: #6CA7ED
-#                         color: white
-#                     &:hover
-#                         background: rgba(#6CA7ED, 0.2)
-#                         opacity: .9
+.custom-token-content
+    position: relative
+    @import scheme
+    $border-radius: var(--border-btn)
+    $label-padding: 3px
+    $label-font: 13px
+    width: calc(100% - 0px) !important
+    margin-left: 0px !important
+    max-width: none !important
+    display: flex !important
+    flex-direction: column  
+    align-items: center
+    @media(min-height:900px)
+        justify-content: center    
+    @media(max-width:800px)
+        margin-left: 0 !important
+    .icon-svg
+        position: relative
+        height: 12px
+        top: 2px
+    .icon-svg-history
+        width: auto !important
+        height: 20px
+    .content-body
+        max-width: 450px !important
+    .navigation-button
+        img
+            &.rotate
+                transform: rotate(-180deg)
+                transition: transform .3s
+                display: inline-block
+    >.title
+        position: fixed
+        position: -webkit-fixed
+        background: var(--background)
+        box-sizing: border-box
+        top: 0
+        width: 100%
+        color: gray
+        font-size: 22px
+        padding: 10px
+        height: 60px
+        z-index: 3
+        @media(max-width:800px)
+            left: 0
+        >.header
+            margin: 5px
+            text-align: center
+            @media(max-width:800px)
+                text-align: center
+    .h1
+        font-size: 17px
+        text-transform: uppercase
+        letter-spacing: 2px
+        opacity: .8
+    .pending
+        color: orange
+    >*
+        display: inline-block
+        text-align: center
+        width: 100%
+        box-sizing: border-box
+        border-radius: $border-radius
+    .swap-notification
+        p
+            font-size: 12px
+            opacity: 0.3
+    .more-buttons
+        top: 30px
+        right: 0
+        width: 150px
+        box-shadow: 0px 0px 2px black
+        border-radius: var(--border-btn)
+        text-align: left
+        padding-bottom: 3px
+        >.more
+            display: block
+            cursor: pointer
+            padding: 5px 0
+            &:last-child
+                border-bottom: 0px
+            .more-icon
+                width: 50px
+                text-align: center
+                display: inline-block
+                vertical-align: middle
+            .more-text
+                width: 80px
+                display: inline-block
+                vertical-align: middle
+    >.content-body
+        border: 0
+        background: "transparent"
+        @import scheme
+        color: gray
+        @media(max-width:800px)
+            margin-top: -5px  
+        a
+            color: #6f6fe2
+        .table-row-menu
+            border-bottom: 1px solid rgba(238, 238, 238, 0.07)
+            &:hover
+                background: var(--input)
+                .network-item-button
+                    background: #080e35    
+            .network-item-title
+                display: inline-block
+                margin-right: 10px
+                min-width: 90px
+            .networks
+                .network-item-button
+                    opacity: 0.8
+                    padding: 5px 10px
+                    display: inline-block
+                    margin: 0 5px
+                    background: #303372
+                    text-transform: uppercase
+                    font-size: 12px
+                    box-shadow: 0px 1px 2px black
+                    &:hover
+                        opacity: 1
+                    &.testnet-network
+                        background: #343434
+        >form
+            >table
+                background: transparent
+                border-radius: 0 0 var(--border-btn) var(--border-btn)
+                width: 100%
+                border-spacing: 0
+                tr
+                    &.gray
+                        color: #CCC
+                    &.orange
+                        color: #cf952c
+                    &.green
+                        color: #23b723
+                    td
+                        padding: 3px 10px
+                        font-size: 14px
+                        .label-coin
+                            left: 3px
+                            top: 3px
+                            padding: 0 2px 0 2px
+                            height: 16px
+                            position: relative
+                        &:last-child
+                            text-align: right
+            text-align: left
+            margin: auto 10px
+            .switch-menu
+                .network-item
+                    padding: 2px 5px
+                    background: #ffffff
+                    text-align: center
+                    width: auto
+                    min-width: auto
+                    max-width: initial
+                    margin: 0 5px
+                    font-weight: 400
+                    border: 0.1px solid rgba(255, 255, 255, 0.1)
+                    color: #292b55
+                    display: inline-block
+                    &.testnet
+                        background: rgb(31, 31, 31)
+            >.form-group
+                margin-bottom: 10px
+                min-height: 80px
+                padding: 0px
+                text-overflow: ellipsis
+                background: transparent
+                border-radius: $border-radius
+                input 
+                    padding: 0 10px 0 45px 
+                    text-align: left
+                &.sender
+                    .address-holder .inner-address-holder
+                        text-align: left
+                        padding-left: 45px
+                &.receiver input
+                    text-align: left !important
+                .identicon
+                    ~ span
+                        background: var(--input)
+                .control-label
+                    padding-top: 5px
+                    font-size: $label-font
+                    padding-bottom: 5px
+                    display: block
+                &.network
+                    div
+                        position: relative
+                    .button
+                        width: 12px
+                        height: 16px
+                        display: inline-block
+                        padding: 9px
+                        border-radius: var(--border-btn)
+                        cursor: pointer
+                        vertical-align: top
+                        position: absolute
+                        &.left
+                            left: 0
+                        &.right
+                            right: 0
+                            top: 3px
+                        svg
+                            vertical-align: inherit !important
+                input
+                    outline: none
+                    width: 100%
+                    box-sizing: border-box
+                    height: 36px
+                    line-height: 36px
+                    border-radius: $border-radius
+                    padding: 0px 10px
+                    font-size: 14px
+                    border: 0px
+                    box-shadow: none
+                .amount-field
+                    position: relative
+                    >.input-wrapper
+                        position: relative
+                        width: 65%
+                        border-radius: var(--border-btn) 0 0 var(--border-btn)
+                        &.choose-currency
+                            display: inline-flex
+                            width: 45% !important
+                        .input-area
+                            margin: 0
+                        select
+                            -webkit-appearance: none
+                            -moz-appearance: none
+                            padding-right: 30px
+                            padding-left: 10px
+                            background-position: right 5px top 50%
+                            background-repeat: no-repeat
+                            display: block
+                            width: 30%
+                            height: 36px
+                            font-size: 14px
+                            line-height: 1.5
+                            color: #fff
+                            background-color: #421f7c
+                            background-clip: padding-box
+                            border-radius: 0
+                            border-color: #6b258e
+                            border-left: 0 solid
+                            margin-left: -1px
+                        &.small
+                            width: 35%
+                            border-radius: 0 var(--border-btn) var(--border-btn) 0
+                        display: inline-block
+                        box-sizing: border-box
+                        margin: 0
+                        >.label
+                            position: absolute
+                            top: 8px
+                            display: inline
+                            &.lusd
+                                left: 5px
+                            &.crypto
+                                right: 5px
+                                top: 7px
+                                height: 22px
+                        .label-coin
+                            height: 18px
+                            top: 3px
+                            position: relative
+                            padding: 0 0px 0 8px;
+                        input
+                            width: 100%
+                            color: white
+                            box-shadow: none
+                            outline: none
+                            ::placeholder
+                                color: #eee
+                            &:disabled
+                                opacity:.2
+                            &.amount
+                                border-radius: $border-radius 0 0 $border-radius
+                                border-right: 0
+                            &.amount-eur
+                                background: #f1eeee
+                                padding-left: 20px
+                                border-radius: 0 $border-radius $border-radius 0
+                                border-left: 0
+                            &.amount-usd
+                                background: #f1eeee
+                                border-radius: 0 $border-radius $border-radius 0
+                                padding-left: 20px
+        .smart-contract
+            overflow: hidden
+            padding: 2px
+            box-sizing: border-box
+        >.header
+            padding: 10px
+            min-height: 40px
+            text-align: left
+            padding: 0
+            margin: 0 10px
+            >.head
+                box-sizing: border-box
+                width: 70%
+                line-height: 70px
+                font-size: 27px
+                font-weight: 600
+                vertical-align: middle
+                line-height: 29px
+                display: inline-block
+                color: #677897
+                width: 80%
+                &.center
+                    padding-left: 10px
+                    text-align: center
+                &.left
+                    width: 10%
+                    text-align: center
+                &.right
+                    width: 10%
+                    text-align: right
+                    cursor: pointer
+                    >*
+                        vertical-align: middle
+            img
+                width: 34px
+                border-radius: 0px
+        .field
+            font-size: 12px
+            padding-left: 3px
+            color: gray
+            margin-top: 5px
+            &.type
+                font-size: 14px
+                color: #fff
+                text-transform: capitalize
+            &.coin
+                font-size: 14px
+                color: #fff
+        .usd
+            font-size: 11px
+            padding-left: 3px
+            color: gray
+            margin-top: 5px
+            .switch-currency
+                float: right
+                &.active
+                    background: var(--primary3)
+                &:last-child
+                    margin-right: 2px
+            .label-coin
+                left: 3px
+                top: 3px
+                padding: 0 2px 0 2px
+                height: 13px
+                position: relative
+        .balance
+            color: #5E72E4
+        .send-all
+            background: transparent
+            outline: none
+            border: 0
+            border-radius: $border
+            font-size: 12px
+            line-height: 16px
+            text-align: center
+            padding: 2px 5px
+            cursor: pointer
+        .error
+            color: #ff5336
+            padding-top: 5px
+            font-size: 12px
+            max-height: 20px
+            font-weight: 400f
+            overflow: hidden
+        .bold
+            font-weight: bold
+        .button-container
+            text-align: center
+            .buttons
+                text-align: center
+                border-radius: $border
+                width: 100%
+                display: inline-block
+                overflow: hidden
+                .btn
+                    width: auto
+                    min-width: 110px
+                    padding: 0 6px
+                    line-height: 36px
+                    height: 36px
+                    text-transform: uppercase
+                    text-align: center
+                    font-weight: bold
+                    border: 0
+                    margin: 5px 10px
+                    font-size: 10px
+                    border-radius: $border
+                    display: inline-block
+                    cursor: pointer
+                    box-sizing: border-box
+                    &.btn-primary
+                        background: #6CA7ED
+                        color: white
+                    &:hover
+                        background: rgba(#6CA7ED, 0.2)
+                        opacity: .9
 form-group = (classes, title, style, content)->
-    react.create-element 'div', { className: "#{classes} form-group" }, children = 
-        react.create-element 'label', { style: style, className: 'control-label' }, ' ' + title
+    .pug.form-group(class="#{classes}")
+        label.pug.control-label(style=style) #{title}
         content!
 custom-token = ({ store, web3t })->
     return null if store.custom-token.add is no
@@ -774,47 +774,47 @@ custom-token = ({ store, web3t })->
         change-mainnet-network = change-network(token, "mainnet")
         change-testnet-network = change-network(token, "testnet")
         /* Render */
-        react.create-element 'div', { key: "network-#{provider}", style: position-style, className: 'table-row-menu' }, children = 
-            react.create-element 'div', { style: styles.folder-menu, className: 'col folder-menu' }, children = 
-                react.create-element 'div', { style: styles.folder-menu-div, className: 'network-item-title' }, ' ' + name
-                react.create-element 'span', { className: 'networks' }, children = 
-                    react.create-element 'span', { on-click: change-mainnet-network, style: button-style-mainnet, className: 'network-item-button mainnet-network' }, ' Mainnet'
-                    react.create-element 'span', { on-click: change-testnet-network, style: button-style-testnet, className: 'network-item-button testnet-network' }, ' Testnet'
+        .pug.table-row-menu(key="network-#{provider}" style=position-style)
+            .col.folder-menu.pug(style=styles.folder-menu)
+                .pug.network-item-title(style=styles.folder-menu-div) #{name}
+                span.pug.networks
+                    span.pug.network-item-button.mainnet-network(on-click=change-mainnet-network style=button-style-mainnet) Mainnet
+                    span.pug.network-item-button.testnet-network(on-click=change-testnet-network style=button-style-testnet) Testnet
     /* Render */
-    react.create-element 'div', { className: 'custom-token-content custom-token-content254250696' }, children = 
-        react.create-element 'div', { style: content-body-style, className: 'content-body' }, children = 
-            react.create-element 'form', {}, children = 
+    .pug.custom-token-content
+        .pug.content-body(style=content-body-style)
+            form.pug
                 form-group \sender, "Network", icon-style, ->
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'div', { style: styles.input-network, on-click: network-dropdown-click, className: 'bold default-network-input' }, children = 
-                            react.create-element 'div', { className: 'change-network-screen' }, ' ' + display-network
-                            react.create-element 'div', { style: styles.navigation-button, className: 'button navigation-button right' }, children = 
-                                react.create-element 'img', { src: "#{icons.arrow-down}", style: styles.img-icon-style, className: "#{rotate-class} icon-svg" }
+                    .pug
+                        .pug.bold.default-network-input(style=styles.input-network on-click=network-dropdown-click)
+                            .pug.change-network-screen #{display-network}
+                            .pug.button.navigation-button.right(style=styles.navigation-button)
+                                img.icon-svg.pug(src="#{icons.arrow-down}" style=styles.img-icon-style class="#{rotate-class}")
                             if store.custom-token.switch-network
-                                react.create-element 'div', { style: styles.filter-body, className: 'switch-menu' }, children = 
-                                    react.create-element 'div', { className: 'middle' }, children = 
+                                .pug.switch-menu(style=styles.filter-body)
+                                    .pug.middle
                                         available-networks  
                                             |> map create-network-position
                         if has-network-error
-                            react.create-element 'div', { className: 'control-label error text-left' }, ' ' + store.custom-token.errors.network
+                            .pug.control-label.error.text-left #{store.custom-token.errors.network}
                 form-group \sender, "Token Contract Address", icon-style, ->
-                    react.create-element 'div', { className: 'address' }, children = 
-                        react.create-element 'input', { type: 'text', style: input-style, on-change: contract-address-change, value: "#{contract-address}", id: "contract-address" }
+                    .address.pug
+                        input.pug(type='text' style=input-style on-change=contract-address-change value="#{contract-address}" id="contract-address" )
                         if has-contract-error
-                            react.create-element 'div', { className: 'control-label error text-left' }, ' ' + store.custom-token.errors.contract-address
+                            .pug.control-label.error.text-left #{store.custom-token.errors.contract-address}
                 form-group \receiver, "Token symbol", icon-style, ->
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'input', { type: 'text', disabled: input-disabled, style: input-style, on-change: token-symbol-change, value: "#{symbol-display}", id: "symbol" }
+                    .pug
+                        input.pug(type='text' disabled=input-disabled style=input-style on-change=token-symbol-change value="#{symbol-display}"  id="symbol" )
                         if has-symbol-error
-                            react.create-element 'div', { className: 'control-label error text-left' }, ' ' + store.custom-token.errors.symbol
+                            .pug.control-label.error.text-left #{store.custom-token.errors.symbol}
                 form-group \send-amount, "Token Decimals", icon-style, ->
-                    react.create-element 'div', {}, children = 
-                        react.create-element 'div', { className: 'input-wrapper' }, children = 
-                            react.create-element 'input', { type: 'number', disabled: input-disabled, style: input-style, placeholder: "0", on-change: decimals-change, value: "#{decimals}", id: "decimals" }
+                    .pug
+                        .input-wrapper.pug
+                            input.pug(type='number' disabled=input-disabled style=input-style placeholder="0" on-change=decimals-change value="#{decimals}"  id="decimals" )
                             if has-decimals-error
-                                react.create-element 'div', { className: 'control-label error text-left' }, ' ' + store.custom-token.errors.decimals
-            react.create-element 'div', { className: 'button-container' }, children = 
-                react.create-element 'div', { className: 'buttons' }, children = 
+                                .pug.control-label.error.text-left #{store.custom-token.errors.decimals}
+            .pug.button-container
+                .pug.buttons
                     button { store, text: "Add token" , on-click: save-custom-token , type: \primary, no-icon:yes, makeDisabled: disabled, id: "send-confirm" }
                     button { store, text: \cancel , on-click: cancel, icon: \close2, id: "send-cancel" }
 module.exports = custom-token

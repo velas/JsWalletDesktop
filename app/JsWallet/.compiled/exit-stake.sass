@@ -1,0 +1,72 @@
+.steps2030851689
+    @media(max-width:800px)
+        text-align: center
+    .step
+        display: inline-block
+        vertical-align: text-top
+        text-align: center
+        padding: 0 20px 0 0
+        margin-right: 20px
+        margin-bottom: 20px
+        width: 140px
+        opacity: .6
+        position: relative
+        cursor: pointer
+        transition: all .5s
+        @media(max-width:800px)
+            padding: 0 10px
+            width: auto
+            margin: 0 auto 30px
+            display: block
+        &:last-child
+            &:after
+                content: none !important
+        &:after
+            display: block
+            left: 150px
+            top: 18px
+            position: absolute
+            border-top: 2px solid grey
+            width: 20%
+            content: ""
+            @media(max-width:800px)
+                content: none
+        .step-content
+            font-size: 13px
+            button
+                width: 125px
+        button
+            width: auto
+            display: block
+            margin: 15px auto 0
+        .step-count
+            display: inline-block
+            background: grey
+            padding: 10px 15px
+            border-radius: 50px
+            margin-bottom: 20px
+        &.active
+            opacity: 1
+            .step-count
+                background: #39dcb4
+                animation: pulse_step 1s linear
+                transform-origin: 50% 50%
+            &:after
+                display: block
+                left: 150px
+                top: 18px
+                position: absolute
+                border-top: 2px solid #3cd5af
+                width: 20%
+                content: ""
+                @media(max-width:800px)
+                    content: none
+    @keyframes pulse_step
+        0%
+            transform: scale(0.8)
+        25%
+            transform: scale(0.9)
+        50%
+            transform: scale(1.1)
+        100%
+            transform: scale(1)

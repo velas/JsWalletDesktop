@@ -52,7 +52,7 @@
     showClass = store.current.openMenu ? 'hide' : "";
     /* Render */
     return react.createElement('div', {
-      className: 'staking2 staking2-192785206'
+      className: 'staking2 staking2-981606074'
     }, children = [
       react.createElement('div', {
         style: borderStyle,

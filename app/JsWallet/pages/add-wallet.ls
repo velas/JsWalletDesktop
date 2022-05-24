@@ -33,5 +33,5 @@ module.exports = ({ store, web3t })->
     placeholder = 
         | store.current.refreshing => "placeholder"
         | _ => ""
-    react.create-element 'button', { on-click: add-coin(store), style: button-add, className: 'button lock mt-5' }, children = 
-        react.create-element 'img', { src: "#{icons.create}", className: 'icon-svg-plus' }
+    button.pug.button.lock.mt-5(on-click=add-coin(store) style=button-add)
+        img.icon-svg-plus.pug(src="#{icons.create}")
