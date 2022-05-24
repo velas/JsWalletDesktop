@@ -18,11 +18,15 @@
   </head>
   <body>
       <div id="app">Loading...</div>
-      <script>
-        require('require-ls');
-        var wallet = require('./app/JsWallet/main.ls');
-        wallet.bootstrap(document.getElementById('app'), { disablevlx1: true });
-        require('./renderer.js')
+      <script type="text/javascript" src="./app/JsWallet/.compiled/main-bundle.js"></script>
+      <script type="text/javascript">
+          window.onload = function() { window.bootstrap(document.getElementById("app")); }
+          function log(message, data) {
+              console.log(message, data)
+          }
+          window.onerror = function(err) {
+              log('window.onerror: ' + err)
+          }
       </script>
   </body>
 </html>

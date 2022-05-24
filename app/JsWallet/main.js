@@ -81,18 +81,7 @@
       });
     });
   });
-  if (false && 'serviceWorker' in navigator) {
-    console.log("in!");
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('./service-worker.js').then(function(registration){
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err){
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  } else {
-    console.log('service worker is not supported');
-  }
+  
   asCallback = function(p, cb){
     p.then(function(res){
       return cb(null, res);
