@@ -175,7 +175,6 @@ require! {
 #                 text-overflow: ellipsis
 #                 transition: all .2s ease-in-out
 #                 opacity: 1
-
 #                 @media screen and (min-width: 801px)
 #                     padding-top: 5px
 #                 @media screen and (max-width: 800px)
@@ -325,7 +324,6 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         margin-top: "-1px"
         float: "revert"
         display: "block"
-
     is-loading = store.current.refreshing is yes
     group-name =
         | wallets-group?0? => wallets-group.0
@@ -370,13 +368,11 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
                 | _ => ""
             refresh = ->
                 err <- calc-certain-wallet(store, token)
-
             toggleTooltipVisible = (isHovered) -> (event) ->
                 store.showTooltip = isHovered
                 if isHovered then
-                  store.tooltipCoordinates = { x: event.pageX, y: event.pageY }
-                  store.tooltipMessage = lang["tooltip_#{wallet.coin.token}"]
-
+                    store.tooltipCoordinates = { x: event.pageX, y: event.pageY }
+                    store.tooltipMessage = lang["tooltip_#{wallet.coin.token}"]
             /* Render */
             react.create-element 'div', { key: "#{token}", style: border-style, id: "token-#{token}", className: "#{big} #{disabled-class} wallet wallet-item" }, children = 
                 if (wallet.state is "error")

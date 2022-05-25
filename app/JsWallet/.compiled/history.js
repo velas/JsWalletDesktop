@@ -480,7 +480,7 @@
     sendFrom = (ref$ = store.current.filter.from) != null ? ref$ : "";
     sendTo = (ref$ = store.current.filter.to) != null ? ref$ : "";
     return react.createElement('div', {
-      className: 'normalheader history history685188870'
+      className: 'normalheader history history372739846'
     }, children = [
       react.createElement('div', {
         style: headerStyleLight,

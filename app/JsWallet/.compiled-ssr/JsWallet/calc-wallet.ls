@@ -13,7 +13,6 @@ calc-wallet = (store, cb)->
     { rates } = store
     return if calc-wallet.loading is yes
     calc-wallet.loading = yes
-
     build-loader = (wallet)->
         <- set-timeout _, 1
         wallet.status = 'loading'

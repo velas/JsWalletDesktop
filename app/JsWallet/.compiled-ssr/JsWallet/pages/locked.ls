@@ -400,7 +400,6 @@ locked = ({ store, web3t })->
     locked-style=
         color: info.app.text
         background: info.app.glitch
-
     button-primary2-style=
         border: "1px solid #{style.app.primary2}"
         color: style.app.text

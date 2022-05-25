@@ -15,7 +15,7 @@ require! {
     \../components/popups/loading.ls
     \../components/popups/loader.ls
 }
-# .history685188870
+# .history372739846
 #     @import scheme
 #     width: 100%
 #     position: relative
@@ -333,9 +333,9 @@ require! {
 #             letter-spacing: .5px
 #             padding: 0px 3px 1px 0px
 #             @media(max-width: $ipad)
-#               font-size: 1.3vw
+#                 font-size: 1.3vw
 #             @media(min-width: 1250px)
-#               font-size: 13px
+#                 font-size: 13px
 #             &.done
 #                 background-image: var(--confirm)
 #                 -webkit-text-fill-color: transparent
@@ -955,7 +955,7 @@ module.exports = ({ store, web3t })->
         switch-receiver(e.target.value)
     send-from = (store.current.filter.from ? "")
     send-to = (store.current.filter.to ? "")
-    react.create-element 'div', { className: 'normalheader history history685188870' }, children = 
+    react.create-element 'div', { className: 'normalheader history history372739846' }, children = 
         react.create-element 'div', { style: header-style-light, className: 'header' }, children = 
             if store.current.device is \mobile
                 react.create-element 'button', { on-click: go-back, style: button-style, className: 'back' }, children = 

@@ -52,7 +52,6 @@ require! {
 #                 position: absolute
 #                 left: -22.5px
 #                 top: 0%
-
 #             @media (max-width: 735px)
 #                 display: none
 #     >.left-side

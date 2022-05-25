@@ -18,24 +18,22 @@ export set-account = (web3, store, cb)->
             |> map -> [it.coin.token, it.address] 
             |> pairs-to-obj
     cb null
-
 set-current-wallet = ->
-   group-index = store.current.group-index
-   wallet-index = store.current.wallet-index
-   if store.current.account?
-       wallets-groups =
-           store.current.account.wallets
-               |> filter (?)
-               |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
-               |> group-by (.network.group)
-       groups-wallets =
-           wallets-groups
-               |> obj-to-pairs
-               |> map (.1)
-       group-wallets = groups-wallets[group-index] ? []
-       current-wallet = group-wallets |> find (-> group-wallets.index-of(it) is wallet-index)
-       store.current.wallet = current-wallet if current-wallet?
-
+    group-index = store.current.group-index
+    wallet-index = store.current.wallet-index
+    if store.current.account?
+        wallets-groups =
+            store.current.account.wallets
+                |> filter (?)
+                |> filter ({coin, network}) -> ((coin.name + coin.token).to-lower-case!.index-of store.current.search.to-lower-case!) != -1 and (network.disabled isnt yes)
+                |> group-by (.network.group)
+        groups-wallets =
+            wallets-groups
+                |> obj-to-pairs
+                |> map (.1)
+        group-wallets = groups-wallets[group-index] ? []
+        current-wallet = group-wallets |> find (-> group-wallets.index-of(it) is wallet-index)
+        store.current.wallet = current-wallet if current-wallet?
 export refresh-account = (web3, store, cb)-->
     scam-warning!
     return cb null if store.forceReload isnt yes

@@ -873,7 +873,6 @@ module.exports = (store, web3t)->
     /**/
     FIXED_FEE = "0xc76cdb54"
     PERCENTAGE_FEE = "0x40c62b8f"
-
     /**/
     get-fee-mode = (token, feeManagerContract)->
         mode = 'percent'
@@ -882,7 +881,6 @@ module.exports = (store, web3t)->
         evm_wallet = wallets.find (.coin.token is \vlx_evm)
         return mode if not wallet?
         return mode if not feeManagerContract?
-
         abi = [{"constant":true,"inputs":[],"name":"getFeeMode","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"}]
         web3 = new Web3(new Web3.providers.HttpProvider(evm_wallet?network?api?web3Provider))
         web3.eth.provider-url = evm_wallet?network?api?web3Provider
@@ -900,7 +898,6 @@ module.exports = (store, web3t)->
         catch err
             #console.error "getFeeMode err", err
         return mode
-
     getBridgeInfo = (cb)->
         chosen-network = store?current?send?chosen-network
         return cb null if not chosen-network?

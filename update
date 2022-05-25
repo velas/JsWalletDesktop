@@ -2,7 +2,7 @@ WALLET_PATH='../VelasWalet/wallet-area'
 rm -rf ./app
 mkdir ./app
 
-cp -r $WALLET_PATH/wallet/.compiled/main-bundle.css ./
+#cp -r $WALLET_PATH/wallet/.compiled/main-bundle.css ./
 rsync -av --progress --exclude=$WALLET_PATH/wallet/index.html --exclude ".git" $WALLET_PATH/wallet/ ./app/JsWallet
 rsync -av --progress  --exclude ".git" $WALLET_PATH/web3t/ ./app/web3t
 
