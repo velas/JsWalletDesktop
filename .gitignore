@@ -7,7 +7,7 @@ dist
 package-lock.json
 .DS_Store
 .idea
-.github
+# .github
 #This package.json file causes github-actions build to fail like this:
 #https://github.com/velas/JsWalletDesktop/runs/691937009
 app/package.json

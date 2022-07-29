@@ -37,25 +37,26 @@
     "app-builder-bin": "^3.5.2",
     "electron": "18.3.0",
     "electron-builder": "latest",
-    "electron-builder-notarize": "^1.1.2",
-    "electron-notarize": "^0.2.1",
+    "electron-notarize": "1.2.1",
     "electron-rebuild": "1.8.4",
     "node-pre-gyp": "^0.17.0"
   },
   "author": "Velas <info@velas.com>",
   "build": {
     "framework": "electron",
-    "afterSign": "electron-builder-notarize",
+    "afterSign": "scripts/notarize.js",
     "appId": "com.velas.wallet",
     "mac": {
+      "icon": "./icon.icns",
       "category": "public.app-category.developer-tools",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "./node_modules/electron-builder-notarize/entitlements.mac.inherit.plist"
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "dmg": {
-      "icon": false
+      "icon": false,
+      "sign": false
     },
     "win": {
       "icon": "./icon.icns"
