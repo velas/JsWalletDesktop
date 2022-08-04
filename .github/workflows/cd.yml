@@ -47,8 +47,6 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         with:
           # Log in to Snap Store
-          # channel can be one from https://snapcraft.io/docs/channels
-          channel: 'stable'
           snapcraft_token: ${{ secrets.SNAPCRAFT_TOKEN }}
 
       - name: Build/release Electron app
