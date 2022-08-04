@@ -1,5 +1,4 @@
 name: Create Release For Tests
-
 # Run manually for creating a test release
 on:
   workflow_dispatch:
