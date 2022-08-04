@@ -28,7 +28,7 @@
     "md5": "2.2.1",
     "mobx": "4.0.0",
     "mobx-react": "5.0.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "nivo": "^0.31.0",
     "patch-package": "^6.4.7",
     "prelude-ls": "1.1.2",
