@@ -1,7 +1,7 @@
 {
   "name": "velas-desktop-wallet",
   "homepage": "velas.com",
-  "version": "0.14.86",
+  "version": "0.14.87",
   "description": "Velas Wallet",
   "main": "main.js",
   "scripts": {
@@ -66,7 +66,7 @@
         "snap"
       ],
       "category": "Utility",
-      "publish": ["github", "snap"]
+      "publish": ["github"]
     },
     "afterAllArtifactBuild": "scripts/calc-md5.js"
   },

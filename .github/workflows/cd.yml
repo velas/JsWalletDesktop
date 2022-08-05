@@ -59,6 +59,10 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }} # Automatically generated
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+      - name: Publish Electron app to snapcraft
+        if: startsWith(matrix.os, 'ubuntu')
+        run: snapcraft upload --release=insider/stable `find ./dist -type f -name "*.snap"`
       - name: Clean up keychain
         if: startsWith(matrix.os, 'macos')
         run: |
