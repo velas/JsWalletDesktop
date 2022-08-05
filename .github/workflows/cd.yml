@@ -62,7 +62,7 @@ jobs:
 
       - name: Publish Electron app to snapcraft
         if: startsWith(matrix.os, 'ubuntu')
-        run: find ./dist -type f -name "*.snap" | snapcraft upload --release=edge
+        run: snapcraft upload --release=edge `find ./dist -type f -name "*.snap"`
       - name: Clean up keychain
         if: startsWith(matrix.os, 'macos')
         run: |
