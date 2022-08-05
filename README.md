@@ -1,6 +1,8 @@
 Ethnamed Electron Desktop
 
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/velas-desktop-wallet)
+
 ### Install Desktop Wallet
 
 1. git clone https://github.com/velas/JsWalletDesktop.git
