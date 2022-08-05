@@ -49,7 +49,7 @@ jobs:
           snapcraft_token: ${{ secrets.SNAPCRAFT_TOKEN }}
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+        uses: samuelmeuli/action-electron-builder@v1.6.0
         env:
           # env used in app notarize
           APPLE_ID: ${{ secrets.APPLE_ID }}
