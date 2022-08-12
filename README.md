@@ -1,7 +1,7 @@
 Ethnamed Electron Desktop
 
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/velas-desktop-wallet)
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/velas-desktop-wallet)
 
 ### Install Desktop Wallet
 
