@@ -30,26 +30,30 @@ export default class ExplorersAPI {
     return response.data.result;
   }
 
-  async waitForTx(params: { txHash: string, waitForConfirmation?: boolean, milliseconds?: number, testName?: string }): Promise<void> {
-    const waitForConfirmation = params.waitForConfirmation ?? true;
-    const milliseconds = params.milliseconds || 120_000;
+  async waitForTx(params: { txHash: string, waitForConfirmation?: boolean, timeout?: number, testName?: string }): Promise<void> {
+    const waitForConfirmation = params.waitForConfirmation ?? false;
+    const timeout = params.timeout || 180_000;
     const startTime = Date.now();
     let tx;
-    while (!tx && (Date.now() - startTime) < milliseconds) {
+    while (!tx && (Date.now() - startTime) < timeout / 3) {
       tx = await this.getTxByHash(params.txHash);
-      await helpers.sleep(2000);
+      await helpers.sleep(1000);
     }
     if (!tx) throw new Error(`No tx found with hash ${params.txHash} during runnint test: "${params.testName || ''}"`);
+
+    log.debug(`Tx ${params.txHash} was created in ${((Date.now() - startTime) / 1000).toFixed(0)} seconds`);
 
     if (!waitForConfirmation) return;
 
     let isTxConfirmed = false;
-    while (!isTxConfirmed && (Date.now() - startTime) < milliseconds) {
+    while (!isTxConfirmed && (Date.now() - startTime) < timeout) {
       const txReceipt = await this.getTransactionReceipt(params.txHash);
       isTxConfirmed = txReceipt.result?.status === '0x1';
-      log.debug(`Tx status: ${txReceipt.result?.status}`);
-      await helpers.sleep(2000);
+      await helpers.sleep(1000);
     }
+
+    log.debug(`Tx ${params.txHash} was confirmed in ${((Date.now() - startTime) / 1000).toFixed(0)} seconds`);
+
     if (!isTxConfirmed) throw new Error(`Tx with hash ${params.txHash} exists but not confirmed. Tx data:\n${helpers.stringify(tx)}\nTest with name: "${params.testName || ''}" failed!`);
   }
 

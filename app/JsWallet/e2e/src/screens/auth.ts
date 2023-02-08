@@ -19,6 +19,7 @@ export class AuthScreen extends BaseScreen {
     iOS: this.page.locator('#download-ios'),
     android: this.page.locator('#download-android'),
     desktop: this.page.locator('#download-desktop'),
+    apk: this.page.locator('#download-apk'),
   };
 
   passwordInput = this.page.locator('input[type="password"]');

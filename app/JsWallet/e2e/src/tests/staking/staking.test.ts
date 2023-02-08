@@ -18,7 +18,7 @@ test.describe('Staking', () => {
     const stakingAmount = 5;
 
     test('Cleanup beforeall', async ({ page, staking }) => {
-      if (await page.isVisible('button[disabled]')) {
+      if (await page.isVisible('#staking-accounts button[disabled]')) {
         throw new Error('There are stakes in warm up or cool down perios. Test suite could not be continued.');
       }
       await staking.cleanup.stakesToUndelegate();

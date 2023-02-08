@@ -136,18 +136,19 @@
       return cb("callback is required");
     }
     return getAll(config, function(err, arr){
-      var now, to2;
+      var now, to2, pendingTxInfo;
       if (err != null) {
         return cb(err);
       }
       now = moment().unix();
       to2 = recipient != null ? recipient : to;
-      arr.push([tx, amountSend, amountSendFee, now, from, to2, network.token]);
+      pendingTxInfo = [tx, amountSend, amountSendFee, now, from, to2, network.token];
+      arr.push(pendingTxInfo);
       return set(config, arr, function(err){
         if (err != null) {
           return cb(err);
         }
-        return cb(null);
+        return cb(null, pendingTxInfo);
       });
     });
   };

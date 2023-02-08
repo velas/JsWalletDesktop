@@ -244,7 +244,8 @@ highlight = (store, AccountIndex)->
     store.staking.accounts[AccountIndex].highlight = no
 query-accounts-web3t = (store, web3t, on-progress, on-finish) ->
     native-wallet = store.current.account.wallets |> find(-> it.coin.token is "vlx_native")
-    validatorsBackend = native-wallet.network.api.validatorsBackend + \/v1/staking-accounts
+    staker = native-wallet.publicKey
+    validatorsBackend = native-wallet.network.api.validatorsBackend + \/v1/staking-accounts + \?staker= + staker
     err, data <- get validatorsBackend .end
     console.log "[get validatorsBackend err]" err if err?
     return on-finish err if err?
@@ -282,13 +283,14 @@ fill-accounts = ({ store, web3t, on-progress, on-finish }, [item, ...rest]) ->
     item.balance = if rent? then (Math.round((item.lamports `minus` rent) `div` (10^9)) `times` 100) `div` 100  else "-"
     item.rent    = if rent? then (rent `div` (10^9)) else "-"
     item.credits_observed = item.creditsObserved ? 0
-    item.status  = "inactive"
+    item.status  = "loading"
     item.validator = item.voter
     { activationEpoch, deactivationEpoch, voter } = item
     if (activationEpoch and deactivationEpoch) then
-        if (Number(deactivationEpoch) > Number(activationEpoch) or Number(activationEpoch) is web3t.velas.NativeStaking.max_epoch) then
-            item.status    = "loading"
-            item.validator = voter
+        current-epoch = store.staking.current-epoch
+        item.validator = voter
+        if (Number(deactivationEpoch) < Number(current-epoch)) then
+            item.status = "inactive"
     on-progress [item, ...rest] if on-progress?
     on-finish-local = (err, pools) ->
         on-finish err, [item, ...pools]

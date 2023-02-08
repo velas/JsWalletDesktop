@@ -21,6 +21,7 @@ require! {
     left: 0
     right: 0
     bottom: 0
+
     .iron
         -webkit-mask-image: linear-gradient(75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%)
         -webkit-mask-size: 50% 100%
@@ -33,6 +34,7 @@ require! {
     img
         width: 120px
         filter: drop-shadow(0 3mm 9mm rgb(160, 0, 210))
+
     .banner-content
         max-width: 700px
         background: var(--bg-primary-light)
@@ -45,17 +47,20 @@ require! {
         @media (max-width: 500px)
             margin: 20px
             padding: 40px
+
         .offline-title
             letter-spacing: 0.5px
             color: white
             font-weight: bold
             margin-bottom: 30px
             margin-top: 30px
+
         .offline-text
             font-size: 14px
             max-width: 340px
             margin: auto
             opacity: .7
+
     .row
         display: flex
         align-items: center
@@ -77,6 +82,7 @@ require! {
             margin: 10px 0
             text-transform: uppercase
             color: orange
+
 module.exports = ({ store, web3 })->
     style = get-primary-info store
     lang = get-lang store

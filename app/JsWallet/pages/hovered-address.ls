@@ -29,6 +29,7 @@ require! {
         background: white
 module.exports = ({ store })->
     return null if not store.current.try-copy?
+    return null if store.current.page is \locked
     style = get-primary-info store
     copy-style=
         color: style.app.text

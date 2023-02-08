@@ -175,6 +175,7 @@ require! {
                 text-overflow: ellipsis
                 transition: all .2s ease-in-out
                 opacity: 1
+
                 @media screen and (min-width: 801px)
                     padding-top: 5px
                 @media screen and (max-width: 800px)
@@ -324,6 +325,7 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
         margin-top: "-1px"
         float: "revert"
         display: "block"
+
     is-loading = store.current.refreshing is yes
     group-name =
         | wallets-group?0? => wallets-group.0
@@ -368,11 +370,15 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
                 | _ => ""
             refresh = ->
                 err <- calc-certain-wallet(store, token)
+
             toggleTooltipVisible = (isHovered) -> (event) ->
                 store.showTooltip = isHovered
                 if isHovered then
-                    store.tooltipCoordinates = { x: event.pageX, y: event.pageY }
-                    store.tooltipMessage = lang["tooltip_#{wallet.coin.token}"]
+                  store.tooltipCoordinates = { x: event.pageX, y: event.pageY }
+                  store.tooltipMessage = lang["tooltip_#{token}"]
+
+            tokenHasTooltip = token in <[ vlx_native vlx_evm vlx2 bsc_vlx vlx_erc20 vlx_huobi vlx_usdv ]>
+
             /* Render */
             .wallet.pug.wallet-item(class="#{big} #{disabled-class}" key="#{token}" style=border-style id="token-#{token}")
                 if (wallet.state is "error")
@@ -387,7 +393,7 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
                             .info.pug
                                 .name-holder.pug
                                     .balance.pug.title(class="#{placeholder}") #{name}
-                                    if token in <[ vlx_native vlx_evm vlx2 bsc_vlx vlx_erc20 vlx_huobi ]>
+                                    if tokenHasTooltip
                                         .tooltips.pug
                                             .tooltip.pug(style=wallet-style onMouseEnter=toggleTooltipVisible(true) onMouseLeave=toggleTooltipVisible(false))
                                                 img.tooltipIcon.pug(src="#{icons.info}" style=info-style)
@@ -402,7 +408,7 @@ module.exports = (store, web3t, wallets, wallets-groups, wallets-group)-->
                                     .price.pug(class="#{placeholder}" title="#{balance-usd}")
                                         span.pug #{ round-human balance-usd}
                                         span.pug USD
-                        if token in <[ vlx_native vlx_evm vlx2 bsc_vlx vlx_erc20 vlx_huobi ]>
+                        if tokenHasTooltip
                             .tooltips.pug
                                 .tooltip.pug(style=wallet-style onMouseEnter=toggleTooltipVisible(true) onMouseLeave=toggleTooltipVisible(false))
                                     .tooltipIcon.pug.title(class="#{placeholder}") \?

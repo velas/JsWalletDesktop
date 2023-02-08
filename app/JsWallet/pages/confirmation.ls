@@ -15,6 +15,7 @@ require! {
     #\copy-to-clipboard
     \react-copy-to-clipboard : { CopyToClipboard }
     \../copied-pk-inform.ls
+    \../api.ls : { is-valid-address }
 }
 .confirmation
     backdrop-filter: blur(5px)
@@ -515,6 +516,106 @@ prompt-modal2 = (store)->
                     span.cancel.pug
                         img.icon-svg-cancel.pug(src="#{icons.close}")
                         | #{lang.cancel}
+prompt-stake-authorize-modal = (store)->
+    return null if typeof! store.current.stake-authorize isnt \String
+    chosenAccount = store.staking.chosenAccount
+    { pubKey, pubkey, validator } = chosenAccount
+    error = store.current.prompt-error
+    confirm = ->
+        return if not store.current.prompt-answer? or +store.current.prompt-answer is 0 or store.current.prompt-answer is ""
+        store.current.stake-authorize = yes
+        callback = state.callback
+        state.callback = null
+        prompt-answer = store.current.prompt-answer
+        store.current.prompt-answer = ""
+        store.current.prompt-error = ""
+        callback prompt-answer if typeof! callback is \Function
+    cancel = ->
+        store.current.prompt-error = ""
+        store.current.stake-authorize = no
+        callback = state.callback
+        state.callback = null
+        callback null if typeof! callback is \Function
+        store.current.prompt-answer = ""
+
+    on-text-change = (e)->
+        input = (e.target.value ? "").trim!
+        store.current.prompt-answer = input
+        store.current.prompt-error = null
+        if !input.length
+            return store.current.prompt-error = 'Address is required'
+        vlxNativeWallet = store.current.account.wallets |> find (-> it.coin.token === 'vlx_native')
+        console.log 'vlxNativeWallet' vlxNativeWallet
+        network = vlxNativeWallet.network
+        err, isValid <- is-valid-address { network, address: input }
+        console.log('isValid', err, isValid, input)
+        if err?
+            store.current.prompt-error = 'Address is not valid'
+
+
+    style = get-primary-info store
+    confirmation-style =
+        background: style.app.background
+        background-color: style.app.bgspare
+        color: style.app.text
+        user-select: "text"
+    input-style =
+        width: "100%"
+        padding: "0 15px"
+        background: style.app.input
+        color: style.app.text
+        border: "0"
+    input-holder-style =
+        margin: 'auto'
+        display: 'flex'
+    button-style=
+        color: style.app.text
+    confirmation=
+        background: style.app.background
+        background-color: style.app.bgspare
+        color: style.app.text
+        border-bottom: "1px solid #{style.app.border}"
+        padding: 20
+    lang = get-lang store
+    button-primary3-style=
+        border: "0"
+        color: style.app.text2
+        background: style.app.primary3
+        background-color: style.app.primary3-spare
+        cursor: "pointer"
+    max-amount-container =
+        text-align: "left"
+    buttons-container-style =
+        margin-top: '0px'
+    input-errors-style =
+        color: 'red'
+        font-size: '12px'
+        padding: '5px 14px'
+        text-align: 'left'
+    btn-style =
+        | error? => { ...button-style, opacity: 0.4 }
+        | _ => button-style
+
+    .pug.confirmation
+        .pug.confirmation-body(style=confirmation)
+            .pug.header(style=style=confirmation-style)#{store.current.stake-authorize}
+            if no
+                .pug.text(style=style=confirmation-style)
+            .pug(style=input-holder-style)
+                input.pug(type='text' style=input-style on-change=on-text-change value="#{store.current.prompt-answer}" placeholder="type authorize address..." id="stake-authorize-recipient" )
+            if error?
+                .pug.input-errors(style=input-errors-style) #{error}
+
+            .pug.buttons(style=buttons-container-style)
+                button.pug.button(on-click=confirm style=btn-style id="prompt-confirm")
+                    span.apply.pug
+                        img.icon-svg-apply.pug(src="#{icons.apply}")
+                        | #{lang.confirm}
+                button.pug.button(on-click=cancel style=button-style id="prompt-close")
+                    span.cancel.pug
+                        img.icon-svg-cancel.pug(src="#{icons.close}")
+                        | #{lang.cancel}
+
 prompt-modal3 = (store)->
     return null if typeof! store.current.prompt3 isnt \String
     chosenAccount = store.staking.chosenAccount
@@ -870,6 +971,7 @@ export confirmation-control = (store)->
     return null if store.current.page-pin?
     .pug
         prompt-modal3 store
+        prompt-stake-authorize-modal store
         confirmation-modal store
         prompt-modal2 store
         prompt-modal store
@@ -897,6 +999,9 @@ export prompt2 = (store, text, cb)->
     state.callback = cb
 export prompt3 = (store, text, cb)->
     store.current.prompt3 = text
+    state.callback = cb
+export prompt-stake-authorize = (store, text, cb)->
+    store.current.stake-authorize = text
     state.callback = cb
 export prompt-password = (store, text, cb)->
     store.current.prompt-password = text

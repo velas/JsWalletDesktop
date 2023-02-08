@@ -297,6 +297,8 @@
     endblock = 99999999;
     sort = 'asc';
     apikey = 'KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9';
+
+    // We need all transaction without page, offset for correct display transaction history
     query = stringify({
       module: module,
       action: action,
@@ -304,7 +306,7 @@
       address: address,
       sort: sort,
       startblock: startblock,
-      endblock: endblock
+      endblock: endblock,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline

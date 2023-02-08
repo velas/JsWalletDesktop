@@ -25,7 +25,7 @@ create-link = (store, item)-->
     info = get-primary-info store
     style =
         background-color: info.color
-    a.pug.link(href="#{item.href}" style=style target="_blank")
+    a.pug.link(href="#{item.href}" style=style target="_blank" rel="noopener noreferrer nofollow")
         img.pug(src="#{item.image}")
 module.exports = ({ store })->
     info = get-primary-info store

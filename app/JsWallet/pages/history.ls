@@ -14,6 +14,8 @@ require! {
     \../round-number.ls
     \../components/popups/loading.ls
     \../components/popups/loader.ls
+    \../components/button.ls
+    \../transactions.ls : { load-wallet-transactions }
 }
 .history
     @import scheme
@@ -21,6 +23,7 @@ require! {
     position: relative
     padding-bottom: 0px
     display: inline-block
+
     .filters
         white-space: nowrap
         height: 30px
@@ -333,9 +336,9 @@ require! {
             letter-spacing: .5px
             padding: 0px 3px 1px 0px
             @media(max-width: $ipad)
-                font-size: 1.3vw
+              font-size: 1.3vw
             @media(min-width: 1250px)
-                font-size: 13px
+              font-size: 13px
             &.done
                 background-image: var(--confirm)
                 -webkit-text-fill-color: transparent
@@ -831,7 +834,7 @@ render-transaction = (store, web3t, tran)-->
                         .pug.direction #{arrow(type)}
                 .cell.pug.txhash
                     MiddleEllipsis.pug
-                        a.pug(href="#{url}" target="_blank") #{tx}
+                        a.pug(href="#{url}" target="_blank" rel="noopener noreferrer nofollow") #{tx}
                     CopyToClipboard.pug(text="#{tx}" on-copy=copied-inform(store) style=filter-icon)
                         copy store
                     .pug.gray(style=lightText)
@@ -904,6 +907,22 @@ module.exports = ({ store, web3t })->
         right: 0
         top: 0
         bottom: 0
+    absolute-flexy-style-position=
+        display: "flex"
+        align-items: "center"
+        position: "absolute"
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
+    icon-style =
+        color: style.app.loader
+        margin-right: "5px"
+    retry-btn-style=
+        margin: "auto"
+    err-message-style=
+        display: "flex"
+        margin-bottom: "15px"
     loaderStyles= {
         loaderPage: {
             background: "none"
@@ -955,6 +974,10 @@ module.exports = ({ store, web3t })->
         switch-receiver(e.target.value)
     send-from = (store.current.filter.from ? "")
     send-to = (store.current.filter.to ? "")
+    retry = ->
+        err <- load-wallet-transactions(store, web3t, wallet.coin.token)
+
+    #Render
     .pug.normalheader.history
         .header.pug(style=header-style-light)
             if store.current.device is \mobile
@@ -1008,6 +1031,14 @@ module.exports = ({ store, web3t })->
                 store.transactions.applied 
                     |> take 30 
                     |> map render-transaction store, web3t
+            if wallet?txs-status is \error
+                .pug.failed-txs-status(style=absolute-flexy-style-position)
+                    .pug.retry-btn-container(style=retry-btn-style)
+                        .pug.err-message(style=err-message-style)
+                            img.failed-txs-warning-icon.pug(src="#{icons.warning2}" style=icon-style)
+                            .pug.failed-txs-warning-notification
+                                | Please update transactions’ history later, now it is not loading
+                        button { store, classes: "retry-btn" text: \Retry , on-click: retry, icon: \retry }
             if length is 0 and wallet?txs-status is \loaded
                 text-style = 
                     opacity: 0.3

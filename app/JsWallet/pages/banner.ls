@@ -96,7 +96,7 @@ banner = (store, web3t)->
             .pug.h2 to this wallet
             .pug.p 
                 | from your 
-                a.pug(href="https://oldwallet.velas.com/auth/signin" target="_blank") old wallet
+                a.pug(href="https://oldwallet.velas.com/auth/signin" target="_blank" rel="noopener noreferrer nofollow") old wallet
 module.exports = (store, web3)->
     return null if store.current.page isnt \locked
     style = get-primary-info store

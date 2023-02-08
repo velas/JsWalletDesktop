@@ -677,7 +677,7 @@ custom-token = ({ store, web3t })->
         if error?
             set-default-chosen-token-data! 
             store.custom-token.isLoading = no       
-            return set-error "symbol", error       
+            return set-error "symbol", error
         store.custom-token.symbol = symbol
         store.custom-token.symbol-display = symbol
         err, decimals-hex <- contract.decimals!
@@ -757,7 +757,6 @@ custom-token = ({ store, web3t })->
         store.custom-token.errors.contract-address = ""
         store.custom-token.errors.decimals = ""
         store.custom-token.errors.network = ""
-    input-disabled = (store.custom-token.symbol ? "".trim!).length is 0        
     create-network-position = (data)-->
         { api, group, token } = data
         { apiUrl, url, web3Provider, provider } = api
@@ -804,13 +803,13 @@ custom-token = ({ store, web3t })->
                             .pug.control-label.error.text-left #{store.custom-token.errors.contract-address}
                 form-group \receiver, "Token symbol", icon-style, ->
                     .pug
-                        input.pug(type='text' disabled=input-disabled style=input-style on-change=token-symbol-change value="#{symbol-display}"  id="symbol" )
+                        input.pug(type='text' disabled=has-symbol-error style=input-style on-change=token-symbol-change value="#{symbol-display}"  id="symbol" )
                         if has-symbol-error
                             .pug.control-label.error.text-left #{store.custom-token.errors.symbol}
                 form-group \send-amount, "Token Decimals", icon-style, ->
                     .pug
                         .input-wrapper.pug
-                            input.pug(type='number' disabled=input-disabled style=input-style placeholder="0" on-change=decimals-change value="#{decimals}"  id="decimals" )
+                            input.pug(type='number' disabled=has-symbol-error style=input-style placeholder="0" on-change=decimals-change value="#{decimals}"  id="decimals" )
                             if has-decimals-error
                                 .pug.control-label.error.text-left #{store.custom-token.errors.decimals}
             .pug.button-container

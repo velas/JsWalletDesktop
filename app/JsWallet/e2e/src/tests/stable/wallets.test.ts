@@ -35,7 +35,8 @@ test.describe.parallel('Wallets screen', () => {
       assert.isTrue(await auth.isLoggedIn());
     });
 
-    test('Add and hide litecoin wallet', async ({ wallets }) => {
+    // BUG: https://velasnetwork.atlassian.net/browse/VLWA-868
+    test.skip('Add and hide litecoin wallet', async ({ wallets }) => {
       // TODO: need to scroll to launch test for mainnet
       // add litecoin
       await wallets.addWalletsPopup.open();
@@ -46,6 +47,16 @@ test.describe.parallel('Wallets screen', () => {
       // remove litecoin
       await wallets.hideWallet();
       assert.isFalse(await wallets.isWalletInWalletsList('token-ltc'));
+    });
+
+    test('Add and hide EVM Legacy wallet', async ({ wallets }) => {
+      await wallets.addWalletsPopup.open();
+      await wallets.addWalletsPopup.add('token-vlx_evm_legacy');
+      await wallets.selectWallet('token-vlx_evm_legacy');
+      assert.isTrue(await wallets.isWalletInWalletsList('token-vlx_evm_legacy'));
+
+      await wallets.hideWallet();
+      assert.isFalse(await wallets.isWalletInWalletsList('token-vlx_evm_legacy'));
     });
 
     test('Switch account', async ({ page, wallets }) => {
@@ -93,7 +104,8 @@ test.describe.parallel('Wallets screen', () => {
       assert.equal(customTokenBalance, '1');
     });
 
-    test('WEENUS on Ethereum', async ({ wallets }) => {
+    // TODO: migrate from Ropsten
+    test.skip('WEENUS on Ethereum', async ({ wallets }) => {
       await wallets.addCustomToken(data.customTokens.eth.weenus, 'Ethereum', 'testnet');
       const customTokenBalance = await wallets.getCustomTokenBalance('#token-weenus_testnet_Ethereum__custom');
       assert.equal(customTokenBalance, '2');

@@ -697,29 +697,23 @@
             ),
             function (err, tx) {
               if (err != null) {
-                if (
-                  err
-                    .toString()
-                    .indexOf(
-                      'Insufficient priority. Code:-26. Please try to increase fee'
-                    )
-                ) {
-                  store.current.send.error = err;
-                  setTimeout(function () {
-                    return (store.current.send.error = '');
-                  }, 2000);
-                }
-                if (
-                  err
-                    .toString()
-                    .indexOf('Unexpected token < in JSON at position 0')
-                ) {
-                  store.current.send.parseError =
-                    'Please retry later or write to our support and we will figure it out';
-                  setTimeout(function () {
+                const hideErrorMessage = () => {
+                  setTimeout(() => {
                     store.current.send.error = '';
-                    return (store.current.send.parseError = '');
-                  }, 5000);
+                    store.current.send.parseError = '';
+                  }, 7500);
+                };
+                const errorMessage = err.toString();
+                if (
+                  errorMessage.indexOf(
+                    'Unexpected token < in JSON at position 0'
+                  )
+                ) {
+                  store.current.send.parseError = 'Invalid response. Code 11';
+                  hideErrorMessage();
+                } else {
+                  store.current.send.parseError = errorMessage;
+                  hideErrorMessage();
                 }
                 return cb(err);
               }
@@ -901,7 +895,8 @@
             }
           })();
           if (send.network.api.cluster) {
-            store.current.lastTxUrl = store.current.lastTxUrl + "?cluster=" + send.network.api.cluster;
+            store.current.lastTxUrl =
+              store.current.lastTxUrl + '?cluster=' + send.network.api.cluster;
           }
           navigate(store, web3t, 'sent');
           return web3t.refresh(function () {});

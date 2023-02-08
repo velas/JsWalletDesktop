@@ -275,10 +275,12 @@ language = (store, web3t)->
                                         .pug #{name}
             if not process?versions?electron?    
                 .pug.downloadwalletlist
-                    a.pug(href="https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748" target="_blank" id="download-ios")
+                    a.pug(href="https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748" target="_blank" rel="noopener noreferrer nofollow" id="download-ios")
                         img.icon-download.pug(src="#{icons[\ios]}")
-                    a.pug(href="https://play.google.com/store/apps/details?id=com.velas.mobile_wallet" target="_blank" id="download-android")
+                    a.pug(href="https://play.google.com/store/apps/details?id=com.velas.mobile_wallet" target="_blank" rel="noopener noreferrer nofollow" id="download-android")
                         img.icon-download.pug(src="#{icons[\android]}")
+                    a.pug(href="https://github.com/velas/mobile-wallet/releases/latest/download/app-release.apk" target="_blank" rel="noopener noreferrer nofollow" id="download-apk")
+                        img.icon-download.pug(src="#{icons[\apk]}")
                     span.pug(id="download-desktop")
                         img.icon-download.pug(on-click=download src="#{icons[\desktop]}")
 module.exports = ({ store, web3t } )->

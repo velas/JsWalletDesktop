@@ -11,12 +11,11 @@ export common = (store)->
     vlx_native  = require \../web3t/plugins/sol-coin.js
     eth  = require \../web3t/plugins/eth-coin.js
     vlx_evm = require \../web3t/plugins/vlx-coin.js
-    #vlx_evm_legacy = require \../web3t/plugins/vlx-evm-legacy-coin.js
     coins = [ vlx_native, vlx_evm, vlx2, btc, eth ]
     if store.url-params.gbx?
         coins.push gobyte
     coins
-base-array = <[ vlx_native vlx_evm vlx2 btc eth ]>
+export base-array = <[ vlx_native vlx_evm vlx2 btc eth ]>
 legacy-tokens = 
     * require \../web3t/plugins/eth-legacy-coin.js
     * require \../web3t/plugins/usdt_erc20_legacy-coin.json

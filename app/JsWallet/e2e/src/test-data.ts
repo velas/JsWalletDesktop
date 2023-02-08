@@ -36,9 +36,13 @@ export const data = {
         publicKey: 'D4k7p4AB5j3hiLgbUS164wAufBefVagVLX2oRJQQhbpK',
         seed: 'horse valley hub funny photo raw tragic final update stable method split pond absurd tray organ pink vocal joy cook monkey nerve street copy',
       },
-      staker2_1: {
+      staker2_1:{
         publicKey: '5uGmgxE5ia4dYmeffAM4bbx9ZUMrCUR6obZbL7VZ7svW',
         seed: 'gallery runway scissors faculty grocery spatial business judge ball lobster pitch sock stand marble degree alert once away festival reunion logic coach rural license',
+      },
+      staker2_1_backup: {
+        publicKey: 'H46r7XaH76GvvgPW51yCLXDipsYPZ7y6xduSMwFtoZ15',
+        seed: 'obvious pottery mechanic amazing detail true balance ordinary tide novel error grief tomorrow dawn name picture search mansion feel argue luxury chief kangaroo soup',
       },
       withoutStakeAccounts: {
         address: '59vpQgPoDEhux1G84jk6dbbARQqfUwYtohLU4fgdxFKG',
@@ -59,6 +63,17 @@ export const data = {
       address: '22VainsYdNmnre8XS91XoUipQ2YLNd4oPyobKvvN1zsu',
       seed: 'spin swamp chronic catalog lake retire vessel will truly assault rib few grocery able maple catalog dinner nice dance coast jelly swallow interest nothing',
     },
+    manualSwap: {
+      seed: 'cake wealth sudden fantasy spot stove clown apology own engine aisle clarify vessel indoor smoke tower horse scheme opinion train supply aspect pony wonder'
+    },
+    customSwapFromVelas: {
+      seed: 'group inspire rough sting tell beyond front field scatter midnight snake ignore insane knee segment suit business trophy ivory rival sing choose rent muffin',
+      evmAddress: '0x112ddb603bf098340a401b495df5c5df94d147c3'
+    },
+    customSwapToVelas: {
+      seed: 'jungle rug jar sheriff payment alpha liquid core segment edge window decide protect among shrug maximum outside thought push tiny effort once inform brisk',
+      evmAddress: '0x598933a65e1784d5fcc428c3179f3a00c4ca3e29'
+    }
   },
   customTokens: {
     velas: {

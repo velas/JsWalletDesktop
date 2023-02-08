@@ -10,7 +10,7 @@
   navigate = require('../navigate.ls');
   burger = require('../components/burger.ls');
   buildVersion = curry$(function(store, release){
-    var style, buttonPrimary1Style, buttonPrimary3Style, buttonPrimary2Style, buttonLink, resource, ref$, i$, parts, last, source, name, icon, md5File, children;
+    var style, buttonPrimary1Style, buttonPrimary3Style, buttonPrimary2Style, buttonLink, resource, ref$, i$, parts, last, source, name, icon, downloadContainerStyleForTwoBtns, downloadContainerStyle, md5File, children;
     style = getPrimaryInfo(store);
     buttonPrimary1Style = {
       border: "0",
@@ -63,6 +63,19 @@
       }
     }());
     console.log(release.name + ".md5");
+    downloadContainerStyleForTwoBtns = {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-evenly"
+    };
+    downloadContainerStyle = (function(){
+      switch (false) {
+      case last !== 'snap':
+        return downloadContainerStyleForTwoBtns;
+      default:
+        return {};
+      }
+    }());
     md5File = find(function(it){
       return it.name === release.name + ".md5";
     })(
@@ -83,19 +96,30 @@
       }, children = react.createElement('a', {
         href: source + "",
         style: buttonPrimary3Style,
-        target: "_blank"
+        target: "_blank",
+        rel: "noopener noreferrer nofollow"
       }, ' Source Code')), react.createElement('div', {
+        style: downloadContainerStyle,
         className: 'download'
-      }, children = react.createElement('a', {
-        href: release.browser_download_url + "",
-        style: buttonPrimary1Style,
-        target: "_blank"
-      }, ' Download')), react.createElement('div', {
+      }, children = [
+        react.createElement('a', {
+          href: release.browser_download_url + "",
+          style: buttonPrimary1Style,
+          target: "_blank",
+          rel: "noopener noreferrer nofollow"
+        }, ' Download'), last === 'snap' ? react.createElement('a', {
+          href: "https://snapcraft.io/velas-desktop-wallet",
+          style: buttonPrimary1Style,
+          target: "_blank",
+          rel: "noopener noreferrer nofollow"
+        }, ' Snapcraft') : void 8
+      ]), react.createElement('div', {
         className: 'source link'
       }, children = react.createElement('a', {
         href: (md5File != null ? md5File.browser_download_url : void 8) + "",
         style: buttonLink,
-        target: "_blank"
+        target: "_blank",
+        rel: "noopener noreferrer nofollow"
       }, ' MD5'))
     ]);
   });

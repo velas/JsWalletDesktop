@@ -305,13 +305,15 @@
     endblock = 99999999;
     sort = 'desc';
     apikey = '4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG';
-    page = 1;
-    offset = 20;
+    page = config.page;
+    offset = config.offset;
     query = stringify({
       module: module,
       action: action,
       apikey: apikey,
-      address: address
+      address: address,
+      page,
+      offset,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline
@@ -342,15 +344,17 @@
     action = 'txlist';
     startblock = 0;
     endblock = 99999999;
-    page = 1;
-    offset = 20;
+    page = arg$.page;
+    offset = arg$.offset;
     sort = 'desc';
     apikey = '4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG';
     query = stringify({
       module: module,
       action: action,
       apikey: apikey,
-      address: address
+      address: address,
+      page,
+      offset,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline
@@ -377,7 +381,8 @@
     var network, address, page, offset;
     network = arg$.network, address = arg$.address;
     page = 1;
-    offset = 20;
+    // with offset 10 will be 20 txs
+    offset = 10;
     return getExternalTransactions({
       network: network,
       address: address,
@@ -389,7 +394,7 @@
         external: external
       });
       if (err != null) {
-        external = [];
+        return cb(err);
       }
       return getInternalTransactions({
         network: network,
@@ -399,7 +404,7 @@
       }, function(err, internal){
         var all, ordered;
         if (err != null) {
-          internal = [];
+          return cb(err);
         }
         all = external.concat(internal);
         ordered = reverse(

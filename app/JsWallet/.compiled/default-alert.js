@@ -6,28 +6,13 @@
   getLang = require('./../get-lang.ls');
   icons = require('./../icons.ls');
   module.exports = function(store){
-    var message, copiedClass, style, lang, cut, copyStyle, cancel, children;
+    var message, style, lang, copyStyle, cancel, children;
     if (store.current.send.parseError === '') {
       return null;
     }
-    if (store.current.send.parseError === '') {
-      message = null;
-    }
-    copiedClass = '';
+    message = store.current.send.parseError;
     style = getPrimaryInfo(store);
     lang = getLang(store);
-    cut = function(tx){
-      var t;
-      if (tx == null) {
-        return 'none';
-      }
-      t = tx.toString();
-      if (t.toLowerCase().indexOf("private key") > -1) {
-        return t;
-      } else {
-        return t.substr(0, 10) + '..' + t.substr(tx.length - 25, 0) + '..' + t.substr(t.length - 10, 10);
-      }
-    };
     copyStyle = {
       color: style.app.text,
       zIndex: 99999999999
@@ -59,8 +44,9 @@
         }, children = [
           react.createElement('span', {}, ' ' + lang.errorParseMessage1), react.createElement('a', {
             target: "_blank",
+            rel: "noopener noreferrer nofollow",
             href: "https://support.velas.com"
-          }, ' ' + lang.support.toLowerCase()), react.createElement('span', {}, ' ' + lang.errorParseMessage2)
+          }, ' ' + lang.errorSupportLinkTitle), react.createElement('span', {}, ' ' + lang.errorParseMessage2), react.createElement('br', {}), react.createElement('span', {}, ' ' + message)
         ])
       ])
     ]);

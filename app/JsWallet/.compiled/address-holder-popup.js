@@ -103,6 +103,7 @@
       }, children = [
         react.createElement('a', {
           target: "_blank",
+          rel: "noopener noreferrer nofollow",
           href: addressLink + "",
           className: 'browse'
         }, children = react.createElement('img', {
@@ -113,6 +114,7 @@
           onClick: showDetails
         }, children = react.createElement('a', {
           target: "_blank",
+          rel: "noopener noreferrer nofollow",
           onClick: showDetails,
           className: active + ""
         }, ' ' + addressDisplay))

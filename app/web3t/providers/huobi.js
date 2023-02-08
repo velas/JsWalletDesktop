@@ -500,8 +500,8 @@
     action = "txlist";
     startblock = 0;
     endblock = 99999999;
-    page = 1;
-    offset = 20;
+    page = arg$.page;
+    offset = arg$.offset;
     sort = "desc";
     apikey = "KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9";
     query = stringify({
@@ -509,6 +509,9 @@
       action: action,
       apikey: apikey,
       address: address,
+      sort,
+      page,
+      offset,
     });
     return get(apiUrl + "?" + query)
       .timeout({
@@ -546,7 +549,7 @@
     var network, address, page, offset;
     (network = arg$.network), (address = arg$.address);
     page = 1;
-    offset = 20;
+    offset = 30;
     return getExternalTransactions(
       {
         network: network,

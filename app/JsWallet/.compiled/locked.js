@@ -369,15 +369,25 @@
       }, children = [
         react.createElement('a', {
           href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748",
-          target: "_blank"
+          target: "_blank",
+          rel: "noopener noreferrer nofollow"
         }, children = react.createElement('img', {
           src: icons['ios'] + "",
           className: 'icon-download'
         })), react.createElement('a', {
           href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet",
-          target: "_blank"
+          target: "_blank",
+          rel: "noopener noreferrer nofollow"
         }, children = react.createElement('img', {
           src: icons['android'] + "",
+          className: 'icon-download'
+        })), react.createElement('a', {
+          href: "https://github.com/velas/mobile-wallet/releases/latest/download/app-release.apk",
+          target: "_blank",
+          rel: "noopener noreferrer nofollow",
+          id: "download-apk"
+        }, children = react.createElement('img', {
+          src: icons['apk'] + "",
           className: 'icon-download'
         })), react.createElement('span', {}, children = react.createElement('img', {
           onClick: download,
@@ -391,6 +401,7 @@
     var store;
     store = arg$.store;
     store.forceReload = true;
+    store.forceReloadTxs = true;
     return cb(null);
   };
   locked.focus = focus;

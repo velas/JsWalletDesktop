@@ -210,6 +210,7 @@ module.exports = ({ store, web3t })->
         | _ => ""
     open-menu = ->
         store.current.open-menu = not store.current.open-menu
+
     close-all-confirm-and-alert-dialogs = ->
         store.current.promptPassword = no
         store.current.swap-confirmation = no
@@ -220,6 +221,8 @@ module.exports = ({ store, web3t })->
         store.current.prompt3 = no
         store.current.choose-token = no
         store.current.alert = no
+
+
     detect-network-change = (isOnline)->
         close-all-confirm-and-alert-dialogs!
         if not isOnline
@@ -230,6 +233,7 @@ module.exports = ({ store, web3t })->
                 return navigate store, web3t, \locked
             if store.current.seed-words.length is 0
                 return navigate store, web3t, \chooseinit
+
     .pug
         define-root store
         description store

@@ -418,12 +418,13 @@
     }, 6500);
   };
   queryAccountsWeb3t = function(store, web3t, onProgress, onFinish){
-    var nativeWallet, validatorsBackend;
+    var nativeWallet, staker, validatorsBackend;
     nativeWallet = find(function(it){
       return it.coin.token === "vlx_native";
     })(
     store.current.account.wallets);
-    validatorsBackend = nativeWallet.network.api.validatorsBackend + '/v1/staking-accounts';
+    staker = nativeWallet.publicKey;
+    validatorsBackend = nativeWallet.network.api.validatorsBackend + '/v1/staking-accounts' + '?staker=' + staker;
     return get(validatorsBackend).end(function(err, data){
       var nativeAccountsFromBackendResult, ref$, ref1$, parsedProgramAccounts;
       if (err != null) {
@@ -478,7 +479,7 @@
     store.staking.loadingAccountIndex += 1;
     rent = item != null ? item.rentExemptReserve : void 8;
     return asCallback(web3t.velas.NativeStaking.checkSeed(item.pubkey), function(err, seed){
-      var ref$, activationEpoch, deactivationEpoch, voter, onFinishLocal, onProgressLocal;
+      var ref$, activationEpoch, deactivationEpoch, voter, currentEpoch, onFinishLocal, onProgressLocal;
       item.seed = seed;
       item.seedIndex = +(item.seed + "").split(":")[1];
       item.address = item.pubkey;
@@ -489,13 +490,14 @@
       item.balance = rent != null ? div(times(Math.round(div(minus(item.lamports, rent), Math.pow(10, 9))), 100), 100) : "-";
       item.rent = rent != null ? div(rent, Math.pow(10, 9)) : "-";
       item.credits_observed = (ref$ = item.creditsObserved) != null ? ref$ : 0;
-      item.status = "inactive";
+      item.status = "loading";
       item.validator = item.voter;
       activationEpoch = item.activationEpoch, deactivationEpoch = item.deactivationEpoch, voter = item.voter;
       if (activationEpoch && deactivationEpoch) {
-        if (Number(deactivationEpoch) > Number(activationEpoch) || Number(activationEpoch) === web3t.velas.NativeStaking.max_epoch) {
-          item.status = "loading";
-          item.validator = voter;
+        currentEpoch = store.staking.currentEpoch;
+        item.validator = voter;
+        if (Number(deactivationEpoch) < Number(currentEpoch)) {
+          item.status = "inactive";
         }
       }
       if (onProgress != null) {

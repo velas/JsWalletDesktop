@@ -232,13 +232,13 @@ module.exports = ({ store, web3t })->
             else
                 img.icon-sent.pug(src="#{icons.sent-check}")
         .pug.text(style=text-style)
-            a.pug(style=link-style href="#{store.current.last-tx-url}" target="_blank") #{lang.transaction}
+            a.pug(style=link-style href="#{store.current.last-tx-url}" target="_blank" rel="noopener noreferrer nofollow") #{lang.transaction}
             if no-recent
-                span.pug  #{lang.has-been-sent}
+                span.pug  #{lang.hasBeenSent}
             else if has-pending
                 span.pug  #{lang.inProgress}..
             else
-                span.pug  #{lang.has-been-sent}
+                span.pug  #{lang.hasBeenConfirmed}
         button { store, on-click : go-home , type : \secondary , text: \home, id="sent-home" }
         .limited-history.pug
             history { store, web3t }

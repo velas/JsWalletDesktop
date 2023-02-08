@@ -16,7 +16,7 @@
       web3Provider: 'https://api.velas.com',
       url: 'https://native.velas.com',
       apiUrl: 'https://api.velas.com',
-      validatorsBackend: 'https://validators.devnet.velas.com'
+      validatorsBackend: 'https://validators.mainnet.velas.com',
     },
     HomeBridge: "0x56454c41532d434841494e000000000053574150",
     networks: {

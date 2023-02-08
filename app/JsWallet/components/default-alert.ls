@@ -50,18 +50,9 @@ require! {
         padding-bottom: 8px
 module.exports = (store) ->
     return null if store.current.send.parseError is ''
-    message = null if store.current.send.parseError is ''
-    copied-class = ''
+    message = store.current.send.parseError
     style = get-primary-info store
     lang = get-lang store
-    cut = (tx)->
-        return \none if not tx?
-        t = tx.to-string!
-        if t.to-lower-case!.indexOf("private key") > -1
-            t
-        else
-            t.substr(0, 10) + \.. + t.substr(tx.length - 25, 0) + \.. + t.substr(t.length - 10, 10)
-        #r.to-upper-case!
     copy-style=
         color: style.app.text
         z-index: 99999999999
@@ -75,5 +66,7 @@ module.exports = (store) ->
             .pug.mb-5 #{lang.errorParseTitle}
             .pug.contents
                 span.pug #{lang.errorParseMessage1}
-                    a.pug(target="_blank" href="https://support.velas.com") #{lang.support.toLowerCase!}
+                    a.pug(target="_blank" rel="noopener noreferrer nofollow" href="https://support.velas.com") #{lang.errorSupportLinkTitle}
                         span.pug #{lang.errorParseMessage2}
+                        br.pug
+                        span.pug #{message}

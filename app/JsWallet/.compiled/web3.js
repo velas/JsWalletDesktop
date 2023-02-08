@@ -488,6 +488,7 @@
       getSupportedTokens: getSupportedTokens,
       use: use,
       refresh: refresh,
+      refreshBalances: refreshBalances,
       lock: lock,
       init: init,
       install: install,

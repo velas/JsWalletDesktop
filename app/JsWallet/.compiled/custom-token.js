@@ -52,7 +52,7 @@
         console.error(err);
       }
       return getInstallList(function(err, customTokens){
-        var web3tTokens, basePlugins, allTokens, ref$, symbol, symbolDisplay, icon, contractAddress, decimals, editSymbol, network, switchNetwork, errors, selectedNetwork, WALLETS_FOR_NETWORKS, wallets, getWallet, evmWallet, close, isExiting, theme, roundMoney, style, styles, menuStyle, inputStyle, borderStyle, amountStyle, iconStyle, useMaxStyle, buttonPrimary3Style, buttonPrimary2Style, cryptoBackground, justCryptoBackground, contentBodyStyle, moreText, borderHeader, lang, openInvoice, showClass, tokenDisplay, tokenIcon, getNumber, goBackFromSend, up, networkType, token, group, subtitle, displayNetwork, contractAddressExists, checkTokenUnique, getParentWallet, saveCustomToken, decimalsChange, tokenSymbolChange, contractAddressChange, getContractSymbol, retrieveInfoByTokenAddress, setError, runAsyncTask, stopAsyncTask, cancel, hasContractError, hasSymbolError, hasDecimalsError, hasNetworkError, disabled, networkDropdownClick, rotateClass, availableNetworks, changeNetwork, setDefaultChosenTokenData, clearChosenTokenData, clearErrors, clearDefaultErrors, inputDisabled, createNetworkPosition, children;
+        var web3tTokens, basePlugins, allTokens, ref$, symbol, symbolDisplay, icon, contractAddress, decimals, editSymbol, network, switchNetwork, errors, selectedNetwork, WALLETS_FOR_NETWORKS, wallets, getWallet, evmWallet, close, isExiting, theme, roundMoney, style, styles, menuStyle, inputStyle, borderStyle, amountStyle, iconStyle, useMaxStyle, buttonPrimary3Style, buttonPrimary2Style, cryptoBackground, justCryptoBackground, contentBodyStyle, moreText, borderHeader, lang, openInvoice, showClass, tokenDisplay, tokenIcon, getNumber, goBackFromSend, up, networkType, token, group, subtitle, displayNetwork, contractAddressExists, checkTokenUnique, getParentWallet, saveCustomToken, decimalsChange, tokenSymbolChange, contractAddressChange, getContractSymbol, retrieveInfoByTokenAddress, setError, runAsyncTask, stopAsyncTask, cancel, hasContractError, hasSymbolError, hasDecimalsError, hasNetworkError, disabled, networkDropdownClick, rotateClass, availableNetworks, changeNetwork, setDefaultChosenTokenData, clearChosenTokenData, clearErrors, clearDefaultErrors, createNetworkPosition, children;
         customTokens = filter(function(it){
           return !in$(it.token, loadCoinsKeys);
         })(
@@ -630,9 +630,6 @@
           store.customToken.errors.decimals = "";
           return store.customToken.errors.network = "";
         };
-        inputDisabled = ((ref$ = store.customToken.symbol) != null
-          ? ref$
-          : "".trim()).length === 0;
         createNetworkPosition = function(data){
           var api, group, token, apiUrl, url, web3Provider, provider, name, positionStyle, ref$, ref1$, getButtonStyle, buttonStyleMainnet, buttonStyleTestnet, changeMainnetNetwork, changeTestnetNetwork, children;
           api = data.api, group = data.group, token = data.token;
@@ -742,7 +739,7 @@
               return react.createElement('div', {}, children = [
                 react.createElement('input', {
                   type: 'text',
-                  disabled: inputDisabled,
+                  disabled: hasSymbolError,
                   style: inputStyle,
                   onChange: tokenSymbolChange,
                   value: symbolDisplay + "",
@@ -758,7 +755,7 @@
               }, children = [
                 react.createElement('input', {
                   type: 'number',
-                  disabled: inputDisabled,
+                  disabled: hasSymbolError,
                   style: inputStyle,
                   placeholder: "0",
                   onChange: decimalsChange,

@@ -43,9 +43,9 @@
     mask: '0x0000000000000000000000000000000000000000',
     txFeeIn: "vlx_evm",
     txBridgeFeeIn: "vlx_evm",
-    address: "0x6ef054b3e3c3c83e14527e8fa593c2c4435a6ea4",
-    HOME_BRIDGE: "0xb6A42fc8BcB09cf3Ad44A63495f6f562028c99b8",
-    HOME_BRIDGE_TOKEN: "0x90f69A6134fD1cf45170AC55a895138da69B40aD",
+    address: "0x7c216e8ad57fE5254123eb4f682BBBbc2F7E4B09",
+    HOME_BRIDGE: "0x553831469Db3E4e8C75FC113eC7f113335F2d0c6",
+    HOME_BRIDGE_TOKEN: "0x7c216e8ad57fE5254123eb4f682BBBbc2F7E4B09",
     api: {
       provider: 'velas_usdt',
       web3Provider: 'https://evmexplorer.testnet.velas.com/rpc',

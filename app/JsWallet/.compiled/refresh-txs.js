@@ -6,24 +6,11 @@
   loadRates = require('./load-rates.ls');
   ref$ = require('./workflow.ls'), run = ref$.run, task = ref$.task;
   refreshTxs = function(web3, store, cb){
-    var clearTimer, resetRequest, task1;
     if (store.forceReload !== true && store.forceReloadTxs !== true) {
       return cb(null);
     }
     store.current.transactionsAreLoading = true;
-    clearTimer = function(cb){
-      delete cb.timer;
-      return clearTimeout(cb.timer);
-    };
-    resetRequest = function(){
-      store.current.transactionsAreLoading = false;
-      return clearTimer(cb);
-    };
-    cb.timer = setTimeout(resetRequest, 25000);
-    task1 = task(function(cb){
-      return loadAllTransactions(store, web3, cb);
-    });
-    return run([task1]).then(function(){
+    return loadAllTransactions(store, web3, function(err){
       store.current.transactionsAreLoading = false;
       store.forceReloadTxs = false;
       return cb(null);

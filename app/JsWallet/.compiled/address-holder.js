@@ -104,6 +104,7 @@
           }))
           : react.createElement('a', {
             target: "_blank",
+            rel: "noopener noreferrer nofollow",
             href: addressLink + "",
             className: 'browse'
           }, children = react.createElement('img', {
@@ -112,12 +113,14 @@
           })), isContract && false
           ? (addressDisplay = contracts.getContractName(store, address), react.createElement('a', {
             target: "_blank",
+            rel: "noopener noreferrer nofollow",
             href: addressLink + "",
             className: active + ""
           }, ' ' + addressDisplay + '     '))
           : text != null
             ? react.createElement('a', {
               target: "_blank",
+              rel: "noopener noreferrer nofollow",
               href: addressLink + "",
               className: active + " custom-title"
             }, ' ' + text)
@@ -125,6 +128,7 @@
               key: addressTitle
             }, children = react.createElement('a', {
               target: "_blank",
+              rel: "noopener noreferrer nofollow",
               href: addressLink + "",
               className: active + ""
             }, ' ' + addressDisplay))

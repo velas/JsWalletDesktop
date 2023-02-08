@@ -588,11 +588,11 @@ wallet-group = (store, web3t, wallets, wallets-groups, wallets-group)-->
             locationWallet = if window.location.host is "wallet.testnet.velas.com" then 'wallet_testnet' else 'wallet_mainnet'
             uri-prod = "https://buy.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
             uri-test = "https://fiat-payments.testnet.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
-            uri_simplex =
+            uri_buy =
                 | store.current.network is \testnet => uri-test
                 | _ => uri-prod
             buy = ->
-                window.open(uri_simplex)
+                window.open(uri_buy)
             /* Render */
             .wallet.wallet-mobile.pug.wallet-item(class="#{big} #{disabled-class}" key="#{token}" style=border-style)
                 .wallet-top.pug(on-click=expand)

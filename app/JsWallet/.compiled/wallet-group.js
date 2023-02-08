@@ -88,7 +88,7 @@
       react.createElement('div', {
         className: 'group-name'
       }, ' ' + groupName + ' Network'), map(function(wallet){
-        var ref$, walletIcon, buttonStyle, uninstall, active, big, balance, balanceUsd, pending, send, receive, swap, expand, usdRate, last, containerClass, placeholder, placeholderCoin, withError, name, receiveClick, sendClick, swapClick, expandClick, token, isCustom, tokenDisplay, makeDisabled, walletIsDisabled, disabledClass, sendSwapDisabled, syncing, refresh, toggleTooltipVisible, children;
+        var ref$, walletIcon, buttonStyle, uninstall, active, big, balance, balanceUsd, pending, send, receive, swap, expand, usdRate, last, containerClass, placeholder, placeholderCoin, withError, name, receiveClick, sendClick, swapClick, expandClick, token, isCustom, tokenDisplay, makeDisabled, walletIsDisabled, disabledClass, sendSwapDisabled, syncing, refresh, toggleTooltipVisible, tokenHasTooltip, children;
         ref$ = walletFuncs(store, web3t, wallets, wallet, walletsGroups, groupName), walletIcon = ref$.walletIcon, buttonStyle = ref$.buttonStyle, uninstall = ref$.uninstall, wallet = ref$.wallet, active = ref$.active, big = ref$.big, balance = ref$.balance, balanceUsd = ref$.balanceUsd, pending = ref$.pending, send = ref$.send, receive = ref$.receive, swap = ref$.swap, expand = ref$.expand, usdRate = ref$.usdRate, last = ref$.last;
         containerClass = (function(){
           switch (false) {
@@ -166,10 +166,11 @@
                 x: event.pageX,
                 y: event.pageY
               };
-              return store.tooltipMessage = lang["tooltip_" + wallet.coin.token];
+              return store.tooltipMessage = lang["tooltip_" + token];
             }
           };
         };
+        tokenHasTooltip = token === 'vlx_native' || token === 'vlx_evm' || token === 'vlx2' || token === 'bsc_vlx' || token === 'vlx_erc20' || token === 'vlx_huobi' || token === 'vlx_usdv';
         /* Render */
         return react.createElement('div', {
           key: token + "",
@@ -204,7 +205,7 @@
                 }, children = [
                   react.createElement('div', {
                     className: placeholder + " balance title"
-                  }, ' ' + name), token === 'vlx_native' || token === 'vlx_evm' || token === 'vlx2' || token === 'bsc_vlx' || token === 'vlx_erc20' || token === 'vlx_huobi' ? react.createElement('div', {
+                  }, ' ' + name), tokenHasTooltip ? react.createElement('div', {
                     className: 'tooltips'
                   }, children = react.createElement('div', {
                     style: walletStyle,
@@ -231,7 +232,7 @@
                     className: placeholder + " price"
                   }, children = [react.createElement('span', {}, ' ' + roundHuman(balanceUsd)), react.createElement('span', {}, ' USD')])
               ])
-            ]), token === 'vlx_native' || token === 'vlx_evm' || token === 'vlx2' || token === 'bsc_vlx' || token === 'vlx_erc20' || token === 'vlx_huobi' ? react.createElement('div', {
+            ]), tokenHasTooltip ? react.createElement('div', {
               className: 'tooltips'
             }, children = react.createElement('div', {
               style: walletStyle,

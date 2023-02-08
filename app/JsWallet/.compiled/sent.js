@@ -118,12 +118,13 @@
         react.createElement('a', {
           style: linkStyle,
           href: store.current.lastTxUrl + "",
-          target: "_blank"
+          target: "_blank",
+          rel: "noopener noreferrer nofollow"
         }, ' ' + lang.transaction), noRecent
           ? react.createElement('span', {}, '  ' + lang.hasBeenSent)
           : hasPending
             ? react.createElement('span', {}, '  ' + lang.inProgress + '..')
-            : react.createElement('span', {}, '  ' + lang.hasBeenSent)
+            : react.createElement('span', {}, '  ' + lang.hasBeenConfirmed)
       ]), button({
         store: store,
         onClick: goHome,

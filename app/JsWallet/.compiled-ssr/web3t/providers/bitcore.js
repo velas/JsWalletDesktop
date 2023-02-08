@@ -719,7 +719,7 @@
     if ((network != null ? (ref$ = network.api) != null ? ref$.url : void 8 : void 8) == null) {
       return cb("Url is not defined");
     }
-    return get(getApiUrl(network) + "/address/" + address + "/txs?limit=100").timeout({
+    return get(getApiUrl(network) + "/address/" + address + "/txs?limit=30").timeout({
       deadline: 5000
     }).end(function(err, data){
       if (err != null) {

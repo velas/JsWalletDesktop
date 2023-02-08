@@ -22,16 +22,15 @@
         "mask": "0x0000000000000000000000000000000000000000",
         "api": {
             "provider": "erc20",
-            "web3Provider": "https://ropsten.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106",
+            "web3Provider": "https://ropsten.infura.io/v3/009278d1b77a4af48536f1f772926648",
             "url": "https://ropsten.etherscan.io",
             "apiUrl": "https://api-ropsten.etherscan.io/api",
             "apikey": "4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG"
         },
         
-        "address": "0xb404c51bbc10dcbe948077f18a4b8e553d160084",
-        
-        "FOREIGN_BRIDGE_TOKEN": "0xb404c51bbc10dcbe948077f18a4b8e553d160084",
-        "FOREIGN_BRIDGE": "0x4D34B0b309f6D1DA0a18eA61Ecb52720cA7D08F5",
+        "address": "0x79A63ad3EF281cBEfb8EDb1cff2a1A3b301652b7",
+        "FOREIGN_BRIDGE_TOKEN": "0x79A63ad3EF281cBEfb8EDb1cff2a1A3b301652b7",
+        "FOREIGN_BRIDGE": "0x64aAA57EbAA875D3b70F19EDF9b423DFF3880817",
 
         "networks": {
             "vlx_usdt": {
@@ -56,7 +55,7 @@
         "mask": "0x0000000000000000000000000000000000000000",
         "api": {
             "provider": "erc20",
-            "web3Provider": "https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106",
+            "web3Provider": "https://mainnet.infura.io/v3/622100399ace495d92c1339f6be12b2b",
             "url": "https://etherscan.io",
             "apiUrl": "https://api.etherscan.io/api",
             "apikey": "4TNDAGS373T78YJDYBFH32ADXPVRMXZEIG" 

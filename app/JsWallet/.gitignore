@@ -7,3 +7,6 @@ langs/config.json
 .expo/settings.json
 .idea
 node_modules/*
+
+#tests
+e2e/*-test-report

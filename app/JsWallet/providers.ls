@@ -22,5 +22,6 @@ require! {
     \../web3t/providers/vlx_usdc.js
     \../web3t/providers/bsc_vlx.js
     \../web3t/providers/vlx_evm_legacy.js
+    \../web3t/providers/velas_usdv.js
 }
-module.exports = { eth, eth_legacy, insight, bitcore, erc20, omni, velas2, vlxerc20, solana, velas_erc20, velas_evm, bnb, velas_busd, busd, huobi, velas_huobi, velas_usdt, velas_eth, usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }
+module.exports = { eth, velas_usdv, eth_legacy, insight, bitcore, erc20, omni, velas2, vlxerc20, solana, velas_erc20, velas_evm, bnb, velas_busd, busd, huobi, velas_huobi, velas_usdt, velas_eth, usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }

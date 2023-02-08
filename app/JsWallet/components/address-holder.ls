@@ -136,14 +136,14 @@ module.exports = ({ store, wallet, type, text })->
                 a.browse.pug(on-click=rotate-address-suffix)
                     img.pug(src="#{icons.choose}" style=filter-icon)
             else
-                a.browse.pug(target="_blank" href="#{address-link}")
+                a.browse.pug(target="_blank" rel="noopener noreferrer nofollow" href="#{address-link}")
                     img.pug(src="#{icons.browse-open}" style=icon1)
             if is-contract and no
                 address-display = contracts.get-contract-name(store, address)
-                a.pug(target="_blank" href="#{address-link}" class="#{active}") #{address-display}     
+                a.pug(target="_blank" rel="noopener noreferrer nofollow" href="#{address-link}" class="#{active}") #{address-display}     
             else if text?
-                a.pug(target="_blank" href="#{address-link}" class="#{active} custom-title") #{text}
+                a.pug(target="_blank" rel="noopener noreferrer nofollow" href="#{address-link}" class="#{active} custom-title") #{text}
             else
                 MiddleEllipsis.pug(key=address-title)
-                    a.pug(target="_blank" href="#{address-link}" class="#{active}") #{address-display}
+                    a.pug(target="_blank" rel="noopener noreferrer nofollow" href="#{address-link}" class="#{active}") #{address-display}
         copy { store, text: address-title }

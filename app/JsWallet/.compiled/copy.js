@@ -7,8 +7,8 @@
   copiedInform = require('../copied-inform.ls');
   copy = require('../copy.ls');
   module.exports = function(arg$){
-    var store, text, style, filterIcon, icon2, enter, leave, children;
-    store = arg$.store, text = arg$.text;
+    var store, text, elId, style, filterIcon, icon2, enter, leave, onCopy, children;
+    store = arg$.store, text = arg$.text, elId = arg$.elId;
     style = getPrimaryInfo(store);
     filterIcon = {
       filter: style.app.filterIcon
@@ -22,9 +22,23 @@
     leave = function(){
       return store.current.tryCopy = null;
     };
+    onCopy = (function(){
+      switch (false) {
+      case elId == null:
+        return function(event){
+          var el;
+          el = document.getElementById(elId);
+          el.click();
+          return copiedInform(store)(event);
+        };
+      default:
+        return copiedInform(store);
+      }
+    }());
     return react.createElement(CopyToClipboard, {
       text: text + "",
-      onCopy: copiedInform(store),
+      id: elId + "",
+      onCopy: onCopy,
       style: icon2,
       onMouseEnter: enter,
       onMouseLeave: leave

@@ -26,9 +26,10 @@ require! {
     \../web3t/plugins/vlx_usdc-coin.js : vlx_usdc  
     \../web3t/plugins/usdt_erc20_legacy-coin.json : usdt_erc20_legacy
     \../web3t/plugins/bsc-vlx-coin.js : bsc_vlx 
-    \../web3t/plugins/vlx-evm-legacy-coin.js : vlx_evm_legacy   
+    \../web3t/plugins/vlx-evm-legacy-coin.js : vlx_evm_legacy
+    \../web3t/plugins/vlx_usdv-coin.js : \vlx_usdv
 }
-current-configs = { vlx_eth, eth_legacy, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt,  usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }
+current-configs = { vlx_usdv, vlx_eth, eth_legacy, syx, syx2, usdt, usdt_erc20, ltc, vlx_erc20, bnb, vlx_busd, busd, huobi, vlx_huobi, vlx_usdt,  usdt_erc20_legacy, usdc, vlx_usdc, bsc_vlx, vlx_evm_legacy }
 plugin-pairs = {
     vlx_huobi: \huobi
     busd: \bnb

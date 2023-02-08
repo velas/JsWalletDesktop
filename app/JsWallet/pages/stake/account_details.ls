@@ -18,7 +18,6 @@ require! {
     \btoa
     \safe-buffer : { Buffer }
     \../../copied-inform.ls
-    \../../copy.ls
     \../../round5.ls
     \../../../web3t/addresses.js : { ethToVlx, vlxToEth }
     \../switch-account.ls
@@ -27,7 +26,7 @@ require! {
     \../../icons.ls
     \../placeholder.ls
     \../epoch.ls
-    \../confirmation.ls : { alert, notify, confirm, prompt2, prompt3 }
+    \../confirmation.ls : { alert, notify, confirm, prompt2, prompt3, prompt-stake-authorize }
     \../../components/button.ls
     \../../components/address-holder.ls
     \../alert-txn.ls
@@ -38,6 +37,9 @@ require! {
     \./rewards-stats.ls : RewardsStats
     \moment
     \../../components/popups/loader.ls
+    \../../components/copy.ls
+    \../../api.ls : { is-valid-address }
+
 }
 .staking
     @import scheme
@@ -290,6 +292,8 @@ require! {
                     span
                         @media (max-width: 800px)
                             font-size: 14px
+                    .copy
+                        margin-left: 10px
                     .check
                         width: 15px
                         height: 15px
@@ -737,6 +741,8 @@ staking-content = (store, web3t)->
     style = get-primary-info store
     lang = get-lang store
     down = (it)-> it.toLowerCase!
+    if !store.staking.chosenAccount
+        return null
     account = store.staking.chosenAccount
     {
         address,
@@ -749,7 +755,8 @@ staking-content = (store, web3t)->
         commission,
         lastVote,
         lockup,
-        stakers,
+        staker,
+        withdrawer,
         is-validator,
         status,
         myStake,
@@ -758,6 +765,13 @@ staking-content = (store, web3t)->
         pubkey
         lamports
     } = account
+    up = (str) -> (str || '').trim!.toUpperCase!
+
+    err, accountAddress <- web3t.vlx_native.getAddress!
+    can-withdraw = up(withdrawer) === up(accountAddress)
+    can-delegate = up(staker) === up(accountAddress)
+    exit-from-stake-account = !can-withdraw and !can-delegate
+
     rent = rentExemptReserve `div` (10^9)
     balanceRaw = if (not isNaN(rent) and rent?) then lamports `minus` rent else lamports
     button-primary3-style=
@@ -856,14 +870,11 @@ staking-content = (store, web3t)->
         return cb err if err?
         cb null, \done
     remove-stake-acc = (public_key)->
-        console.log "pubKey to remove" public_key
         index = store.staking.accounts |> findIndex (-> it.pubkey is public_key)
         if index > -1
             store.staking.accounts.splice(index,1)
-        console.log "index to remove" index
         accountIndex = store.current.accountIndex
         index2 = (store.staking.accountsCached[accountIndex] ? []) |> findIndex (-> it.pubkey is public_key)
-        console.log "index cache to remove" index2
         if index2 > -1
             (store.staking.accountsCached[accountIndex] ? []).splice(index2,1)
     withdraw = ->
@@ -895,6 +906,42 @@ staking-content = (store, web3t)->
         if store.staking.webSocketAvailable is no
             return navigate store, web3t, \validators
         store.current.page = \validators
+
+    set-authorize-staker = ->
+        newAuthorizedPubkey <- prompt-stake-authorize store, 'Update the account with a new authorized staker'
+        return if !newAuthorizedPubkey
+        store.staking.setting-new-staking-authority = yes
+        { custodian, pubKey, withdrawer } = store.staking.chosenAccount
+        wallet = store.current.account.wallets.find(-> it.coin.token is \vlx_native)
+        return alert store, 'VLX Native wallet was not found' if not wallet?
+        params = {
+            stakePubkey: pubKey,
+            authorizedPubkey: wallet.publicKey,
+            newAuthorizedPubkey,
+            custodianPubkey: custodian
+        }
+        console.log({params})
+        err, result <- as-callback web3t.velas.NativeStaking.authorize(params)
+        store.staking.setting-new-staking-authority = no
+        err-message = get-error-message(err, result)
+        if err-message?
+            store.staking.setting-new-staking-authority = no
+            return alert store, err-message
+
+        <- notify store, lang.newStakeAuthorityWasSuccessfullySetTo + " " + newAuthorizedPubkey
+        store.staking.chosenAccount.staker = newAuthorizedPubkey
+        store.staking.setting-new-staking-authority = no
+
+        can-withdraw1 = up(withdrawer) === up(accountAddress)
+        can-delegate1 = up(newAuthorizedPubkey) === up(accountAddress)
+        exit-from-stake-account1 = !can-withdraw1 and !can-delegate1
+
+        if exit-from-stake-account1
+            store.staking.getAccountsFromCashe = no
+            store.current.page = "validators"
+            store.staking.chosenAccount = null
+            remove-stake-acc(account.pubkey)
+
     split-account = ->
         cb = console.log
         buffer = {}
@@ -940,7 +987,6 @@ staking-content = (store, web3t)->
         stakeAccount = store.staking.chosenAccount.address
         $voter = store.staking.chosenAccount.voter
         err, signature <- as-callback web3t.velas.NativeStaking.splitStakeAccount(stakeAccount, splitStakePubkey, amount)
-        console.log "spit signature" signature
         err-message = get-error-message(err, signature)
         if err-message?
             store.staking.splitting-staking-account = no
@@ -1006,7 +1052,6 @@ staking-content = (store, web3t)->
         | _ => lang.inactiveStake 
     { lockupUnixTimestamp, epoch, lockup } = store.staking.chosenAccount
     is-locked = lockupUnixTimestamp? and lockupUnixTimestamp > moment!.unix!
-    console.log {}
     date-expires =
         | is-locked is yes => moment.unix(lockupUnixTimestamp).format("MMMM D, YYYY");
         | _ => ""
@@ -1019,9 +1064,12 @@ staking-content = (store, web3t)->
         font-weight: "bold"
         text-align: "center"
         max-width: "500px"
+    address-container-style = 
+        display: "flex"
     /* Render */    
     .pug.staking-content.delegate
         loader { loading: store.staking.splitting-staking-account, text: "Splitting in process" }
+        loader { loading: store.staking.setting-new-staking-authority, text: "Setting new stake authority in process" }
         .pug.single-section.form-group(id="choosen-pull")
             .pug.section
                 .title.pug
@@ -1038,9 +1086,10 @@ staking-content = (store, web3t)->
                     h3.pug #{lang.address}
                 .description.pug
                     .pug.chosen-account(title="#{store.staking.chosenAccount.address}")
-                        span.pug
+                        span.pug(style=address-container-style)
                             | #{store.staking.chosenAccount.address}
                             img.pug.check(src="#{icons.img-check}")
+                            copy { store, text: store.staking.chosenAccount.address, elId: "copy-address-chosenAccount" }
             .pug.section
                 .title.pug
                     h3.pug ID
@@ -1079,10 +1128,12 @@ staking-content = (store, web3t)->
                 .title.pug
                     h3.pug #{lang.validator}
                 .description.pug
-                    span.pug.chosen-account
+                    span.pug.chosen-account(style=address-container-style)
                         | #{$validator}
                         if has-validator
                             img.pug.check(src="#{icons.img-check}")
+                        if has-validator
+                            copy { store, text: validator, elId: "copy-address-validator" }
             .pug.section
                 .title.pug
                     h3.pug #{lang.creditsObserved}
@@ -1139,8 +1190,30 @@ staking-content = (store, web3t)->
                             margin-top: "10px"
                         .pug.notification(style=notification-style)
                             span.pug(style=tip-style) Only 25% of active stake can be activated per epoch.
-                            a.pug(href="https://support.velas.com/hc/en-150/articles/360021044820-Delegation-Warmup-and-Cooldown" target="_blank" style=link-style)
+                            a.pug(href="https://support.velas.com/hc/en-150/articles/360021044820-Delegation-Warmup-and-Cooldown" target="_blank" rel="noopener noreferrer nofollow" style=link-style)
                                 span.pug(style=more-style) More...
+            .pug.section
+                .title.pug
+                    h2.pug #{lang.Authorities}
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.stakeAuthorityAddress}
+                .description.pug
+                    span.pug.chosen-account(style=address-container-style)
+                        | #{staker}
+                        img.pug.check(src="#{icons.img-check}")
+                        copy { store, text: staker, elId: "copy-staker-address" }
+                    button { store, on-click: set-authorize-staker , type: \secondary , text: 'Set manager', classes: "set-manager", no-icon: yes }
+
+            .pug.section
+                .title.pug
+                    h3.pug #{lang.withdrawAuthorityAddress}
+                .description.pug
+                    span.pug.chosen-account(style=address-container-style)
+                        | #{withdrawer}
+                        img.pug.check(src="#{icons.img-check}")
+                        copy { store, text: withdrawer, elId: "copy-withdawer-address" }
+
             .pug.section
                 .title.pug
                     h2.pug Actions
@@ -1148,12 +1221,14 @@ staking-content = (store, web3t)->
                     .pug.buttons
                         if (store.staking.chosenAccount.status is "inactive") 
                             .pug
-                                button { store, on-click: delegate , type: \secondary , text: lang.to_delegate, icon : \arrowRight }
-                                if is-locked is no
+                                if can-delegate
+                                    button { store, on-click: delegate , type: \secondary , text: lang.to_delegate, icon : \arrowRight }
+                                if can-withdraw and is-locked is no
                                     button { store, on-click: withdraw , type: \secondary , text: lang.withdraw, icon : \arrowLeft }
-                        else if store.staking.chosenAccount.status isnt \deactivating then
+                        else if  can-delegate and store.staking.chosenAccount.status isnt \deactivating then
                             button { store, on-click: undelegate , type: \secondary , text: lang.to_undelegate, icon : \arrowLeft, classes: "action-undelegate" }
-                        button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }
+                        if can-delegate
+                            button { store, on-click: split-account , type: \secondary , text: lang.to_split, classes: "action-split", no-icon: yes }
             Rewards.pug
 account-details = ({ store, web3t })->
     lang = get-lang store
@@ -1222,6 +1297,10 @@ account-details.init = ({ store, web3t }, cb)!->
         store.staking.chosenAccount.active_stake = stakeActivation.active
         store.staking.chosenAccount.inactive_stake = stakeActivation.inactive
     return alert store, err, cb if err?
+    wallet = store.current.account.wallets.find(-> it.coin.token is \vlx_native)
+    return alert store, 'VLX Native wallet was not found', cb if not wallet?
+    web3t.velas.NativeStaking.setAccountPublicKey(wallet.publicKey)
+    web3t.velas.NativeStaking.setAccountSecretKey(wallet.secretKey)
     cb null
 stringify = (value) ->
     if value? then

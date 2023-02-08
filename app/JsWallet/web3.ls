@@ -231,5 +231,5 @@ module.exports = (store, config)->
     refresh-interface ->
     web3 = new Web3!
     velas = velas-api store
-    cweb3 <<<< { velas, web3.utils, unlock, set-preference, get-supported-tokens, use, refresh, lock, init, install, uninstall, install-by-name, naming, get-account-name, set-theme, set-lang, install-quick }
+    cweb3 <<<< { velas, web3.utils, unlock, set-preference, get-supported-tokens, use, refresh, refresh-balances, lock, init, install, uninstall, install-by-name, naming, get-account-name, set-theme, set-lang, install-quick }
     cweb3

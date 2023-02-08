@@ -15,6 +15,7 @@
       href: item.href + "",
       style: style,
       target: "_blank",
+      rel: "noopener noreferrer nofollow",
       className: 'link'
     }, children = react.createElement('img', {
       src: item.image + ""

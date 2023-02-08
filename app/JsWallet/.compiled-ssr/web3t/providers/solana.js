@@ -543,6 +543,9 @@ const commonProvider = require('./common/provider');
             receiver = _amount < 0 ? (participantIndex > -1 ? accountKeys[participantIndex].pubkey : 'unknown') : address;
             hash = transaction.signatures[0];
           }
+          if (type === "authorize") {
+            hash = transaction.signatures[0];
+          }
           if (type === "swapNativeToEvm") {
             sender = instructions[1].parsed.info.fromNativeAccount;
             receiver = instructions[1].parsed.info.toEvmAccount;
@@ -563,10 +566,21 @@ const commonProvider = require('./common/provider');
             amount = (ref$ = getSentAmount(txData)[sender]) != null ? ref$ : 0;
           }
           if (type === "delegate") {
-            sender = instructions[0].parsed.info.stakeAccount;
-            receiver = instructions[0].parsed.info.voteAccount;
+            const delegateInstruction = instructions.find(
+              (instruction) => instruction.parsed.type === 'delegate'
+            );
+
+            if (!delegateInstruction) {
+              console.error(
+                `[solana] prepareTxs hash ${transaction.signatures[0]} type ${type} no delegateInstruction found!`
+              );
+            }
+
+            sender = delegateInstruction.parsed.info.stakeAccount;
+            receiver = delegateInstruction.parsed.info.voteAccount;
             hash = transaction.signatures[0];
-            amount = instructions[0].parsed.info.lamports;
+            amount =
+            (ref2$ = getSentAmount(txData)[sender]) != null ? ref2$ : 0;
           }
           if (type === "createAccountWithSeed") {
             sender = instructions[0].parsed.info.base;
@@ -575,8 +589,17 @@ const commonProvider = require('./common/provider');
             hash = transaction.signatures[0];
           }
           if (type === "deactivate") {
-            sender = instructions[0].parsed.info.stakeAuthority;
-            receiver = instructions[0].programId;
+            const deactivateInstruction = instructions.find(
+              (instruction) => instruction.parsed.type === 'deactivate'
+            );
+
+            if (!deactivateInstruction) {
+              console.error(
+                `[solana] prepareTxs hash ${transaction.signatures[0]} type ${type} no deactivateInstruction found!`
+              );
+            }
+            sender = deactivateInstruction.parsed.info.stakeAuthority;
+            receiver = deactivateInstruction.programId;
             hash = transaction.signatures[0];
             amount = 0;
           }

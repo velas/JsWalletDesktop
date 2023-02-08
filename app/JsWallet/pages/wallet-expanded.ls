@@ -16,8 +16,9 @@ require! {
     \./wallet-stats.ls
     \./loading.ls
     \./confirmation.ls : { confirm }
+    \../plugin-loader.ls : { base-array }
 }
-.wallet-expanded
+.wallet-detailed
     @import scheme
     height: 240px
     box-sizing: border-box
@@ -205,13 +206,13 @@ module.exports = (store, web3t, wallets, wallet)-->
     token = (wallet?coin?token ? "").to-upper-case!
     tokenDisplay = (wallet?coin?nickname ? "").to-upper-case!
     locationWallet = if window.location.host is "wallet.testnet.velas.com" then 'wallet_testnet' else 'wallet_mainnet'
-    uri-prod = "https://buy.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
-    uri-test = "https://fiat-payments.testnet.velas.com/?address=#{wallet.address}&crypto_currency=#{tokenDisplay}&env=#{locationWallet}"
-    uri_simplex =
+    uri-prod = "https://buy.velas.com/?address=#{wallet.address}&crypto_currency=#{token}&env=#{locationWallet}"
+    uri-test = "https://fiat-payments.testnet.velas.com/?address=#{wallet.address}&crypto_currency=#{token}&env=#{locationWallet}"
+    uri_buy =
         | store.current.network is \testnet => uri-test
         | _ => uri-prod
     buy = ->
-        window.open(uri_simplex)
+        window.open(uri_buy)
     style = get-primary-info store
     color1 =
         color: style.app.text
@@ -255,13 +256,13 @@ module.exports = (store, web3t, wallets, wallet)-->
     color-label2=
         background: style.app.primary1
         background-color: style.app.primary1-spare
-    .wallet-expanded.pug(key="#{token}" style=wallet-style)
+    .wallet-detailed.pug(key="#{token}" style=wallet-style)
         .wallet-part.left.pug(style=text)
             .wallet-header.pug
                 .wallet-header-part.right.pug
                     .pug
                         span.title.pug(class="#{placeholder}") #{name}
-                        if wallet?coin?token not in <[ btc vlx vlx_native vlx2 eth vlx_evm ]>
+                        if wallet?coin?token not in base-array
                             span.pug.uninstall(on-click=uninstall-action style=uninstall-style) #{label-uninstall}
                     .balance.pug(class="#{placeholder}")
                         .pug.token-balance(title="#{wallet?balance}")

@@ -235,7 +235,6 @@ class VelasStaking {
     };
     
     async createNewStakeAccountWithSeed(){
-        console.log("[createNewStakeAccountWithSeed]",  this.getAccountPublicKey().toBase58());
 
         let stakeAccountWithSeed;
 
@@ -258,6 +257,34 @@ class VelasStaking {
 
         return stakeAccountWithSeed;   
     }
+
+    async authorize(params) {
+        const {
+            stakePubkey, //PublicKey
+            authorizedPubkey, //string
+            newAuthorizedPubkey, //string
+            custodianPubkey //string
+        } = params;
+        try {
+            const newAuthorizedPublicKey = new PublicKey(newAuthorizedPubkey);
+            const stakeAuthorizationType = StakeProgram.programId;
+            const custodianPublicKey = new PublicKey(custodianPubkey);
+            const _params = {
+                stakePubkey,
+                authorizedPubkey: new PublicKey(authorizedPubkey),
+                stakeAuthorizationType,
+                newAuthorizedPubkey: newAuthorizedPublicKey,
+                custodianPubkey: custodianPublicKey
+            };
+            const transaction = StakeProgram.authorize(_params);
+            return this.sendTransaction(transaction);
+        } catch (err) {
+            return {
+                error: "authorize_prepare_transaction_error",
+                description: err.message,
+            };
+        }
+    };
 
     async createAccount(amount_sol = (this.min_stake * this.sol)) {
 
@@ -321,7 +348,7 @@ class VelasStaking {
     async getOwnStakingAccounts(accounts) {
         let owner = this.getAccountPublicKey();
         accounts = accounts.filter(item => {
-            return item.staker === owner.toBase58();
+            return item.staker === owner.toBase58() || item.withdrawer === owner.toBase58();
         });
         return accounts;
     }
@@ -353,6 +380,9 @@ class VelasStaking {
 
         accounts = accounts.filter(item => {
             if (deepEq$(item.staker, owner.toBase58(), '===')) {
+                return true;
+            }
+            if (deepEq$(item.withdrawer, owner.toBase58(), '===')) {
                 return true;
             }
             return false;

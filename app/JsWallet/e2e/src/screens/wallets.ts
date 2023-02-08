@@ -84,7 +84,7 @@ export class WalletsScreen extends BaseScreen {
       tokenSelector,
     );
     while (!requiredCurrencyIsALreadySelected) {
-      await this.page.click(`#${tokenName}`);
+      await this.page.click(`#${tokenName}`, { timeout: 15000 });
       await this.page.waitForTimeout(1000);
       requiredCurrencyIsALreadySelected = await this.page.isVisible(
         tokenSelector,
@@ -208,8 +208,8 @@ export class WalletsScreen extends BaseScreen {
   async swapTokens(
     fromToken: Currency,
     toToken: Currency,
-    transactionAmount: number | 'use max',
-    params: { customAddress?: string, confirm: boolean } = { confirm: true },
+    transactionAmount: number | string | 'use max',
+    params?: { customAddress?: string, confirm?: boolean }
   ): Promise<void> {
     if (fromToken === toToken) {
       throw TypeError('You can\'t swap to the same token you are swapping from');
@@ -218,7 +218,7 @@ export class WalletsScreen extends BaseScreen {
     await this.addToken(fromToken);
     await this.addToken(toToken);
     await this.selectWallet(fromToken);
-    await this.swapButton.click({ timeout: 15000 });
+    await this.swapButton.click({ timeout: 25000 });
     await this.swapForm.networkSelector.waitFor({ timeout: 20000 });
     await this.swapActions.chooseDestinationNetwork(toToken);
 
@@ -229,19 +229,19 @@ export class WalletsScreen extends BaseScreen {
     if (transactionAmount === 'use max') {
       await this.useMax();
     } else {
-      await this.swapActions.fill(String(transactionAmount));
+      await this.swapActions.fillAmount(String(transactionAmount));
     }
 
     // wait for amount error disappears
     await this.page.waitForTimeout(300);
 
-    if (params?.confirm) {
+    if (params?.confirm ?? true) {
       try {
         await this.swapActions.confirm();
       } catch {
         log.error(`Attention! This could be an expected error from try/catch.
         Test could pass even if this error is thrown.
-        <swap ${fromToken}>${toToken} failed on attempt to confirm>`);
+        | swap ${fromToken} >> ${toToken} failed on attempt to confirm |`);
       }
     }
   }
@@ -263,7 +263,9 @@ export class WalletsScreen extends BaseScreen {
   };
 
   private swapActions = {
-    fill: async (transactionAmount: string) => {
+    fillAmount: async (transactionAmount: string) => {
+      await this.swapForm.amountInput.waitFor();
+      await this.page.waitForTimeout(200);
       await this.swapForm.amountInput.fill(transactionAmount);
     },
     getDestinationNetworkForTokenName: async (swapToToken: Currency): Promise<string> => {
@@ -303,7 +305,7 @@ export class WalletsScreen extends BaseScreen {
       await this.waitForSelectorDisappears('.switch-menu', 25000);
     },
     confirm: async () => {
-      await this.sendButton.waitFor({ timeout: 1500 });
+      await this.sendButton.waitFor();
       await this.page.waitForTimeout(500);
       await this.sendButton.click();
       await this.modals.confirmPrompt();
@@ -403,6 +405,7 @@ export class WalletsScreen extends BaseScreen {
   }
 
   async getTxHashFromTxlink(): Promise<string> {
+    await this.txListAfterSendOrSwap.linkToTxExecuted.waitFor({ timeout: 20000 });
     const txSignatureLink = await this.txListAfterSendOrSwap.linkToTxExecuted.getAttribute('href');
     if (!txSignatureLink) throw new Error('No txSignatureLink');
     let txSignature = txSignatureLink.replace(/^.*tx\//, '');

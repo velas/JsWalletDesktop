@@ -96,7 +96,7 @@
       react.createElement('div', {
         className: 'group-name'
       }, ' ' + groupName + ' Network'), map(function(wallet){
-        var ref$, buttonStyle, uninstall, active, big, balance, balanceUsd, pending, send, receive, swap, expand, usdRate, last, name, receiveClick, sendClick, swapClick, token, tokenDisplay, makeDisabled, walletIsDisabled, disabledClass, sendSwapDisabled, marketHistoryPrices, historyPrices, prev, lastPrice, prevPrice, ref1$, borderColor, percent, percentRounded, percentDisplay, percentClass, getGradient, buildData, data, fnCb, options, legend, installedNetworks, availableNetworks, ref2$, locationWallet, uriProd, uriTest, uri_simplex, buy, children, ref3$;
+        var ref$, buttonStyle, uninstall, active, big, balance, balanceUsd, pending, send, receive, swap, expand, usdRate, last, name, receiveClick, sendClick, swapClick, token, tokenDisplay, makeDisabled, walletIsDisabled, disabledClass, sendSwapDisabled, marketHistoryPrices, historyPrices, prev, lastPrice, prevPrice, ref1$, borderColor, percent, percentRounded, percentDisplay, percentClass, getGradient, buildData, data, fnCb, options, legend, installedNetworks, availableNetworks, ref2$, locationWallet, uriProd, uriTest, uri_buy, buy, children, ref3$;
         ref$ = walletFuncs(store, web3t, wallets, wallet, walletsGroups, groupName), buttonStyle = ref$.buttonStyle, uninstall = ref$.uninstall, wallet = ref$.wallet, active = ref$.active, big = ref$.big, balance = ref$.balance, balanceUsd = ref$.balanceUsd, pending = ref$.pending, send = ref$.send, receive = ref$.receive, swap = ref$.swap, expand = ref$.expand, usdRate = ref$.usdRate, last = ref$.last;
         name = (ref$ = wallet.coin.name) != null
           ? ref$
@@ -278,7 +278,7 @@
         locationWallet = window.location.host === "wallet.testnet.velas.com" ? 'wallet_testnet' : 'wallet_mainnet';
         uriProd = "https://buy.velas.com/?address=" + wallet.address + "&crypto_currency=" + tokenDisplay + "&env=" + locationWallet;
         uriTest = "https://fiat-payments.testnet.velas.com/?address=" + wallet.address + "&crypto_currency=" + tokenDisplay + "&env=" + locationWallet;
-        uri_simplex = (function(){
+        uri_buy = (function(){
           switch (false) {
           case store.current.network !== 'testnet':
             return uriTest;
@@ -287,7 +287,7 @@
           }
         }());
         buy = function(){
-          return window.open(uri_simplex);
+          return window.open(uri_buy);
         };
         /* Render */
         return react.createElement('div', {

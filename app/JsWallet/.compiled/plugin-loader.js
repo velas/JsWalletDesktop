@@ -19,7 +19,7 @@
     }
     return coins;
   };
-  baseArray = ['vlx_native', 'vlx_evm', 'vlx2', 'btc', 'eth'];
+  out$.baseArray = baseArray = ['vlx_native', 'vlx_evm', 'vlx2', 'btc', 'eth'];
   legacyTokens = [require('../web3t/plugins/eth-legacy-coin.js'), require('../web3t/plugins/usdt_erc20_legacy-coin.json'), require('../web3t/plugins/vlx2-coin.js')];
   legacyArr = ['vlx2', 'vlx_evm_legacy', 'usdt_erc20_legacy', 'eth_legacy'];
   legacyIsHidden = function(name){

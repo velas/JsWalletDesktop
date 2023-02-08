@@ -17,7 +17,7 @@
     ERC20BridgeToken: "0x8C543AED163909142695f2d2aCd0D55791a9Edb9",
     api: {
       provider: 'velas_erc20',
-      web3Provider: 'https://mainnet.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106',
+      web3Provider: 'https://mainnet.infura.io/v3/622100399ace495d92c1339f6be12b2b',
       url: 'https://etherscan.io',
       apiUrl: 'https://api.etherscan.io/api'
     },
@@ -54,7 +54,7 @@
     HOME_BRIDGE: "0x57C7f6CD50a432943F40F987a1448181D5B11307",
     api: {
       provider: 'velas_erc20',
-      web3Provider: 'https://ropsten.infura.io/v3/6a6c66740e9e4cea9cc8425869e9d106',
+      web3Provider: 'https://ropsten.infura.io/v3/622100399ace495d92c1339f6be12b2b',
       url: 'https://ropsten.etherscan.io',
       apiUrl: 'https://api-ropsten.etherscan.io/api'
     },

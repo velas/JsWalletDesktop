@@ -37,6 +37,10 @@ export class Staking2Screen extends BaseScreen {
       await this.validatorsList.validator.first().click();
     },
 
+    selectValidatorByAddress: async (validatorAddress: string): Promise<void> => {
+      await this.page.locator('#address-validator', { hasText: validatorAddress }).click();
+    },
+
     sortBy: async (sortBy: 'apr' | 'total staked'): Promise<void> => {
       const selectValues = {
         apr: 'apr',
@@ -46,9 +50,9 @@ export class Staking2Screen extends BaseScreen {
     },
 
     loader: this.page.locator('.MuiCircularProgress-circle.MuiCircularProgress-circleIndeterminate'),
-    reloadListButton: this.page.locator('#on-press-reload'),
     reload: async (): Promise<void> => {
-      await this.validatorsList.reloadListButton.click();
+      const refreshStakesButton = this.page.locator('.balance .button.lock');
+      await refreshStakesButton.click();
       await this.waitForLoaded();
     },
 
@@ -160,8 +164,9 @@ export class Staking2Screen extends BaseScreen {
      * Refreshes the validator data including your stake data
      */
     reload: async (): Promise<void> => {
-      await this.page.locator('[data-testid="CachedIcon"]').click();
-      await this.page.locator('.button-block-style').waitFor({ timeout: 12000 });
+      const currentValidator = await this.validator.copyAddress();
+      await this.validatorsList.reload();
+      await this.validatorsList.selectValidatorByAddress(currentValidator);
     },
     tab: {
       stake: this.page.locator('#tab-stake'),

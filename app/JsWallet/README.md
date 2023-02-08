@@ -70,4 +70,3 @@ Tested with `node --version` v11.10.1
 * ETC
 * USDT (+ USDT_ERC20)
 * and other less known
-

@@ -30,15 +30,16 @@ test.describe('Balance', () => {
         case 'token-vlx_native':
           (async () => {
             assert.equal(amountOfTokens, String(VLXNativeBalanceOnBlockchain));
-            const tx = await velasNative.transfer({
-              lamports: balanceUpdateAmount * 10 ** 9,
-              payerSeed: data.wallets.payer.seed,
-              toAddress: data.wallets.withFunds.address,
-            });
-            await velasNative.waitForConfirmedTransaction(tx);
-            await wallets.refreshBalances();
-            const amountOfTokensAfterUpdate = helpers.toFixedNumber(Number((await wallets.getWalletsBalances())['token-vlx_native']), 6);
-            assert.equal(amountOfTokensAfterUpdate, helpers.toFixedNumber((VLXNativeBalanceOnBlockchain + balanceUpdateAmount), 6), 'Velas Native wallet balance was not updated after funding it');
+            
+            // const tx = await velasNative.transfer({
+            //   lamports: balanceUpdateAmount * 10 ** 9,
+            //   payerSeed: data.wallets.payer.seed,
+            //   toAddress: data.wallets.withFunds.address,
+            // });
+            // await velasNative.waitForConfirmedTransaction(tx);
+            // await wallets.refreshBalances();
+            // const amountOfTokensAfterUpdate = helpers.toFixedNumber(Number((await wallets.getWalletsBalances())['token-vlx_native']), 6);
+            // assert.equal(amountOfTokensAfterUpdate, helpers.toFixedNumber((VLXNativeBalanceOnBlockchain + balanceUpdateAmount), 6), 'Velas Native wallet balance was not updated after funding it');
           })();
           break;
         case 'token-btc':

@@ -18,7 +18,7 @@ require! {
     \./topup.ls
     \./get-primary-info.ls
     \./pending-tx.ls : { create-pending-tx }
-    \./transactions.ls : { rebuild-history }
+    \./transactions.ls : { check-ptx-in-background }
     \prelude-ls : { map, find }
     \./web3.ls
     \./api.ls : { calc-fee }
@@ -29,6 +29,7 @@ require! {
     \ethereumjs-util : {BN}
     \bs58
     \assert
+    \moment
     \./velas/velas-web3.ls
     \./icons.ls
 }
@@ -93,19 +94,42 @@ module.exports = (store, web3t)->
         return cb null if not agree
         err, tx <- push-tx { token, tx-type, network, ...tx-data }
         if err?
-            if (err.toString()).indexOf("Insufficient priority. Code:-26. Please try to increase fee") then
-                store.current.send.error = err
-                <- set-timeout _, 2000
-                store.current.send.error = ""
-            if (err.toString()).indexOf("Unexpected token < in JSON at position 0") then
-                store.current.send.parseError = "Please retry later or write to our support and we will figure it out"
-                <- set-timeout _, 5000
+            errorMessage = err.toString();
+            hideErrorMessage = ->
+                <- set-timeout _, 7500
                 store.current.send.error = ""
                 store.current.send.parseError = ""
+
+            if errorMessage.indexOf("Unexpected token < in JSON at position 0") then
+                store.current.send.parseError = "Invalid response. Code 11"
+                <- hideErrorMessage
+            else
+                store.current.send.parseError = errorMessage
+                <- hideErrorMessage
             return cb err
-        err <- create-pending-tx { store, token, recipient, network, tx, amount-send, amount-send-fee, send.to, from: wallet.address }
-        store.forceReload = yes
-        store.forceReloadTxs = yes
+        err, pendingTxInfo <- create-pending-tx { store, token, recipient, network, tx, amount-send, amount-send-fee, send.to, from: wallet.address }
+        if err?
+            return cb err
+
+        currentTransanctionInfo = {
+          tx,
+          token,
+          network,
+          to: recipient,
+          from: send.wallet.address,
+          amount: new String(amount-send),
+          fee: amount-send-fee,
+          pending: true,
+          time: moment!.unix!,
+          recepientType: send.txType,
+          txType: null,
+          type: "OUT",
+          url: send.network.api.url + "/tx/#{tx}"
+        }
+        store.transactions.all = store.transactions.all.concat([currentTransanctionInfo])
+        apply-transactions store
+
+        <- check-ptx-in-background store, web3t, network, token, pendingTxInfo
         cb err, tx
     wallet-icon =
         | wallet.coin?custom is yes and icons.customWalletIcon? => icons.customWalletIcon
@@ -154,7 +178,6 @@ module.exports = (store, web3t)->
         store.current.last-tx-url = | send.network.api.linktx => send.network.api.linktx.replace \:hash, data
             | send.network.api.url => send.network.api.url + "/tx/#{data}"
         navigate store, web3t, \sent
-        <- web3t.refresh
     send-escrow = ->
         name = send.to
         amount-ethers = send.amount-send
@@ -873,6 +896,7 @@ module.exports = (store, web3t)->
     /**/
     FIXED_FEE = "0xc76cdb54"
     PERCENTAGE_FEE = "0x40c62b8f"
+
     /**/
     get-fee-mode = (token, feeManagerContract)->
         mode = 'percent'
@@ -881,6 +905,7 @@ module.exports = (store, web3t)->
         evm_wallet = wallets.find (.coin.token is \vlx_evm)
         return mode if not wallet?
         return mode if not feeManagerContract?
+
         abi = [{"constant":true,"inputs":[],"name":"getFeeMode","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"}]
         web3 = new Web3(new Web3.providers.HttpProvider(evm_wallet?network?api?web3Provider))
         web3.eth.provider-url = evm_wallet?network?api?web3Provider
@@ -898,6 +923,7 @@ module.exports = (store, web3t)->
         catch err
             #console.error "getFeeMode err", err
         return mode
+
     getBridgeInfo = (cb)->
         chosen-network = store?current?send?chosen-network
         return cb null if not chosen-network?

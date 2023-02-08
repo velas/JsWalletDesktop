@@ -240,6 +240,7 @@
     },
     staking: {
       webSocketAvailable: true,
+      settingNewStakingAuthority: false,
       splittingStakingAccount: false,
       creatingStakingAccount: false,
       REWARDS_PER_PAGE: 10,
@@ -404,6 +405,7 @@
       device: getDevice(),
       size: getSize(),
       list: 0,
+      promptError: null,
       promptType: "",
       promptAnswer: "",
       prompt: false,
@@ -411,6 +413,7 @@
       prompt3: false,
       promptPassword: false,
       promptPasswordAnswer: "",
+      stakeAuthorize: false,
       step: "first",
       verifySeedIndexes: [],
       switchAccount: false,

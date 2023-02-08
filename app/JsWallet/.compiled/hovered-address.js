@@ -10,6 +10,9 @@
     if (store.current.tryCopy == null) {
       return null;
     }
+    if (store.current.page === 'locked') {
+      return null;
+    }
     style = getPrimaryInfo(store);
     copyStyle = {
       color: style.app.text,

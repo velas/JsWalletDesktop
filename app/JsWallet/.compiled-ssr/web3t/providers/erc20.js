@@ -184,6 +184,7 @@
   out$.getTransactions = getTransactions = function(arg$, cb){
     var network, address, token, ref$, ref1$, searchToken, ref2$, apiUrl, apikey, module, action, startblock, endblock, sort, query;
     network = arg$.network, address = arg$.address, token = arg$.token;
+    var contractAddress = network.address;
     if (token == null || token.toString().trim().length === 0) {
       console.error("ERC20 provider, [getTransactions] error: token is not defined");
       return cb(null, []);
@@ -213,7 +214,7 @@
       address: address,
       sort: sort,
       startblock: startblock,
-      endblock: endblock
+      endblock: endblock,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline
@@ -231,7 +232,7 @@
         }
         txs = map(transformTx(network))(
         filter(function(it){
-          return up(it.tokenSymbol) === searchToken;
+          return up(it.contractAddress) === up(contractAddress);
         })(
         result.result));
         return cb(null, txs);

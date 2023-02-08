@@ -5,6 +5,7 @@ require! {
     \./pending-tx.ls : { get-pending-txs, remove-tx }
     \./apply-transactions.ls
     \./background/background-task.ls : { add-task }
+    \./calc-certain-wallet.ls
 }
 same = (x, y)->
     x?toUpperCase?! is y?toUpperCase?!
@@ -20,7 +21,7 @@ transform-ptx = (config, [tx, amount, fee, time, from, to2])-->
     { url, linktx, cluster } = config.network?api ? {}
     _cluster = if cluster? then "?cluster=#{cluster}" else ""
     url = | linktx => linktx.replace \:hash, tx
-        | url => "#{url}/tx/#{tx}#{_cluster}"
+          | url => "#{url}/tx/#{tx}#{_cluster}"
     { tx, amount, url, fee: fee, time, from, to: to2 }
 make-not-pending = (store, tx)->
     #console.log \make-not-pending, tx
@@ -44,13 +45,15 @@ check-transaction-task = (bg-store, web3, network, token, ptx)-> (store, cb)->
     return cb null if not tx?
     make-not-pending store, tx if data?.status is \confirmed
     make-not-pending store, tx if data?.status is \reverted
-    return cb null if data?.status is \confirmed
     return cb null if data?.status is \reverted
+    if data?.status is \confirmed then
+        err <- calc-certain-wallet store, token
+        return cb null
     cb \pending
-check-ptx-in-background = (store, web3, network, token, ptx, cb)->
+export check-ptx-in-background = (store, web3, network, token, ptx, cb)->
     add-task ptx.0, check-transaction-task(store, web3, network, token, ptx)
     cb null
-check-ptxs-in-background = (store, web3, network, token, [ptx, ...rest], cb)->
+export check-ptxs-in-background = (store, web3, network, token, [ptx, ...rest], cb)->
     return cb null if not ptx?
     err <- check-ptx-in-background store, web3, network, token, ptx
     #return cb err if err?
@@ -60,11 +63,10 @@ check-ptxs-in-background = (store, web3, network, token, [ptx, ...rest], cb)->
     check-ptxs-in-background store, web3, network, token, rest, cb
 export rebuild-history = (store, web3, wallet, cb)->
     { address, network, coin, private-key } = wallet
-    err, data <- get-transactions { address, network, coin.token, account: { address, private-key } }
+    err1, data <- get-transactions { address, network, coin.token, account: { address, private-key } }
     #console.log \rebuild-history, coin.token, err, data
-    return cb err if err?
     ids =
-        data |> map (.tx.to-upper-case!)
+        (data ? []) |> map (.tx.to-upper-case!)
     dummy = (err, data)->
         console.log err, data
     err, ptxs <- get-pending-txs { network, store, coin.token }
@@ -82,20 +84,16 @@ export rebuild-history = (store, web3, wallet, cb)->
     txs
         |> filter (.token is coin.token)
         |> each -> txs.splice txs.index-of(it), 1
-    data
+    data ? []
         |> each extend { address, coin, network }
         |> each txs~push
     ptxs
         |> map transform-ptx { address, coin, network }
         |> each extend { address, coin, network, pending: yes, checked: 0 }
         |> each txs~push
-    cb!
-build-loader = (store, web3)-> (wallet)-> task (cb)->
-    wallet.txs-status = \loading
-    err <- rebuild-history store, web3, wallet
-    wallet.txs-status = \loaded
-    return cb! if err?
-    cb null
+    cb err1
+
+
 export load-all-transactions = (store, web3, cb)->
     { wallets } = store.current.account
     wallet = store.current.wallet
@@ -103,19 +101,18 @@ export load-all-transactions = (store, web3, cb)->
     err <- load-wallet-transactions(store, web3, token)
     console.error("[load-wallet-transactions]", err) if err?
     cb null
+
 export load-wallet-transactions = (store, web3, token, cb)->
     return cb "[load-wallet-transactions] error: token is not defined" if not token?
     wallet = store.current.account.wallets |> find (-> it.coin.token is token)
-    return if wallet.txs-status in <[ loading loaded ]>
-    loaders =
-        | wallet? =>
-            [wallet]
-                |> map build-loader store, web3
-        | _ => []
-    tasks =
-        loaders
-            |> map -> [loaders.index-of(it).to-string!, it]
-            |> pairs-to-obj
-    <- run [tasks] .then
-    apply-transactions store
+    return if not wallet? or wallet.txs-status in <[ loading loaded ]>
+    build-loader = (wallet)->
+        <- set-timeout _, 1
+        wallet.txs-status = \loading
+        err <- rebuild-history store, web3, wallet
+        wallet.txs-status =
+            | !err? => \loaded
+            | _ => \error
+        apply-transactions store
+    [wallet] |> map build-loader
     cb null

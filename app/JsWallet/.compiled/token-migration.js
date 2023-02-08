@@ -273,7 +273,8 @@
         }, children = [
           " Support: ", react.createElement('a', {
             href: "https://t.me/velasmigration",
-            target: "_blank"
+            target: "_blank",
+            rel: "noopener noreferrer nofollow"
           }, ' t.me/velasmigration')
         ])
       ])

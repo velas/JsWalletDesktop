@@ -500,7 +500,7 @@ token-migration = (store, web3t)->
                                 | Swap Coins
                     .pug.support
                         | Support: 
-                        a.pug(href="https://t.me/velasmigration" target="_blank") t.me/velasmigration
+                        a.pug(href="https://t.me/velasmigration" target="_blank" rel="noopener noreferrer nofollow") t.me/velasmigration
 module.exports = ({ store, web3t } )->
     return null if not store.current.token-migration?
     { close-migration } = menu-funcs store, web3t

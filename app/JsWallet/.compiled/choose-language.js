@@ -125,6 +125,7 @@
         react.createElement('a', {
           href: "https://apps.apple.com/us/app/velas-mobile-wallet/id1541032748",
           target: "_blank",
+          rel: "noopener noreferrer nofollow",
           id: "download-ios"
         }, children = react.createElement('img', {
           src: icons['ios'] + "",
@@ -132,9 +133,18 @@
         })), react.createElement('a', {
           href: "https://play.google.com/store/apps/details?id=com.velas.mobile_wallet",
           target: "_blank",
+          rel: "noopener noreferrer nofollow",
           id: "download-android"
         }, children = react.createElement('img', {
           src: icons['android'] + "",
+          className: 'icon-download'
+        })), react.createElement('a', {
+          href: "https://github.com/velas/mobile-wallet/releases/latest/download/app-release.apk",
+          target: "_blank",
+          rel: "noopener noreferrer nofollow",
+          id: "download-apk"
+        }, children = react.createElement('img', {
+          src: icons['apk'] + "",
           className: 'icon-download'
         })), react.createElement('span', {
           id: "download-desktop"

@@ -288,13 +288,16 @@
     endblock = 99999999;
     sort = 'desc';
     apikey = 'KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9';
-    page = 1;
-    offset = 20;
+    page = config.page;
+    offset = config.offset;
     query = stringify({
       module: module,
       action: action,
       apikey: apikey,
-      address: address
+      address: address,
+      sort,
+      page,
+      offset,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline
@@ -325,15 +328,18 @@
     action = 'txlist';
     startblock = 0;
     endblock = 99999999;
-    page = 1;
-    offset = 20;
+    page = arg$.page;
+    offset = arg$.offset;
     sort = 'desc';
     apikey = 'KXYT4M24AWGIV585T7T38GUNMB4IRSY7H9';
     query = stringify({
       module: module,
       action: action,
       apikey: apikey,
-      address: address
+      address: address,
+      sort,
+      page,
+      offset,
     });
     return get(apiUrl + "?" + query).timeout({
       deadline: deadline
@@ -360,7 +366,7 @@
     var network, address, page, offset;
     network = arg$.network, address = arg$.address;
     page = 1;
-    offset = 20;
+    offset = 30;
     return getExternalTransactions({
       network: network,
       address: address,

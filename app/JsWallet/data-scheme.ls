@@ -193,6 +193,7 @@ store =
         fetchAccounts: null
     staking:
         webSocketAvailable: yes
+        setting-new-staking-authority: no
         splitting-staking-account: no
         creating-staking-account: no
         REWARDS_PER_PAGE: 10
@@ -334,6 +335,7 @@ store =
         device: get-device!
         size: get-size!
         list: 0
+        prompt-error: null
         prompt-type: ""
         prompt-answer: ""
         prompt: no
@@ -341,6 +343,7 @@ store =
         prompt3: no
         prompt-password: no
         prompt-password-answer: ""
+        stake-authorize: no
         step: "first"
         verify-seed-indexes: []
         switch-account: no

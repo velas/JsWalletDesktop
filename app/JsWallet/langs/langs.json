@@ -15,6 +15,66 @@
     "in"
   ],
   "mapping": {
+    "Authorities": [
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities",
+      "Authorities"
+    ],
+    "stakeAuthorityAddress": [
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address",
+      "Stake Authority Address"
+    ],
+    "withdrawAuthorityAddress": [
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address",
+      "Withdraw Authority Address"
+    ],
+    "newStakeAuthorityWasSuccessfullySetTo": [
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to",
+      "Stake Authority Address was set to"
+    ],
     "confirmation": [
       "Confirmation",
       "Подтверждение",
@@ -669,6 +729,21 @@
       "ti firanṣẹ",
       "đã được gửi đi",
       "भेज दिया गया है"
+    ],
+    "hasBeenConfirmed": [
+      "has been confirmed",
+      "была подтверждена",
+      "була підтверждена",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed",
+      "has been confirmed"
     ],
     "home": [
       "Home",
@@ -3636,19 +3711,19 @@
       "आप नए खाते बनाकर अधिक दांव लगा सकते हैं"
     ],
     "errorParseTitle": [
-      "Error 360",
-      "Ошибка 360",
-      "Помилка 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360",
-      "Error 360"
+      "Error",
+      "Ошибка",
+      "Помилка",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error",
+      "Error"
     ],
     "errorParseMessage1": [
       "Please retry later or  write to our",
@@ -3680,6 +3755,21 @@
       "and we will figure it out.",
       "and we will figure it out."
     ],
+    "errorSupportLinkTitle": [
+      "support",
+      "поддержку",
+      "підтримку",
+      "soutien",
+      "soporte",
+      "支持",
+      "지원하다",
+      "الدعم",
+      "dukungan",
+      "suporta",
+      "atilẹyin",
+      "hỗ trợ",
+      "सहयोग"
+    ],
     "tooltip_vlx_huobi": [
       "Is used for receiving or swapping to the Heco network.",
       "Is used for receiving or swapping to the Heco network.",
@@ -3695,6 +3785,22 @@
       "Is used for receiving or swapping to the Heco network.",
       "Is used for receiving or swapping to the Heco network.",
       "Is used for receiving or swapping to the Heco network."
+    ],
+    "tooltip_vlx_usdv": [
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem",
+      "Used for interaction with Velas dApps ecosystem"
     ],
     "tooltip_bsc_vlx": [
       "Is used for receiving or swapping to the BSC network.",
