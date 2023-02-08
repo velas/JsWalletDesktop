@@ -1,12 +1,12 @@
 {
   "name": "velas-wallet",
-  "version": "1.2.59",
+  "version": "1.2.60",
   "description": "",
   "main": "",
   "dependencies": {
     "@primer/octicons-react": "9.1.1",
     "@solana/buffer-layout": "4.0.0",
-    "@velas/staking.2.0": "^1.1.7",
+    "@velas/staking.2.0": "^1.1.8",
     "@velas/web3": "git+https://github.com/velas/web3.js.git#web",
     "atob": "2.1.2",
     "bignumber.js": "6.0.0",

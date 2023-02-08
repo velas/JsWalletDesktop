@@ -125,7 +125,7 @@ test.describe('Staking 2', () => {
       await page.locator('"Stake account has been created successfully"').waitFor({ timeout: 15000 });
       await staking2.stakeForm.okButton.click();
       await staking2.validator.goBack();
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(1); // WS
+      // expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeTruthy(); // WS are down
       await staking2.validatorsList.reload(); //no WS
       await staking2.validatorsList.refreshStakesUntilStakedValidatorAppears();
     });
@@ -136,7 +136,7 @@ test.describe('Staking 2', () => {
       await wallets.openMenu('staking');
       await staking2.waitForLoaded();
 
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(1);
+      expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeTruthy();
       await staking2.validatorsList.selectFirstValidator();
       await staking2.validator.staked.clickStakeMore();
       await staking2.stakeForm.typeAmount(0.2);
@@ -145,7 +145,7 @@ test.describe('Staking 2', () => {
 
       await page.locator('"Stake account has been created successfully"').waitFor();
       await staking2.stakeForm.okButton.click();
-      expect (await staking2.validator.getStakeValue()).toEqual('1.30'); // WS
+      // expect (await staking2.validator.getStakeValue()).toEqual('1.30'); // WS are down
       await staking2.validator.reload(); // no WS
       await staking2.validator.waitForStakeValueUpdate({ fromValue: '1.10', toValue: '1.30' });
     });
@@ -156,7 +156,7 @@ test.describe('Staking 2', () => {
       await wallets.openMenu('staking');
       await staking2.waitForLoaded();
 
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(1);
+      expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeTruthy();
       await staking2.validatorsList.selectFirstValidator();
       await staking2.validator.staked.clickrequestWithdraw();
       await staking2.stakeForm.useMaxButton.click();
@@ -171,7 +171,7 @@ test.describe('Staking 2', () => {
       await wallets.openMenu('staking');
       await staking2.waitForLoaded();
 
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(1);
+      expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeTruthy();
       await staking2.validatorsList.selectFirstValidator();
       await staking2.validator.tab.withdrawals.click();
       await staking2.validator.withdrawals.withdrawButton.click();
@@ -179,7 +179,7 @@ test.describe('Staking 2', () => {
       await staking2.stakeForm.okButton.click();
       await staking2.validator.goBack();
 
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(0); // WS
+      // expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeFalsy(); // WS are down
       await staking2.validatorsList.reload(); // no WS
       await staking2.validatorsList.refreshStakesUntilStakedValidatorDisappears();
 
@@ -194,7 +194,13 @@ test.describe('Staking 2', () => {
       await wallets.openMenu('staking');
       await staking2.waitForLoaded();
 
-      await staking2.cleanup();
+      // there is no reason to fail test-run on final cleanup
+      try {
+        await staking2.cleanup();
+      } catch (e) {
+        log.debug(e);
+        log.warn('staking2.cleanup didn\'t finish successfully, this may affect next test run');
+      }
     });
   });
 
@@ -205,7 +211,7 @@ test.describe('Staking 2', () => {
       await wallets.openMenu('staking');
       await staking2.waitForLoaded();
 
-      await staking2.validatorsList.stakedValidatorsAmountIsVisible(1);
+      expect(await staking2.validatorsList.stakedValidatorsAmountIsVisible(1)).toBeTruthy();
       await staking2.validatorsList.selectFirstValidator();
       await staking2.validator.rewards.open();
 
@@ -215,7 +221,7 @@ test.describe('Staking 2', () => {
       expect(lastRewardEpoch).toEqual(epochNumberFromBlockchain - 1);
     });
 
-    test('use max', async ({ auth, staking2, wallets }) => {
+    test('use max', async ({ auth, staking2, wallets, page }) => {
       await auth.loginByRestoringSeed(data.wallets.staking.useMax.seed);
       await wallets.waitForWalletsDataLoaded();
       await wallets.openMenu('staking');
@@ -227,7 +233,10 @@ test.describe('Staking 2', () => {
       await staking2.stakeForm.useMaxButton.click();
       const inputValue = await staking2.stakeForm.amountInput.inputValue();
 
-      expect(Number(inputValue)).toEqual(availableForStakingAmount - 1);
+      expect(Number(inputValue.replace(/[^0-9.]/g, ''))).toEqual(availableForStakingAmount - 1);
+
+      await staking2.stakeForm.nextButton.click();
+      await expect(page.locator('"These actions will be made"')).toBeVisible();
     });
 
     test('copy validator address', async ({ auth, page, staking2, wallets }) => {

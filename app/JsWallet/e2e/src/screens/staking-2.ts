@@ -57,11 +57,19 @@ export class Staking2Screen extends BaseScreen {
     },
 
     validator: this.page.locator('#on-click-validator'),
+    stakedValidator: this.page.locator('#on-click-validator:has(#my-stake-validator)'),
+    stakedValidatorAddress: this.page.locator('#on-click-validator:has(#my-stake-validator)').locator('#address-validator'),
     validatorName: this.page.locator('#on-click-validator #name-validator'),
     activeStatus: this.page.locator('#on-click-validator #active-status'),
     inactiveStatus: this.page.locator('#on-click-validator #inactive-status'),
 
-    stakedValidatorsAmountIsVisible: async (amount: number): Promise<boolean> => await this.page.locator(`"Staked Validators (${amount})"`).isVisible(),
+    stakedValidatorsAmountIsVisible: async (amount?: number): Promise<boolean> => {
+      if (amount){
+        return await this.page.locator(`"Staked Validators (${amount})"`).isVisible();
+      } else {
+        return await this.page.locator('text=/^Staked Validators/').isVisible();
+      }
+    },
 
     refreshStakesUntilStakedValidatorAppears: async (timeout = 40_000): Promise<void> => {
       const startTime = new Date().getTime();
@@ -79,6 +87,23 @@ export class Staking2Screen extends BaseScreen {
         await this.page.waitForTimeout(500);
       }
       if (await this.validatorsList.stakedValidatorsAmountIsVisible(1)) throw new Error(`Staked validator does not disappear within ${timeout / 1000} seconds`);
+    },
+
+    refreshStakesUntilStakedListClear: async (timeout = 35000): Promise<void> => {
+      const startTime = new Date().getTime();
+      while (await this.validatorsList.stakedValidatorsAmountIsVisible() && new Date().getTime() < startTime + timeout) {
+        await this.validatorsList.reload();
+        await this.page.waitForTimeout(500);
+      }
+      if (await this.validatorsList.stakedValidatorsAmountIsVisible()) throw new Error(`Staked list does not clear up within ${timeout / 1000} seconds`);
+    },
+
+    getStakedValidatorsAmount: async (): Promise<number> => {
+      if (await this.page.locator('text=/^Staked Validators/').isVisible()){
+        const amountString = await this.page.locator('text=/^Staked Validators/').textContent();
+        return Number(amountString?.replace(/[^0-9.]/g, ''));
+      }
+      return 0;
     },
   }
 
@@ -143,7 +168,7 @@ export class Staking2Screen extends BaseScreen {
     },
 
     notStaked: {
-      stakeButton: this.page.locator('#on-click-stake'),
+      stakeButton: this.page.locator('#on-click-stake:not([disabled])'),
     },
     staked: {
       stakeMoreButton: this.page.locator('#on-click-stake-more'),
@@ -217,23 +242,47 @@ export class Staking2Screen extends BaseScreen {
     // withdraw stake in case we have active one
     await this.waitForLoaded();
     await this.page.waitForTimeout(500);
-    if (await this.validatorsList.stakedValidatorsAmountIsVisible(1)) {
-      await this.validatorsList.validator.first().click();
-      await this.validator.staked.stakeMoreButton.waitFor();
+    if (await this.validatorsList.stakedValidatorsAmountIsVisible()){
+      const stakedValidatorsAddresses = await this.validatorsList.stakedValidatorAddress.allInnerTexts();
+      log.debug(stakedValidatorsAddresses);
+      for (const address of stakedValidatorsAddresses) {
+        await this.validatorsList.selectValidatorByAddress(address);
+        await this.waitForSelectorDisappears('#on-click-stake:not([disabled])');
+        if (!await this.validator.notStaked.stakeButton.isVisible()){
+          await this.validator.staked.stakeMoreButton.waitFor();
+        }
 
-      // request withdraw if relevant
-      if (await this.validator.staked.requestWithdrawButton.isVisible()) {
-        await this.validator.staked.clickrequestWithdraw();
-        await this.stakeForm.useMaxButton.click();
-        await this.stakeForm.withdrawButton.click();
-        await this.stakeForm.successfulWithdraRequestMessage.waitFor({ timeout: 20000 });
-        await this.stakeForm.okButton.click();
+        // request withdraw if relevant
+        if (await this.validator.staked.requestWithdrawButton.isVisible()) {
+          await this.validator.staked.clickrequestWithdraw();
+          await this.stakeForm.useMaxButton.click();
+          await this.stakeForm.withdrawButton.click();
+          await this.stakeForm.successfulWithdraRequestMessage.waitFor({ timeout: 20000 });
+          await this.stakeForm.okButton.click();
+        }
+
+        // wait until request button disappears
+        await this.validator.reload();
+        let reloads = 20;
+        while(await this.validator.staked.requestWithdrawButton.isVisible() && reloads > 0){
+          await this.validator.reload();
+          await helpers.sleep(1000);
+          reloads--;
+        }
+
+        // withdraw if possible
+        await this.validator.tab.withdrawals.click();
+        if (await this.validator.withdrawals.withdrawButton.isVisible()) {
+          await this.validator.withdrawals.withdrawButton.click();
+          await this.stakeForm.successfulWithdrawMessage.waitFor({ timeout: 20000 });
+          await this.stakeForm.okButton.click();
+        }
+        await this.validator.goBack();
+        await this.waitForLoaded();
       }
-
-      // final withdrawal
-      await this.validator.tab.withdrawals.click();
-      await this.validator.withdrawals.withdrawButton.click();
-      await this.stakeForm.successfulWithdrawMessage.waitFor({ timeout: 20000 });
     }
+
+    await this.validatorsList.reload();
+    await this.validatorsList.refreshStakesUntilStakedListClear();
   }
 }

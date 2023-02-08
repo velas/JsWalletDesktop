@@ -80,7 +80,7 @@ export class StakingScreen extends BaseScreen {
     maxAmount: '',
     getMaxAmount: async () => {
       const maxAmountValue = await this.createStakingAccountForm.amount.getAttribute('value');
-      const maxAmount = Number(maxAmountValue?.replace(',', ''));
+      const maxAmount = Number(maxAmountValue?.replace(/[^0-9.]/g, ''));
       return maxAmount;
     },
   };
@@ -139,8 +139,17 @@ export class StakingScreen extends BaseScreen {
       await this.refresh();
       finalAmountOfStakingAccounts = await this.getAmountOfStakes(stakeType);
     }
-    log.debug(`Great! Amount of "${params.stakeType}" stakes amount has changed: ${initialStakesAmount} > ${finalAmountOfStakingAccounts}.`);
+    log.debug(`Great! Amount of "${params.stakeType}" stakes amount has changed from ${initialStakesAmount} to ${finalAmountOfStakingAccounts}.`);
     return finalAmountOfStakingAccounts;
+  }
+
+  async waitForStakedListCleared(timeout = 30000): Promise<void> {
+    const startTime = new Date().getTime();
+    while (await this.accounts.delegateButton.isVisible() && new Date().getTime() - startTime < timeout) {
+      await this.page.waitForTimeout(1000);
+      await this.refresh();
+    }
+    if (await this.accounts.delegateButtonSecond.isVisible()) throw new Error(`Staked accounts list didn\'t clear out in ${timeout} seconds`);
   }
 
   async getFirstStakingAccountAddressFromTheList(type: Stake): Promise<string> {
@@ -330,14 +339,19 @@ diff: ${diff || '<no diff>'}
       while (notDelegatedStakesAmount > 0) {
         log.debug(`There are ${notDelegatedStakesAmount} not delegated stakes to be withdrawn as precondition`);
         await this.selectAccount('Delegate');
-        await this.stakeAccount.withdrawButton.click();
-        await this.modals.confirmPrompt();
-        await this.page.waitForSelector('" Funds withdrawn successfully"', { timeout: 30000 });
-        await this.modals.clickOK();
+        if (await this.page.locator('text=Account not found').isVisible()){
+          await this.page.locator('text=CANCEL').click();
+          await this.refresh();
+        } else {
+          await this.stakeAccount.withdrawButton.click();
+          await this.modals.confirmPrompt();
+          await this.page.waitForSelector('" Funds withdrawn successfully"', { timeout: 30000 });
+          await this.modals.clickOK();
 
-        await this.refresh();
-        await this.waitForStakesAmountUpdated({ stakeType: 'Delegate', initialStakesAmount: notDelegatedStakesAmount });
-        notDelegatedStakesAmount = await this.getAmountOfStakes('Delegate');
+          await this.refresh();
+          await this.waitForStakesAmountUpdated({ stakeType: 'Delegate', initialStakesAmount: notDelegatedStakesAmount });
+          notDelegatedStakesAmount = await this.getAmountOfStakes('Delegate');
+        }
       }
     },
 
@@ -345,7 +359,7 @@ diff: ${diff || '<no diff>'}
 
   async getVLXNativeBalance(): Promise<number> {
     const textWithBalance = (await this.vlxNativeBalance.textContent())?.trim();
-    const balance = Number(textWithBalance?.split(' ')[0]);
-    return balance;
+    const balance = textWithBalance?.split(' ')[0];
+    return Number(balance?.replace(/[^0-9.]/g, ''));
   }
 }

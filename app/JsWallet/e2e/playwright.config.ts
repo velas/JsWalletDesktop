@@ -47,7 +47,7 @@ const config: PlaywrightTestConfig = {
   // repeatEach: 5,
   // reporter: 'list',
   retries: globalConfig.CI ? 1 : 0,
-  timeout: 130000,
+  timeout: 300000, // 5 min, because staking can be very slow
   workers: 2,
 };
 
