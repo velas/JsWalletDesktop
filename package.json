@@ -107,7 +107,7 @@
     "md5-file": "^5.0.0",
     "mobx": "^4.15.4",
     "mobx-react": "^5.4.4",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "multicoin-address-validator": "0.4.16",
     "nivo": "^0.31.0",
     "prelude-ls": "^1.2.1",
