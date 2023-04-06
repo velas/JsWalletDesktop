@@ -67,7 +67,7 @@
   out$.type = type = 'coin';
   out$.enabled = enabled = true;
   out$.walletIndex = walletIndex = 2;
-  out$.name = name = 'Tether USD';
+  out$.name = name = 'labUSDT';
   out$.token = token = 'vlx_usdt';
   out$.nickname = nickname = 'usdt';
   out$.market = market = "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/detail/chart?id=825&range=ALL";

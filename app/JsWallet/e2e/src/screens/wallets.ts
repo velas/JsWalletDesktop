@@ -178,7 +178,11 @@ export class WalletsScreen extends BaseScreen {
   }
 
   async waitForWalletsDataLoaded(): Promise<void> {
-    await this.page.waitForSelector('.wallet-item .top-left [class=" img"]', {
+    await this.page.waitForSelector('#token-vlx_native .top-left [class=" img"]', {
+      state: 'visible',
+      timeout: 40000,
+    });
+    await this.page.waitForSelector('#token-vlx_evm .top-left [class=" img"]', {
       state: 'visible',
       timeout: 40000,
     });
