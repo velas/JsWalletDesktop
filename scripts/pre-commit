@@ -1,0 +1,10 @@
+#!/bin/sh
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "master" ]; then
+  git pull --tags
+  echo "Running version bump script on master commit Hook..."
+  ./scripts/bump-version.sh
+  git add ./package.json
+fi
